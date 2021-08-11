@@ -1,11 +1,13 @@
 import React from 'react'
-import { Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import IconButton from '../components/IconButton';
 
 
-import SettingScreen from "../screens/setting/SettingScreen";
+import SettingScreen from "../screens/settings/SettingScreen";
+import SecurityScreen from "../screens/settings/SecurityScreen";
+import AppearanceScreen from "../screens/settings/AppearanceScreen";
+
 
 
 
@@ -15,11 +17,15 @@ export const SettingsStackNavigator = () => {
   return (
     <SettingsStack.Navigator>
         <SettingsStack.Screen name="Settings" component={SettingScreen} options={settingsOptions} />
+        <SettingsStack.Screen name="Appearance" component={AppearanceScreen} />
+        <SettingsStack.Screen name="Security" component={SecurityScreen} />
+
+      
     </SettingsStack.Navigator>
   );
 }
 
 const settingsOptions =({navigation}) => ({
   drawerLabel:"Settings",
-  headerLeft: ()=> <IconButton icon="menu" onPress={() => {navigation.openDrawer()}} />
+  headerLeft: ()=> <IconButton name="menu" onPress={() => {navigation.openDrawer()}} />
 })
