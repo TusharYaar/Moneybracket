@@ -2,7 +2,7 @@ import React from 'react'
 import { Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { Ionicons } from '@expo/vector-icons';
+import IconButton from '../components/IconButton';
 
 
 import SettingScreen from "../screens/setting/SettingScreen";
@@ -21,5 +21,5 @@ export const SettingsStackNavigator = () => {
 
 const settingsOptions =({navigation}) => ({
   drawerLabel:"Settings",
-  headerLeft: ()=> <Ionicons name="menu" size={24} color="black" onPress={() => {navigation.openDrawer()}} />
+  headerLeft: ()=> <IconButton icon="menu" onPress={() => {navigation.openDrawer()}} />
 })
