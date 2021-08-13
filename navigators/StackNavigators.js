@@ -6,26 +6,17 @@ import IconButton from '../components/IconButton';
 import SettingScreen from '../screens/settings/SettingScreen';
 import SecurityScreen from '../screens/settings/SecurityScreen';
 import AppearanceScreen from '../screens/settings/AppearanceScreen';
-import CustomText from '../components/CustomText';
-
-import {translateAppText, getFont} from "../helpers/translate"
-
-import {useSelector} from 'react-redux';
+import TranslateText from '../components/TranslateText';
 
 const SettingsStack = createNativeStackNavigator();
 
 export const SettingsStackNavigator = () => {
-  const settings = useSelector(state => state.settings);
-  // console.log(settings);
-
   return (
     <SettingsStack.Navigator screenOptions={stackOptions}>
       <SettingsStack.Screen
         name="Settings"
         component={SettingScreen}
-        options={({navigation}) =>
-          screenOptions(navigation,settings.language, "settings")
-        }
+        options={({navigation}) => screenOptions(navigation, 'settings')}
       />
       <SettingsStack.Screen name="Appearance" component={AppearanceScreen} />
       <SettingsStack.Screen name="Security" component={SecurityScreen} />
@@ -33,8 +24,7 @@ export const SettingsStackNavigator = () => {
   );
 };
 
-const screenOptions = (navigation,language, title) => ({
-  title: translateAppText(language,title),
+const screenOptions = (navigation, title) => ({
   headerLeft: () => (
     <IconButton
       name="menu"
@@ -43,12 +33,13 @@ const screenOptions = (navigation,language, title) => ({
       }}
     />
   ),
+  headerTitle: props => <TranslateText {...props} translate={title} />,
 });
 
 const stackOptions = {
   headerTitleStyle: {
-    fontFamily: "serif",
+    fontWeight: '400',
     fontSize: 20,
-    color: "red",
+    color: 'red',
   },
-}
+};

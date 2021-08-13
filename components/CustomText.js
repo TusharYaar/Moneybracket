@@ -1,19 +1,22 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 
-import { Text } from '@ui-kitten/components';
+import {Text} from '@ui-kitten/components';
 
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
-const CustomText = (props) => {
-    const language = useSelector(state => state.settings);
-    console.log(language);
-    return (
+import {translateAppText} from '../helpers/translate';
 
-            <Text category='p1'>{props.title} {props.children}</Text>
-    )
-}
+const CustomText = props => {
+  const language = useSelector(state => state.settings.language);
+  return (
+    <Text category="h6">
+      {props.translate ? translateAppText(language, props.translate) : ''}
+      {props.children}
+    </Text>
+  );
+};
 
-export default CustomText
+export default CustomText;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
