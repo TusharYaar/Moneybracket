@@ -6,19 +6,24 @@ import IconButton from '../components/IconButton';
 import SettingScreen from '../screens/settings/SettingScreen';
 import SecurityScreen from '../screens/settings/SecurityScreen';
 import AppearanceScreen from '../screens/settings/AppearanceScreen';
+import NotificationScreen from '../screens/settings/NotificationScreen';
 import TranslateText from '../components/TranslateText';
 
 const SettingsStack = createNativeStackNavigator();
 
 export const SettingsStackNavigator = () => {
   return (
-    <SettingsStack.Navigator screenOptions={stackOptions}>
+    <SettingsStack.Navigator>
       <SettingsStack.Screen
         name="Settings"
         component={SettingScreen}
         options={({navigation}) => screenOptions(navigation, 'settings')}
       />
       <SettingsStack.Screen name="Appearance" component={AppearanceScreen} />
+      <SettingsStack.Screen
+        name="Notification"
+        component={NotificationScreen}
+      />
       <SettingsStack.Screen name="Security" component={SecurityScreen} />
     </SettingsStack.Navigator>
   );
@@ -35,11 +40,3 @@ const screenOptions = (navigation, title) => ({
   ),
   headerTitle: props => <TranslateText {...props} translate={title} />,
 });
-
-const stackOptions = {
-  headerTitleStyle: {
-    fontWeight: '400',
-    fontSize: 20,
-    color: 'red',
-  },
-};

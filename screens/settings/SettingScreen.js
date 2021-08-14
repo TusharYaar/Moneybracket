@@ -1,20 +1,29 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {Button, Divider, Icon, List, ListItem} from '@ui-kitten/components';
 
-const SettingScreen = () => {
-    return (
-        <View style={styles.screen}>
-            <Text>Settings Screen</Text>
-        </View>
-    )
-}
+import settingsData from '../../navigationData/settings';
 
-export default SettingScreen
+import NavigationListItem from '../../components/NavigationListItem';
+
+const SettingScreen = ({navigation}) => {
+  return (
+    <List
+      data={settingsData}
+      ItemSeparatorComponent={Divider}
+      renderItem={({item}) => (
+        <NavigationListItem item={item} navigation={navigation} />
+      )}
+    />
+  );
+};
+
+export default SettingScreen;
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-})
+  screen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

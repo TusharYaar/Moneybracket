@@ -8,6 +8,7 @@ export default English = {
     security: 'Security',
     notifications: 'Notifications',
     exchange_rates: 'Exchange',
+    undefined: 'Undefined',
   },
   fonts: {
     bold: 'Ouicksand-Bold',
