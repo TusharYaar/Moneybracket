@@ -17,19 +17,30 @@ export const SettingsStackNavigator = () => {
       <SettingsStack.Screen
         name="Settings"
         component={SettingScreen}
-        options={({navigation}) => screenOptions(navigation, 'settings')}
+        options={({navigation}) =>
+          screenOptionsWithDrawer(navigation, 'settings')
+        }
       />
-      <SettingsStack.Screen name="Appearance" component={AppearanceScreen} />
       <SettingsStack.Screen
-        name="Notification"
-        component={NotificationScreen}
+        name="Appearance"
+        component={AppearanceScreen}
+        options={() => screenOptionsWODrawer('appearance')}
       />
-      <SettingsStack.Screen name="Security" component={SecurityScreen} />
+      <SettingsStack.Screen
+        name="Notifications"
+        component={NotificationScreen}
+        options={() => screenOptionsWODrawer('notifications')}
+      />
+      <SettingsStack.Screen
+        name="Security"
+        component={SecurityScreen}
+        options={() => screenOptionsWODrawer('security')}
+      />
     </SettingsStack.Navigator>
   );
 };
 
-const screenOptions = (navigation, title) => ({
+const screenOptionsWithDrawer = (navigation, title) => ({
   headerLeft: () => (
     <IconButton
       name="menu"
@@ -38,5 +49,9 @@ const screenOptions = (navigation, title) => ({
       }}
     />
   ),
+  headerTitle: props => <TranslateText {...props} translate={title} />,
+});
+
+const screenOptionsWODrawer = title => ({
   headerTitle: props => <TranslateText {...props} translate={title} />,
 });

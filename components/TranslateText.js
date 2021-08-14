@@ -8,7 +8,6 @@ import {translateAppText, getFont} from '../helpers/translate';
 
 const TranslateText = props => {
   const language = useSelector(state => state.settings.language);
-
   return (
     <Text
       {...props}

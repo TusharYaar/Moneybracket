@@ -9,7 +9,7 @@ export default settings = [
   {
     title: 'Notifications',
     key: 'notifications',
-    screen: 'Notification',
+    screen: 'Notifications',
     icon: 'bell-outline',
     params: {},
   },

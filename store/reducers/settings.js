@@ -24,7 +24,7 @@ const initialState = {
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
-    case UPDATE_THEME || UPDATE_LANGUAGE:
+    case UPDATE_LANGUAGE:
       return {...state, ...payload};
     case SET_SETTINGS:
       return {...payload};
