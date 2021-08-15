@@ -1,11 +1,23 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Image, View} from 'react-native';
+import {Text} from '@ui-kitten/components';
 
-const RateListItem = ({item, value}) => {
+const RateListItem = ({item, value, baseSymbol}) => {
   value = value ? value : 0;
   return (
     <View style={styles.listItem}>
-      <Text>
+      <View style={styles.description}>
+        <Image style={styles.image} source={{uri: item.flag}} />
+        <View style={styles.textDescription}>
+          <Text category="c1">{item.country}</Text>
+          <Text category="c1">
+            {`1 ${baseSymbol} = ${item.rate.toFixed(3)} ${item.symbol}`}
+          </Text>
+          <Text category="c1">{item.code}</Text>
+        </View>
+      </View>
+
+      <Text category="h4">
         {(item.rate * value).toFixed(2)} {item.symbol}
       </Text>
     </View>
@@ -16,6 +28,25 @@ export default RateListItem;
 
 const styles = StyleSheet.create({
   listItem: {
-    padding: 30,
+    padding: 15,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  image: {
+    height: 64,
+    width: 64,
+  },
+  description: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  textDescription: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5,
   },
 });
