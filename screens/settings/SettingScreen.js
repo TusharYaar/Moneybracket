@@ -1,8 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Button, Divider, Icon, List, ListItem} from '@ui-kitten/components';
+import {Button, Divider, List} from '@ui-kitten/components';
 
-import settingsData from '../../navigationData/settings';
+import settingsData from '../../data/settings';
 
 import NavigationListItem from '../../components/NavigationListItem';
 
