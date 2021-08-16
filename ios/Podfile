@@ -12,6 +12,8 @@ target 'Moneybracket' do
     :hermes_enabled => false
   )
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
   target 'MoneybracketTests' do
     inherit! :complete
     # Pods for testing
