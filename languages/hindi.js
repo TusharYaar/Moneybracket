@@ -10,7 +10,12 @@ export default Hindi = {
     exchange_rates: 'विनिमय दरें',
     undefined: 'अपरिभाषित',
   },
-
+  languages: {
+    english: 'अंग्रेज़ी',
+    hindi: 'हिंदी',
+    spanish: 'स्पेनिश',
+    tamil: 'तामिल',
+  },
   countries: {
     afghanistan: 'अफ़्गानिस्तान',
     albania: 'अल्बानिया',

@@ -6,6 +6,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {LanguagesArray} from '../../languages/languages';
 import {updateLanguage} from '../../store/actions/settings';
 
+import TranslateText from '../../components/TranslateText';
 const AppearanceScreen = () => {
   const language = useSelector(state => state.settings.language);
   const dispatch = useDispatch();
@@ -20,8 +21,12 @@ const AppearanceScreen = () => {
     <View>
       <Text>Appearance Screen</Text>
       <RadioGroup onChange={changeLanguage} selectedIndex={currentIndex}>
-        <Radio>English</Radio>
-        <Radio>Hindi</Radio>
+        <Radio>
+          <TranslateText translate="english" tag="languages" />
+        </Radio>
+        <Radio>
+          <TranslateText translate="hindi" tag="languages" />
+        </Radio>
       </RadioGroup>
     </View>
   );

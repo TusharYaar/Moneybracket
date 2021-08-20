@@ -5,9 +5,7 @@ import TranslateText from '../components/TranslateText';
 const NavigationListItem = ({item, navigation}) => {
   const navigate = () => {
     navigation.navigate(item.screen, {...item.params});
-    // console.log('called');
   };
-  console.log(item);
 
   return (
     <ListItem

@@ -1,6 +1,7 @@
 import {UPDATE_THEME, SET_SETTINGS, UPDATE_LANGUAGE} from '../actions/settings';
 const initialState = {
   theme: 'light',
+  loaded: false,
   language: 'en',
   date: {
     timezone: 'India',
@@ -9,8 +10,8 @@ const initialState = {
     dateTimeFormat: 'DD/MM/YYYY HH:mm',
   },
   currency: {
-    symbol: '₹', //base currency to which the expense will be added
-    base: 'INR',
+    base: 'INR', //base currency to which the expense will be added
+    symbol: '₹', //base currency symbol
     favorites: [], //favorites currency which will be shown
   },
   security: {

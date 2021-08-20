@@ -10,7 +10,12 @@ export default English = {
     exchange_rates: 'Exchange',
     undefined: 'Undefined',
   },
-
+  languages: {
+    english: 'English',
+    hindi: 'Hindi',
+    spanish: 'Spanish',
+    tamil: 'Tamil',
+  },
   countries: {
     afghanistan: 'Afghanistan',
     albania: 'Albania',
