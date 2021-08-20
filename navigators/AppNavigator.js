@@ -1,19 +1,19 @@
-import React from 'react'
+import React from 'react';
 
-import { StyleSheet} from 'react-native'
+import {StyleSheet} from 'react-native';
 
-import DrawerNavigator from "./DrawerNavigator"
-import {useSelector } from "react-redux";
+import DrawerNavigator from './DrawerNavigator';
+import {useSelector} from 'react-redux';
+import LoadingScreen from '../screens/LoadingScreen';
 
 const AppNavigator = () => {
- 
-    const settings =  useSelector(state => state.settings);
+  const settings = useSelector(state => state.settings);
 
-    return  <DrawerNavigator />
-  
-    
-}
+  if (!settings.loaded) return <LoadingScreen />;
 
-export default AppNavigator
+  return <DrawerNavigator />;
+};
 
-const styles = StyleSheet.create({})
+export default AppNavigator;
+
+const styles = StyleSheet.create({});

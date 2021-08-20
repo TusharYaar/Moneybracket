@@ -1,4 +1,9 @@
-import {UPDATE_THEME, SET_SETTINGS, UPDATE_LANGUAGE} from '../actions/settings';
+import {
+  UPDATE_THEME,
+  SET_SETTINGS,
+  UPDATE_LANGUAGE,
+  DEFAULT_SETTINGS,
+} from '../actions/settings';
 const initialState = {
   theme: 'light',
   loaded: false,
@@ -26,9 +31,14 @@ const initialState = {
 export default (state = initialState, {type, payload}) => {
   switch (type) {
     case UPDATE_LANGUAGE:
+      console.log(payload);
       return {...state, ...payload};
     case SET_SETTINGS:
+      // console.log('settings previous settings');
       return {...payload};
+    case DEFAULT_SETTINGS:
+      console.log('DEFAULT_SETTINGS');
+      return {...initialState, loaded: true};
     default:
       return state;
   }

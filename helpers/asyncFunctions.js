@@ -3,23 +3,42 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const APP_SETTINGS = '@app_settings';
 const USER_SETTINGS = '@user_settings';
 
-export const getAppSettings = async () => {
+export const getAppSettings = () => {
   // function to get app settings form async storage
-  try {
-    const value = await AsyncStorage.getItem(APP_SETTINGS);
-    if (value !== null) {
-      return JSON.parse(value);
+  return new Promise(async (resolve, reject) => {
+    try {
+      const value = await AsyncStorage.getItem(APP_SETTINGS);
+      if (value) {
+        resolve({...JSON.parse(value), loaded: true});
+      } else {
+        resolve(null);
+      }
+    } catch (error) {
+      console.log(error);
+      reject(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
+  });
 };
 
-
-export const setAppSettings = async (settings) => {
-    // function to set app settings
+export const setAppSettings = settings => {
+  return new Promise(async (resolve, reject) => {
     try {
-        
-
+      AsyncStorage.setItem(APP_SETTINGS, JSON.stringify(settings));
+      resolve();
+    } catch (error) {
+      reject(error);
     }
-}
+  });
+};
+
+export const removeSettings = () => {
+  console.log('Removing settings');
+  return new Promise(async (resolve, reject) => {
+    try {
+      AsyncStorage.removeItem(APP_SETTINGS);
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
