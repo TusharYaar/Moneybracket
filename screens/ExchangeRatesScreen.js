@@ -25,7 +25,7 @@ import RateListItem from '../components/RateListItem.js';
 
 import IconButton from '../components/IconButton';
 
-const ExchangeRates = ({navigation}) => {
+const ExchangeRatesScreen = ({navigation}) => {
   const baseCurrency = useSelector(state => state.settings.currency.base);
   const baseSymbol = useSelector(state => state.settings.currency.symbol);
   const favorites = useSelector(state => state.settings.currency.favorites);
@@ -148,7 +148,7 @@ const ExchangeRates = ({navigation}) => {
   );
 };
 
-export default ExchangeRates;
+export default ExchangeRatesScreen;
 
 const styles = StyleSheet.create({
   screen: {

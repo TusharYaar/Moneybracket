@@ -3,7 +3,7 @@ export default Hindi = {
   value: 'hi',
   translations: {
     add_transactions: 'लेनदेन जोड़ें',
-    settings: 'समायोजन',
+    settings: 'सेटिंग',
     appearance: 'दिखावट',
     security: 'सुरक्षा',
     notifications: 'सूचनाएं',

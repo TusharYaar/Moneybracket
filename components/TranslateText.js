@@ -12,7 +12,7 @@ const TranslateText = props => {
     <Text
       {...props}
       style={[styles.font, props.style, {fontFamily: getFont(language)}]}>
-      {translateAppText(language, props.translate)}
+      {translateAppText(language, props.translate, props.tag)}
     </Text>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import {SettingsStackNavigator} from './StackNavigators';
-import ExchangeRates from '../screens/ExchangeRates';
+import ExchangeRatesScreen from '../screens/ExchangeRatesScreen';
 
 import TranslateText from '../components/TranslateText';
 
@@ -18,7 +18,7 @@ const DrawerNavigator = () => {
       />
       <Drawer.Screen
         name="ExchangeRates"
-        component={ExchangeRates}
+        component={ExchangeRatesScreen}
         options={({navigation}) =>
           settingsOptions(navigation, 'exchange_rates')
         }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 import {Text} from '@ui-kitten/components';
+import TranslateText from '../components/TranslateText';
 
 const RateListItem = ({item, value, baseSymbol}) => {
   value = value ? value : 0;
@@ -9,7 +10,11 @@ const RateListItem = ({item, value, baseSymbol}) => {
       <View style={styles.description}>
         <Image style={styles.image} source={{uri: item.flag}} />
         <View style={styles.textDescription}>
-          <Text category="c1">{item.country}</Text>
+          <TranslateText
+            translate={item.key}
+            tag="countries"
+            style={styles.country}
+          />
           <Text category="c1">
             {`1 ${baseSymbol} = ${item.rate.toFixed(3)} ${item.symbol}`}
           </Text>
@@ -48,5 +53,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     paddingHorizontal: 5,
+  },
+  country: {
+    fontSize: 14,
   },
 });
