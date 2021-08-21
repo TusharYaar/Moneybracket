@@ -6,6 +6,7 @@ import {
 } from '../actions/settings';
 const initialState = {
   theme: 'light',
+  onboardingDone: true,
   loaded: false,
   language: 'en',
   date: {
@@ -34,10 +35,8 @@ export default (state = initialState, {type, payload}) => {
       console.log(payload);
       return {...state, ...payload};
     case SET_SETTINGS:
-      // console.log('settings previous settings');
       return {...payload};
     case DEFAULT_SETTINGS:
-      console.log('DEFAULT_SETTINGS');
       return {...initialState, loaded: true};
     default:
       return state;

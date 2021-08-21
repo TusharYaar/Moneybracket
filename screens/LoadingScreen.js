@@ -1,7 +1,7 @@
 import React, {useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-import {getAppSettings} from '../helpers/asyncFunctions';
+import {getAppSettings, removeSettings} from '../helpers/asyncFunctions';
 
 import {useDispatch} from 'react-redux';
 
@@ -13,7 +13,6 @@ const LoadingScreen = () => {
   const getSettings = useCallback(async () => {
     try {
       const settings = await getAppSettings();
-      //   console.log('InLoading', settings);
       if (settings) {
         dispatch(setSettings(settings));
       } else dispatch(setDefaultSettings());
@@ -25,7 +24,6 @@ const LoadingScreen = () => {
 
   useEffect(() => {
     getSettings();
-    // removeSettings();
   }, []);
 
   return (
