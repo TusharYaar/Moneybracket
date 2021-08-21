@@ -1,13 +1,12 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Radio, RadioGroup} from '@ui-kitten/components';
+import {Radio, RadioGroup, Text} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {LanguagesArray} from '../../languages/languages';
 import {updateLanguage} from '../../store/actions/settings';
 
 import TranslateText from '../../components/TranslateText';
-import {Text} from '@ui-kitten/components';
 
 const AppearanceScreen = () => {
   const language = useSelector(state => state.settings.language);

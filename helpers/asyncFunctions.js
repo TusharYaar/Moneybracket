@@ -20,9 +20,13 @@ export const getAppSettings = () => {
 };
 
 export const setAppSettings = settings => {
+  console.log('settings App settings');
   return new Promise(async (resolve, reject) => {
     try {
-      AsyncStorage.setItem(APP_SETTINGS, JSON.stringify(settings));
+      AsyncStorage.setItem(
+        APP_SETTINGS,
+        JSON.stringify({...settings, loaded: false, locked: true}),
+      );
       resolve();
     } catch (error) {
       reject(error);

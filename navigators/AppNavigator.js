@@ -6,13 +6,14 @@ import DrawerNavigator from './DrawerNavigator';
 import {useSelector} from 'react-redux';
 import LoadingScreen from '../screens/LoadingScreen';
 import OnboardingScreen from '../screens/OnboardingScreen';
+import LockScreen from '../screens/LockScreen';
 
 const AppNavigator = () => {
   const settings = useSelector(state => state.settings);
-
   if (!settings.loaded) return <LoadingScreen />;
   else if (!settings.onboardingDone) return <OnboardingScreen />;
-  return <DrawerNavigator />;
+  else if (settings.security.enabled && settings.locked) return <LockScreen />;
+  else return <DrawerNavigator />;
 };
 
 export default AppNavigator;

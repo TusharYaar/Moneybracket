@@ -27,7 +27,7 @@ export const updateTheme = payload => ({
 export const setDefaultSettings = payload => {
   return async (dispatch, getState) => {
     const {settings} = getState();
-    await setAppSettings(settings);
+    // await setAppSettings(settings);
     dispatch({type: DEFAULT_SETTINGS});
   };
 };
@@ -36,3 +36,15 @@ export const setSettings = payload => ({
   type: SET_SETTINGS,
   payload,
 });
+
+export const updateSecurity = payload => {
+  return async (dispatch, getState) => {
+    const {settings} = getState();
+    console.log(payload);
+    await setAppSettings({...settings, security: {...payload}});
+    dispatch({
+      type: UPDATE_SECURITY,
+      payload,
+    });
+  };
+};

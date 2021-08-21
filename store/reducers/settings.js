@@ -1,6 +1,7 @@
 import {
   UPDATE_THEME,
   SET_SETTINGS,
+  UPDATE_SECURITY,
   UPDATE_LANGUAGE,
   DEFAULT_SETTINGS,
 } from '../actions/settings';
@@ -8,6 +9,7 @@ const initialState = {
   theme: 'light',
   onboardingDone: true,
   loaded: false,
+  locked: true,
   language: 'en',
   date: {
     timezone: 'India',
@@ -23,7 +25,7 @@ const initialState = {
   security: {
     enabled: false,
     type: null, //value should be in [pin, biometric],
-    pin: null,
+    pin: '',
     biometric: null,
     randomKeys: false,
   },
@@ -35,9 +37,13 @@ export default (state = initialState, {type, payload}) => {
       console.log(payload);
       return {...state, ...payload};
     case SET_SETTINGS:
-      return {...payload};
+      return {...payload, loaded: true}; //set this back to normal
+    // return {...initialState, loaded: true};
     case DEFAULT_SETTINGS:
       return {...initialState, loaded: true};
+
+    case UPDATE_SECURITY:
+      return {...state, locked: false, security: {...payload}};
     default:
       return state;
   }
