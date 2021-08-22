@@ -1,4 +1,5 @@
 export const UPDATE_THEME = 'UPDATE_THEME';
+export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 export const SET_SETTINGS = 'SET_SETTINGS';
 export const UPDATE_SECURITY = 'UPDATE_SECURITY';
 export const UPDATE_CURRENCY = 'UPDATE_CURRENCY';
@@ -48,3 +49,5 @@ export const updateSecurity = payload => {
     });
   };
 };
+
+export const updateLockedStatus = payload => ({type: UPDATE_SETTINGS, payload});

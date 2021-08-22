@@ -1,5 +1,6 @@
 import {
   UPDATE_THEME,
+  UPDATE_SETTINGS,
   SET_SETTINGS,
   UPDATE_SECURITY,
   UPDATE_LANGUAGE,
@@ -24,7 +25,7 @@ const initialState = {
   },
   security: {
     enabled: false,
-    type: null, //value should be in [pin, biometric],
+    type: 'pin', //value should be in [pin, biometric],
     pin: '',
     biometric: null,
     randomKeys: false,
@@ -33,6 +34,9 @@ const initialState = {
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
+    case UPDATE_SETTINGS:
+      return {...state, ...payload};
+
     case UPDATE_LANGUAGE:
       console.log(payload);
       return {...state, ...payload};

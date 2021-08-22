@@ -11,12 +11,10 @@ import AddPinModal from '../../components/AddPinModal';
 const SecurityScreen = () => {
   const security = useSelector(state => state.settings.security);
   const dispatch = useDispatch();
-
   const [isAddPinModalOpen, setIsAddPinModalOpen] = useState(false);
   const changeLockEnabled = value => {
-    console.log(value);
     if (value === 1) {
-      if (security.pin > 1 && security.pin <= 9999) {
+      if (security.pin.length === 4) {
         dispatch(updateSecurity({...security, enabled: true}));
       } else {
         Alert.alert(
@@ -26,6 +24,14 @@ const SecurityScreen = () => {
       }
     } else {
       dispatch(updateSecurity({...security, enabled: false}));
+    }
+  };
+
+  const changeSecurityType = value => {
+    if (value === 0) {
+      dispatch(updateSecurity({...security, type: 'pin'}));
+    } else if (value === 1) {
+      dispatch(updateSecurity({...security, type: 'fingerprint'}));
     }
   };
 
@@ -52,6 +58,18 @@ const SecurityScreen = () => {
           <Radio>
             <Text>Enable</Text>
           </Radio>
+        </RadioGroup>
+      </View>
+      <View>
+        {/* Section to set a type of security */}
+        <Text category="c1">
+          <Text category="h5">Set Security Type</Text> (experimental)
+        </Text>
+        <RadioGroup
+          onChange={changeSecurityType}
+          selectedIndex={security.type === 'fingerprint' ? 1 : 0}>
+          <Radio>Pin Security</Radio>
+          <Radio>Fingerprint Security</Radio>
         </RadioGroup>
       </View>
       <View>

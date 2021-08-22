@@ -14,7 +14,7 @@ const LoadingScreen = () => {
     try {
       const settings = await getAppSettings();
       if (settings) {
-        console.log('From Async Storage', settings);
+        // console.log('From Async Storage', settings);
         dispatch(setSettings(settings));
       } else dispatch(setDefaultSettings());
     } catch (error) {
