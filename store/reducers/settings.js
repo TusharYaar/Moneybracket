@@ -25,7 +25,7 @@ const initialState = {
   },
   security: {
     enabled: false,
-    type: 'pin', //value should be in [pin, biometric],
+    type: 'pin', //value should be in [pin, biometrics],
     pin: '',
     biometric: null,
     randomKeys: false,

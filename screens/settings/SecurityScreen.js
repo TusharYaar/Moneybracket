@@ -4,7 +4,8 @@ import {Radio, RadioGroup, Text, Input, Button} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
 
-import {updateSecurity} from '../../store/actions/settings';
+import {updateSecurity, updateLockedStatus} from '../../store/actions/settings';
+// import {} from '../store/actions/settings';
 
 import AddPinModal from '../../components/AddPinModal';
 
@@ -31,7 +32,7 @@ const SecurityScreen = () => {
     if (value === 0) {
       dispatch(updateSecurity({...security, type: 'pin'}));
     } else if (value === 1) {
-      dispatch(updateSecurity({...security, type: 'fingerprint'}));
+      dispatch(updateSecurity({...security, type: 'biometrics'}));
     }
   };
 
@@ -67,14 +68,18 @@ const SecurityScreen = () => {
         </Text>
         <RadioGroup
           onChange={changeSecurityType}
-          selectedIndex={security.type === 'fingerprint' ? 1 : 0}>
+          selectedIndex={security.type === 'biometrics' ? 1 : 0}>
           <Radio>Pin Security</Radio>
-          <Radio>Fingerprint Security</Radio>
+          <Radio>Biometrics Security</Radio>
         </RadioGroup>
       </View>
       <View>
         <AddPinModal visible={isAddPinModalOpen} closeModal={closeModal} />
         <Button onPress={toggleAddPinModal}> Add Pin </Button>
+        {/*! Remove This in final Version */}
+        <Button onPress={() => dispatch(updateLockedStatus({locked: true}))}>
+          Lock App
+        </Button>
       </View>
     </View>
   );
