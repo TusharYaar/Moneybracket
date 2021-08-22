@@ -36,9 +36,7 @@ export default (state = initialState, {type, payload}) => {
   switch (type) {
     case UPDATE_SETTINGS:
       return {...state, ...payload};
-
     case UPDATE_LANGUAGE:
-      console.log(payload);
       return {...state, ...payload};
     case SET_SETTINGS:
       return {...payload, loaded: true}; //set this back to normal

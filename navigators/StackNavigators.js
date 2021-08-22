@@ -11,11 +11,7 @@ import AppearanceScreen from '../screens/settings/AppearanceScreen';
 import NotificationScreen from '../screens/settings/NotificationScreen';
 import TranslateText from '../components/TranslateText';
 
-import FingerprintLockScreen from '../screens/FingerprintLockScreen';
-import PinLockScreen from '../screens/PinLockScreen';
-
 const SettingsStack = createNativeStackNavigator();
-const LockStack = createNativeStackNavigator();
 
 export const SettingsStackNavigator = () => {
   return (
@@ -61,19 +57,3 @@ const screenOptionsWithDrawer = (navigation, title) => ({
 const screenOptionsWODrawer = title => ({
   headerTitle: props => <TranslateText {...props} translate={title} />,
 });
-
-export const LockStackNavigator = () => {
-  const lockType = useSelector(state => state.settings.security.type);
-  return (
-    <LockStack.Navigator
-      initialRouteName={
-        lockType === 'fingerprint' ? 'FingerprintLock' : 'PinLock'
-      }>
-      <LockStack.Screen
-        name="FingerprintLock"
-        component={FingerprintLockScreen}
-      />
-      <LockStack.Screen name="PinLock" component={PinLockScreen} />
-    </LockStack.Navigator>
-  );
-};
