@@ -1,4 +1,4 @@
-package com.moneybracket;
+package com.tusharyaar.moneybracket;
 
 import com.facebook.react.ReactActivity;
 
