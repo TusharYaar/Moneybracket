@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Alert} from 'react-native';
-import {Radio, RadioGroup, Text, Input, Button} from '@ui-kitten/components';
+import {
+  Radio,
+  RadioGroup,
+  Text,
+  Toggle,
+  Input,
+  Button,
+} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
 
 import {updateSecurity, updateLockedStatus} from '../../store/actions/settings';
-// import {} from '../store/actions/settings';
 
 import AddPinModal from '../../components/AddPinModal';
 
@@ -14,9 +20,10 @@ const SecurityScreen = () => {
   const dispatch = useDispatch();
   const [isAddPinModalOpen, setIsAddPinModalOpen] = useState(false);
   const changeLockEnabled = value => {
-    if (value === 1) {
+    console.log(value);
+    if (value) {
       if (security.pin.length === 4) {
-        dispatch(updateSecurity({...security, enabled: true}));
+        dispatch(updateSecurity({...security, enabled: value}));
       } else {
         Alert.alert(
           'Set A Pin',
@@ -44,33 +51,30 @@ const SecurityScreen = () => {
   };
 
   return (
-    <View>
-      <View>
+    <View style={styles.screen}>
+      <View style={styles.enableLock}>
         {/* Secton  to enable lock */}
         <Text category="c1">
           <Text category="h5">Enable Lock</Text>(experimental)
         </Text>
-        <RadioGroup
-          onChange={changeLockEnabled}
-          selectedIndex={security.enabled ? 1 : 0}>
-          <Radio>
-            <Text>Disable</Text>
-          </Radio>
-          <Radio>
-            <Text>Enable</Text>
-          </Radio>
-        </RadioGroup>
+        <Toggle checked={security.enabled} onChange={changeLockEnabled} />
       </View>
       <View>
         {/* Section to set a type of security */}
         <Text category="c1">
           <Text category="h5">Set Security Type</Text> (experimental)
         </Text>
+        {!security.enabled && (
+          <Text category="c2">Enable lock to choose a type</Text>
+        )}
         <RadioGroup
           onChange={changeSecurityType}
           selectedIndex={security.type === 'biometrics' ? 1 : 0}>
-          <Radio>Pin Security</Radio>
-          <Radio>Biometrics Security</Radio>
+          <Radio disabled={!security.enabled}>Pin Security</Radio>
+          <Radio disabled={!security.enabled}>
+            Biometrics Security
+            <Text category="label"> (pin will still be used as a backup)</Text>
+          </Radio>
         </RadioGroup>
       </View>
       <View>
@@ -87,4 +91,11 @@ const SecurityScreen = () => {
 
 export default SecurityScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  screen: {padding: 10},
+  enableLock: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 15,
+  },
+});

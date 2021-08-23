@@ -41,7 +41,6 @@ export const setSettings = payload => ({
 export const updateSecurity = payload => {
   return async (dispatch, getState) => {
     const {settings} = getState();
-    console.log(payload);
     await setAppSettings({...settings, security: {...payload}});
     dispatch({
       type: UPDATE_SECURITY,
@@ -51,3 +50,14 @@ export const updateSecurity = payload => {
 };
 
 export const updateLockedStatus = payload => ({type: UPDATE_SETTINGS, payload});
+
+export const updateFavorites = payload => {
+  return async (dispatch, getState) => {
+    const {settings} = getState();
+    await setAppSettings({
+      ...settings,
+      currency: {...settings.currency, ...payload},
+    });
+    dispatch({type: UPDATE_CURRENCY, payload});
+  };
+};

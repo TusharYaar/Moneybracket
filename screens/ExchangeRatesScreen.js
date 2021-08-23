@@ -1,5 +1,5 @@
 import React, {useEffect, useCallback, useState, useRef} from 'react';
-import {StyleSheet, View, Alert} from 'react-native';
+import {StyleSheet, View, Alert, ImageBackground} from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -7,7 +7,6 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated';
-import LinearGradient from 'react-native-linear-gradient';
 import {
   Divider,
   Icon,
@@ -18,17 +17,20 @@ import {
   ButtonGroup,
 } from '@ui-kitten/components';
 
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
 import avalibleExchangeRates from '../data/exchangeRates.js';
 import RateListItem from '../components/RateListItem.js';
 
 import IconButton from '../components/IconButton';
 
+import {updateFavorites} from '../store/actions/settings';
+
 const ExchangeRatesScreen = ({navigation}) => {
   const baseCurrency = useSelector(state => state.settings.currency.base);
   const baseSymbol = useSelector(state => state.settings.currency.symbol);
   const favorites = useSelector(state => state.settings.currency.favorites);
+  const dispatch = useDispatch();
   const [allExchangeRates, setAllExchangeRates] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState('1');
@@ -81,6 +83,14 @@ const ExchangeRatesScreen = ({navigation}) => {
     } else return true;
   });
 
+  const updateFavoritesHandler = code => {
+    if (favorites.indexOf(code) !== -1)
+      dispatch(
+        updateFavorites({favorites: favorites.filter(item => item !== code)}),
+      );
+    else dispatch(updateFavorites({favorites: favorites.concat(code)}));
+  };
+
   const handleScroll = event => {
     const {contentOffset} = event.nativeEvent;
     if (contentOffset.y > 200 && sectionHeight.value === 200) {
@@ -91,44 +101,46 @@ const ExchangeRatesScreen = ({navigation}) => {
   };
   return (
     <View style={styles.screen}>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['rgb(201,0,212)', 'rgb(0,188,212)', 'rgb(238,130,238)']}>
-        <Animated.View style={[styles.topSection, animatedStyles]}>
-          <View style={styles.header}>
-            <IconButton
-              name="menu-outline"
-              onPress={() => navigation.openDrawer()}
+      <Animated.View style={[animatedStyles]}>
+        <ImageBackground
+          source={require('../assets/images/India-sunset.png')}
+          resizeMode="cover"
+          style={styles.background}>
+          <View style={styles.topSection}>
+            <View style={styles.header}>
+              <IconButton
+                name="menu-outline"
+                onPress={() => navigation.openDrawer()}
+              />
+              <Animated.View style={animatedTextStyle}>
+                <Text category="h6">
+                  {inputValue} {baseSymbol}
+                </Text>
+              </Animated.View>
+            </View>
+            <Input
+              value={inputValue}
+              style={styles.input}
+              onChangeText={handleInputChange}
+              label="Conversion Value"
+              keyboardType="decimal-pad"
             />
-            <Animated.View style={[animatedTextStyle]}>
-              <Text category="h6">
-                {inputValue} {baseSymbol}
-              </Text>
-            </Animated.View>
+            <View style={styles.buttonContainer}>
+              <Button
+                style={[styles.button, viewFav ? null : styles.buttonActive]}
+                onPress={() => setViewFav(false)}>
+                All
+              </Button>
+              <View style={styles.buttonSeperator} />
+              <Button
+                style={[styles.button, viewFav ? styles.buttonActive : null]}
+                onPress={() => setViewFav(true)}>
+                Favorites
+              </Button>
+            </View>
           </View>
-          <Input
-            value={inputValue}
-            style={styles.input}
-            onChangeText={handleInputChange}
-            label="Conversion Value"
-            keyboardType="decimal-pad"
-          />
-          <View style={styles.buttonContainer}>
-            <Button
-              style={[styles.button, viewFav ? null : styles.buttonActive]}
-              onPress={() => setViewFav(false)}>
-              All
-            </Button>
-            <View style={styles.buttonSeperator} />
-            <Button
-              style={[styles.button, viewFav ? styles.buttonActive : null]}
-              onPress={() => setViewFav(true)}>
-              Favorites
-            </Button>
-          </View>
-        </Animated.View>
-      </LinearGradient>
+        </ImageBackground>
+      </Animated.View>
       <List
         data={exchangeRatesList}
         ItemSeparatorComponent={Divider}
@@ -141,6 +153,8 @@ const ExchangeRatesScreen = ({navigation}) => {
             value={parseFloat(inputValue)}
             baseSymbol={baseSymbol}
             baseCurrency={baseCurrency}
+            updateFavorites={updateFavoritesHandler}
+            isFavorite={favorites.includes(item.code)}
           />
         )}
       />
@@ -162,6 +176,11 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    // padding: 15,
+  },
+  background: {
+    width: '100%',
+    height: '100%',
   },
   input: {
     marginVertical: 15,

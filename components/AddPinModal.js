@@ -20,7 +20,7 @@ const AddPinModal = props => {
   };
   const setSecurityPin = () => {
     if (pin === pinConfirm && pin.length === 4 && parseInt(pin) > 0) {
-      dispatch(updateSecurity({...security, pin: pin}));
+      dispatch(updateSecurity({...security, enabled: true, pin: pin}));
       props.closeModal();
     } else {
       alert('Pin do not match');

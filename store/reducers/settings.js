@@ -4,6 +4,7 @@ import {
   SET_SETTINGS,
   UPDATE_SECURITY,
   UPDATE_LANGUAGE,
+  UPDATE_CURRENCY,
   DEFAULT_SETTINGS,
 } from '../actions/settings';
 const initialState = {
@@ -43,9 +44,18 @@ export default (state = initialState, {type, payload}) => {
     // return {...initialState, loaded: true};
     case DEFAULT_SETTINGS:
       return {...initialState, loaded: true};
-
     case UPDATE_SECURITY:
-      return {...state, locked: false, security: {...payload}};
+      return {
+        ...state,
+        locked: false,
+        security: {...state.security, ...payload},
+      };
+    case UPDATE_CURRENCY:
+      return {
+        ...state,
+        locked: false,
+        currency: {...state.currency, ...payload},
+      };
     default:
       return state;
   }

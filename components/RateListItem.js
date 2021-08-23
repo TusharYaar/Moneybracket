@@ -1,9 +1,16 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 import {Text} from '@ui-kitten/components';
-import TranslateText from '../components/TranslateText';
+import TranslateText from './TranslateText';
+import IconButton from './IconButton';
 
-const RateListItem = ({item, value, baseSymbol}) => {
+const RateListItem = ({
+  item,
+  value,
+  baseSymbol,
+  updateFavorites,
+  isFavorite,
+}) => {
   value = value ? value : 0;
   return (
     <View style={styles.listItem}>
@@ -21,10 +28,17 @@ const RateListItem = ({item, value, baseSymbol}) => {
           <Text category="c1">{item.code}</Text>
         </View>
       </View>
-
-      <Text category="h4">
-        {(item.rate * value).toFixed(2)} {item.symbol}
-      </Text>
+      <View style={styles.textValue}>
+        <Text category="h5">
+          {(item.rate * value).toFixed(2)} {item.symbol}
+        </Text>
+        <IconButton
+          name={isFavorite ? 'star' : 'star-outline'}
+          onPress={() => {
+            updateFavorites(item.code);
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -56,5 +70,9 @@ const styles = StyleSheet.create({
   },
   country: {
     fontSize: 14,
+  },
+  textValue: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
