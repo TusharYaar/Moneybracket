@@ -3,6 +3,12 @@ import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {useSelector, useDispatch} from 'react-redux';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  runOnJS,
+} from 'react-native-reanimated';
 
 import {Button, Icon} from '@ui-kitten/components';
 import {updateLockedStatus} from '../store/actions/settings';
@@ -18,10 +24,21 @@ const LockScreen = () => {
   const [enteredPin, setEnteredPin] = useState('');
   const dispatch = useDispatch();
   const lockIconRef = useRef();
+  const containerWidth = useSharedValue(0);
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      width: containerWidth.value,
+    };
+  });
+
+  const callDispatch = useCallback(() => {
+    dispatch(updateLockedStatus({locked: false}));
+  }, [dispatch]);
 
   const unlockApp = useCallback(() => {
-    dispatch(updateLockedStatus({locked: false}));
-  }, []);
+    containerWidth.value = withTiming(170, 2000, () => runOnJS(callDispatch)());
+  }, [callDispatch]);
 
   const authCurrent = () => {
     FingerprintScanner.authenticate({
@@ -55,13 +72,19 @@ const LockScreen = () => {
   return (
     <SafeAreaProvider>
       <View style={styles.topSection}>
-        <Icon
-          style={styles.icon}
-          fill="#000"
-          name="lock"
-          ref={lockIconRef}
-          animation="shake"
-        />
+        <View style={styles.lockSection}>
+          <Icon
+            style={styles.icon}
+            fill="#000"
+            name="lock"
+            ref={lockIconRef}
+            animation="shake"
+          />
+          <Animated.View
+            style={[styles.lockSectionTextContainer, animatedStyles]}>
+            <Text style={styles.lockSectionText}>Unlocked</Text>
+          </Animated.View>
+        </View>
         <View style={styles.pinContainer}>
           {Array(enteredPin.length)
             .fill(0)
@@ -90,9 +113,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 0.4 * windowHeight,
   },
+  lockSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   icon: {
-    width: 32,
-    height: 32,
+    width: 40,
+    height: 40,
+  },
+  lockSectionText: {
+    fontSize: 40,
+  },
+  lockSectionTextContainer: {
+    overflow: 'hidden',
+    height: 50,
   },
   bottomSection: {
     flexDirection: 'row',
