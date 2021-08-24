@@ -41,6 +41,10 @@ const screenOptions = {
   headerShown: false,
 };
 
-const settingsOptions = (navigation, key) => ({
-  drawerLabel: props => <TranslateText {...props} translate={key} />,
+const settingsOptions = (navigation, label) => ({
+  drawerLabel: props => (
+    <TranslateText {...props} category="h6">
+      {label}
+    </TranslateText>
+  ),
 });

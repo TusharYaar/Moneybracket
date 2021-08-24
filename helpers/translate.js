@@ -1,6 +1,18 @@
 import Languages from '../languages/languages';
+
 export const translateAppText = (language = 'en', key = 'undefined', tag) => {
-  if (tag) return Languages[language][tag][key];
+  if (tag === 'numbers') {
+    var translatedText = '';
+    if (typeof key === 'object') {
+      key = key.join('');
+    }
+    for (var i = 0; i < key.length; i++) {
+      if (key[i] >= '0' && key[i] <= '9')
+        translatedText += Languages[language][tag][key[i]];
+      else translatedText += key[i];
+    }
+    return translatedText;
+  } else if (tag) return Languages[language][tag][key];
   return Languages[language].translations[key];
 };
 

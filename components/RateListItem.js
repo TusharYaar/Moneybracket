@@ -22,16 +22,17 @@ const RateListItem = ({
             tag="countries"
             style={styles.country}
           />
-          <Text category="c1">
+          <TranslateText category="c1" tag="numbers">
             {`1 ${baseSymbol} = ${item.rate.toFixed(3)} ${item.symbol}`}
-          </Text>
+          </TranslateText>
+
           <Text category="c1">{item.code}</Text>
         </View>
       </View>
       <View style={styles.textValue}>
-        <Text category="h5">
+        <TranslateText tag="numbers" category="h5">
           {(item.rate * value).toFixed(2)} {item.symbol}
-        </Text>
+        </TranslateText>
         <IconButton
           name={isFavorite ? 'star' : 'star-outline'}
           onPress={() => {

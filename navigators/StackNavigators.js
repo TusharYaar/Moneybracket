@@ -69,9 +69,17 @@ const screenOptionsWithDrawer = (navigation, title) => ({
       }}
     />
   ),
-  headerTitle: props => <TranslateText {...props} translate={title} />,
+  headerTitle: props => (
+    <TranslateText {...props} category="h5">
+      {title}
+    </TranslateText>
+  ),
 });
 
 const screenOptionsWODrawer = title => ({
-  headerTitle: props => <TranslateText {...props} translate={title} />,
+  headerTitle: props => (
+    <TranslateText {...props} category="h5">
+      {title}
+    </TranslateText>
+  ),
 });
