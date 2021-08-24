@@ -1,7 +1,7 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import {SettingsStackNavigator} from './StackNavigators';
+import {SettingsStackNavigator, HomeStackNavigator} from './StackNavigators';
 import ExchangeRatesScreen from '../screens/ExchangeRatesScreen';
 
 import TranslateText from '../components/TranslateText';
@@ -11,6 +11,11 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator screenOptions={screenOptions}>
+      <Drawer.Screen
+        name="HomeStack"
+        component={HomeStackNavigator}
+        options={({navigation}) => settingsOptions(navigation, 'home')}
+      />
       <Drawer.Screen
         name="SettingsStack"
         component={SettingsStackNavigator}

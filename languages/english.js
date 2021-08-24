@@ -2,8 +2,9 @@ export default English = {
   label: 'English',
   value: 'en',
   translations: {
-    add_transactions: 'Add Transaction',
+    add_transaction: 'Add Transaction',
     settings: 'Settings',
+    home: 'Home',
     appearance: 'Appearance',
     security: 'Security',
     notifications: 'Notifications',

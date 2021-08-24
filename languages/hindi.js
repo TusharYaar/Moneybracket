@@ -2,7 +2,8 @@ export default Hindi = {
   label: 'Hindi',
   value: 'hi',
   translations: {
-    add_transactions: 'लेनदेन जोड़ें',
+    add_transaction: 'लेनदेन जोड़ें',
+    home: 'घर',
     settings: 'सेटिंग',
     appearance: 'दिखावट',
     security: 'सुरक्षा',
