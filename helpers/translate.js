@@ -1,7 +1,15 @@
 import Languages from '../languages/languages';
 
-export const translateAppText = (language = 'en', key = 'undefined', tag) => {
+export const translateAppText = (
+  language = 'en',
+  nativeNumbers = true,
+  key = 'undefined',
+  tag,
+) => {
   if (tag === 'numbers') {
+    if (!nativeNumbers) {
+      return key;
+    }
     var translatedText = '';
     if (typeof key === 'object') {
       key = key.join('');

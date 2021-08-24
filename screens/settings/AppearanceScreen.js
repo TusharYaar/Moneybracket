@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Radio, RadioGroup, Text} from '@ui-kitten/components';
+import {Radio, RadioGroup, Text, Toggle} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {LanguagesArray} from '../../languages/languages';
@@ -10,12 +10,16 @@ import TranslateText from '../../components/TranslateText';
 
 const AppearanceScreen = () => {
   const language = useSelector(state => state.settings.language);
+  const nativeNumbers = useSelector(state => state.settings.nativeNumbers);
   const dispatch = useDispatch();
   const currentIndex = LanguagesArray.findIndex(
     lang => lang.value === language,
   );
   const changeLanguage = value => {
     dispatch(updateLanguage({language: LanguagesArray[value].value}));
+  };
+  const changeNativeNumbers = value => {
+    dispatch(updateLanguage({nativeNumbers: value}));
   };
 
   return (
@@ -30,6 +34,8 @@ const AppearanceScreen = () => {
           <TranslateText translate="hindi" tag="languages" />
         </Radio>
       </RadioGroup>
+      <Text category="h6">Enable Native Language Numbers </Text>
+      <Toggle checked={nativeNumbers} onChange={changeNativeNumbers} />
     </View>
   );
 };

@@ -13,6 +13,7 @@ const initialState = {
   loaded: false,
   locked: true,
   language: 'en',
+  nativeNumbers: false,
   date: {
     timezone: 'India',
     dateFormat: 'DD/MM/YYYY',
@@ -40,7 +41,7 @@ export default (state = initialState, {type, payload}) => {
     case UPDATE_LANGUAGE:
       return {...state, ...payload};
     case SET_SETTINGS:
-      return {...payload, loaded: true}; //set this back to normal
+      return {...payload, loaded: true};
     // return {...initialState, loaded: true};
     case DEFAULT_SETTINGS:
       return {...initialState, loaded: true};

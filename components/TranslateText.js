@@ -10,14 +10,16 @@ import {Text} from '@ui-kitten/components';
 
 const TranslateText = props => {
   const language = useSelector(state => state.settings.language);
+  const nativeNumbers = useSelector(state => state.settings.nativeNumbers);
   return (
     <Text
       category={props.category ? props.category : 'c1'}
       {...props}
       style={[props.style, {fontFamily: getFont(language)}]}>
       {props.translate &&
-        translateAppText(language, props.translate, props.tag)}
-      {props.children && translateAppText(language, props.children, props.tag)}
+        translateAppText(language, nativeNumbers, props.translate, props.tag)}
+      {props.children &&
+        translateAppText(language, nativeNumbers, props.children, props.tag)}
     </Text>
   );
 };
