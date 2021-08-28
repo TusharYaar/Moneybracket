@@ -61,3 +61,12 @@ export const updateFavorites = payload => {
     dispatch({type: UPDATE_CURRENCY, payload});
   };
 };
+
+export const lockOnBackgroundFunction = payload => {
+  return (dispatch, getState) => {
+    const {settings} = getState();
+    if (settings.security.lockOnBackground && settings.security.enabled) {
+      dispatch({type: UPDATE_SETTINGS, payload: {...settings, locked: true}});
+    }
+  };
+};

@@ -20,7 +20,6 @@ const SecurityScreen = () => {
   const dispatch = useDispatch();
   const [isAddPinModalOpen, setIsAddPinModalOpen] = useState(false);
   const changeLockEnabled = value => {
-    console.log(value);
     if (value) {
       if (security.pin.length === 4) {
         dispatch(updateSecurity({...security, enabled: value}));
@@ -50,6 +49,12 @@ const SecurityScreen = () => {
     setIsAddPinModalOpen(false);
   };
 
+  const changeLockOnBackground = value => {
+    if (security.enabled) {
+      dispatch(updateSecurity({...security, lockOnBackground: value}));
+    }
+  };
+
   return (
     <View style={styles.screen}>
       <View style={styles.enableLock}>
@@ -58,6 +63,16 @@ const SecurityScreen = () => {
           <Text category="h5">Enable Lock</Text>(experimental)
         </Text>
         <Toggle checked={security.enabled} onChange={changeLockEnabled} />
+      </View>
+      <View style={styles.enableLock}>
+        {/* Secton  to enable lock */}
+        <Text category="c1">
+          <Text category="h5">Lock On Backgorund</Text>(experimental)
+        </Text>
+        <Toggle
+          checked={security.lockOnBackground}
+          onChange={changeLockOnBackground}
+        />
       </View>
       <View>
         {/* Section to set a type of security */}

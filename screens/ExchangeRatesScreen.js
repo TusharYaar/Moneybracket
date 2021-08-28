@@ -31,9 +31,8 @@ const ExchangeRatesScreen = ({navigation}) => {
   const baseSymbol = useSelector(state => state.settings.currency.symbol);
   const favorites = useSelector(state => state.settings.currency.favorites);
   const allExchangeRates = useSelector(state => state.exchangeRates.rates);
-  console.log(allExchangeRates);
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState('1');
   const [viewFav, setViewFav] = useState(false);
   const sectionHeight = useSharedValue(200);
