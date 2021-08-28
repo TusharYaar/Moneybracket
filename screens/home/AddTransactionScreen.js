@@ -7,6 +7,7 @@ import {
   Input,
   Datepicker,
   Select,
+  IndexPath,
   SelectItem,
 } from '@ui-kitten/components';
 import TranslateText from '../../components/TranslateText';
@@ -17,11 +18,14 @@ const AddTransactionScreen = () => {
   const [transactionType, setTransactionType] = useState(0);
   const [transactionDate, setTransactionDate] = useState(new Date());
   const [transactionAmount, setTransactionAmount] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
 
   const handleTransactionAmount = value => {
     setTransactionAmount(value.replace(/([^0-9.])/g, ''));
   };
-
+  const handleChangeCurrency = value => {
+    console.log(value);
+  };
   return (
     <View style={styles.screen}>
       <View>
@@ -42,7 +46,10 @@ const AddTransactionScreen = () => {
           onSelect={nextDate => setTransactionDate(nextDate)}
         />
       </View>
-      <Select>
+      <Select
+        onSelect={handleChangeCurrency}
+        selectedIndex={selectedIndex}
+        value={'R'}>
         {avalibleExchangeRates.map(rate => (
           <SelectItem key={rate.code} title={rate.symbol} />
         ))}

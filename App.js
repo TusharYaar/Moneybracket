@@ -1,29 +1,28 @@
 import React from 'react';
-import {  Text}  from 'react-native';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from "redux-thunk";
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
+import thunk from 'redux-thunk';
 
-import userReducer from "./store/reducers/user";
-import settingsReducer from "./store/reducers/settings";
+import userReducer from './store/reducers/user';
+import settingsReducer from './store/reducers/settings';
+import exchangeRatesReducer from './store/reducers/exchangeRates';
 
-import AppContainer from "./AppContainer"
+import AppContainer from './AppContainer';
 
 const App = () => {
   const rootReducer = combineReducers({
     user: userReducer,
     settings: settingsReducer,
+    exchangeRates: exchangeRatesReducer,
   });
 
-  const store = createStore(rootReducer,applyMiddleware(thunk));
+  const store = createStore(rootReducer, applyMiddleware(thunk));
 
   return (
     <Provider store={store}>
-      <AppContainer/>
+      <AppContainer />
     </Provider>
-
   );
 };
-
 
 export default App;

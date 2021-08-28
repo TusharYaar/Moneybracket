@@ -30,8 +30,9 @@ const ExchangeRatesScreen = ({navigation}) => {
   const baseCurrency = useSelector(state => state.settings.currency.base);
   const baseSymbol = useSelector(state => state.settings.currency.symbol);
   const favorites = useSelector(state => state.settings.currency.favorites);
+  const allExchangeRates = useSelector(state => state.exchangeRates.rates);
+  console.log(allExchangeRates);
   const dispatch = useDispatch();
-  const [allExchangeRates, setAllExchangeRates] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState('1');
   const [viewFav, setViewFav] = useState(false);
@@ -51,27 +52,7 @@ const ExchangeRatesScreen = ({navigation}) => {
       ),
     };
   });
-  const fetchExchangeRates = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `https://api.exchangerate.host/latest?base=${baseCurrency}`,
-      );
-      const jsonResponse = await response.json();
-      const rates = avalibleExchangeRates.map(currency => ({
-        ...currency,
-        rate: jsonResponse.rates[currency.code],
-      }));
-      setAllExchangeRates(rates);
-    } catch (err) {
-      Alert.alert('Error', err.message);
-    }
-    setIsLoading(false);
-  }, [baseCurrency]);
-
-  useEffect(() => {
-    fetchExchangeRates();
-  }, [fetchExchangeRates]);
+  const fetchExchangeRates = useCallback(async () => {}, [baseCurrency]);
 
   const handleInputChange = value => {
     setInputValue(value.replace(/([^0-9.])/g, ''));
@@ -82,7 +63,6 @@ const ExchangeRatesScreen = ({navigation}) => {
       return favorites.includes(rate.code);
     } else return true;
   });
-
   const updateFavoritesHandler = code => {
     if (favorites.indexOf(code) !== -1)
       dispatch(
@@ -145,8 +125,8 @@ const ExchangeRatesScreen = ({navigation}) => {
         data={exchangeRatesList}
         ItemSeparatorComponent={Divider}
         onScroll={handleScroll}
-        onRefresh={() => fetchExchangeRates()}
-        refreshing={isLoading}
+        // onRefresh={() => fetchExchangeRates()}
+        // refreshing={isLoading}
         renderItem={({item}) => (
           <RateListItem
             item={item}

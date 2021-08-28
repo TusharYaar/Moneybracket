@@ -21,8 +21,8 @@ const initialState = {
     dateTimeFormat: 'DD/MM/YYYY HH:mm',
   },
   currency: {
-    base: 'INR', //base currency to which the expense will be added
-    symbol: '₹', //base currency symbol
+    base: 'USD', //base currency to which the expense will be added
+    symbol: '$', //base currency symbol
     favorites: [], //favorites currency which will be shown
   },
   security: {
