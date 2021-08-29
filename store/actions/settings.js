@@ -49,6 +49,17 @@ export const updateSecurity = payload => {
   };
 };
 
+export const updateCurrency = payload => {
+  return async (dispatch, getState) => {
+    const {settings} = getState();
+    await setAppSettings({...settings, currency: {...payload}});
+    dispatch({
+      type: UPDATE_CURRENCY,
+      payload,
+    });
+  };
+};
+
 export const updateLockedStatus = payload => ({type: UPDATE_SETTINGS, payload});
 
 export const updateFavorites = payload => {

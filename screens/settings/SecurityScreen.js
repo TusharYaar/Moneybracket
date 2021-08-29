@@ -1,13 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Alert} from 'react-native';
-import {
-  Radio,
-  RadioGroup,
-  Text,
-  Toggle,
-  Input,
-  Button,
-} from '@ui-kitten/components';
+import {Radio, RadioGroup, Text, Toggle, Button} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -30,7 +23,9 @@ const SecurityScreen = () => {
         );
       }
     } else {
-      dispatch(updateSecurity({...security, enabled: false}));
+      dispatch(
+        updateSecurity({...security, enabled: false, lockOnBackground: false}),
+      );
     }
   };
 
@@ -70,6 +65,7 @@ const SecurityScreen = () => {
           <Text category="h5">Lock On Backgorund</Text>(experimental)
         </Text>
         <Toggle
+          disabled={!security.enabled}
           checked={security.lockOnBackground}
           onChange={changeLockOnBackground}
         />

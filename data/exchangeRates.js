@@ -1,4 +1,4 @@
-import ExchangeRate from '../models/exchangeRate.js'; //(key, country, flag, symbol)
+import ExchangeRate from '../models/exchangeRate.js'; //(key, code, country, flag, symbol)
 export default avalibleExchangeRates = [
   new ExchangeRate(
     'india',

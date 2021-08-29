@@ -20,4 +20,11 @@ export default settings = [
     icon: 'lock-outline',
     params: {},
   },
+  {
+    title: 'Currency',
+    key: 'currency',
+    screen: 'Currency',
+    icon: 'credit-card-outline',
+    params: {},
+  },
 ];

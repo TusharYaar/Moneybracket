@@ -9,6 +9,7 @@ export default Hindi = {
     security: 'सुरक्षा',
     notifications: 'सूचनाएं',
     exchange_rates: 'विनिमय दरें',
+    currency: 'मुद्रा',
     undefined: 'अपरिभाषित',
   },
   numbers: {

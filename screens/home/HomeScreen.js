@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Button} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';

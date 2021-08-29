@@ -1,12 +1,14 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Radio, RadioGroup, Text, Toggle} from '@ui-kitten/components';
+import {Button, Radio, RadioGroup, Text, Toggle} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {LanguagesArray} from '../../languages/languages';
 import {updateLanguage} from '../../store/actions/settings';
 
 import TranslateText from '../../components/TranslateText';
+
+import {removeSettings} from '../../helpers/asyncFunctions';
 
 const AppearanceScreen = () => {
   const language = useSelector(state => state.settings.language);
@@ -36,6 +38,8 @@ const AppearanceScreen = () => {
       </RadioGroup>
       <Text category="h6">Enable Native Language Numbers </Text>
       <Toggle checked={nativeNumbers} onChange={changeNativeNumbers} />
+
+      <Button onPress={removeSettings}>Clear Storage</Button>
     </View>
   );
 };

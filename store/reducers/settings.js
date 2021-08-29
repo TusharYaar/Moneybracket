@@ -43,7 +43,6 @@ export default (state = initialState, {type, payload}) => {
       return {...state, ...payload};
     case SET_SETTINGS:
       return {...payload, loaded: true};
-    // return {...initialState, loaded: true};
     case DEFAULT_SETTINGS:
       return {...initialState, loaded: true};
     case UPDATE_SECURITY:

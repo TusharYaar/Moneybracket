@@ -5,6 +5,8 @@ import IconButton from '../components/IconButton';
 
 import SettingScreen from '../screens/settings/SettingScreen';
 import SecurityScreen from '../screens/settings/SecurityScreen';
+import CurrencyScreen from '../screens/settings/CurrencyScreen';
+
 import AppearanceScreen from '../screens/settings/AppearanceScreen';
 import NotificationScreen from '../screens/settings/NotificationScreen';
 import TranslateText from '../components/TranslateText';
@@ -38,6 +40,11 @@ export const SettingsStackNavigator = () => {
         name="Security"
         component={SecurityScreen}
         options={() => screenOptionsWODrawer('security')}
+      />
+      <SettingsStack.Screen
+        name="Currency"
+        component={CurrencyScreen}
+        options={() => screenOptionsWODrawer('currency')}
       />
     </SettingsStack.Navigator>
   );

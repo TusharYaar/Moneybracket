@@ -9,6 +9,7 @@ export default English = {
     security: 'Security',
     notifications: 'Notifications',
     exchange_rates: 'Exchange',
+    currency: 'Currency',
     undefined: 'Undefined',
   },
   numbers: {
