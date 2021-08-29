@@ -11,7 +11,7 @@ const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const baseCurrency = useSelector(state => state.settings.currency.base);
   useEffect(() => {
-    const fetchRates = async () => {
+    const fetchData = async () => {
       try {
         const response = await fetch(
           `https://api.exchangerate.host/latest?base=${baseCurrency}`,
@@ -27,7 +27,7 @@ const HomeScreen = ({navigation}) => {
       }
     };
 
-    fetchRates();
+    fetchData();
   }, [dispatch, baseCurrency]);
 
   return (

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Radio,
@@ -12,10 +12,12 @@ import {
 } from '@ui-kitten/components';
 import TranslateText from '../../components/TranslateText';
 import {useSelector} from 'react-redux';
-
+import {fetchCategories} from '../../helpers/sqlFunctions';
 const AddTransactionScreen = () => {
   const currency = useSelector(state => state.settings.currency);
   const avalibleExchangeRates = useSelector(state => state.exchangeRates.rates);
+  const [avalibleCategories, setAvalibleCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(new IndexPath(0));
   const [transactionType, setTransactionType] = useState(0);
   const [transactionDate, setTransactionDate] = useState(new Date());
   const [transactionAmount, setTransactionAmount] = useState('');
@@ -28,6 +30,12 @@ const AddTransactionScreen = () => {
       avalibleExchangeRates.findIndex(item => item.code === currency.base),
     ),
   );
+
+  useEffect(() => {
+    fetchCategories().then(data => {
+      setAvalibleCategories(data);
+    });
+  }, [fetchCategories]);
 
   const handleTransactionAmount = value => {
     setTransactionAmount(value.replace(/([^0-9.])/g, ''));
