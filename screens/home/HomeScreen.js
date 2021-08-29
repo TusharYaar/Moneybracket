@@ -4,6 +4,9 @@ import {Button} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {setExchangeRates} from '../../store/actions/exchangeRates';
+import {setCategories} from '../../store/actions/categories';
+
+import {fetchCategories} from '../../helpers/sqlFunctions';
 
 import avalibleExchangeRates from '../../data/exchangeRates.js';
 
@@ -22,11 +25,12 @@ const HomeScreen = ({navigation}) => {
           rate: jsonResponse.rates[currency.code],
         }));
         dispatch(setExchangeRates(rates));
+        const categories = await fetchCategories();
+        dispatch(setCategories(categories));
       } catch (err) {
         Alert.alert('Error', err.message);
       }
     };
-
     fetchData();
   }, [dispatch, baseCurrency]);
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Radio,
@@ -10,14 +10,19 @@ import {
   IndexPath,
   SelectItem,
 } from '@ui-kitten/components';
+
+import ImageIcon from '../../components/ImageIcon';
+
 import TranslateText from '../../components/TranslateText';
 import {useSelector} from 'react-redux';
 import {fetchCategories} from '../../helpers/sqlFunctions';
+
 const AddTransactionScreen = () => {
   const currency = useSelector(state => state.settings.currency);
+  const categories = useSelector(state => state.categories.categories);
   const avalibleExchangeRates = useSelector(state => state.exchangeRates.rates);
-  const [avalibleCategories, setAvalibleCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(new IndexPath(0));
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [categoryIndex, setCategoryIndex] = useState(new IndexPath(0));
   const [transactionType, setTransactionType] = useState(0);
   const [transactionDate, setTransactionDate] = useState(new Date());
   const [transactionAmount, setTransactionAmount] = useState('');
@@ -31,12 +36,6 @@ const AddTransactionScreen = () => {
     ),
   );
 
-  useEffect(() => {
-    fetchCategories().then(data => {
-      setAvalibleCategories(data);
-    });
-  }, [fetchCategories]);
-
   const handleTransactionAmount = value => {
     setTransactionAmount(value.replace(/([^0-9.])/g, ''));
   };
@@ -44,6 +43,11 @@ const AddTransactionScreen = () => {
     const item = avalibleExchangeRates[index.row];
     setSelectedCurrency(item);
     setSelectedIndex(index);
+  };
+  const handleChangeCategory = index => {
+    const item = categories[index.row];
+    setSelectedCategory(item);
+    setCategoryIndex(index);
   };
   return (
     <View style={styles.screen}>
@@ -74,6 +78,7 @@ const AddTransactionScreen = () => {
             <SelectItem
               key={rate.code}
               title={`${rate.symbol} (${rate.code})`}
+              accessoryLeft={<ImageIcon uri={rate.flag} />}
             />
           ))}
         </Select>
@@ -96,10 +101,25 @@ const AddTransactionScreen = () => {
       </View>
       <Input
         placeholder="Note"
+        label="Note"
         multiline
         value={transactionNote}
         onChangeText={text => setTransactionNote(text)}
       />
+      <Select
+        onSelect={handleChangeCategory}
+        selectedIndex={categoryIndex}
+        style={styles.categorySelect}
+        label="Category"
+        value={selectedCategory.category}>
+        {categories.map(category => (
+          <SelectItem
+            key={category.id}
+            title={category.category}
+            accessoryLeft={<ImageIcon uri={category.imageUrl} />}
+          />
+        ))}
+      </Select>
     </View>
   );
 };
@@ -117,7 +137,7 @@ const styles = StyleSheet.create({
   },
   addAmountContainer: {
     flexDirection: 'row',
-    marginVertical: 30,
+    marginVertical: 15,
     justifyContent: 'center',
   },
   symbolSelect: {
@@ -130,5 +150,8 @@ const styles = StyleSheet.create({
   },
   amount: {
     flexGrow: 1,
+  },
+  categorySelect: {
+    marginVertical: 15,
   },
 });
