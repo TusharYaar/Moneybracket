@@ -11,20 +11,31 @@ import {
   SelectItem,
 } from '@ui-kitten/components';
 import TranslateText from '../../components/TranslateText';
-
-import avalibleExchangeRates from '../../data/exchangeRates';
+import {useSelector} from 'react-redux';
 
 const AddTransactionScreen = () => {
+  const currency = useSelector(state => state.settings.currency);
+  const avalibleExchangeRates = useSelector(state => state.exchangeRates.rates);
   const [transactionType, setTransactionType] = useState(0);
   const [transactionDate, setTransactionDate] = useState(new Date());
   const [transactionAmount, setTransactionAmount] = useState('');
-  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
+  const [transactionNote, setTransactionNote] = useState('');
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    avalibleExchangeRates.find(item => item.code === currency.base),
+  );
+  const [selectedIndex, setSelectedIndex] = useState(
+    new IndexPath(
+      avalibleExchangeRates.findIndex(item => item.code === currency.base),
+    ),
+  );
 
   const handleTransactionAmount = value => {
     setTransactionAmount(value.replace(/([^0-9.])/g, ''));
   };
-  const handleChangeCurrency = value => {
-    console.log(value);
+  const handleChangeCurrency = index => {
+    const item = avalibleExchangeRates[index.row];
+    setSelectedCurrency(item);
+    setSelectedIndex(index);
   };
   return (
     <View style={styles.screen}>
@@ -40,25 +51,46 @@ const AddTransactionScreen = () => {
       <View>
         <Datepicker
           label="Date"
-          caption="Choose the transaction date"
           placeholder="Pick A Date"
           date={transactionDate}
           onSelect={nextDate => setTransactionDate(nextDate)}
         />
       </View>
-      <Select
-        onSelect={handleChangeCurrency}
-        selectedIndex={selectedIndex}
-        value={'R'}>
-        {avalibleExchangeRates.map(rate => (
-          <SelectItem key={rate.code} title={rate.symbol} />
-        ))}
-      </Select>
+      <View style={styles.addAmountContainer}>
+        <Select
+          onSelect={handleChangeCurrency}
+          selectedIndex={selectedIndex}
+          value={selectedCurrency.symbol}
+          style={styles.symbolSelect}>
+          {avalibleExchangeRates.map(rate => (
+            <SelectItem
+              key={rate.code}
+              title={`${rate.symbol} (${rate.code})`}
+            />
+          ))}
+        </Select>
+        <View style={styles.seperator} />
+        <Input
+          placeholder="Transaction Amount"
+          style={styles.amount}
+          caption={
+            selectedCurrency.code != currency.base && transactionAmount.length
+              ? `${currency.symbol} ${(
+                  (1 / selectedCurrency.rate) *
+                  parseInt(transactionAmount)
+                ).toFixed(2)}`
+              : null
+          }
+          value={transactionAmount}
+          onChangeText={handleTransactionAmount}
+          keyboardType="decimal-pad"
+        />
+      </View>
       <Input
-        placeholder="Transaction Amount"
-        value={transactionAmount}
-        onChangeText={handleTransactionAmount}
-        keyboardType="decimal-pad"
+        placeholder="Note"
+        multiline
+        value={transactionNote}
+        onChangeText={text => setTransactionNote(text)}
       />
     </View>
   );
@@ -74,5 +106,21 @@ const styles = StyleSheet.create({
   radioGroup: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+  },
+  addAmountContainer: {
+    flexDirection: 'row',
+    marginVertical: 30,
+    justifyContent: 'center',
+  },
+  symbolSelect: {
+    width: '30%',
+    maxWidth: 150,
+    minWidth: 90,
+  },
+  seperator: {
+    width: 15,
+  },
+  amount: {
+    flexGrow: 1,
   },
 });
