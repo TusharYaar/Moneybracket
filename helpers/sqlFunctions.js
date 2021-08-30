@@ -1,12 +1,12 @@
 import SQLite from 'react-native-sqlite-storage';
 
-export const HELLO = 'hello';
 const db = SQLite.openDatabase({
-  name: 'categories.db',
+  name: 'categories',
   createFromLocation: 1,
 });
 
 export const fetchCategories = () => {
+  console.log(db);
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -20,8 +20,8 @@ export const fetchCategories = () => {
           resolve(data);
         },
         err => {
-          console.log(err);
-          reject(err);
+          console.log('Error');
+          // reject(err);
         },
       );
     });

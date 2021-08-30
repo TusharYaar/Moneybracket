@@ -16,17 +16,18 @@ const HomeScreen = ({navigation}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://api.exchangerate.host/latest?base=${baseCurrency}`,
-        );
-        const jsonResponse = await response.json();
-        const rates = avalibleExchangeRates.map(currency => ({
-          ...currency,
-          rate: jsonResponse.rates[currency.code],
-        }));
-        dispatch(setExchangeRates(rates));
         const categories = await fetchCategories();
-        dispatch(setCategories(categories));
+        console.log(categories);
+        // dispatch(setCategories(categories));
+        // const response = await fetch(
+        //   `https://api.exchangerate.host/latest?base=${baseCurrency}`,
+        // );
+        // const jsonResponse = await response.json();
+        // const rates = avalibleExchangeRates.map(currency => ({
+        //   ...currency,
+        //   rate: jsonResponse.rates[currency.code],
+        // }));
+        // dispatch(setExchangeRates(rates));
       } catch (err) {
         Alert.alert('Error', err.message);
       }
