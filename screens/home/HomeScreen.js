@@ -6,8 +6,6 @@ import {useSelector, useDispatch} from 'react-redux';
 import {setExchangeRates} from '../../store/actions/exchangeRates';
 import {setCategories} from '../../store/actions/categories';
 
-import {fetchCategories} from '../../helpers/sqlFunctions';
-
 import avalibleExchangeRates from '../../data/exchangeRates.js';
 
 const HomeScreen = ({navigation}) => {
@@ -16,18 +14,15 @@ const HomeScreen = ({navigation}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const categories = await fetchCategories();
-        console.log(categories);
-        // dispatch(setCategories(categories));
-        // const response = await fetch(
-        //   `https://api.exchangerate.host/latest?base=${baseCurrency}`,
-        // );
-        // const jsonResponse = await response.json();
-        // const rates = avalibleExchangeRates.map(currency => ({
-        //   ...currency,
-        //   rate: jsonResponse.rates[currency.code],
-        // }));
-        // dispatch(setExchangeRates(rates));
+        const response = await fetch(
+          `https://api.exchangerate.host/latest?base=${baseCurrency}`,
+        );
+        const jsonResponse = await response.json();
+        const rates = avalibleExchangeRates.map(currency => ({
+          ...currency,
+          rate: jsonResponse.rates[currency.code],
+        }));
+        dispatch(setExchangeRates(rates));
       } catch (err) {
         Alert.alert('Error', err.message);
       }

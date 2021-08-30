@@ -15,7 +15,6 @@ import ImageIcon from '../../components/ImageIcon';
 
 import TranslateText from '../../components/TranslateText';
 import {useSelector} from 'react-redux';
-import {fetchCategories} from '../../helpers/sqlFunctions';
 
 const AddTransactionScreen = () => {
   const currency = useSelector(state => state.settings.currency);
@@ -114,9 +113,9 @@ const AddTransactionScreen = () => {
         value={selectedCategory.category}>
         {categories.map(category => (
           <SelectItem
-            key={category.id}
+            key={category.category}
             title={category.category}
-            accessoryLeft={<ImageIcon uri={category.imageUrl} />}
+            accessoryLeft={<ImageIcon uri={category.imageUri} />}
           />
         ))}
       </Select>
@@ -143,7 +142,7 @@ const styles = StyleSheet.create({
   symbolSelect: {
     width: '30%',
     maxWidth: 150,
-    minWidth: 90,
+    minWidth: 110,
   },
   seperator: {
     width: 15,

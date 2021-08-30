@@ -1,7 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import defaultCategories from '../data/categories';
+
 const APP_SETTINGS = '@app_settings';
 const USER_SETTINGS = '@user_settings';
+const CATEGORIES = '#categories';
 
 export const getAppSettings = () => {
   // function to get app settings form async storage
@@ -40,6 +43,25 @@ export const removeSettings = () => {
     try {
       AsyncStorage.removeItem(APP_SETTINGS);
       resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const getCategories = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const value = await AsyncStorage.getItem(CATEGORIES);
+      if (value) {
+        resolve({...JSON.parse(value), loaded: true});
+      } else {
+        await AsyncStorage.setItem(
+          CATEGORIES,
+          JSON.stringify({categories: defaultCategories}),
+        );
+        resolve({defaultCategories, loaded: true});
+      }
     } catch (error) {
       reject(error);
     }
