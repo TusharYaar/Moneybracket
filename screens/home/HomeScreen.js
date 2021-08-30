@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, Text, View, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, Alert, FlatList} from 'react-native';
 import {Button} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
@@ -9,12 +9,14 @@ import {setCategories} from '../../store/actions/categories';
 import avalibleExchangeRates from '../../data/exchangeRates.js';
 
 import {insertTransactions, getTransactions} from '../../helpers/dbFunctions';
+import TransactionItem from '../../components/TransactionItem';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const baseCurrency = useSelector(state => state.settings.currency.base);
+  const [isLoading, setIsLoading] = useState(true);
+  const [temp, setTemp] = useState([]);
   useEffect(() => {
-    getTransactions();
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -26,6 +28,8 @@ const HomeScreen = ({navigation}) => {
           rate: jsonResponse.rates[currency.code],
         }));
         dispatch(setExchangeRates(rates));
+        const transactions = await getTransactions();
+        setTemp(transactions);
       } catch (err) {
         Alert.alert('Error', err.message);
       }
@@ -36,6 +40,10 @@ const HomeScreen = ({navigation}) => {
   return (
     <View>
       <Text>Home Screen</Text>
+      <FlatList
+        data={temp}
+        renderItem={item => <TransactionItem transaction={item} />}
+      />
       <Button onPress={() => navigation.navigate('AddTransaction')}>
         Button
       </Button>

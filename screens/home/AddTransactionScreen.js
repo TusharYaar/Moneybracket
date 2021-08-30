@@ -19,7 +19,7 @@ import {useSelector} from 'react-redux';
 
 import {insertTransactions} from '../../helpers/dbFunctions';
 
-const AddTransactionScreen = () => {
+const AddTransactionScreen = ({navigation}) => {
   const currency = useSelector(state => state.settings.currency);
   const categories = useSelector(state => state.categories.categories);
   const avalibleExchangeRates = useSelector(state => state.exchangeRates.rates);
@@ -61,13 +61,13 @@ const AddTransactionScreen = () => {
         conversion_rate: selectedCurrency.rate,
         transaction_amount:
           (1 / selectedCurrency.rate) * parseInt(transactionAmount),
-        transaction_date: transactionDate,
-        created_at: new Date(),
-        modified_at: new Date(),
+        transaction_date: transactionDate.toISOString(),
+        created_on: new Date().toISOString(),
         note: transactionNote,
         category: selectedCategory.category,
       };
       await insertTransactions(transactionObject);
+      navigation.pop();
     } catch (err) {
       console.error(err.message);
     }

@@ -1,7 +1,7 @@
 import {appSchema, tableSchema} from '@nozbe/watermelondb';
 
 export default mySchema = appSchema({
-  version: 1,
+  version: 2,
   tables: [
     tableSchema({
       name: 'transactions',
@@ -11,11 +11,10 @@ export default mySchema = appSchema({
         {name: 'transaction_currency', type: 'string'},
         {name: 'base_currency', type: 'string'},
         {name: 'conversion_rate', type: 'number'},
-        {name: 'modified_at', type: 'number'},
         {name: 'note', type: 'string', isOptional: true},
         {name: 'category', type: 'string'},
-        {name: 'transaction_date', type: 'number'},
-        {name: 'created_at', type: 'number'},
+        {name: 'transaction_date', type: 'string'},
+        {name: 'created_on', type: 'string'},
       ],
     }),
   ],

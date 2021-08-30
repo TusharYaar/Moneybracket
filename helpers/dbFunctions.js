@@ -14,45 +14,29 @@ const database = new Database({
 });
 
 export const getTransactions = async () => {
-  const newTransactionWriter = await database.write(async () => {
-    const query = await database
-      .get('transactions')
-      .query(Q.where('base_currency', ''))
-      .fetch();
+  await database.write(async () => {
+    const query = await database.get('transactions').query().fetch();
     // query.forEach(async res => await res.destroyPermanently());
     console.log(query);
+    return query;
   });
 };
 
 export const insertTransactions = async transactionDet => {
-  const newTransactionWriter = await database.write(async () => {
+  await database.write(async () => {
     const newTransaction = await database
       .get('transactions')
       .create(transaction => {
-        // transaction.transaction_amount = transaction.transaction_amount;
-        // transaction.transaction_currency = ;
-        // transaction.base_currency = 'INR';
-        // transaction.conversion_rate = 1;
-        // transaction.transaction_date = new Date();
-        // transaction.transaction_type = 'income';
-        // transaction.note = 'Salary';
-        // transaction.category = 'Salary';
-        // transaction.created_at = new Date();
-        // transaction.modified_at = new Date();
-        transaction = {...transaction, ...transactionDet};
+        transaction.transaction_amount = transactionDet.transaction_amount;
+        transaction.transaction_currency = transactionDet.transaction_currency;
+        transaction.base_currency = transactionDet.base_currency;
+        transaction.conversion_rate = transactionDet.conversion_rate;
+        transaction.transaction_date = transactionDet.transaction_date;
+        transaction.transaction_type = transactionDet.transaction_type;
+        transaction.note = transactionDet.note;
+        transaction.category = transactionDet.category;
+        transaction.created_on = transactionDet.created_on;
       });
-    console.log(newTransaction);
+    return newTransaction;
   });
 };
-
-// {name: 'transaction_id', type: 'string'},
-// {name: 'transaction_amount', type: 'number'},
-// {name: 'transaction_currency', type: 'string'},
-// {name: 'base_currency', type: 'string'},
-// {name: 'conversion_rate', type: 'number'},
-// {name: 'modified_at', type: 'number'},
-// {name: 'note', type: 'string', isOptional: true},
-// {name: 'category', type: 'string'},
-// {name: 'transaction_date', type: 'number'},
-// {name: 'created_at', type: 'number'},
-// {name: 'transaction_type', type: 'string'},
