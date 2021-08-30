@@ -14,8 +14,7 @@ const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const baseCurrency = useSelector(state => state.settings.currency.base);
   useEffect(() => {
-    // getTransactions();
-    // insertTransactions();
+    getTransactions();
     const fetchData = async () => {
       try {
         const response = await fetch(

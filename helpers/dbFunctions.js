@@ -1,37 +1,45 @@
-import {Database} from '@nozbe/watermelondb';
+import {Database, Q} from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import schema from '../models/schema';
 
-import Transaction from '../models/Transaction';
+import TransactionModel from '../models/Transaction';
 const adapter = new SQLiteAdapter({
   schema,
 });
 
 const database = new Database({
   adapter,
-  modelClasses: [Transaction],
+  modelClasses: [TransactionModel],
 });
 
 export const getTransactions = async () => {
-  console.log(await database.get('transactions').query().fetch());
+  const newTransactionWriter = await database.write(async () => {
+    const query = await database
+      .get('transactions')
+      .query(Q.where('base_currency', ''))
+      .fetch();
+    // query.forEach(async res => await res.destroyPermanently());
+    console.log(query);
+  });
 };
 
-export const insertTransactions = async () => {
+export const insertTransactions = async transactionDet => {
   const newTransactionWriter = await database.write(async () => {
     const newTransaction = await database
       .get('transactions')
       .create(transaction => {
-        transaction.transaction_amount = 1232;
-        transaction.transaction_currency = 'USD';
-        transaction.base_currency = 'INR';
-        transaction.conversion_rate = 1;
-        transaction.transaction_date = new Date();
-        transaction.transaction_type = 'income';
-        transaction.note = 'Salary';
-        transaction.category = 'Salary';
-        transaction.created_at = new Date();
-        transaction.modified_at = new Date();
+        // transaction.transaction_amount = transaction.transaction_amount;
+        // transaction.transaction_currency = ;
+        // transaction.base_currency = 'INR';
+        // transaction.conversion_rate = 1;
+        // transaction.transaction_date = new Date();
+        // transaction.transaction_type = 'income';
+        // transaction.note = 'Salary';
+        // transaction.category = 'Salary';
+        // transaction.created_at = new Date();
+        // transaction.modified_at = new Date();
+        transaction = {...transaction, ...transactionDet};
       });
     console.log(newTransaction);
   });

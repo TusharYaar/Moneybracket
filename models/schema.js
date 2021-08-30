@@ -6,7 +6,6 @@ export default mySchema = appSchema({
     tableSchema({
       name: 'transactions',
       columns: [
-        {name: 'transaction_id', type: 'string'},
         {name: 'transaction_type', type: 'string'},
         {name: 'transaction_amount', type: 'number'},
         {name: 'transaction_currency', type: 'string'},

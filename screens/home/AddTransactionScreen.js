@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {
   Radio,
   RadioGroup,
+  Button,
   Text,
   Input,
   Datepicker,
@@ -15,6 +16,8 @@ import ImageIcon from '../../components/ImageIcon';
 
 import TranslateText from '../../components/TranslateText';
 import {useSelector} from 'react-redux';
+
+import {insertTransactions} from '../../helpers/dbFunctions';
 
 const AddTransactionScreen = () => {
   const currency = useSelector(state => state.settings.currency);
@@ -47,6 +50,27 @@ const AddTransactionScreen = () => {
     const item = categories[index.row];
     setSelectedCategory(item);
     setCategoryIndex(index);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      var transactionObject = {
+        base_currency: currency.base,
+        transaction_currency: selectedCurrency.code,
+        transaction_type: transactionType === 0 ? 'income' : 'expense',
+        conversion_rate: selectedCurrency.rate,
+        transaction_amount:
+          (1 / selectedCurrency.rate) * parseInt(transactionAmount),
+        transaction_date: transactionDate,
+        created_at: new Date(),
+        modified_at: new Date(),
+        note: transactionNote,
+        category: selectedCategory.category,
+      };
+      await insertTransactions(transactionObject);
+    } catch (err) {
+      console.error(err.message);
+    }
   };
   return (
     <View style={styles.screen}>
@@ -119,6 +143,10 @@ const AddTransactionScreen = () => {
           />
         ))}
       </Select>
+      <Button onPress={handleSubmit} disabled={!transactionAmount > 0}>
+        {' '}
+        Add Transaction
+      </Button>
     </View>
   );
 };

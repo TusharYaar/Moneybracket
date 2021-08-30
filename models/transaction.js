@@ -1,5 +1,5 @@
 import {Model} from '@nozbe/watermelondb';
 
-export default class Transaction extends Model {
+export default class TransactionModel extends Model {
   static table = 'transactions';
 }
