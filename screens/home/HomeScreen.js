@@ -8,10 +8,14 @@ import {setCategories} from '../../store/actions/categories';
 
 import avalibleExchangeRates from '../../data/exchangeRates.js';
 
+import {insertTransactions, getTransactions} from '../../helpers/dbFunctions';
+
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const baseCurrency = useSelector(state => state.settings.currency.base);
   useEffect(() => {
+    // getTransactions();
+    // insertTransactions();
     const fetchData = async () => {
       try {
         const response = await fetch(
