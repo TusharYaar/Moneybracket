@@ -15,13 +15,15 @@ import {
 import ImageIcon from '../../components/ImageIcon';
 
 import TranslateText from '../../components/TranslateText';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {addTransaction} from '../../store/actions/transactions';
 
 import {insertTransactions} from '../../helpers/dbFunctions';
 
 const AddTransactionScreen = ({navigation}) => {
   const currency = useSelector(state => state.settings.currency);
   const categories = useSelector(state => state.categories.categories);
+  const dispatch = useDispatch();
   const avalibleExchangeRates = useSelector(state => state.exchangeRates.rates);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [categoryIndex, setCategoryIndex] = useState(new IndexPath(0));
@@ -51,7 +53,6 @@ const AddTransactionScreen = ({navigation}) => {
     setSelectedCategory(item);
     setCategoryIndex(index);
   };
-
   const handleSubmit = async () => {
     try {
       var transactionObject = {
@@ -66,7 +67,9 @@ const AddTransactionScreen = ({navigation}) => {
         note: transactionNote,
         category: selectedCategory.category,
       };
-      await insertTransactions(transactionObject);
+      const response = await insertTransactions(transactionObject);
+      console.log(response);
+      dispatch(addTransaction(response));
       navigation.pop();
     } catch (err) {
       console.error(err.message);

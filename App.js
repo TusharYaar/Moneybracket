@@ -7,7 +7,7 @@ import userReducer from './store/reducers/user';
 import settingsReducer from './store/reducers/settings';
 import exchangeRatesReducer from './store/reducers/exchangeRates';
 import categoriesReducer from './store/reducers/categories';
-
+import transactionsReducer from './store/reducers/transactions';
 import AppContainer from './AppContainer';
 
 const App = () => {
@@ -16,6 +16,7 @@ const App = () => {
     settings: settingsReducer,
     exchangeRates: exchangeRatesReducer,
     categories: categoriesReducer,
+    transactions: transactionsReducer,
   });
 
   const store = createStore(rootReducer, applyMiddleware(thunk));

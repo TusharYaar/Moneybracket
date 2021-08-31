@@ -8,9 +8,10 @@ export default class TransactionModel extends Model {
   @text('transaction_currency') transaction_currency;
   @text('transaction_type') transaction_type;
   @text('note') note;
-  @text('selectedCategory') selectedCategory;
+  @text('category') category;
 
   @field('transaction_amount') transaction_amount;
   @field('transaction_date') transaction_date;
   @field('created_on') created_on;
+  @field('conversion_rate') conversion_rate;
 }

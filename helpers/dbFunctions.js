@@ -14,16 +14,23 @@ const database = new Database({
 });
 
 export const getTransactions = async () => {
-  await database.write(async () => {
+  // const writer = await database.write(async () => {
+  try {
     const query = await database.get('transactions').query().fetch();
     // query.forEach(async res => await res.destroyPermanently());
-    console.log(query);
-    return query;
-  });
+    var arr = [];
+    query.forEach(tran => {
+      arr.push(tran._raw);
+    });
+    return arr;
+  } catch (error) {
+    console.log(error);
+  }
+  // });
 };
 
 export const insertTransactions = async transactionDet => {
-  await database.write(async () => {
+  const writerDb = await database.write(async () => {
     const newTransaction = await database
       .get('transactions')
       .create(transaction => {
@@ -37,6 +44,8 @@ export const insertTransactions = async transactionDet => {
         transaction.category = transactionDet.category;
         transaction.created_on = transactionDet.created_on;
       });
-    return newTransaction;
+    return newTransaction._raw;
   });
+  return writerDb;
+  // return newTransaction._raw;
 };
