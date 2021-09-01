@@ -49,3 +49,23 @@ export const insertTransactions = async transactionDet => {
   return writerDb;
   // return newTransaction._raw;
 };
+
+export const deleteTransactionFromDb = async id => {
+  try {
+    const writerDb = await database.write(async () => {
+      const transaction = await database
+        .get('transactions')
+        .query(Q.where('id', id))
+        .fetch();
+      if (transaction.length > 0) {
+        await transaction[0].destroyPermanently();
+        return true;
+      }
+      return false;
+    });
+    if (writerDb) return true;
+    else throw new Error('No Element Found');
+  } catch (err) {
+    return false;
+  }
+};

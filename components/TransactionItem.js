@@ -10,13 +10,13 @@ import {Text} from '@ui-kitten/components';
 
 import {useSelector} from 'react-redux';
 
-const TransactionItem = ({transaction}) => {
+const TransactionItem = ({transaction, onPress}) => {
   const category = useSelector(state =>
     state.categories.categories.find(c => c.category === transaction.category),
   );
   const currency = useSelector(state => state.settings.currency);
   return (
-    <TouchableNativeFeedback>
+    <TouchableNativeFeedback onPress={onPress}>
       <View style={styles.itemContainer}>
         <View style={styles.leftContainer}>
           <ImageBackground

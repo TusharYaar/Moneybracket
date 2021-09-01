@@ -12,6 +12,7 @@ import NotificationScreen from '../screens/settings/NotificationScreen';
 import TranslateText from '../components/TranslateText';
 import HomeScreen from '../screens/home/HomeScreen';
 import AddTransactionScreen from '../screens/home/AddTransactionScreen';
+import EditTransactionScreen from '../screens/home/EditTransactionScreen';
 
 const HomeStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
@@ -62,6 +63,11 @@ export const HomeStackNavigator = () => {
         name="AddTransaction"
         component={AddTransactionScreen}
         options={() => screenOptionsWODrawer('add_transaction')}
+      />
+      <HomeStack.Screen
+        name="EditTransaction"
+        component={EditTransactionScreen}
+        options={() => screenOptionsWODrawer('edit_transaction')}
       />
     </HomeStack.Navigator>
   );

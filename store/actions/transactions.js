@@ -11,3 +11,8 @@ export const addTransaction = payload => ({
   type: ADD_TRANSACTION,
   payload,
 });
+
+export const deleteTransaction = payload => ({
+  type: DELETE_TRANSACTION,
+  payload,
+});

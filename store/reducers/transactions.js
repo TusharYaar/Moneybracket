@@ -16,6 +16,11 @@ export default (state = initialState, {type, payload}) => {
     case ADD_TRANSACTION:
       console.log('payload', payload);
       return {...state, transactions: [...state.transactions, payload]};
+    case DELETE_TRANSACTION:
+      return {
+        ...state,
+        transactions: state.transactions.filter(t => t.id !== payload),
+      };
     default:
       return state;
   }

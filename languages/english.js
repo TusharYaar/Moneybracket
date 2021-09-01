@@ -3,6 +3,7 @@ export default English = {
   value: 'en',
   translations: {
     add_transaction: 'Add Transaction',
+    edit_transaction: 'Edit Transaction',
     settings: 'Settings',
     home: 'Home',
     appearance: 'Appearance',

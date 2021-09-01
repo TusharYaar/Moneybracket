@@ -68,7 +68,6 @@ const AddTransactionScreen = ({navigation}) => {
         category: selectedCategory.category,
       };
       const response = await insertTransactions(transactionObject);
-      console.log(response);
       dispatch(addTransaction(response));
       navigation.pop();
     } catch (err) {

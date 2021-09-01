@@ -46,7 +46,16 @@ const HomeScreen = ({navigation}) => {
       </Button>
       <FlatList
         data={transactions}
-        renderItem={item => <TransactionItem transaction={item.item} />}
+        renderItem={item => (
+          <TransactionItem
+            transaction={item.item}
+            onPress={() =>
+              navigation.navigate('EditTransaction', {
+                transactionId: item.item.id,
+              })
+            }
+          />
+        )}
       />
     </View>
   );
