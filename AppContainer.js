@@ -12,6 +12,7 @@ import {lockOnBackgroundFunction} from './store/actions/settings';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
+
   const appState = useRef(AppState.currentState);
 
   // useEffect(() => {

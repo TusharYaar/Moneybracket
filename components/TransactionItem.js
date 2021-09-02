@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -7,6 +7,9 @@ import {
 } from 'react-native';
 
 import {Text} from '@ui-kitten/components';
+import TranslateText from '../components/TranslateText';
+import moment from 'moment';
+import avalibleExchangeRates from '../data/exchangeRates';
 
 import {useSelector} from 'react-redux';
 
@@ -23,13 +26,29 @@ const TransactionItem = ({transaction, onPress}) => {
             source={{uri: category.imageUri}}
             style={styles.categoryImg}
           />
-          <Text>{transaction.category}</Text>
+          <View style={styles.textContainer}>
+            <Text>{transaction.category}</Text>
+            <Text category="c1">
+              {moment(transaction.transaction_date).format('Do MMM, YY')}
+            </Text>
+          </View>
         </View>
-        <Text category="h4">
-          {currency.symbol +
-            ' ' +
-            transaction.transaction_amount * transaction.conversion_rate}
-        </Text>
+        <View style={styles.rightContainer}>
+          <TranslateText category="h5" tag="numbers">
+            {`${currency.symbol} ${transaction.transaction_amount.toFixed(2)}`}
+          </TranslateText>
+          {transaction.transaction_currency !== transaction.base_currency && (
+            <TranslateText tag="numbers">
+              {`@ ${
+                avalibleExchangeRates.find(
+                  rate => rate.code === transaction.transaction_currency,
+                ).symbol
+              } ${(
+                transaction.transaction_amount * transaction.conversion_rate
+              ).toFixed(2)}`}
+            </TranslateText>
+          )}
+        </View>
       </View>
     </TouchableNativeFeedback>
   );
@@ -52,5 +71,13 @@ const styles = StyleSheet.create({
   categoryImg: {
     height: 40,
     width: 40,
+  },
+  textContainer: {
+    marginHorizontal: 20,
+  },
+  rightContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
 });
