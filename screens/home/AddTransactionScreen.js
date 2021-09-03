@@ -77,15 +77,6 @@ const AddTransactionScreen = ({navigation}) => {
   return (
     <View style={styles.screen}>
       <View>
-        <RadioGroup
-          style={styles.radioGroup}
-          selectedIndex={transactionType}
-          onChange={value => setTransactionType(value)}>
-          <Radio style={styles.radio}>Income</Radio>
-          <Radio style={styles.radio}>Expense</Radio>
-        </RadioGroup>
-      </View>
-      <View>
         <Datepicker
           label="Date"
           placeholder="Pick A Date"
@@ -102,7 +93,9 @@ const AddTransactionScreen = ({navigation}) => {
           {avalibleExchangeRates.map(rate => (
             <SelectItem
               key={rate.code}
-              title={`${rate.symbol} (${rate.code})`}
+              title={() => (
+                <Text category="c1">{`${rate.symbol} (${rate.code})`}</Text>
+              )}
               accessoryLeft={<ImageIcon uri={rate.flag} />}
             />
           ))}

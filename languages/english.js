@@ -15,6 +15,7 @@ export default English = {
     exchange_rates: 'Exchange',
     currency: 'Currency',
     undefined: 'Undefined',
+    categories: 'Categories',
   },
   numbers: {
     1: '1',

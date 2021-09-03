@@ -9,7 +9,11 @@ import {
   IndexPath,
 } from '@ui-kitten/components';
 
-import {SettingsStackNavigator, HomeStackNavigator} from './StackNavigators';
+import {
+  SettingsStackNavigator,
+  HomeStackNavigator,
+  CategoriesStackNavigator,
+} from './StackNavigators';
 import ExchangeRatesScreen from '../screens/ExchangeRatesScreen';
 
 import TranslateText from '../components/TranslateText';
@@ -29,6 +33,9 @@ const DrawerContent = ({navigation, state}) => (
     <DrawerItem
       title={() => <TranslateText category="c1">exchange_rates</TranslateText>}
     />
+    <DrawerItem
+      title={() => <TranslateText category="c1">categories</TranslateText>}
+    />
   </Drawer>
 );
 
@@ -37,20 +44,15 @@ const DrawerNavigator = () => {
     <SideDrawer.Navigator
       screenOptions={screenOptions}
       drawerContent={props => <DrawerContent {...props} />}>
-      <SideDrawer.Screen
-        name="HomeStack"
-        component={HomeStackNavigator}
-        options={() => settingsOptions('home')}
-      />
+      <SideDrawer.Screen name="HomeStack" component={HomeStackNavigator} />
       <SideDrawer.Screen
         name="SettingsStack"
         component={SettingsStackNavigator}
-        options={() => settingsOptions('settings')}
       />
+      <SideDrawer.Screen name="ExchangeRates" component={ExchangeRatesScreen} />
       <SideDrawer.Screen
-        name="ExchangeRates"
-        component={ExchangeRatesScreen}
-        options={() => settingsOptions('exchange_rates')}
+        name="Categories"
+        component={CategoriesStackNavigator}
       />
     </SideDrawer.Navigator>
   );
@@ -64,11 +66,3 @@ const screenOptions = {
   },
   headerShown: false,
 };
-
-const settingsOptions = label => ({
-  drawerLabel: props => (
-    <TranslateText {...props} category="h6">
-      {label}
-    </TranslateText>
-  ),
-});

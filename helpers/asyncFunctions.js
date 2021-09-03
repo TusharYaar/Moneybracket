@@ -60,8 +60,20 @@ export const getCategories = () => {
           CATEGORIES,
           JSON.stringify({categories: defaultCategories}),
         );
-        resolve({defaultCategories, loaded: true});
+        resolve({categories: defaultCategories, loaded: true});
       }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const removeCategories = () => {
+  console.log('Removing Categories');
+  return new Promise(async (resolve, reject) => {
+    try {
+      AsyncStorage.removeItem(CATEGORIES);
+      resolve();
     } catch (error) {
       reject(error);
     }

@@ -14,6 +14,7 @@ export default Hindi = {
     exchange_rates: 'विनिमय दरें',
     currency: 'मुद्रा',
     undefined: 'अपरिभाषित',
+    categories: 'वर्ग',
   },
   numbers: {
     1: '१',

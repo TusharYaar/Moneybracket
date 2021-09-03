@@ -14,8 +14,12 @@ import HomeScreen from '../screens/home/HomeScreen';
 import AddTransactionScreen from '../screens/home/AddTransactionScreen';
 import EditTransactionScreen from '../screens/home/EditTransactionScreen';
 
+import AllCategories from '../screens/categories/AllCategories';
+import AddCategory from '../screens/categories/AddCategory';
+
 const HomeStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
+const categoriesStack = createNativeStackNavigator();
 
 export const SettingsStackNavigator = () => {
   return (
@@ -70,6 +74,25 @@ export const HomeStackNavigator = () => {
         options={() => screenOptionsWODrawer('edit_transaction')}
       />
     </HomeStack.Navigator>
+  );
+};
+
+export const CategoriesStackNavigator = () => {
+  return (
+    <categoriesStack.Navigator>
+      <categoriesStack.Screen
+        name="AllCategories"
+        component={AllCategories}
+        options={({navigation}) =>
+          screenOptionsWithDrawer(navigation, 'categories')
+        }
+      />
+      <categoriesStack.Screen
+        name="AddCategory"
+        component={AddCategory}
+        options={() => screenOptionsWODrawer('add_transaction')}
+      />
+    </categoriesStack.Navigator>
   );
 };
 
