@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -8,15 +8,18 @@ import {
 
 import {Text} from '@ui-kitten/components';
 import TranslateText from '../components/TranslateText';
-import moment from 'moment';
 import avalibleExchangeRates from '../data/exchangeRates';
 
 import {useSelector} from 'react-redux';
+import {format, parseISO} from 'date-fns';
+
+import languages from '../languages/languages';
 
 const TransactionItem = ({transaction, onPress}) => {
   const category = useSelector(state =>
     state.categories.categories.find(c => c.category === transaction.category),
   );
+  const language = useSelector(state => state.settings.language);
   const currency = useSelector(state => state.settings.currency);
   return (
     <TouchableNativeFeedback onPress={onPress}>
@@ -29,7 +32,9 @@ const TransactionItem = ({transaction, onPress}) => {
           <View style={styles.textContainer}>
             <Text>{transaction.category}</Text>
             <Text category="c1">
-              {moment(transaction.transaction_date).format('Do MMM, YY')}
+              {format(parseISO(transaction.transaction_date), 'Lo MMM, yy', {
+                locale: languages[language].locale,
+              })}
             </Text>
           </View>
         </View>

@@ -1,6 +1,9 @@
+import {enIN} from 'date-fns/locale';
+
 export default English = {
   label: 'English',
   value: 'en',
+  locale: enIN,
   translations: {
     add_transaction: 'Add Transaction',
     edit_transaction: 'Edit Transaction',

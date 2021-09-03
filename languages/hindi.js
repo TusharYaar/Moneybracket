@@ -1,6 +1,8 @@
+import {hi} from 'date-fns/locale';
 export default Hindi = {
   label: 'Hindi',
   value: 'hi',
+  locale: hi,
   translations: {
     add_transaction: 'लेनदेन जोड़ें',
     edit_transaction: 'लेनदेन संपादित करें',
