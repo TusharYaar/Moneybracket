@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import th from 'date-fns/esm/locale/th/index.js';
 
 import defaultCategories from '../data/categories';
 
@@ -61,6 +62,29 @@ export const getCategories = () => {
           JSON.stringify({categories: defaultCategories}),
         );
         resolve({categories: defaultCategories, loaded: true});
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const deleteCategoryFromDB = category => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const value = await AsyncStorage.getItem(CATEGORIES);
+      if (value) {
+        const categories = JSON.parse(value).categories;
+        const newCategories = categories.filter(
+          item => item.category !== category,
+        );
+        await AsyncStorage.setItem(
+          CATEGORIES,
+          JSON.stringify({categories: newCategories}),
+        );
+        resolve(newCategories);
+      } else {
+        throw new Error('No categories found');
       }
     } catch (error) {
       reject(error);

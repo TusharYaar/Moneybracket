@@ -1,14 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-const AddCategory = ({navigation, route}) => {
+const EditCategory = ({navigation, route}) => {
   return (
     <View>
-      <Text>add Cat</Text>
+      <Text>Edit Category</Text>
     </View>
   );
 };
 
-export default AddCategory;
+export default EditCategory;
 
 const styles = StyleSheet.create({});

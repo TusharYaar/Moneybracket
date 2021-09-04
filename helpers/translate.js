@@ -21,7 +21,9 @@ export const translateAppText = (
     }
     return translatedText;
   } else if (tag) return Languages[language][tag][key];
-  return Languages[language].translations[key];
+  return Languages[language].translations[key]
+    ? Languages[language].translations[key]
+    : key;
 };
 
 export const getFont = (language = 'en', type = 'reglar') => {

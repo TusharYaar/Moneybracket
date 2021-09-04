@@ -16,6 +16,7 @@ import EditTransactionScreen from '../screens/home/EditTransactionScreen';
 
 import AllCategories from '../screens/categories/AllCategories';
 import AddCategory from '../screens/categories/AddCategory';
+import EditCategory from '../screens/categories/EditCategory';
 
 const HomeStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
@@ -90,7 +91,12 @@ export const CategoriesStackNavigator = () => {
       <categoriesStack.Screen
         name="AddCategory"
         component={AddCategory}
-        options={() => screenOptionsWODrawer('add_transaction')}
+        options={() => screenOptionsWODrawer('add_category')}
+      />
+      <categoriesStack.Screen
+        name="EditCategory"
+        component={EditCategory}
+        options={() => screenOptionsWODrawer('edit_category')}
       />
     </categoriesStack.Navigator>
   );
