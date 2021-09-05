@@ -20,7 +20,7 @@ import EditCategory from '../screens/categories/EditCategory';
 
 const HomeStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
-const categoriesStack = createNativeStackNavigator();
+const CategoriesStack = createNativeStackNavigator();
 
 export const SettingsStackNavigator = () => {
   return (
@@ -80,25 +80,25 @@ export const HomeStackNavigator = () => {
 
 export const CategoriesStackNavigator = () => {
   return (
-    <categoriesStack.Navigator>
-      <categoriesStack.Screen
+    <CategoriesStack.Navigator>
+      <CategoriesStack.Screen
         name="AllCategories"
         component={AllCategories}
         options={({navigation}) =>
           screenOptionsWithDrawer(navigation, 'categories')
         }
       />
-      <categoriesStack.Screen
+      <CategoriesStack.Screen
         name="AddCategory"
         component={AddCategory}
         options={() => screenOptionsWODrawer('add_category')}
       />
-      <categoriesStack.Screen
+      <CategoriesStack.Screen
         name="EditCategory"
         component={EditCategory}
         options={() => screenOptionsWODrawer('edit_category')}
       />
-    </categoriesStack.Navigator>
+    </CategoriesStack.Navigator>
   );
 };
 

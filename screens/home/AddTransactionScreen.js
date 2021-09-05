@@ -1,14 +1,19 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import {
-  Radio,
-  RadioGroup,
+  StyleSheet,
+  View,
+  TouchableNativeFeedback,
+  FlatList,
+} from 'react-native';
+import {
   Button,
   Text,
   Input,
   Datepicker,
+  Card,
   Select,
   IndexPath,
+  Modal,
   SelectItem,
 } from '@ui-kitten/components';
 
@@ -20,14 +25,15 @@ import {addTransaction} from '../../store/actions/transactions';
 
 import {insertTransactions} from '../../helpers/dbFunctions';
 
+import CategoryItem from '../../components/CategoryItem';
+
 const AddTransactionScreen = ({navigation}) => {
   const currency = useSelector(state => state.settings.currency);
   const categories = useSelector(state => state.categories.categories);
   const dispatch = useDispatch();
   const avalibleExchangeRates = useSelector(state => state.exchangeRates.rates);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const [categoryIndex, setCategoryIndex] = useState(new IndexPath(0));
-  const [transactionType, setTransactionType] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
   const [transactionDate, setTransactionDate] = useState(new Date());
   const [transactionAmount, setTransactionAmount] = useState('');
   const [transactionNote, setTransactionNote] = useState('');
@@ -48,17 +54,16 @@ const AddTransactionScreen = ({navigation}) => {
     setSelectedCurrency(item);
     setSelectedIndex(index);
   };
-  const handleChangeCategory = index => {
-    const item = categories[index.row];
-    setSelectedCategory(item);
-    setCategoryIndex(index);
+  const handleChangeCategory = category => {
+    setSelectedCategory(category);
+    setModalOpen(false);
   };
   const handleSubmit = async () => {
     try {
       var transactionObject = {
         base_currency: currency.base,
         transaction_currency: selectedCurrency.code,
-        transaction_type: transactionType === 0 ? 'income' : 'expense',
+        transaction_type: selectedCategory.type,
         conversion_rate: selectedCurrency.rate,
         transaction_amount:
           (1 / selectedCurrency.rate) * parseInt(transactionAmount),
@@ -67,6 +72,7 @@ const AddTransactionScreen = ({navigation}) => {
         note: transactionNote,
         category: selectedCategory.category,
       };
+      // console.log(transactionObject);
       const response = await insertTransactions(transactionObject);
       dispatch(addTransaction(response));
       navigation.pop();
@@ -124,22 +130,33 @@ const AddTransactionScreen = ({navigation}) => {
         value={transactionNote}
         onChangeText={text => setTransactionNote(text)}
       />
-      <Select
-        onSelect={handleChangeCategory}
-        selectedIndex={categoryIndex}
-        style={styles.categorySelect}
-        label="Category"
-        value={selectedCategory.category}>
-        {categories.map(category => (
-          <SelectItem
-            key={category.category}
-            title={category.category}
-            accessoryLeft={<ImageIcon uri={category.imageUri} />}
+      <View style={styles.selectContainer}>
+        <Text category="c1">Category</Text>
+        <TouchableNativeFeedback onPress={() => setModalOpen(true)}>
+          <View style={[styles.select, styles.padding]}>
+            <View style={styles.select}>
+              <ImageIcon uri={selectedCategory.imageUri} />
+              <Text category="h6">{selectedCategory.category}</Text>
+            </View>
+            <Text category="h6">{selectedCategory.type}</Text>
+          </View>
+        </TouchableNativeFeedback>
+      </View>
+      <Modal
+        visible={modalOpen}
+        onBackdropPress={() => setModalOpen(false)}
+        style={styles.modal}>
+        <Card>
+          <FlatList
+            data={categories}
+            keyExtractor={item => item.category}
+            renderItem={item => (
+              <CategoryItem item={item.item} onPress={handleChangeCategory} />
+            )}
           />
-        ))}
-      </Select>
+        </Card>
+      </Modal>
       <Button onPress={handleSubmit} disabled={!transactionAmount > 0}>
-        {' '}
         Add Transaction
       </Button>
     </View>
@@ -173,7 +190,19 @@ const styles = StyleSheet.create({
   amount: {
     flexGrow: 1,
   },
-  categorySelect: {
+  selectContainer: {
     marginVertical: 15,
+  },
+  select: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  padding: {
+    padding: 10,
+  },
+  modal: {
+    height: '80%',
+    width: '80%',
   },
 });

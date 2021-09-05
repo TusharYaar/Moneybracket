@@ -1,9 +1,14 @@
 import React from 'react';
-import {StyleSheet, View, Image, Alert} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Alert,
+  TouchableNativeFeedback,
+} from 'react-native';
 import {Text, Button} from '@ui-kitten/components';
 
-import IconButton from './IconButton';
-const CategoryItem = ({item, onDelete, onEdit}) => {
+const CategoryItem = ({item, onDelete, onPress, showDelete}) => {
   const handleDelete = () => {
     Alert.alert(
       'Delete',
@@ -18,31 +23,28 @@ const CategoryItem = ({item, onDelete, onEdit}) => {
       ],
     );
   };
-  const handleEdit = () => {
-    onEdit(item);
+  const handlePress = () => {
+    onPress(item);
   };
   return (
-    <View style={styles.item}>
-      <View style={styles.container}>
-        <Image style={styles.image} source={{uri: item.imageUri}} />
-        <View style={styles.textContainer}>
-          <Text style={styles[item.type]} category="c1">
-            {item.type}
-          </Text>
-          <Text category="h4">{item.category}</Text>
+    <TouchableNativeFeedback onPress={handlePress}>
+      <View style={styles.item}>
+        <View style={styles.container}>
+          <Image style={styles.image} source={{uri: item.imageUri}} />
+          <View style={styles.textContainer}>
+            <Text style={styles[item.type]} category="c1">
+              {item.type}
+            </Text>
+            <Text category="h4">{item.category}</Text>
+          </View>
         </View>
+        {showDelete && (
+          <Button onPress={handleDelete} style={styles.margin}>
+            Delete
+          </Button>
+        )}
       </View>
-      <View style={styles.container}>
-        <Button onPress={handleEdit} style={styles.margin}>
-          Edit
-        </Button>
-        <IconButton
-          name="trash-2-outline"
-          onPress={handleDelete}
-          style={styles.icon}
-        />
-      </View>
-    </View>
+    </TouchableNativeFeedback>
   );
 };
 

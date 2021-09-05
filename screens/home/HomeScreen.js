@@ -37,7 +37,7 @@ const HomeScreen = ({navigation}) => {
     fetchData();
   }, [dispatch, baseCurrency]);
 
-  if (transactions.length === 0) return <Text>NO Transaction</Text>;
+  // if (transactions.length === 0) return <Text>NO Transaction</Text>;
   return (
     <View style={styles.screen}>
       <Text>Home Screen</Text>

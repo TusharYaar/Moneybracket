@@ -36,7 +36,8 @@ const AllCategories = ({navigation}) => {
           <CategoryItem
             item={item.item}
             onDelete={onDeleteCategory}
-            onEdit={handleEdit}
+            onPress={handleEdit}
+            showDelete={true}
           />
         )}
       />
