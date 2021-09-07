@@ -15,6 +15,7 @@ export default Hindi = {
     currency: 'मुद्रा',
     undefined: 'अपरिभाषित',
     categories: 'वर्ग',
+    add_category: 'वर्ग जोड़ें',
   },
   numbers: {
     1: '१',

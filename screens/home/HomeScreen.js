@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Alert, FlatList} from 'react-native';
-import {Button} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {setExchangeRates} from '../../store/actions/exchangeRates';
@@ -43,7 +42,6 @@ const HomeScreen = ({navigation}) => {
   // if (transactions.length === 0) return <Text>NO Transaction</Text>;
   return (
     <View style={styles.screen}>
-      <Text>Home Screen</Text>
       <FloatingButton
         onPress={() => navigation.navigate('AddTransaction')}
         icon={'plus-outline'}>

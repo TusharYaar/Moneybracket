@@ -5,7 +5,7 @@ import {StyleSheet, Text, View, TouchableNativeFeedback} from 'react-native';
 
 const FloatingButton = props => {
   return (
-    <View style={styles.button}>
+    <View style={[styles.button, props.style]}>
       <TouchableNativeFeedback onPress={props.onPress}>
         <View style={styles.touchable}>
           <Icon

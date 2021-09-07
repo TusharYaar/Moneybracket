@@ -16,6 +16,7 @@ export default English = {
     currency: 'Currency',
     undefined: 'Undefined',
     categories: 'Categories',
+    add_category: 'Add Category',
   },
   numbers: {
     1: '1',
