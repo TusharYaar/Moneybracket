@@ -8,8 +8,11 @@ import {setExchangeRates} from '../../store/actions/exchangeRates';
 import avalibleExchangeRates from '../../data/exchangeRates.js';
 
 import {getTransactions} from '../../helpers/dbFunctions';
-import TransactionItem from '../../components/TransactionItem';
 import {setTransactions} from '../../store/actions/transactions';
+
+import TransactionItem from '../../components/TransactionItem';
+import FloatingButton from '../../components/FloatingButton';
+import TranslateText from '../../components/TranslateText';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -41,9 +44,11 @@ const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.screen}>
       <Text>Home Screen</Text>
-      <Button onPress={() => navigation.navigate('AddTransaction')}>
-        Button
-      </Button>
+      <FloatingButton
+        onPress={() => navigation.navigate('AddTransaction')}
+        icon={'plus-outline'}>
+        <TranslateText category="h6">add_transaction</TranslateText>
+      </FloatingButton>
       <FlatList
         data={transactions}
         renderItem={item => (

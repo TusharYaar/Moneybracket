@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {Alert, FlatList, StyleSheet, Text, View} from 'react-native';
 import {Button, List} from '@ui-kitten/components';
 
 import {removeCategories} from '../../helpers/asyncFunctions';
@@ -8,6 +8,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import CategoryItem from '../../components/CategoryItem';
 import TranslateText from '../../components/TranslateText';
+import FloatingButton from '../../components/FloatingButton';
 
 import {deleteCategoryFromDB} from '../../helpers/asyncFunctions';
 import {deleteCategory} from '../../store/actions/categories';
@@ -29,8 +30,9 @@ const AllCategories = ({navigation}) => {
   return (
     <View>
       <Text>All Categories</Text>
-      <List
+      <FlatList
         data={categories}
+        style={styles.flatlist}
         keyExtractor={item => item.category}
         renderItem={item => (
           <CategoryItem
@@ -41,10 +43,19 @@ const AllCategories = ({navigation}) => {
           />
         )}
       />
+      <FloatingButton
+        onPress={() => navigation.navigate('AddCategory')}
+        icon={'plus-outline'}>
+        <TranslateText category="h6">add_transaction</TranslateText>
+      </FloatingButton>
     </View>
   );
 };
 
 export default AllCategories;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  flatlist: {
+    height: '100%',
+  },
+});
