@@ -1,26 +1,29 @@
 // Convert the given key to the language-specific string
-// key is given in translate prop
-
+// text to translate is given in translate prop/ or in children
+// uses Text from ui-kitten
+// defaults to c1 text style
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import {translateAppText, getFont} from '../helpers/translate';
+import {Text} from '@ui-kitten/components';
 
 const TranslateText = props => {
   const language = useSelector(state => state.settings.language);
+  const nativeNumbers = useSelector(state => state.settings.nativeNumbers);
   return (
     <Text
+      category={props.category ? props.category : 'c1'}
       {...props}
-      style={[styles.font, props.style, {fontFamily: getFont(language)}]}>
-      {translateAppText(language, props.translate)}
+      style={[props.style, {fontFamily: getFont(language)}]}>
+      {props.translate &&
+        translateAppText(language, nativeNumbers, props.translate, props.tag)}
+      {props.children &&
+        translateAppText(language, nativeNumbers, props.children, props.tag)}
     </Text>
   );
 };
 
 export default TranslateText;
 
-const styles = StyleSheet.create({
-  font: {
-    fontSize: 20,
-  },
-});
+const styles = StyleSheet.create({});

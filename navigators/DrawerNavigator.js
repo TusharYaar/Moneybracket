@@ -1,29 +1,60 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import {SettingsStackNavigator} from './StackNavigators';
-import ExchangeRates from '../screens/ExchangeRates';
+import {
+  Drawer,
+  DrawerItem,
+  Layout,
+  Text,
+  IndexPath,
+} from '@ui-kitten/components';
+
+import {
+  SettingsStackNavigator,
+  HomeStackNavigator,
+  CategoriesStackNavigator,
+} from './StackNavigators';
+import ExchangeRatesScreen from '../screens/ExchangeRatesScreen';
 
 import TranslateText from '../components/TranslateText';
 
-const Drawer = createDrawerNavigator();
+const SideDrawer = createDrawerNavigator();
+
+const DrawerContent = ({navigation, state}) => (
+  <Drawer
+    selectedIndex={new IndexPath(state.index)}
+    onSelect={index => navigation.navigate(state.routeNames[index.row])}>
+    <DrawerItem
+      title={() => <TranslateText category="c1">home</TranslateText>}
+    />
+    <DrawerItem
+      title={() => <TranslateText category="c1">settings</TranslateText>}
+    />
+    <DrawerItem
+      title={() => <TranslateText category="c1">exchange_rates</TranslateText>}
+    />
+    <DrawerItem
+      title={() => <TranslateText category="c1">categories</TranslateText>}
+    />
+  </Drawer>
+);
 
 const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator screenOptions={screenOptions}>
-      <Drawer.Screen
+    <SideDrawer.Navigator
+      screenOptions={screenOptions}
+      drawerContent={props => <DrawerContent {...props} />}>
+      <SideDrawer.Screen name="HomeStack" component={HomeStackNavigator} />
+      <SideDrawer.Screen
         name="SettingsStack"
         component={SettingsStackNavigator}
-        options={({navigation}) => settingsOptions(navigation, 'settings')}
       />
-      <Drawer.Screen
-        name="ExchangeRates"
-        component={ExchangeRates}
-        options={({navigation}) =>
-          settingsOptions(navigation, 'exchange_rates')
-        }
+      <SideDrawer.Screen name="ExchangeRates" component={ExchangeRatesScreen} />
+      <SideDrawer.Screen
+        name="Categories"
+        component={CategoriesStackNavigator}
       />
-    </Drawer.Navigator>
+    </SideDrawer.Navigator>
   );
 };
 
@@ -35,7 +66,3 @@ const screenOptions = {
   },
   headerShown: false,
 };
-
-const settingsOptions = (navigation, key) => ({
-  drawerLabel: props => <TranslateText {...props} translate={key} />,
-});

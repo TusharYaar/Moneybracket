@@ -1,7 +1,19 @@
-import {UPDATE_THEME, SET_SETTINGS, UPDATE_LANGUAGE} from '../actions/settings';
+import {
+  UPDATE_THEME,
+  UPDATE_SETTINGS,
+  SET_SETTINGS,
+  UPDATE_SECURITY,
+  UPDATE_LANGUAGE,
+  UPDATE_CURRENCY,
+  DEFAULT_SETTINGS,
+} from '../actions/settings';
 const initialState = {
   theme: 'light',
+  onboardingDone: true,
+  loaded: false,
+  locked: true,
   language: 'en',
+  nativeNumbers: false,
   date: {
     timezone: 'India',
     dateFormat: 'DD/MM/YYYY',
@@ -9,14 +21,15 @@ const initialState = {
     dateTimeFormat: 'DD/MM/YYYY HH:mm',
   },
   currency: {
-    symbol: '₹', //base currency to which the expense will be added
-    base: 'INR',
+    base: 'USD', //base currency to which the expense will be added
+    symbol: '$', //base currency symbol
     favorites: [], //favorites currency which will be shown
   },
   security: {
     enabled: false,
-    type: null, //value should be in [pin, biometric],
-    pin: null,
+    type: 'pin', //value should be in [pin, biometrics],
+    lockOnBackground: false,
+    pin: '',
     biometric: null,
     randomKeys: false,
   },
@@ -24,10 +37,26 @@ const initialState = {
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
+    case UPDATE_SETTINGS:
+      return {...state, ...payload};
     case UPDATE_LANGUAGE:
       return {...state, ...payload};
     case SET_SETTINGS:
-      return {...payload};
+      return {...payload, loaded: true};
+    case DEFAULT_SETTINGS:
+      return {...initialState, loaded: true};
+    case UPDATE_SECURITY:
+      return {
+        ...state,
+        locked: false,
+        security: {...state.security, ...payload},
+      };
+    case UPDATE_CURRENCY:
+      return {
+        ...state,
+        locked: false,
+        currency: {...state.currency, ...payload},
+      };
     default:
       return state;
   }

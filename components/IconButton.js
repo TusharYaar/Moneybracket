@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginHorizontal: 10,
     overflow: 'hidden',
-    alignSelf: 'flex-start',
   },
   icon: {
     margin: 2,

@@ -1,5 +1,6 @@
 export default class ExchangeRate {
-  constructor(code, country, flag, symbol) {
+  constructor(key, code, country, flag, symbol) {
+    this.key = key;
     this.code = code;
     this.country = country;
     this.flag = flag ? flag : 'notDefined';

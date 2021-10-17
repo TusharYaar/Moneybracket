@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "link": "react-native link",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
@@ -11,12 +12,14 @@
   },
   "dependencies": {
     "@eva-design/eva": "^2.1.1",
+    "@nozbe/watermelondb": "^0.23.0",
     "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-navigation/drawer": "^6.1.1",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.0.4",
     "@ui-kitten/components": "^5.1.1",
     "@ui-kitten/eva-icons": "^5.1.1",
+    "date-fns": "^2.23.0",
     "react": "17.0.1",
     "react-native": "0.64.2",
     "react-native-fingerprint-scanner": "^6.0.0",
@@ -26,6 +29,7 @@
     "react-native-safe-area-context": "^3.3.0",
     "react-native-screens": "^3.5.0",
     "react-native-svg": "^12.1.1",
+    "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^8.1.0",
     "react-redux": "^7.2.4",
     "redux": "^4.1.1",
@@ -33,6 +37,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@babel/plugin-proposal-decorators": "^7.14.5",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
     "babel-jest": "^26.6.3",

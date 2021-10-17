@@ -44,7 +44,7 @@ const TransactionItem = ({transaction, onPress}) => {
           </TranslateText>
           {transaction.transaction_currency !== transaction.base_currency && (
             <TranslateText tag="numbers">
-              {${
+              {`${
                 avalibleExchangeRates.find(
                   rate => rate.code === transaction.transaction_currency,
                 ).symbol

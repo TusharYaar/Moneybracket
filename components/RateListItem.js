@@ -1,25 +1,45 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
 import {Text} from '@ui-kitten/components';
+import TranslateText from './TranslateText';
+import IconButton from './IconButton';
 
-const RateListItem = ({item, value, baseSymbol}) => {
+const RateListItem = ({
+  item,
+  value,
+  baseSymbol,
+  updateFavorites,
+  isFavorite,
+}) => {
   value = value ? value : 0;
   return (
     <View style={styles.listItem}>
       <View style={styles.description}>
         <Image style={styles.image} source={{uri: item.flag}} />
         <View style={styles.textDescription}>
-          <Text category="c1">{item.country}</Text>
-          <Text category="c1">
+          <TranslateText
+            translate={item.key}
+            tag="countries"
+            style={styles.country}
+          />
+          <TranslateText category="c1" tag="numbers">
             {`1 ${baseSymbol} = ${item.rate.toFixed(3)} ${item.symbol}`}
-          </Text>
+          </TranslateText>
+
           <Text category="c1">{item.code}</Text>
         </View>
       </View>
-
-      <Text category="h4">
-        {(item.rate * value).toFixed(2)} {item.symbol}
-      </Text>
+      <View style={styles.textValue}>
+        <TranslateText tag="numbers" category="h5">
+          {(item.rate * value).toFixed(2)} {item.symbol}
+        </TranslateText>
+        <IconButton
+          name={isFavorite ? 'star' : 'star-outline'}
+          onPress={() => {
+            updateFavorites(item.code);
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -48,5 +68,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     paddingHorizontal: 5,
+  },
+  country: {
+    fontSize: 14,
+  },
+  textValue: {
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
