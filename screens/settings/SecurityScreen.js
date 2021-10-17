@@ -1,6 +1,16 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Alert} from 'react-native';
-import {Radio, RadioGroup, Text, Toggle, Button} from '@ui-kitten/components';
+import {Radio, RadioGroup, Text, Toggle} from '@ui-kitten/components';
+
+import {
+  RadioButton,
+  Button,
+  Title,
+  Paragraph,
+  Switch,
+  Subheading,
+  Caption,
+} from 'react-native-paper';
 
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -30,11 +40,7 @@ const SecurityScreen = () => {
   };
 
   const changeSecurityType = value => {
-    if (value === 0) {
-      dispatch(updateSecurity({...security, type: 'pin'}));
-    } else if (value === 1) {
-      dispatch(updateSecurity({...security, type: 'biometrics'}));
-    }
+    dispatch(updateSecurity({...security, type: value}));
   };
 
   const toggleAddPinModal = () => {
@@ -52,45 +58,43 @@ const SecurityScreen = () => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.enableLock}>
+      <Title>Security</Title>
+      <Subheading>Lock Settings</Subheading>
+      <View style={styles.switchOption}>
         {/* Secton  to enable lock */}
-        <Text category="c1">
-          <Text category="h5">Enable Lock</Text>(experimental)
-        </Text>
-        <Toggle checked={security.enabled} onChange={changeLockEnabled} />
+        <Paragraph>Enable Lock (experimental)</Paragraph>
+        <Switch value={security.enabled} onValueChange={changeLockEnabled} />
       </View>
-      <View style={styles.enableLock}>
+      <View style={styles.switchOption}>
         {/* Secton  to enable lock */}
-        <Text category="c1">
-          <Text category="h5">Lock On Backgorund</Text>(experimental)
-        </Text>
-        <Toggle
+        <Paragraph>Lock On Backgorund (experimental)</Paragraph>
+        <Switch
           disabled={!security.enabled}
-          checked={security.lockOnBackground}
-          onChange={changeLockOnBackground}
+          value={security.lockOnBackground}
+          onValueChange={changeLockOnBackground}
         />
       </View>
       <View>
         {/* Section to set a type of security */}
-        <Text category="c1">
-          <Text category="h5">Set Security Type</Text> (experimental)
-        </Text>
-        {!security.enabled && (
-          <Text category="c2">Enable lock to choose a type</Text>
-        )}
-        <RadioGroup
-          onChange={changeSecurityType}
-          selectedIndex={security.type === 'biometrics' ? 1 : 0}>
-          <Radio disabled={!security.enabled}>Pin Security</Radio>
-          <Radio disabled={!security.enabled}>
-            Biometrics Security
-            <Text category="label"> (pin will still be used as a backup)</Text>
-          </Radio>
-        </RadioGroup>
+        <Paragraph>Preffered Authentication Method (experimental)</Paragraph>
+        {!security.enabled && <Caption>Enable lock to choose a type</Caption>}
+        <RadioButton.Group
+          onValueChange={changeSecurityType}
+          value={security.type}>
+          <View style={styles.radioOption}>
+            <RadioButton disabled={!security.enabled} value="pin" />
+            <Paragraph>Pin Security</Paragraph>
+          </View>
+          <View style={styles.radioOption}>
+            <RadioButton disabled={!security.enabled} value="biometrics" />
+            <Paragraph>Biometrics Security </Paragraph>
+            <Caption> (pin will still be used as a backup)</Caption>
+          </View>
+        </RadioButton.Group>
       </View>
       <View>
         <AddPinModal visible={isAddPinModalOpen} closeModal={closeModal} />
-        <Button onPress={toggleAddPinModal}> Add Pin </Button>
+        <Button onPress={toggleAddPinModal}>Add Pin</Button>
         {/*! Remove This in final Version */}
         <Button onPress={() => dispatch(updateLockedStatus({locked: true}))}>
           Lock App
@@ -104,9 +108,14 @@ export default SecurityScreen;
 
 const styles = StyleSheet.create({
   screen: {padding: 10},
-  enableLock: {
+  switchOption: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 15,
+    alignItems: 'center',
+  },
+  radioOption: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
 });

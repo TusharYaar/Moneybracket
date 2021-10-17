@@ -4,6 +4,7 @@ import AppNavigator from './navigators/AppNavigator';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
+import {Provider as PaperProvider} from 'react-native-paper';
 import {NavigationContainer} from '@react-navigation/native';
 import {default as theme} from './themes/custom-theme.json';
 
@@ -35,9 +36,11 @@ const AppContainer = () => {
   return (
     <NavigationContainer>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={{...eva.light, ...theme}}>
-        <AppNavigator />
-      </ApplicationProvider>
+      <PaperProvider>
+        <ApplicationProvider {...eva} theme={{...eva.light, ...theme}}>
+          <AppNavigator />
+        </ApplicationProvider>
+      </PaperProvider>
     </NavigationContainer>
   );
 };
