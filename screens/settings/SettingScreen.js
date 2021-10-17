@@ -1,20 +1,40 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Button, Divider, List} from '@ui-kitten/components';
+import {StyleSheet, View} from 'react-native';
+import {Divider, List} from 'react-native-paper';
 
-import settingsData from '../../data/settings';
-
-import NavigationListItem from '../../components/NavigationListItem';
+import TranslateText from '../../components/TranslateText';
 
 const SettingScreen = ({navigation}) => {
+  const handleClick = screen => {
+    navigation.navigate(screen);
+  };
   return (
-    <List
-      data={settingsData}
-      ItemSeparatorComponent={Divider}
-      renderItem={({item}) => (
-        <NavigationListItem item={item} navigation={navigation} />
-      )}
-    />
+    <View>
+      <List.Item
+        title={<TranslateText translate="appearance" />}
+        left={props => <List.Icon {...props} icon="format-color-fill" />}
+        onPress={() => handleClick('Appearance')}
+      />
+      <Divider />
+      <List.Item
+        title={<TranslateText translate="notifications" />}
+        left={props => <List.Icon {...props} icon="bell-ring" />}
+        onPress={() => handleClick('Notifications')}
+      />
+      <Divider />
+      <List.Item
+        title={<TranslateText translate="security" />}
+        left={props => <List.Icon {...props} icon="account-lock" />}
+        onPress={() => handleClick('Security')}
+      />
+      <Divider />
+      <List.Item
+        title={<TranslateText translate="currency" />}
+        left={props => <List.Icon {...props} icon="credit-card" />}
+        onPress={() => handleClick('Currency')}
+      />
+      <Divider />
+    </View>
   );
 };
 

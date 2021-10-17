@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Icon, ListItem} from '@ui-kitten/components';
+import {List} from 'react-native-paper';
 import TranslateText from '../components/TranslateText';
 const NavigationListItem = ({item, navigation}) => {
   const navigate = () => {
@@ -8,10 +9,9 @@ const NavigationListItem = ({item, navigation}) => {
   };
 
   return (
-    <ListItem
-      {...item}
-      title={() => <TranslateText translate={item.key} style={styles.title} />}
-      accessoryLeft={props => <Icon {...props} name={item.icon} />}
+    <List.Item
+      title={<TranslateText translate={item.key} style={styles.title} />}
+      left={props => <List.Icon {...props} icon={item.icon} />}
       onPress={navigate}
     />
   );
