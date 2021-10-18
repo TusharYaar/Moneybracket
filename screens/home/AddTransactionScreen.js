@@ -6,8 +6,6 @@ import {
   FlatList,
 } from 'react-native';
 import {
-  Button,
-  Text,
   Input,
   Datepicker,
   Card,
@@ -16,6 +14,9 @@ import {
   Modal,
   SelectItem,
 } from '@ui-kitten/components';
+
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {Button, Caption, Menu, TextInput} from 'react-native-paper';
 
 import ImageIcon from '../../components/ImageIcon';
 
@@ -35,29 +36,35 @@ const AddTransactionScreen = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [modalOpen, setModalOpen] = useState(false);
   const [transactionDate, setTransactionDate] = useState(new Date());
+  const [showDate, setShowDate] = useState(false);
   const [transactionAmount, setTransactionAmount] = useState('');
   const [transactionNote, setTransactionNote] = useState('');
   const [selectedCurrency, setSelectedCurrency] = useState(
     avalibleExchangeRates.find(item => item.code === currency.base),
   );
-  const [selectedIndex, setSelectedIndex] = useState(
-    new IndexPath(
-      avalibleExchangeRates.findIndex(item => item.code === currency.base),
-    ),
-  );
+  const [changeCurrencyVisible, setChangeCurrencyVisible] = useState(false);
+
+  const handleDateChange = ({nativeEvent, type}) => {
+    setShowDate(false);
+    if (type === 'set') {
+      setTransactionDate(nativeEvent.timestamp);
+    }
+  };
 
   const handleTransactionAmount = value => {
     setTransactionAmount(value.replace(/([^0-9.])/g, ''));
   };
-  const handleChangeCurrency = index => {
-    const item = avalibleExchangeRates[index.row];
+
+  const handleChangeCurrency = code => {
+    setChangeCurrencyVisible(false);
+    const item = avalibleExchangeRates.find(currency => code === currency.code);
     setSelectedCurrency(item);
-    setSelectedIndex(index);
   };
   const handleChangeCategory = category => {
     setSelectedCategory(category);
     setModalOpen(false);
   };
+
   const handleSubmit = async () => {
     try {
       var transactionObject = {
@@ -72,7 +79,6 @@ const AddTransactionScreen = ({navigation}) => {
         note: transactionNote,
         category: selectedCategory.category,
       };
-      // console.log(transactionObject);
       const response = await insertTransactions(transactionObject);
       dispatch(addTransaction(response));
       navigation.pop();
@@ -83,47 +89,53 @@ const AddTransactionScreen = ({navigation}) => {
   return (
     <View style={styles.screen}>
       <View>
-        <Datepicker
-          label="Date"
-          placeholder="Pick A Date"
-          date={transactionDate}
-          onSelect={nextDate => setTransactionDate(nextDate)}
-        />
+        <Button onPress={() => setShowDate(true)}>Date</Button>
+        {showDate && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={transactionDate}
+            mode="date"
+            is24Hour={true}
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
       </View>
       <View style={styles.addAmountContainer}>
-        <Select
-          onSelect={handleChangeCurrency}
-          selectedIndex={selectedIndex}
-          value={selectedCurrency.symbol}
-          style={styles.symbolSelect}>
-          {avalibleExchangeRates.map(rate => (
-            <SelectItem
-              key={rate.code}
-              title={() => (
-                <Text category="c1">{`${rate.symbol} (${rate.code})`}</Text>
-              )}
-              accessoryLeft={<ImageIcon uri={rate.flag} />}
-            />
-          ))}
-        </Select>
-        <View style={styles.seperator} />
-        <Input
+        <TextInput
           placeholder="Transaction Amount"
           style={styles.amount}
-          caption={
-            selectedCurrency.code != currency.base && transactionAmount.length
-              ? `${currency.symbol} ${(
-                  (1 / selectedCurrency.rate) *
-                  parseInt(transactionAmount)
-                ).toFixed(2)}`
-              : null
-          }
           value={transactionAmount}
           onChangeText={handleTransactionAmount}
           keyboardType="decimal-pad"
         />
+        <View style={styles.seperator} />
+        <Menu
+          visible={changeCurrencyVisible}
+          anchor={
+            <Button
+              onPress={() => setChangeCurrencyVisible(!changeCurrencyVisible)}>
+              {selectedCurrency.code}
+            </Button>
+          }>
+          {avalibleExchangeRates.map(rate => (
+            <Menu.Item
+              key={rate.code}
+              onPress={() => handleChangeCurrency(rate.code)}
+              title={`${rate.symbol} (${rate.code})`}
+            />
+          ))}
+        </Menu>
       </View>
-      <Input
+      {selectedCurrency.code != currency.base && transactionAmount.length > 0 && (
+        <Caption>
+          {currency.symbol}
+          {((1 / selectedCurrency.rate) * parseInt(transactionAmount)).toFixed(
+            2,
+          )}
+        </Caption>
+      )}
+      <TextInput
         placeholder="Note"
         label="Note"
         multiline
@@ -131,14 +143,14 @@ const AddTransactionScreen = ({navigation}) => {
         onChangeText={text => setTransactionNote(text)}
       />
       <View style={styles.selectContainer}>
-        <Text category="c1">Category</Text>
+        <Caption category="c1">Category</Caption>
         <TouchableNativeFeedback onPress={() => setModalOpen(true)}>
           <View style={[styles.select, styles.padding]}>
             <View style={styles.select}>
               <ImageIcon uri={selectedCategory.imageUri} />
-              <Text category="h6">{selectedCategory.category}</Text>
+              <Caption category="h6">{selectedCategory.category}</Caption>
             </View>
-            <Text category="h6">{selectedCategory.type}</Text>
+            <Caption category="h6">{selectedCategory.type}</Caption>
           </View>
         </TouchableNativeFeedback>
       </View>
