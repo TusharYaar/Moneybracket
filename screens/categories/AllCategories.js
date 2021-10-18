@@ -8,26 +8,15 @@ import CategoryItem from '../../components/CategoryItem';
 import TranslateText from '../../components/TranslateText';
 import FloatingButton from '../../components/FloatingButton';
 
-import {deleteCategoryFromDB} from '../../helpers/asyncFunctions';
-import {deleteCategory} from '../../store/actions/categories';
-
 const Filters = ['All', 'Income', 'Expense'];
 
 const AllCategories = ({navigation}) => {
   const categories = useSelector(state => state.categories.categories);
-  const dispatch = useDispatch();
+
   const [filterIndex, setFilterIndex] = useState(new IndexPath(0));
   const [filteredCategories, setFilteredCategories] = useState(categories);
-  const onDeleteCategory = async category => {
-    try {
-      await deleteCategoryFromDB(category);
-      dispatch(deleteCategory(category));
-    } catch (err) {
-      Alert.alert('Error', err.message);
-    }
-  };
   const handleEdit = categoryItem => {
-    navigation.navigate('EditCategory', {category: categoryItem});
+    navigation.navigate('ViewCategory', {...categoryItem});
   };
   useEffect(() => {
     switch (filterIndex.row) {
@@ -62,12 +51,7 @@ const AllCategories = ({navigation}) => {
         style={styles.flatlist}
         keyExtractor={item => item.category}
         renderItem={item => (
-          <CategoryItem
-            item={item.item}
-            onDelete={onDeleteCategory}
-            onPress={handleEdit}
-            showDelete={true}
-          />
+          <CategoryItem item={item.item} onPress={handleEdit} />
         )}
       />
       <FloatingButton
