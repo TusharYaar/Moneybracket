@@ -15,7 +15,20 @@ const ExchangeRatesScreen = () => {
   const allExchangeRates = useSelector(state => state.exchangeRates.rates);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const fetchExchangeRates = useCallback(async () => {}, [baseCurrency]);
+  const [favoritesRate, setFavoritesRate] = useState([]);
+  const fetchExchangeRates = useCallback(async () => {
+    setIsLoading(false);
+  }, [baseCurrency]);
+
+  useEffect(() => {
+    const rates = allExchangeRates.reduce((acc, element) => {
+      if (favorites.includes(element.code)) {
+        return [element, ...acc];
+      }
+      return [...acc, element];
+    }, []);
+    setFavoritesRate(rates);
+  }, [favorites]);
 
   const updateFavoritesHandler = code => {
     if (favorites.indexOf(code) !== -1)
@@ -24,10 +37,9 @@ const ExchangeRatesScreen = () => {
       );
     else dispatch(updateFavorites({favorites: favorites.concat(code)}));
   };
-
   return (
     <FlatList
-      data={allExchangeRates}
+      data={favoritesRate}
       ItemSeparatorComponent={Divider}
       onRefresh={() => fetchExchangeRates()}
       refreshing={isLoading}

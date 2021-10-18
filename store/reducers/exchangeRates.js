@@ -7,7 +7,7 @@ const initialState = {
 export default (state = initialState, {type, payload}) => {
   switch (type) {
     case SET_RATES:
-      return {rates: [...payload], loaded: true};
+      return {rates: payload, loaded: true};
     default:
       return state;
   }
