@@ -19,6 +19,7 @@ export default English = {
     undefined: 'Undefined',
     categories: 'Categories',
     add_category: 'Add Category',
+    recurring_payments: 'Recurring Payments',
   },
   numbers: {
     1: '1',

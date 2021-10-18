@@ -18,6 +18,7 @@ export default Hindi = {
     undefined: 'अपरिभाषित',
     categories: 'वर्ग',
     add_category: 'वर्ग जोड़ें',
+    recurring_payments: 'पुनर्वास किया हुआ',
   },
   numbers: {
     1: '१',

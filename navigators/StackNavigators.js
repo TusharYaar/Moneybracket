@@ -19,10 +19,15 @@ import AddCategory from '../screens/categories/AddCategory';
 import ViewCategory from '../screens/categories/ViewCategory';
 import ExchangeTabNavigator from './ExchangeTabNavigator';
 
+import AddRecurringPaymentsScreen from '../screens/recurringPayments/AddRecurringPaymentsScreen';
+import EditRecurringPaymentsScreen from '../screens/recurringPayments/EditRecurringPaymentsScreen';
+import AllRecurringPaymentsScreen from '../screens/recurringPayments/AllRecurringPaymentsScreen';
+
 const HomeStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 const CategoriesStack = createNativeStackNavigator();
 const ExchangeStack = createNativeStackNavigator();
+const ReccurringPaymentStack = createNativeStackNavigator();
 
 export const SettingsStackNavigator = () => {
   return (
@@ -115,6 +120,34 @@ export const ExchangeStackNavigator = () => {
         }
       />
     </ExchangeStack.Navigator>
+  );
+};
+
+export const ReccurringPaymentStackNavigator = () => {
+  return (
+    <ReccurringPaymentStack.Navigator>
+      <ReccurringPaymentStack.Screen
+        name="AllRecurringPayments"
+        component={AllRecurringPaymentsScreen}
+        options={({navigation}) =>
+          screenOptionsWithDrawer(navigation, 'recurring_payments')
+        }
+      />
+      <ReccurringPaymentStack.Screen
+        name="EditRecurringPayments"
+        component={EditRecurringPaymentsScreen}
+        options={({navigation}) =>
+          screenOptionsWithDrawer(navigation, 'recurring_payments')
+        }
+      />
+      <ReccurringPaymentStack.Screen
+        name="AddRecurringPayments"
+        component={AddRecurringPaymentsScreen}
+        options={({navigation}) =>
+          screenOptionsWithDrawer(navigation, 'recurring_payments')
+        }
+      />
+    </ReccurringPaymentStack.Navigator>
   );
 };
 
