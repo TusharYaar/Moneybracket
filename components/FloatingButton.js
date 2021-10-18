@@ -1,7 +1,6 @@
 import {Icon} from '@ui-kitten/components';
 import React from 'react';
 import {StyleSheet, Text, View, TouchableNativeFeedback} from 'react-native';
-// import
 
 const FloatingButton = props => {
   return (

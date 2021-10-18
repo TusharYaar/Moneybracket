@@ -5,7 +5,13 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {translateAppText, getFont} from '../helpers/translate';
-import {Paragraph, Headline, Subheading, Caption} from 'react-native-paper';
+import {
+  Paragraph,
+  Headline,
+  Subheading,
+  Caption,
+  Title,
+} from 'react-native-paper';
 
 const TranslateText = props => {
   const language = useSelector(state => state.settings.language);
@@ -20,6 +26,9 @@ const TranslateText = props => {
       break;
     case 'caption':
       Category = Caption;
+      break;
+    case 'title':
+      Category = Title;
       break;
     default:
       Category = Paragraph;

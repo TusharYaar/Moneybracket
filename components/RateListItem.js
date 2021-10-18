@@ -1,8 +1,7 @@
 import React from 'react';
 import {StyleSheet, Image, View} from 'react-native';
-import {Text} from '@ui-kitten/components';
+import {Caption, IconButton} from 'react-native-paper';
 import TranslateText from './TranslateText';
-import IconButton from './IconButton';
 
 const RateListItem = ({
   item,
@@ -22,19 +21,19 @@ const RateListItem = ({
             tag="countries"
             style={styles.country}
           />
-          <TranslateText category="c1" tag="numbers">
+          <TranslateText tag="numbers">
             {`1 ${baseSymbol} = ${item.rate.toFixed(3)} ${item.symbol}`}
           </TranslateText>
 
-          <Text category="c1">{item.code}</Text>
+          <Caption category="subheading">{item.code}</Caption>
         </View>
       </View>
       <View style={styles.textValue}>
-        <TranslateText tag="numbers" category="h5">
+        <TranslateText tag="numbers" category="headline">
           {(item.rate * value).toFixed(2)} {item.symbol}
         </TranslateText>
         <IconButton
-          name={isFavorite ? 'star' : 'star-outline'}
+          icon={isFavorite ? 'star' : 'star-outline'}
           onPress={() => {
             updateFavorites(item.code);
           }}
@@ -69,9 +68,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 5,
   },
-  country: {
-    fontSize: 14,
-  },
+  // country: {
+  //   fontSize: 14,
+  // },
   textValue: {
     alignItems: 'center',
     flexDirection: 'row',

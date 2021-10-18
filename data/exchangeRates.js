@@ -1,5 +1,5 @@
 import ExchangeRate from '../models/exchangeRate.js'; //(key, code, country, flag, symbol)
-export default avalibleExchangeRates = [
+const rates = [
   new ExchangeRate(
     'india',
     'INR',
@@ -42,13 +42,7 @@ export default avalibleExchangeRates = [
     'https://www.countryflags.io/au/flat/64.png',
     '$',
   ),
-  new ExchangeRate(
-    'new_zealand',
-    'NZD',
-    'New Zealand',
-    'https://www.countryflags.io/nz/flat/64.png',
-    '$',
-  ),
+
   new ExchangeRate(
     'switzerland',
     'CHF',
@@ -62,6 +56,13 @@ export default avalibleExchangeRates = [
     'Russia',
     'https://www.countryflags.io/ru/flat/64.png',
     'RUB',
+  ),
+  new ExchangeRate(
+    'new_zealand',
+    'NZD',
+    'New Zealand',
+    'https://www.countryflags.io/nz/flat/64.png',
+    '$',
   ),
   new ExchangeRate(
     'singapore',
@@ -127,3 +128,7 @@ export default avalibleExchangeRates = [
     'HK$',
   ),
 ];
+
+export default avalibleExchangeRates = rates.sort((a, b) => {
+  return a.country.localeCompare(b.country);
+});

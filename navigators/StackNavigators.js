@@ -17,10 +17,12 @@ import EditTransactionScreen from '../screens/home/EditTransactionScreen';
 import AllCategories from '../screens/categories/AllCategories';
 import AddCategory from '../screens/categories/AddCategory';
 import EditCategory from '../screens/categories/EditCategory';
+import ExchangeTabNavigator from './ExchangeTabNavigator';
 
 const HomeStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 const CategoriesStack = createNativeStackNavigator();
+const ExchangeStack = createNativeStackNavigator();
 
 export const SettingsStackNavigator = () => {
   return (
@@ -102,6 +104,20 @@ export const CategoriesStackNavigator = () => {
   );
 };
 
+export const ExchangeStackNavigator = () => {
+  return (
+    <ExchangeStack.Navigator>
+      <ExchangeStack.Screen
+        name="Exchange"
+        component={ExchangeTabNavigator}
+        options={({navigation}) =>
+          screenOptionsWithDrawer(navigation, 'exchange_rates')
+        }
+      />
+    </ExchangeStack.Navigator>
+  );
+};
+
 const screenOptionsWithDrawer = (navigation, title) => ({
   headerLeft: () => (
     <IconButton
@@ -111,17 +127,9 @@ const screenOptionsWithDrawer = (navigation, title) => ({
       }}
     />
   ),
-  headerTitle: props => (
-    <TranslateText category="headline" {...props}>
-      {title}
-    </TranslateText>
-  ),
+  headerTitle: props => <TranslateText {...props}>{title}</TranslateText>,
 });
 
 const screenOptionsWODrawer = title => ({
-  headerTitle: props => (
-    <TranslateText category="headline" {...props}>
-      {title}
-    </TranslateText>
-  ),
+  headerTitle: props => <TranslateText {...props}>{title}</TranslateText>,
 });

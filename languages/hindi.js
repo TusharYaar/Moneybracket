@@ -111,6 +111,7 @@ export default Hindi = {
     guyana: 'गयाना',
     haiti: 'हैती',
     honduras: 'हौण्डुरस',
+    hong_kong: 'हाँग कांग',
     hungary: 'हंगरी',
     iceland: 'आइसलैण्ड',
     india: 'भारत',

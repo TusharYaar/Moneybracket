@@ -7,9 +7,8 @@ import {
   SettingsStackNavigator,
   CategoriesStackNavigator,
   HomeStackNavigator,
+  ExchangeStackNavigator,
 } from './StackNavigators';
-
-import ExchangeRatesScreen from '../screens/ExchangeRatesScreen';
 
 import TranslateText from '../components/TranslateText';
 
@@ -50,7 +49,10 @@ const DrawerNavigator = () => {
         name="SettingsStack"
         component={SettingsStackNavigator}
       />
-      <SideDrawer.Screen name="ExchangeRates" component={ExchangeRatesScreen} />
+      <SideDrawer.Screen
+        name="ExchangeStack"
+        component={ExchangeStackNavigator}
+      />
       <SideDrawer.Screen
         name="CategoriesStack"
         component={CategoriesStackNavigator}

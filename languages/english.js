@@ -114,6 +114,7 @@ export default English = {
     haiti: 'Haiti',
     holy_see: 'Holy See',
     honduras: 'Honduras',
+    hong_kong: 'Hong Kong',
     hungary: 'Hungary',
     iceland: 'Iceland',
     india: 'India',
