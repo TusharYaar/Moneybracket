@@ -5,20 +5,33 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {translateAppText, getFont} from '../helpers/translate';
-import {Paragraph} from 'react-native-paper';
+import {Paragraph, Headline, Subheading, Caption} from 'react-native-paper';
 
 const TranslateText = props => {
   const language = useSelector(state => state.settings.language);
   const nativeNumbers = useSelector(state => state.settings.nativeNumbers);
+  let Category = Paragraph;
+  switch (props.category) {
+    case 'headline':
+      Category = Headline;
+      break;
+    case 'subheading':
+      Category = Subheading;
+      break;
+    case 'caption':
+      Category = Caption;
+      break;
+    default:
+      Category = Paragraph;
+  }
+
   return (
-    <Paragraph
-      {...props}
-      style={[props.style, {fontFamily: getFont(language)}]}>
+    <Category {...props} style={[props.style, {fontFamily: getFont(language)}]}>
       {props.translate &&
         translateAppText(language, nativeNumbers, props.translate, props.tag)}
       {props.children &&
         translateAppText(language, nativeNumbers, props.children, props.tag)}
-    </Paragraph>
+    </Category>
   );
 };
 

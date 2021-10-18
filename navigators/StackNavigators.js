@@ -1,7 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import IconButton from '../components/IconButton';
+import {IconButton} from 'react-native-paper';
 
 import SettingScreen from '../screens/settings/SettingScreen';
 import SecurityScreen from '../screens/settings/SecurityScreen';
@@ -10,7 +10,7 @@ import CurrencyScreen from '../screens/settings/CurrencyScreen';
 import AppearanceScreen from '../screens/settings/AppearanceScreen';
 import NotificationScreen from '../screens/settings/NotificationScreen';
 import TranslateText from '../components/TranslateText';
-import HomeScreen from '../screens/home/HomeScreen';
+import HomeTabNavigator from './HomeTabNavigator';
 import AddTransactionScreen from '../screens/home/AddTransactionScreen';
 import EditTransactionScreen from '../screens/home/EditTransactionScreen';
 
@@ -61,7 +61,7 @@ export const HomeStackNavigator = () => {
     <HomeStack.Navigator>
       <HomeStack.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeTabNavigator}
         options={({navigation}) => screenOptionsWithDrawer(navigation, 'home')}
       />
       <HomeStack.Screen
@@ -105,14 +105,14 @@ export const CategoriesStackNavigator = () => {
 const screenOptionsWithDrawer = (navigation, title) => ({
   headerLeft: () => (
     <IconButton
-      name="menu"
+      icon="menu"
       onPress={() => {
         navigation.openDrawer();
       }}
     />
   ),
   headerTitle: props => (
-    <TranslateText {...props} category="h5">
+    <TranslateText category="headline" {...props}>
       {title}
     </TranslateText>
   ),
@@ -120,7 +120,7 @@ const screenOptionsWithDrawer = (navigation, title) => ({
 
 const screenOptionsWODrawer = title => ({
   headerTitle: props => (
-    <TranslateText {...props} category="h5">
+    <TranslateText category="headline" {...props}>
       {title}
     </TranslateText>
   ),

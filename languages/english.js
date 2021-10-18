@@ -7,6 +7,8 @@ export default English = {
   translations: {
     add_transaction: 'Add Transaction',
     edit_transaction: 'Edit Transaction',
+    transactions: 'Transactions',
+    graphs: 'Graphs',
     settings: 'Settings',
     home: 'Home',
     appearance: 'Appearance',

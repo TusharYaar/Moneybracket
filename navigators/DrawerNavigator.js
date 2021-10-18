@@ -1,19 +1,14 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import {
-  Drawer,
-  DrawerItem,
-  Layout,
-  Text,
-  IndexPath,
-} from '@ui-kitten/components';
+import {Drawer, DrawerItem, IndexPath} from '@ui-kitten/components';
 
 import {
   SettingsStackNavigator,
-  HomeStackNavigator,
   CategoriesStackNavigator,
+  HomeStackNavigator,
 } from './StackNavigators';
+
 import ExchangeRatesScreen from '../screens/ExchangeRatesScreen';
 
 import TranslateText from '../components/TranslateText';
@@ -25,16 +20,22 @@ const DrawerContent = ({navigation, state}) => (
     selectedIndex={new IndexPath(state.index)}
     onSelect={index => navigation.navigate(state.routeNames[index.row])}>
     <DrawerItem
-      title={() => <TranslateText category="c1">home</TranslateText>}
+      title={() => <TranslateText category="subheading">home</TranslateText>}
     />
     <DrawerItem
-      title={() => <TranslateText category="c1">settings</TranslateText>}
+      title={() => (
+        <TranslateText category="subheading">settings</TranslateText>
+      )}
     />
     <DrawerItem
-      title={() => <TranslateText category="c1">exchange_rates</TranslateText>}
+      title={() => (
+        <TranslateText category="subheading">exchange_rates</TranslateText>
+      )}
     />
     <DrawerItem
-      title={() => <TranslateText category="c1">categories</TranslateText>}
+      title={() => (
+        <TranslateText category="subheading">categories</TranslateText>
+      )}
     />
   </Drawer>
 );
@@ -51,7 +52,7 @@ const DrawerNavigator = () => {
       />
       <SideDrawer.Screen name="ExchangeRates" component={ExchangeRatesScreen} />
       <SideDrawer.Screen
-        name="Categories"
+        name="CategoriesStack"
         component={CategoriesStackNavigator}
       />
     </SideDrawer.Navigator>

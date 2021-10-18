@@ -6,6 +6,8 @@ export default Hindi = {
   translations: {
     add_transaction: 'लेनदेन जोड़ें',
     edit_transaction: 'लेनदेन संपादित करें',
+    transactions: 'लेनदेन',
+    graphs: 'ग्राफ़',
     home: 'होम',
     settings: 'सेटिंग',
     appearance: 'दिखावट',
