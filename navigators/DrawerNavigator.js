@@ -8,7 +8,7 @@ import {
   CategoriesStackNavigator,
   HomeStackNavigator,
   ExchangeStackNavigator,
-  ReccurringPaymentStackNavigator,
+  RecurringTransactionStackNavigator,
 } from './StackNavigators';
 
 import TranslateText from '../components/TranslateText';
@@ -39,7 +39,9 @@ const DrawerContent = ({navigation, state}) => (
     />
     <DrawerItem
       title={() => (
-        <TranslateText category="subheading">recurring_payments</TranslateText>
+        <TranslateText category="subheading">
+          recurring_transactions
+        </TranslateText>
       )}
     />
   </Drawer>
@@ -64,8 +66,8 @@ const DrawerNavigator = () => {
         component={CategoriesStackNavigator}
       />
       <SideDrawer.Screen
-        name="RecurringPaymentsStack"
-        component={ReccurringPaymentStackNavigator}
+        name="RecurringTransactionsStack"
+        component={RecurringTransactionStackNavigator}
       />
     </SideDrawer.Navigator>
   );

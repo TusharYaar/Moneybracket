@@ -19,15 +19,15 @@ import AddCategory from '../screens/categories/AddCategory';
 import ViewCategory from '../screens/categories/ViewCategory';
 import ExchangeTabNavigator from './ExchangeTabNavigator';
 
-import AddRecurringPaymentsScreen from '../screens/recurringPayments/AddRecurringPaymentsScreen';
-import EditRecurringPaymentsScreen from '../screens/recurringPayments/EditRecurringPaymentsScreen';
-import AllRecurringPaymentsScreen from '../screens/recurringPayments/AllRecurringPaymentsScreen';
+import AddRecurringTransactionScreen from '../screens/recurringTransactions/AddRecurringTransactionScreen';
+import EditRecurringTransactionScreen from '../screens/recurringTransactions/EditRecurringTransactionScreen';
+import AllRecurringTransactionsScreen from '../screens/recurringTransactions/AllRecurringTransactionsScreen';
 
 const HomeStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 const CategoriesStack = createNativeStackNavigator();
 const ExchangeStack = createNativeStackNavigator();
-const ReccurringPaymentStack = createNativeStackNavigator();
+const RecurringTransactionStack = createNativeStackNavigator();
 
 export const SettingsStackNavigator = () => {
   return (
@@ -123,31 +123,31 @@ export const ExchangeStackNavigator = () => {
   );
 };
 
-export const ReccurringPaymentStackNavigator = () => {
+export const RecurringTransactionStackNavigator = () => {
   return (
-    <ReccurringPaymentStack.Navigator>
-      <ReccurringPaymentStack.Screen
-        name="AllRecurringPayments"
-        component={AllRecurringPaymentsScreen}
+    <RecurringTransactionStack.Navigator>
+      <RecurringTransactionStack.Screen
+        name="AllRecurringTransaction"
+        component={AllRecurringTransactionsScreen}
         options={({navigation}) =>
           screenOptionsWithDrawer(navigation, 'recurring_payments')
         }
       />
-      <ReccurringPaymentStack.Screen
+      <RecurringTransactionStack.Screen
         name="EditRecurringPayments"
-        component={EditRecurringPaymentsScreen}
+        component={EditRecurringTransactionScreen}
         options={({navigation}) =>
           screenOptionsWithDrawer(navigation, 'recurring_payments')
         }
       />
-      <ReccurringPaymentStack.Screen
+      <RecurringTransactionStack.Screen
         name="AddRecurringPayments"
-        component={AddRecurringPaymentsScreen}
+        component={AddRecurringTransactionScreen}
         options={({navigation}) =>
           screenOptionsWithDrawer(navigation, 'recurring_payments')
         }
       />
-    </ReccurringPaymentStack.Navigator>
+    </RecurringTransactionStack.Navigator>
   );
 };
 
