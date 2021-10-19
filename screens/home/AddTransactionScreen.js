@@ -5,15 +5,7 @@ import {
   TouchableNativeFeedback,
   FlatList,
 } from 'react-native';
-import {
-  Input,
-  Datepicker,
-  Card,
-  Select,
-  IndexPath,
-  Modal,
-  SelectItem,
-} from '@ui-kitten/components';
+import {Card, Modal} from '@ui-kitten/components';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Button, Caption, Menu, TextInput} from 'react-native-paper';

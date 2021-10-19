@@ -7,6 +7,10 @@ const APP_SETTINGS = '@app_settings';
 const USER_SETTINGS = '@user_settings';
 const CATEGORIES = '#categories';
 
+/**
+ * @async
+ * @returns User settings
+ */
 export const getAppSettings = () => {
   // function to get app settings form async storage
   return new Promise(async (resolve, reject) => {
@@ -23,6 +27,11 @@ export const getAppSettings = () => {
   });
 };
 
+/**
+ * @async
+ * @param {object} settings
+ * @returns
+ */
 export const setAppSettings = settings => {
   console.log('settings App settings');
   return new Promise(async (resolve, reject) => {

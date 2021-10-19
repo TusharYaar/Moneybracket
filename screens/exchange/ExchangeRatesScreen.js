@@ -1,5 +1,5 @@
 import React, {useEffect, useCallback, useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, Text} from 'react-native';
 
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -37,6 +37,9 @@ const ExchangeRatesScreen = () => {
       );
     else dispatch(updateFavorites({favorites: favorites.concat(code)}));
   };
+  if (favoritesRate.length === 0) {
+    <Text>Fetching exchange rates...</Text>;
+  }
   return (
     <FlatList
       data={favoritesRate}
