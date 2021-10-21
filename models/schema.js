@@ -1,7 +1,7 @@
 import {appSchema, tableSchema} from '@nozbe/watermelondb';
 
 export default mySchema = appSchema({
-  version: 4,
+  version: 5,
   tables: [
     tableSchema({
       name: 'transactions',
@@ -29,6 +29,7 @@ export default mySchema = appSchema({
         {name: 'category', type: 'string'},
         {name: 'letest_transaction_date', type: 'string'},
         {name: 'recurring_period', type: 'string'},
+        {name: 'start_from', type: 'string'},
         {name: 'created_on', type: 'string'},
       ],
     }),

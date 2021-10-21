@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View, Alert} from 'react-native';
-import {Radio, RadioGroup, Text, Toggle} from '@ui-kitten/components';
 
 import {
   RadioButton,
@@ -16,12 +15,14 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import {updateSecurity, updateLockedStatus} from '../../store/actions/settings';
 
-import AddPinModal from '../../components/AddPinModal';
-
-const SecurityScreen = () => {
+const SecurityScreen = ({navigation, route}) => {
   const security = useSelector(state => state.settings.security);
   const dispatch = useDispatch();
-  const [isAddPinModalOpen, setIsAddPinModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (route.params?.pinUpdated)
+      Alert.alert('Security', 'Pin Updated Seccessfully');
+  }, [route.params?.pinUpdated]);
   const changeLockEnabled = value => {
     if (value) {
       if (security.pin.length === 4) {
@@ -43,13 +44,6 @@ const SecurityScreen = () => {
     dispatch(updateSecurity({...security, type: value}));
   };
 
-  const toggleAddPinModal = () => {
-    setIsAddPinModalOpen(value => !value);
-  };
-  const closeModal = () => {
-    setIsAddPinModalOpen(false);
-  };
-
   const changeLockOnBackground = value => {
     if (security.enabled) {
       dispatch(updateSecurity({...security, lockOnBackground: value}));
@@ -60,13 +54,29 @@ const SecurityScreen = () => {
     <View style={styles.screen}>
       <Title>Security</Title>
       <Subheading>Lock Settings</Subheading>
-      <View style={styles.switchOption}>
-        {/* Secton  to enable lock */}
-        <Paragraph>Enable Lock (experimental)</Paragraph>
-        <Switch value={security.enabled} onValueChange={changeLockEnabled} />
+      <View>
+        {security.pin.length === 4 ? (
+          <Caption style={{color: 'green'}}>Pin Added</Caption>
+        ) : (
+          <Caption style={{color: 'red'}}>No Pin Added</Caption>
+        )}
+        <Button onPress={() => navigation.navigate('AddPin')}>
+          {security.pin.length === 4 ? 'Change Pin' : 'Add Pin'}
+        </Button>
       </View>
       <View style={styles.switchOption}>
         {/* Secton  to enable lock */}
+        <Paragraph>Enable Lock (experimental)</Paragraph>
+        <Switch
+          value={security.enabled}
+          onValueChange={changeLockEnabled}
+          disabled={security.pin.length != 4}
+        />
+        {security.pin.length != 4 && (
+          <Caption>Set a pin before enabling a lock</Caption>
+        )}
+      </View>
+      <View style={styles.switchOption}>
         <Paragraph>Lock On Backgorund (experimental)</Paragraph>
         <Switch
           disabled={!security.enabled}
@@ -93,8 +103,8 @@ const SecurityScreen = () => {
         </RadioButton.Group>
       </View>
       <View>
-        <AddPinModal visible={isAddPinModalOpen} closeModal={closeModal} />
-        <Button onPress={toggleAddPinModal}>Add Pin</Button>
+        {/* <AddPinModal visible={isAddPinModalOpen} closeModal={closeModal} /> */}
+
         {/*! Remove This in final Version */}
         <Button onPress={() => dispatch(updateLockedStatus({locked: true}))}>
           Lock App

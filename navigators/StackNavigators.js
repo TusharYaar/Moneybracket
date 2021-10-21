@@ -6,6 +6,7 @@ import {IconButton} from 'react-native-paper';
 import SettingScreen from '../screens/settings/SettingScreen';
 import SecurityScreen from '../screens/settings/SecurityScreen';
 import CurrencyScreen from '../screens/settings/CurrencyScreen';
+import AddPinScreen from '../screens/settings/AddPinScreen';
 
 import AppearanceScreen from '../screens/settings/AppearanceScreen';
 import NotificationScreen from '../screens/settings/NotificationScreen';
@@ -54,6 +55,12 @@ export const SettingsStackNavigator = () => {
         component={SecurityScreen}
         options={() => screenOptionsWODrawer('security')}
       />
+      <SettingsStack.Screen
+        name="AddPin"
+        component={AddPinScreen}
+        options={() => screenOptionsWODrawer('security')}
+      />
+
       <SettingsStack.Screen
         name="Currency"
         component={CurrencyScreen}

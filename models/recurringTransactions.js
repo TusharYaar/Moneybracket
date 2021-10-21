@@ -13,6 +13,7 @@ export default class RecurringPaymentsModel extends Model {
 
   @field('conversion_rate') conversion_rate;
   @field('transaction_amount') transaction_amount;
+  @field('start_from') start_from;
   @field('created_on') created_on;
   @field('latest_transaction_date') latest_transaction_date;
 }
