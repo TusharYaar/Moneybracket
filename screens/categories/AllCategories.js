@@ -4,7 +4,6 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
 
 import CategoryItem from '../../components/CategoryItem';
-import TranslateText from '../../components/TranslateText';
 import FloatingButton from '../../components/FloatingButton';
 
 import DropDown from 'react-native-paper-dropdown';
@@ -59,9 +58,8 @@ const AllCategories = ({navigation}) => {
       />
       <FloatingButton
         onPress={() => navigation.navigate('AddCategory')}
-        icon={'plus-outline'}>
-        <TranslateText category="h6">add_category</TranslateText>
-      </FloatingButton>
+        label="add_category"
+      />
     </View>
   );
 };

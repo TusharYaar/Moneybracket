@@ -1,46 +1,29 @@
-import {Icon} from '@ui-kitten/components';
 import React from 'react';
-import {StyleSheet, Text, View, TouchableNativeFeedback} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {FAB} from 'react-native-paper';
+import {translateAppText} from '../helpers/translate';
+import {useSelector} from 'react-redux';
 
 const FloatingButton = props => {
+  const language = useSelector(state => state.settings.language);
+  const nativeNumbers = useSelector(state => state.settings.nativeNumbers);
   return (
-    <View style={[styles.button, props.style]}>
-      <TouchableNativeFeedback onPress={props.onPress}>
-        <View style={styles.touchable}>
-          <Icon
-            name={props.icon}
-            fill={props.color ? props.color : 'black'}
-            style={styles.icon}
-          />
-          <Text>{props.children}</Text>
-        </View>
-      </TouchableNativeFeedback>
-    </View>
+    <FAB
+      style={styles.fab}
+      icon="plus"
+      onPress={props.onPress}
+      label={translateAppText(language, nativeNumbers, props.label, props.tag)}
+    />
   );
 };
 
 export default FloatingButton;
 
 const styles = StyleSheet.create({
-  button: {
+  fab: {
     position: 'absolute',
-    zIndex: 1,
-    bottom: 20,
-    right: 20,
-    borderRadius: 30,
-    overflow: 'hidden',
-    backgroundColor: 'orange',
-  },
-  touchable: {
-    borderRadius: 30,
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    width: 20,
-    height: 20,
-    marginLeft: 10,
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });

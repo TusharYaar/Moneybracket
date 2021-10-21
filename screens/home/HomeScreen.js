@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Alert, FlatList} from 'react-native';
+import {StyleSheet, View, Alert, FlatList} from 'react-native';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {setExchangeRates} from '../../store/actions/exchangeRates';
@@ -11,7 +11,6 @@ import {setTransactions} from '../../store/actions/transactions';
 
 import TransactionItem from '../../components/TransactionItem';
 import FloatingButton from '../../components/FloatingButton';
-import TranslateText from '../../components/TranslateText';
 
 const HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -42,11 +41,6 @@ const HomeScreen = ({navigation}) => {
   // if (transactions.length === 0) return <Text>NO Transaction</Text>;
   return (
     <View style={styles.screen}>
-      <FloatingButton
-        onPress={() => navigation.navigate('AddTransaction')}
-        icon={'plus-outline'}>
-        <TranslateText category="h6">add_transaction</TranslateText>
-      </FloatingButton>
       <FlatList
         data={transactions}
         renderItem={item => (
@@ -59,6 +53,10 @@ const HomeScreen = ({navigation}) => {
             }
           />
         )}
+      />
+      <FloatingButton
+        onPress={() => navigation.navigate('AddTransaction')}
+        label="add_transaction"
       />
     </View>
   );

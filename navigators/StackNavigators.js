@@ -130,22 +130,18 @@ export const RecurringTransactionStackNavigator = () => {
         name="AllRecurringTransaction"
         component={AllRecurringTransactionsScreen}
         options={({navigation}) =>
-          screenOptionsWithDrawer(navigation, 'recurring_payments')
+          screenOptionsWithDrawer(navigation, 'recurring_transactions')
         }
       />
       <RecurringTransactionStack.Screen
-        name="EditRecurringPayments"
+        name="EditRecurringTransaction"
         component={EditRecurringTransactionScreen}
-        options={({navigation}) =>
-          screenOptionsWithDrawer(navigation, 'recurring_payments')
-        }
+        options={() => screenOptionsWODrawer('recurring_transactions')}
       />
       <RecurringTransactionStack.Screen
-        name="AddRecurringPayments"
+        name="AddRecurringTransaction"
         component={AddRecurringTransactionScreen}
-        options={({navigation}) =>
-          screenOptionsWithDrawer(navigation, 'recurring_payments')
-        }
+        options={() => screenOptionsWODrawer('recurring_transactions')}
       />
     </RecurringTransactionStack.Navigator>
   );
