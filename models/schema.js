@@ -1,7 +1,7 @@
 import {appSchema, tableSchema} from '@nozbe/watermelondb';
 
 export default mySchema = appSchema({
-  version: 5,
+  version: 1,
   tables: [
     tableSchema({
       name: 'transactions',
