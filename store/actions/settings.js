@@ -20,10 +20,16 @@ export const updateLanguage = payload => {
   };
 };
 
-export const updateTheme = payload => ({
-  type: UPDATE_THEME,
-  payload,
-});
+export const updateTheme = payload => {
+  return async (dispatch, getState) => {
+    const {settings} = getState();
+    await setAppSettings({...settings, theme: payload});
+    dispatch({
+      type: UPDATE_THEME,
+      payload,
+    });
+  };
+};
 
 export const setDefaultSettings = payload => {
   return async (dispatch, getState) => {

@@ -57,6 +57,8 @@ export default (state = initialState, {type, payload}) => {
         locked: false,
         currency: {...state.currency, ...payload},
       };
+    case UPDATE_THEME:
+      return {...state, theme: payload};
     default:
       return state;
   }

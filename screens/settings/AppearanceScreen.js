@@ -1,17 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   RadioButton,
   Button,
-  Text,
   Switch,
   Title,
   Subheading,
   Paragraph,
 } from 'react-native-paper';
 
+import DropDown from 'react-native-paper-dropdown';
+
 import {useSelector, useDispatch} from 'react-redux';
-import {updateLanguage} from '../../store/actions/settings';
+import {updateLanguage, updateTheme} from '../../store/actions/settings';
+import {changeTheme} from '../../store/actions/allThemes';
 
 import TranslateText from '../../components/TranslateText';
 
@@ -19,7 +21,10 @@ import {removeSettings} from '../../helpers/asyncFunctions';
 
 const AppearanceScreen = () => {
   const language = useSelector(state => state.settings.language);
+  const currentTheme = useSelector(state => state.settings.theme);
   const nativeNumbers = useSelector(state => state.settings.nativeNumbers);
+  const allThemes = useSelector(state => state.themes.allThemes);
+  const [showThemeDropdown, setShowThemeDropdown] = useState(false);
   const dispatch = useDispatch();
 
   const changeLanguage = value => {
@@ -27,6 +32,11 @@ const AppearanceScreen = () => {
   };
   const changeNativeNumbers = value => {
     dispatch(updateLanguage({nativeNumbers: value}));
+  };
+
+  const handlechangeTheme = id => {
+    dispatch(updateTheme(id));
+    dispatch(changeTheme(id));
   };
 
   return (
@@ -47,7 +57,18 @@ const AppearanceScreen = () => {
         <Paragraph category="h6">Enable Native Language Numbers </Paragraph>
         <Switch value={nativeNumbers} onValueChange={changeNativeNumbers} />
       </View>
-
+      <DropDown
+        label="Theme"
+        mode="outlined"
+        visible={showThemeDropdown}
+        showDropDown={() => setShowThemeDropdown(true)}
+        onDismiss={() => setShowThemeDropdown(false)}
+        value={currentTheme}
+        setValue={handlechangeTheme}
+        list={allThemes.map(theme => {
+          return {label: theme.name, value: theme.id};
+        })}
+      />
       <Button onPress={removeSettings} mode="contained">
         Clear Storage
       </Button>
