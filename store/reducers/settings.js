@@ -8,7 +8,7 @@ import {
   DEFAULT_SETTINGS,
 } from '../actions/settings';
 const initialState = {
-  theme: 'light',
+  theme: 'default',
   onboardingDone: true,
   loaded: false,
   locked: true,

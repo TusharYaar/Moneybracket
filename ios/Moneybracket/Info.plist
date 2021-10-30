@@ -79,6 +79,15 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>NotoSans-Black.ttf</string>
+		<string>NotoSans-Bold.ttf</string>
+		<string>NotoSans-ExtraBold.ttf</string>
+		<string>NotoSans-ExtraLight.ttf</string>
+		<string>NotoSans-Light.ttf</string>
+		<string>NotoSans-Medium.ttf</string>
+		<string>NotoSans-Regular.ttf</string>
+		<string>NotoSans-SemiBold.ttf</string>
+		<string>NotoSans-Thin.ttf</string>
 	</array>
 </dict>
 </plist>

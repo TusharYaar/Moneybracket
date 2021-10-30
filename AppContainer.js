@@ -1,20 +1,19 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {AppState} from 'react-native';
 import AppNavigator from './navigators/AppNavigator';
-import {EvaIconsPack} from '@ui-kitten/eva-icons';
-import * as eva from '@eva-design/eva';
-import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {NavigationContainer} from '@react-navigation/native';
-import {default as theme} from './themes/custom-theme.json';
 
-import {useDispatch} from 'react-redux';
+import defaultThemes from './data/defaultThemes';
+
+import {useDispatch, useSelector} from 'react-redux';
 import {lockOnBackgroundFunction} from './store/actions/settings';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
-
   const appState = useRef(AppState.currentState);
+  const currentThemeObj = useSelector(state => state.themes.currentTheme);
+  useEffect(() => {}, []);
 
   // useEffect(() => {
   //   // This function dispatches a redux action to lock the app on background if the appstatus  is inactive or background
@@ -32,14 +31,10 @@ const AppContainer = () => {
   //     subscription.remove();
   //   };
   // }, []);
-
   return (
     <NavigationContainer>
-      <IconRegistry icons={EvaIconsPack} />
-      <PaperProvider>
-        <ApplicationProvider {...eva} theme={{...eva.light, ...theme}}>
-          <AppNavigator />
-        </ApplicationProvider>
+      <PaperProvider theme={currentThemeObj}>
+        <AppNavigator />
       </PaperProvider>
     </NavigationContainer>
   );
