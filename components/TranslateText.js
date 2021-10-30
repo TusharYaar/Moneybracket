@@ -4,7 +4,7 @@
 // defaults to c1 text style
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {translateAppText, getFont} from '../helpers/translate';
+import {translateAppText} from '../helpers/translate';
 import {
   Paragraph,
   Headline,
@@ -35,7 +35,7 @@ const TranslateText = props => {
   }
 
   return (
-    <Category {...props} style={[props.style, {fontFamily: getFont(language)}]}>
+    <Category {...props} style={props.style}>
       {props.translate &&
         translateAppText(language, nativeNumbers, props.translate, props.tag)}
       {props.children &&

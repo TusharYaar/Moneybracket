@@ -19,5 +19,5 @@ const NavigationListItem = ({item, navigation}) => {
 export default NavigationListItem;
 
 const styles = StyleSheet.create({
-  title: {fontSize: 16},
+  title: {fontWeight: 'bold', color: 'green'},
 });

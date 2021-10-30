@@ -24,6 +24,8 @@ import AddRecurringTransactionScreen from '../screens/recurringTransactions/AddR
 import EditRecurringTransactionScreen from '../screens/recurringTransactions/EditRecurringTransactionScreen';
 import AllRecurringTransactionsScreen from '../screens/recurringTransactions/AllRecurringTransactionsScreen';
 
+import ChooseColorScreen from '../screens/ChooseColorScreen';
+
 const HomeStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 const CategoriesStack = createNativeStackNavigator();
@@ -43,6 +45,11 @@ export const SettingsStackNavigator = () => {
       <SettingsStack.Screen
         name="Appearance"
         component={AppearanceScreen}
+        options={() => screenOptionsWODrawer('appearance')}
+      />
+      <SettingsStack.Screen
+        name="ChooseColor"
+        component={ChooseColorScreen}
         options={() => screenOptionsWODrawer('appearance')}
       />
       <SettingsStack.Screen
@@ -111,6 +118,11 @@ export const CategoriesStackNavigator = () => {
         name="ViewCategory"
         component={ViewCategory}
         options={() => screenOptionsWODrawer('view_category')}
+      />
+      <CategoriesStack.Screen
+        name="ChooseColor"
+        component={ChooseColorScreen}
+        options={() => screenOptionsWODrawer('appearance')}
       />
     </CategoriesStack.Navigator>
   );

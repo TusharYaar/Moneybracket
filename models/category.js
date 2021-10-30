@@ -1,7 +1,7 @@
 export default class Category {
-  constructor(category, imageUri, type) {
+  constructor(category, color, type) {
     this.category = category;
-    this.imageUri = imageUri;
+    this.color = color;
     this.type = type ? type : 'expense';
   }
 }

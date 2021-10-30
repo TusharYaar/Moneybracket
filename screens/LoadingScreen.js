@@ -6,6 +6,8 @@ import {getAppSettings, getCategories} from '../helpers/asyncFunctions';
 import {useDispatch} from 'react-redux';
 
 import {setDefaultSettings, setSettings} from '../store/actions/settings';
+import {changeTheme} from '../store/actions/allThemes';
+
 import {setCategories} from '../store/actions/categories';
 
 const LoadingScreen = () => {
@@ -18,6 +20,7 @@ const LoadingScreen = () => {
       const settings = await getAppSettings();
       if (settings) {
         dispatch(setSettings(settings));
+        dispatch(changeTheme(settings.theme));
       } else dispatch(setDefaultSettings());
     } catch (error) {
       dispatch(setDefaultSettings());

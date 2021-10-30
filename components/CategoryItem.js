@@ -1,15 +1,16 @@
 import React from 'react';
 import {StyleSheet, View, Image, TouchableNativeFeedback} from 'react-native';
 import {Headline, Paragraph} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const CategoryItem = ({item, onDelete, onPress, showDelete}) => {
+const CategoryItem = ({item, onPress}) => {
   const handlePress = () => {
     onPress(item);
   };
   return (
     <TouchableNativeFeedback onPress={handlePress}>
       <View style={styles.container}>
-        <Image style={styles.image} source={{uri: item.imageUri}} />
+        <Icon name="circle" size={30} color={item.color} />
         <View style={styles.textContainer}>
           <Headline category="h4">{item.category}</Headline>
           <Paragraph style={styles[item.type]}>{item.type}</Paragraph>
