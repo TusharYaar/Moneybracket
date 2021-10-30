@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Button} from '@ui-kitten/components';
+import {Button} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 
 const FingerprintLockScreen = props => {

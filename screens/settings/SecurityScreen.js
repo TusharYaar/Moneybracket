@@ -103,8 +103,6 @@ const SecurityScreen = ({navigation, route}) => {
         </RadioButton.Group>
       </View>
       <View>
-        {/* <AddPinModal visible={isAddPinModalOpen} closeModal={closeModal} /> */}
-
         {/*! Remove This in final Version */}
         <Button onPress={() => dispatch(updateLockedStatus({locked: true}))}>
           Lock App

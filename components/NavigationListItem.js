@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Icon, ListItem} from '@ui-kitten/components';
 import {List} from 'react-native-paper';
 import TranslateText from '../components/TranslateText';
 const NavigationListItem = ({item, navigation}) => {

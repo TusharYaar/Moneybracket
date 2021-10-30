@@ -1,32 +1,53 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
-const numberArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-
-const NumberPad = props => {
+const NumberPad = ({onPress, randomize}) => {
+  const [keyboardArray, setKeyboardArray] = useState([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
+  ]);
   const handleKeyPress = value => {
-    props.onPress(value);
+    onPress(value);
   };
+  useEffect(() => {
+    if (randomize) {
+      setKeyboardArray(arr => arr.sort(() => Math.random() - 0.5));
+    }
+  }, [randomize]);
 
-  return (
-    <View style={styles.numpad}>
-      {numberArray.map(number => (
-        <PinButton
-          key={number}
-          onPress={() => {
-            handleKeyPress(number);
-          }}
-          value={number}
-        />
-      ))}
-    </View>
-  );
+  const handleMap = keyboardArray.map((number, index) => {
+    let style = styles.centerColumn;
+    switch (index) {
+      case 0:
+      case 2:
+      case 3:
+      case 5:
+        style = styles.sideColumn;
+        break;
+      case 6:
+      case 8:
+        style = styles.sideColumnWbottom;
+    }
+    return (
+      <PinButton
+        key={number}
+        style={style}
+        onPress={() => {
+          handleKeyPress(number);
+        }}
+        value={number}
+      />
+    );
+  });
+
+  return <View style={styles.numpad}>{handleMap}</View>;
 };
 
 const PinButton = props => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={props.onPress} style={styles.touchable}>
+      <TouchableOpacity
+        onPress={props.onPress}
+        style={[styles.touchable, props.style]}>
         <Text style={styles.text}>{props.value}</Text>
       </TouchableOpacity>
     </View>
@@ -37,31 +58,41 @@ export default NumberPad;
 
 const styles = StyleSheet.create({
   container: {
-    width: '30%',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '33%',
   },
 
   touchable: {
-    height: 80,
-    width: 80,
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    width: '100%',
+    height: 70,
+    borderColor: '#000',
     justifyContent: 'center',
-    borderRadius: 40,
-    margin: 10,
   },
   text: {
     fontSize: 30,
-    color: 'rgba(255,255,255,0.8)',
+    color: '#000',
   },
   numpad: {
-    flex: 1,
-    height: '100%',
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+    position: 'absolute',
+    bottom: 0,
+  },
+  centerColumn: {
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+  },
+  sideColumn: {
+    borderTopWidth: 1,
+  },
+  sideColumnWbottom: {
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
   },
 });

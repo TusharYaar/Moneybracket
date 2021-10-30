@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Button} from '@ui-kitten/components';
+import {Button} from 'react-native-paper';
 
 import {deleteTransactionFromDb} from '../../helpers/dbFunctions';
 

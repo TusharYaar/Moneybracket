@@ -4,9 +4,9 @@ import {
   StyleSheet,
   TouchableNativeFeedback,
   View,
+  Text,
 } from 'react-native';
 
-import {Text} from '@ui-kitten/components';
 import TranslateText from '../components/TranslateText';
 import avalibleExchangeRates from '../data/exchangeRates';
 

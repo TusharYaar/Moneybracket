@@ -1,7 +1,7 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import {Drawer, DrawerItem, IndexPath} from '@ui-kitten/components';
+import DrawerContent from '../components/DrawerContent';
 
 import {
   SettingsStackNavigator,
@@ -11,41 +11,7 @@ import {
   RecurringTransactionStackNavigator,
 } from './StackNavigators';
 
-import TranslateText from '../components/TranslateText';
-
 const SideDrawer = createDrawerNavigator();
-
-const DrawerContent = ({navigation, state}) => (
-  <Drawer
-    selectedIndex={new IndexPath(state.index)}
-    onSelect={index => navigation.navigate(state.routeNames[index.row])}>
-    <DrawerItem
-      title={() => <TranslateText category="subheading">home</TranslateText>}
-    />
-    <DrawerItem
-      title={() => (
-        <TranslateText category="subheading">settings</TranslateText>
-      )}
-    />
-    <DrawerItem
-      title={() => (
-        <TranslateText category="subheading">exchange_rates</TranslateText>
-      )}
-    />
-    <DrawerItem
-      title={() => (
-        <TranslateText category="subheading">categories</TranslateText>
-      )}
-    />
-    <DrawerItem
-      title={() => (
-        <TranslateText category="subheading">
-          recurring_transactions
-        </TranslateText>
-      )}
-    />
-  </Drawer>
-);
 
 const DrawerNavigator = () => {
   return (

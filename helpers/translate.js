@@ -4,7 +4,7 @@ export const translateAppText = (
   language = 'en',
   nativeNumbers = true,
   key = 'undefined',
-  tag,
+  tag = 'translations',
 ) => {
   if (tag === 'numbers') {
     if (!nativeNumbers) {

@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {IndexPath, Select, SelectItem} from '@ui-kitten/components';
 
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -12,22 +11,22 @@ const CurrencyScreen = () => {
   const dispatch = useDispatch();
   const currency = useSelector(state => state.settings.currency);
 
-  const [selectedIndex, setSelectedIndex] = React.useState(
-    new IndexPath(
-      avalibleExchangeRates.findIndex(item => item.code === currency.base),
-    ),
-  );
-  const changeCurrency = index => {
-    const item = avalibleExchangeRates[index.row];
-    dispatch(
-      updateCurrency({...currency, base: item.code, symbol: item.symbol}),
-    );
-    setSelectedIndex(index);
-  };
+  // const [selectedIndex, setSelectedIndex] = React.useState(
+  //   new IndexPath(
+  //     avalibleExchangeRates.findIndex(item => item.code === currency.base),
+  //   ),
+  // );
+  // const changeCurrency = index => {
+  //   const item = avalibleExchangeRates[index.row];
+  //   dispatch(
+  //     updateCurrency({...currency, base: item.code, symbol: item.symbol}),
+  //   );
+  //   setSelectedIndex(index);
+  // };
   return (
     <View>
       <Text>Currency Settings</Text>
-      <Select
+      {/* <Select
         placeholder="Default"
         value={
           avalibleExchangeRates.find(item => item.code === currency.base).symbol
@@ -37,7 +36,7 @@ const CurrencyScreen = () => {
         {avalibleExchangeRates.map((item, index) => (
           <SelectItem key={item.code} title={`${item.symbol} (${item.code})`} />
         ))}
-      </Select>
+      </Select> */}
     </View>
   );
 };
