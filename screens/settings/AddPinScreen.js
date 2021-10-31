@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 
 import {Button, TextInput} from 'react-native-paper';
 
@@ -15,7 +15,7 @@ const AddPinScreen = ({navigation}) => {
   const [oldPin, setOldPin] = useState('');
   const dispatch = useDispatch();
   const setPin = () => {
-    if (pin && pin.length > 0 && pin !== oldPin) {
+    if (pin && pin.length == 4 && pin !== oldPin) {
       Alert.alert('Wrong Pin', 'The current pin you entered does not match');
       return;
     }
@@ -28,18 +28,19 @@ const AddPinScreen = ({navigation}) => {
       navigation.navigate('Security', {pinUpdated: true});
     }
   };
+  console.log('Pin', pin.length);
   return (
-    <View>
-      <Text>Add Pin</Text>
-      <Text> {pin}</Text>
-      <TextInput
-        label="Confirm current Pin"
-        value={oldPin}
-        x
-        maxLength={4}
-        keyboardType={'number-pad'}
-        onChangeText={text => setOldPin(text)}
-      />
+    <View style={styles.screen}>
+      {pin.length == 4 && (
+        <TextInput
+          label="Confirm current Pin"
+          value={oldPin}
+          x
+          maxLength={4}
+          keyboardType={'number-pad'}
+          onChangeText={text => setOldPin(text)}
+        />
+      )}
       <TextInput
         label="New Pin"
         value={newPin}
@@ -67,4 +68,9 @@ const AddPinScreen = ({navigation}) => {
 
 export default AddPinScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    padding: 5,
+  },
+});

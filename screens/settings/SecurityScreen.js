@@ -63,7 +63,9 @@ const SecurityScreen = ({navigation, route}) => {
         {security.pin.length === 4 ? (
           <Caption style={{color: 'green'}}>Pin Added</Caption>
         ) : (
-          <Caption style={{color: 'red'}}>No Pin Added</Caption>
+          <Caption style={{color: 'red'}}>
+            Set a pin before enabling a lock
+          </Caption>
         )}
         <Button onPress={() => navigation.navigate('AddPin')}>
           {security.pin.length === 4 ? 'Change Pin' : 'Add Pin'}
@@ -77,10 +79,8 @@ const SecurityScreen = ({navigation, route}) => {
           onValueChange={changeLockEnabled}
           disabled={security.pin.length != 4}
         />
-        {security.pin.length != 4 && (
-          <Caption>Set a pin before enabling a lock</Caption>
-        )}
       </View>
+
       <View style={styles.switchOption}>
         <Paragraph>Lock On Backgorund (experimental)</Paragraph>
         <Switch
