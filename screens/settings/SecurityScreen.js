@@ -49,6 +49,11 @@ const SecurityScreen = ({navigation, route}) => {
       dispatch(updateSecurity({...security, lockOnBackground: value}));
     }
   };
+  const toggleRandomizeKeys = value => {
+    if (security.enabled) {
+      dispatch(updateSecurity({...security, randomKeys: value}));
+    }
+  };
 
   return (
     <View style={styles.screen}>
@@ -82,6 +87,14 @@ const SecurityScreen = ({navigation, route}) => {
           disabled={!security.enabled}
           value={security.lockOnBackground}
           onValueChange={changeLockOnBackground}
+        />
+      </View>
+      <View style={styles.switchOption}>
+        <Paragraph>Randomize Pin Keyboard (experimental)</Paragraph>
+        <Switch
+          disabled={!security.enabled}
+          value={security.randomKeys}
+          onValueChange={toggleRandomizeKeys}
         />
       </View>
       <View>

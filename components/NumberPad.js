@@ -1,21 +1,42 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
-const numberArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-const NumberPad = ({onPress, randomize = false, customInput = []}) => {
+const numberArray = [
+  {label: '1', value: 1},
+  {label: '2', value: 2},
+  {label: '3', value: 3},
+  {label: '4', value: 4},
+  {label: '5', value: 5},
+  {label: '6', value: 6},
+  {label: '7', value: 7},
+  {label: '8', value: 8},
+  {label: '9', value: 9},
+  {label: '0', value: 0},
+];
+/**
+ * @component NumberPad
+ * @param {function} onPress [required] - requiredfunction to be called when a number is pressed
+ * @param {string} [randomize=false] [optional] - randomize the number pad
+ * @param {Object[]} customInput  [optional] - customize the label/value of keys
+ * @param {string} customInput[].label - customize the label/value of keys
+ * @param {(string|Number)} customInput[].value - customize the label/value of keys
+ *
+ * @returns
+ */
+const NumberPad = ({onPress, randomize = false, customInput = numberArray}) => {
   const [keyboardArray, setKeyboardArray] = useState([]);
   const handleKeyPress = value => {
     onPress(value);
   };
   useEffect(() => {
-    useArr = customInput.length > 0 ? customInput : numberArray;
+    var randomArray = customInput;
     if (randomize) {
-      const randomArray = useArr.sort(() => Math.random() - 0.5);
-      setKeyboardArray([...randomArray]);
+      randomArray = customInput.sort(() => Math.random() - 0.5);
     }
+    setKeyboardArray([...randomArray]);
   }, [randomize]);
 
-  const handleMap = keyboardArray.map((number, index) => {
+  const handleMap = keyboardArray.map((key, index) => {
     let style = styles.centerColumn;
     switch (index) {
       case 0:
@@ -30,12 +51,12 @@ const NumberPad = ({onPress, randomize = false, customInput = []}) => {
     }
     return (
       <PinButton
-        key={number}
+        key={key.label}
         style={style}
         onPress={() => {
-          handleKeyPress(number);
+          handleKeyPress(key.value);
         }}
-        value={number}
+        label={key.label}
       />
     );
   });
@@ -47,7 +68,7 @@ const PinButton = props => {
       <TouchableOpacity
         onPress={props.onPress}
         style={[styles.touchable, props.style]}>
-        <Text style={styles.text}>{props.value}</Text>
+        <Text style={styles.text}>{props.label}</Text>
       </TouchableOpacity>
     </View>
   );
