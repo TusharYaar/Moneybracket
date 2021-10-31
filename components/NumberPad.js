@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
-const NumberPad = ({onPress, randomize}) => {
-  const [keyboardArray, setKeyboardArray] = useState([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
-  ]);
+const numberArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+const NumberPad = ({onPress, randomize = false, customInput = []}) => {
+  const [keyboardArray, setKeyboardArray] = useState([]);
   const handleKeyPress = value => {
     onPress(value);
   };
   useEffect(() => {
+    useArr = customInput.length > 0 ? customInput : numberArray;
     if (randomize) {
-      setKeyboardArray(arr => arr.sort(() => Math.random() - 0.5));
+      const randomArray = useArr.sort(() => Math.random() - 0.5);
+      setKeyboardArray([...randomArray]);
     }
   }, [randomize]);
 
@@ -38,10 +39,8 @@ const NumberPad = ({onPress, randomize}) => {
       />
     );
   });
-
   return <View style={styles.numpad}>{handleMap}</View>;
 };
-
 const PinButton = props => {
   return (
     <View style={styles.container}>

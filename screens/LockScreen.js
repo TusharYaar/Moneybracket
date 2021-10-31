@@ -20,6 +20,7 @@ const windowHeight = Dimensions.get('window').height;
 const LockScreen = () => {
   const originalPin = useSelector(state => state.settings.security.pin);
   const securityType = useSelector(state => state.settings.security.type);
+  const randomKeys = useSelector(state => state.settings.security.randomKeys);
   const [enteredPin, setEnteredPin] = useState('');
   const dispatch = useDispatch();
   const containerWidth = useSharedValue(0);
@@ -89,7 +90,7 @@ const LockScreen = () => {
               .map((_, index) => <PinIndicator key={`nf${index}`} />)}
         </View>
       </View>
-      <NumberPad onPress={onPinEnter} randomize={true} />
+      <NumberPad onPress={onPinEnter} randomize={randomKeys} />
     </SafeAreaProvider>
   );
 };
