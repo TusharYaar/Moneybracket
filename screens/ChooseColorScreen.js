@@ -1,26 +1,31 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {Button, Card} from 'react-native-paper';
 import ColorPicker from 'react-native-wheel-color-picker';
-const ChooseColorScreen = () => {
+const ChooseColorScreen = ({navigation, route}) => {
+  const [color, setColor] = useState('#000000');
   const handleColorChange = color => {
-    console.log(color);
+    setColor(color);
+  };
+  const selectColor = () => {
+    navigation.navigate(route.params.returnScreen, {
+      [route.params.key]: color,
+    });
   };
   return (
     <View style={styles.screen}>
-      <View style={styles.container}>
+      <Card style={styles.container}>
         <ColorPicker
-          // ref={r => { this.picker = r }}
           color={'efefef'}
-          // onColorChange={handleColorChange}
           onColorChangeComplete={handleColorChange}
-          // sliderSize={40}
+          sliderSize={30}
           noSnap={true}
           row={false}
-          // swatchesLast={this.state.swatchesLast}
-          // swatches={this.state.swatchesEnabled}
-          // discrete={this.state.disc}
         />
-      </View>
+      </Card>
+      <Button style={styles.button} onPress={selectColor}>
+        Choose Color
+      </Button>
     </View>
   );
 };
@@ -36,5 +41,10 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     height: '70%',
+    borderWidth: 1,
+    borderColor: '#000',
+  },
+  button: {
+    marginVertical: 10,
   },
 });

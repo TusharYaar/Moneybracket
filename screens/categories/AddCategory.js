@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Alert} from 'react-native';
 import {TextInput, Button} from 'react-native-paper';
 
 import TranslateText from '../../components/TranslateText';
 
 import DropDown from 'react-native-paper-dropdown';
+
+import {addCategoryToDB} from '../../helpers/asyncFunctions';
+import {addCategory} from '../../store/actions/categories';
+import Category from '../../models/category';
 
 import {useSelector, useDispatch} from 'react-redux';
 const Filters = [
@@ -18,14 +22,19 @@ const Filters = [
   },
 ];
 
-const AddCategory = ({navigation}) => {
+const AddCategory = ({navigation, route}) => {
   const allCategories = useSelector(state => state.categories.categories);
-  console.log(allCategories);
   const dispatch = useDispatch();
   const [category, setCategory] = useState('');
   const [color, setColor] = useState('');
   const [filterVisible, setFilterVisible] = useState(false);
   const [type, setType] = useState('income');
+
+  useEffect(() => {
+    if (route.params?.color) {
+      setColor(route.params.color);
+    }
+  }, [route.params?.color]);
 
   const addCategoryHandler = async () => {
     try {
@@ -37,12 +46,21 @@ const AddCategory = ({navigation}) => {
         Alert.alert('Error', 'Category already exists');
         return;
       }
+      const newCategory = new Category(category, color, type);
+      await addCategoryToDB(newCategory);
+      dispatch(addCategory(newCategory));
       navigation.pop();
     } catch (err) {
       Alert.alert('Error', err.message);
     }
   };
 
+  const navigateToColor = () => {
+    navigation.navigate('ChooseColor', {
+      returnScreen: 'AddCategory',
+      key: 'color',
+    });
+  };
   return (
     <View>
       <TextInput
@@ -61,9 +79,7 @@ const AddCategory = ({navigation}) => {
         setValue={type => setType(type)}
         list={Filters}
       />
-      <Button onPress={() => navigation.navigate('ChooseColor')}>
-        Choose Color
-      </Button>
+      <Button onPress={navigateToColor}>Choose Color</Button>
       <Button onPress={addCategoryHandler}>
         <TranslateText>add_category</TranslateText>
       </Button>

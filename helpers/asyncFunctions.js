@@ -58,20 +58,38 @@ export const removeSettings = () => {
     }
   });
 };
-
+export const setCategories = categories => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      AsyncStorage.setItem(CATEGORIES, JSON.stringify({categories}));
+      resolve({categories});
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 export const getCategories = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const value = await AsyncStorage.getItem(CATEGORIES);
-      if (value) {
-        resolve({...JSON.parse(value), loaded: true});
-      } else {
-        await AsyncStorage.setItem(
-          CATEGORIES,
-          JSON.stringify({categories: defaultCategories}),
-        );
-        resolve({categories: defaultCategories, loaded: true});
+      if (value) resolve({...JSON.parse(value)});
+      else {
+        await setCategories(defaultCategories);
+        resolve({categories: defaultCategories});
       }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const addCategoryToDB = category => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const categories = await getCategories();
+      const newCategories = [...categories.categories, category];
+      await setCategories(newCategories);
+      resolve(newCategories);
     } catch (error) {
       reject(error);
     }
@@ -81,20 +99,12 @@ export const getCategories = () => {
 export const deleteCategoryFromDB = category => {
   return new Promise(async (resolve, reject) => {
     try {
-      const value = await AsyncStorage.getItem(CATEGORIES);
-      if (value) {
-        const categories = JSON.parse(value).categories;
-        const newCategories = categories.filter(
-          item => item.category !== category,
-        );
-        await AsyncStorage.setItem(
-          CATEGORIES,
-          JSON.stringify({categories: newCategories}),
-        );
-        resolve(newCategories);
-      } else {
-        throw new Error('No categories found');
-      }
+      const categories = await getCategories();
+      const newCategories = categories.categories.filter(
+        item => item.category !== category,
+      );
+      await setCategories(newCategories);
+      resolve(newCategories);
     } catch (error) {
       reject(error);
     }
@@ -102,7 +112,6 @@ export const deleteCategoryFromDB = category => {
 };
 
 export const removeCategories = () => {
-  console.log('Removing Categories');
   return new Promise(async (resolve, reject) => {
     try {
       AsyncStorage.removeItem(CATEGORIES);

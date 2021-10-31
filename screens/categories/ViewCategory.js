@@ -14,7 +14,7 @@ const ViewCategory = ({navigation, route}) => {
   const onDeleteCategory = async () => {
     try {
       //! uncomment the following line to delete the category from the database
-      //! await deleteCategoryFromDB(category);
+      await deleteCategoryFromDB(category);
       dispatch(deleteCategory(category));
     } catch (err) {
       Alert.alert('Error', err.message);
