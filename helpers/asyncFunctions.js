@@ -1,18 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import th from 'date-fns/esm/locale/th/index.js';
 
 import defaultCategories from '../data/categories';
-
+import Theme from '../models/theme';
 const APP_SETTINGS = '@app_settings';
-const USER_SETTINGS = '@user_settings';
-const CATEGORIES = '#categories';
+const THEMES = '@themes';
+const CATEGORIES = '@categories';
 
 /**
  * @async
  * @returns User settings
+ * @description function to get app settings form async storage
  */
 export const getAppSettings = () => {
-  // function to get app settings form async storage
   return new Promise(async (resolve, reject) => {
     try {
       const value = await AsyncStorage.getItem(APP_SETTINGS);
@@ -116,6 +115,80 @@ export const removeCategories = () => {
     try {
       AsyncStorage.removeItem(CATEGORIES);
       resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const themeDetailsToObject = ({
+  id,
+  label,
+  isDark = false,
+  primary,
+  secondary,
+  background,
+  paper,
+  text,
+}) => {
+  return new Theme(
+    id,
+    label,
+    isDark,
+    primary,
+    secondary,
+    background,
+    paper,
+    text,
+  );
+};
+
+export const setThemes = themes => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      AsyncStorage.setItem(THEMES, JSON.stringify({themes}));
+      resolve({themes});
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const getThemes = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const value = await AsyncStorage.getItem(THEMES);
+      if (value) resolve({...JSON.parse(value)});
+      else {
+        resolve({themes: []});
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const addThemeToDB = theme => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const themes = await getThemes();
+      const newThemes = [...themes.themes, theme];
+      await setThemes(newThemes);
+      console.log(newThemes);
+      resolve(newThemes);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const deleteThemeFromDB = theme => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const themes = await getThemes();
+      const newThemes = themes.themes.filter(item => item.theme !== theme);
+      await setThemes(newThemes);
+      resolve(newThemes);
     } catch (error) {
       reject(error);
     }

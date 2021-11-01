@@ -11,6 +11,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@ctrl/tinycolor": "^3.4.0",
     "@eva-design/eva": "^2.1.1",
     "@nozbe/watermelondb": "^0.23.0",
     "@react-native-async-storage/async-storage": "^1.15.5",
@@ -43,7 +44,8 @@
     "react-redux": "^7.2.4",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
     "redux": "^4.1.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "usid": "^1.0.21"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

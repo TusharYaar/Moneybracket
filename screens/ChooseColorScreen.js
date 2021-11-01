@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Button, Card} from 'react-native-paper';
 import ColorPicker from 'react-native-wheel-color-picker';
 const ChooseColorScreen = ({navigation, route}) => {
-  const [color, setColor] = useState('#000000');
+  const [color, setColor] = useState(route.params?.default || '#000000');
+  const colorWheel = useRef(null);
   const handleColorChange = color => {
     setColor(color);
   };
@@ -16,13 +17,15 @@ const ChooseColorScreen = ({navigation, route}) => {
     <View style={styles.screen}>
       <Card style={styles.container}>
         <ColorPicker
-          color={'efefef'}
+          ref={colorWheel}
+          color={route.params?.default || '#000000'}
           onColorChangeComplete={handleColorChange}
           sliderSize={30}
           noSnap={true}
           row={false}
         />
       </Card>
+      <Button onPress={() => colorWheel.current.revert()}>Revert</Button>
       <Button style={styles.button} onPress={selectColor}>
         Choose Color
       </Button>

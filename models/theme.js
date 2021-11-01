@@ -1,17 +1,7 @@
 export default class Theme {
-  constructor(
-    id,
-    name,
-    isDark,
-    primary,
-    secondary,
-    background,
-    paper,
-    text,
-    headerText,
-  ) {
+  constructor(id, label, isDark, primary, secondary, background, paper, text) {
     this.id = id;
-    this.name = name;
+    this.label = label;
     this.dark = isDark;
     this.colors = {
       accent: secondary,
@@ -27,7 +17,7 @@ export default class Theme {
       primary,
       surface: paper, //react-native-paper
       text, //router text
-      headerText, //custom tag for header text color
+      //custom tag for header text color
     };
     this.mode = 'adaptive';
     this.roundness = 4;

@@ -9,6 +9,7 @@ import CurrencyScreen from '../screens/settings/CurrencyScreen';
 import AddPinScreen from '../screens/settings/AddPinScreen';
 
 import AppearanceScreen from '../screens/settings/AppearanceScreen';
+import AddThemeScreen from '../screens/settings/AddThemeScreen';
 import NotificationScreen from '../screens/settings/NotificationScreen';
 import TranslateText from '../components/TranslateText';
 import HomeTabNavigator from './HomeTabNavigator';
@@ -45,6 +46,11 @@ export const SettingsStackNavigator = () => {
       <SettingsStack.Screen
         name="Appearance"
         component={AppearanceScreen}
+        options={() => screenOptionsWODrawer('appearance')}
+      />
+      <SettingsStack.Screen
+        name="AddTheme"
+        component={AddThemeScreen}
         options={() => screenOptionsWODrawer('appearance')}
       />
       <SettingsStack.Screen

@@ -19,7 +19,7 @@ import TranslateText from '../../components/TranslateText';
 
 import {removeSettings} from '../../helpers/asyncFunctions';
 
-const AppearanceScreen = () => {
+const AppearanceScreen = ({navigation, route}) => {
   const language = useSelector(state => state.settings.language);
   const currentTheme = useSelector(state => state.settings.theme);
   const nativeNumbers = useSelector(state => state.settings.nativeNumbers);
@@ -59,18 +59,21 @@ const AppearanceScreen = () => {
       </View>
       <DropDown
         label="Theme"
-        mode="outlined"
+        mode="contained"
         visible={showThemeDropdown}
         showDropDown={() => setShowThemeDropdown(true)}
         onDismiss={() => setShowThemeDropdown(false)}
         value={currentTheme}
         setValue={handlechangeTheme}
         list={allThemes.map(theme => {
-          return {label: theme.name, value: theme.id};
+          return {label: theme.label, value: theme.id};
         })}
       />
       <Button onPress={removeSettings} mode="contained">
         Clear Storage
+      </Button>
+      <Button onPress={() => navigation.navigate('AddTheme')} mode="contained">
+        Add Themes
       </Button>
     </View>
   );

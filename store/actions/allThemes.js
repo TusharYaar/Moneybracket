@@ -7,12 +7,12 @@ export const changeTheme = payload => ({
   payload,
 });
 
-export const AddTheme = payload => ({
+export const addTheme = payload => ({
   type: ADD_THEME,
   payload: payload,
 });
 
-export const MergeThemes = payload => ({
+export const mergeThemes = payload => ({
   type: MERGE_THEMES,
   payload,
 });

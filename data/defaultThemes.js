@@ -1,27 +1,24 @@
-import Theme from '../models/theme';
 // id,name,isDark,primary,secondary,background,paper,text, headerText
 
 export default defaultThemes = [
-  new Theme(
-    'default',
-    'Default',
-    false,
-    '#3f51b5',
-    '#f50057',
-    '#f5f5f5',
-    '#f5f5f5',
-    '#212121',
-    '#212121',
-  ),
-  new Theme(
-    'darkdefault',
-    'Dark',
-    true,
-    '#3d3d3d',
-    '#1d1d1d',
-    '#f5f5f5',
-    '#f5f5f5',
-    '#212121',
-    '#212121',
-  ),
+  {
+    id: 'default',
+    label: 'Default',
+    isDark: false,
+    primary: '#FFA62B',
+    secondary: '#f50057',
+    background: '#f5f5f5',
+    paper: '#f5f5f5',
+    text: '#000000',
+  },
+  {
+    id: 'darkdefault',
+    label: 'Dark',
+    isDark: true,
+    primary: '#3d3d3d',
+    secondary: '#1d1d1d',
+    background: '#f5f5f5',
+    paper: '#f5f5f5',
+    text: '#212121',
+  },
 ];
