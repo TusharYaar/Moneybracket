@@ -12,7 +12,9 @@ const ThemeColor = ({color, title = '', onPress, style}) => {
     <TouchableOpacity
       style={[styles.container, {backgroundColor: color}, style]}
       onPress={onPress}>
-      <Headline style={{color: readableColor}}>{title}</Headline>
+      <Paragraph style={{color: readableColor, fontSize: 20}}>
+        {title}
+      </Paragraph>
       <Paragraph style={{color: readableColor}}>{hexValue}</Paragraph>
     </TouchableOpacity>
   );

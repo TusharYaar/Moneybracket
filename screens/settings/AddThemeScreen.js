@@ -7,7 +7,7 @@ import {addTheme} from '../../store/actions/allThemes';
 
 import {themeDetailsToObject, addThemeToDB} from '../../helpers/asyncFunctions';
 
-import {Button, TextInput, Headline} from 'react-native-paper';
+import {Button, TextInput, Subheading, Title} from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 
 import ThemeColor from '../../components/ThemeColor';
@@ -21,7 +21,7 @@ const AddThemeScreen = ({navigation, route}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState({
     id: null,
-    label: 'Custom Theme',
+    label: 'My Theme',
     isDark: false,
     primary: '#00bcd4',
     secondary: '#ff9800',
@@ -44,12 +44,15 @@ const AddThemeScreen = ({navigation, route}) => {
     }
   }, [route.params]);
   const handleThemeLabelChange = text => {
-    setTheme({...theme, label: text});
+    setTheme(current => {
+      return {...current, label: text};
+    });
   };
 
   const handleThemeTypeChange = type => {
-    console.log(type);
-    setTheme({...theme, isDark: type === 'dark'});
+    setTheme(current => {
+      return {...current, isDark: type === 'dark' ? true : false};
+    });
   };
 
   handleColorPress = key => {
@@ -70,18 +73,21 @@ const AddThemeScreen = ({navigation, route}) => {
     const themeObj = themeDetailsToObject(theme);
     dispatch(addTheme(themeObj));
     setIsLoading(false);
+    navigation.goBack();
   };
 
   return (
     <ScrollView contentContainerStyle={styles.screen}>
       <View>
+        <Title>Add Theme</Title>
+        <Subheading style={styles.margin}>Theme Name</Subheading>
         <TextInput
           placeholder="Theme Name"
           value={theme.label}
           onChangeText={handleThemeLabelChange}
-          style={styles.margin}
           disabled={isLoading}
         />
+        <Subheading style={styles.margin}>Choose theme type</Subheading>
         <DropDown
           label="Theme type"
           mode="contained"
@@ -96,7 +102,7 @@ const AddThemeScreen = ({navigation, route}) => {
         />
 
         <View style={styles.themeColorContainer}>
-          <Headline>Colors</Headline>
+          <Subheading>Colors</Subheading>
           <ThemeColor
             color={theme.primary}
             style={styles.themeColor}
@@ -145,10 +151,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   margin: {
-    marginVertical: 10,
+    marginTop: 10,
   },
   themeColorContainer: {
-    marginVertical: 5,
+    marginVertical: 10,
   },
   themeColor: {
     marginVertical: 5,

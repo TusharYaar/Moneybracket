@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import {
   RadioButton,
   Button,
@@ -7,7 +7,12 @@ import {
   Title,
   Subheading,
   Paragraph,
+  Divider,
+  Caption,
+  withTheme,
 } from 'react-native-paper';
+
+import Description from '../../components/Description';
 
 import DropDown from 'react-native-paper-dropdown';
 
@@ -19,7 +24,8 @@ import TranslateText from '../../components/TranslateText';
 
 import {removeSettings} from '../../helpers/asyncFunctions';
 
-const AppearanceScreen = ({navigation, route}) => {
+const AppearanceScreen = ({navigation, route, theme}) => {
+  const {colors} = theme;
   const language = useSelector(state => state.settings.language);
   const currentTheme = useSelector(state => state.settings.theme);
   const nativeNumbers = useSelector(state => state.settings.nativeNumbers);
@@ -38,50 +44,89 @@ const AppearanceScreen = ({navigation, route}) => {
     dispatch(updateTheme(id));
     dispatch(changeTheme(id));
   };
-
+  console.log(colors.text);
   return (
-    <View>
+    <ScrollView style={[styles.screen, {backgroundColor: colors.background}]}>
       <Title>Appearance Screen</Title>
-      <Subheading>Language Settings (experimental)</Subheading>
-      <RadioButton.Group onValueChange={changeLanguage} value={language}>
-        <View style={styles.radioOption}>
-          <RadioButton value="en" />
-          <TranslateText translate="english" tag="languages" />
+      <View style={styles.section}>
+        <Subheading>
+          Language Settings <Caption>(experimental)</Caption>
+        </Subheading>
+        <Description>
+          Choose the default language for the application
+        </Description>
+        <RadioButton.Group onValueChange={changeLanguage} value={language}>
+          <View style={styles.radioOption}>
+            <RadioButton value="en" />
+            <TranslateText translate="english" tag="languages" />
+          </View>
+          <View style={styles.radioOption}>
+            <RadioButton value="hi" />
+            <TranslateText translate="hindi" tag="languages" />
+          </View>
+        </RadioButton.Group>
+        <View style={styles.switchOption}>
+          <Paragraph category="h6">Enable Native Language Numbers </Paragraph>
+          <Switch value={nativeNumbers} onValueChange={changeNativeNumbers} />
         </View>
-        <View style={styles.radioOption}>
-          <RadioButton value="hi" />
-          <TranslateText translate="hindi" tag="languages" />
-        </View>
-      </RadioButton.Group>
-      <View style={styles.switchOption}>
-        <Paragraph category="h6">Enable Native Language Numbers </Paragraph>
-        <Switch value={nativeNumbers} onValueChange={changeNativeNumbers} />
+        <Description>
+          Enable this to show numbers in selectedlanguage, else it would show in
+          english
+        </Description>
       </View>
-      <DropDown
-        label="Theme"
-        mode="contained"
-        visible={showThemeDropdown}
-        showDropDown={() => setShowThemeDropdown(true)}
-        onDismiss={() => setShowThemeDropdown(false)}
-        value={currentTheme}
-        setValue={handlechangeTheme}
-        list={allThemes.map(theme => {
-          return {label: theme.label, value: theme.id};
-        })}
-      />
-      <Button onPress={removeSettings} mode="contained">
-        Clear Storage
-      </Button>
-      <Button onPress={() => navigation.navigate('AddTheme')} mode="contained">
-        Add Themes
-      </Button>
-    </View>
+      <Divider />
+      <View style={styles.section}>
+        <Subheading>Theme Settings</Subheading>
+        <DropDown
+          label="Theme"
+          mode="contained"
+          visible={showThemeDropdown}
+          showDropDown={() => setShowThemeDropdown(true)}
+          onDismiss={() => setShowThemeDropdown(false)}
+          value={currentTheme}
+          setValue={handlechangeTheme}
+          list={allThemes.map(theme => {
+            return {label: theme.label, value: theme.id};
+          })}
+        />
+        <Description>Choose A theme for the application</Description>
+        <Button onPress={removeSettings} mode="contained" style={styles.button}>
+          Clear Storage
+        </Button>
+        <Description>
+          If you are seeing this, then the app is still in developement
+        </Description>
+        <Button
+          onPress={() => navigation.navigate('AddTheme')}
+          mode="contained"
+          style={styles.button}>
+          Add A Theme
+        </Button>
+        <Description>
+          Add a custom theme, you can add upto 3 custom themes.
+        </Description>
+        <Button
+          onPress={() => navigation.navigate('AddTheme')}
+          mode="contained"
+          style={styles.button}>
+          Edit Custom Themes
+        </Button>
+        <Description>Edit themes made by you.</Description>
+      </View>
+    </ScrollView>
   );
 };
 
-export default AppearanceScreen;
+export default withTheme(AppearanceScreen);
 
 const styles = StyleSheet.create({
+  screen: {
+    flexGrow: 1,
+    padding: 5,
+  },
+  section: {
+    marginVertical: 10,
+  },
   radioOption: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -91,5 +136,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  button: {
+    marginTop: 10,
   },
 });
