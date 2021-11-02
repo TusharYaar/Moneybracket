@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Alert, FlatList} from 'react-native';
+import {withTheme} from 'react-native-paper';
 
 import {useSelector, useDispatch} from 'react-redux';
 import {setExchangeRates} from '../../store/actions/exchangeRates';
@@ -12,7 +13,8 @@ import {setTransactions} from '../../store/actions/transactions';
 import TransactionItem from '../../components/TransactionItem';
 import FloatingButton from '../../components/FloatingButton';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({navigation, theme}) => {
+  const {colors} = theme;
   const dispatch = useDispatch();
   const baseCurrency = useSelector(state => state.settings.currency.base);
   const transactions = useSelector(state => state.transactions.transactions);
@@ -39,8 +41,9 @@ const HomeScreen = ({navigation}) => {
   }, [dispatch, baseCurrency]);
 
   // if (transactions.length === 0) return <Text>NO Transaction</Text>;
+  console.log(colors);
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, {backgroundColor: colors.background}]}>
       <FlatList
         data={transactions}
         renderItem={item => (
@@ -62,7 +65,7 @@ const HomeScreen = ({navigation}) => {
   );
 };
 
-export default HomeScreen;
+export default withTheme(HomeScreen);
 
 const styles = StyleSheet.create({
   screen: {

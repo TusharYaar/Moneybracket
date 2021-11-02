@@ -18,7 +18,7 @@ export default defaultThemes = [
     primary: '#3d3d3d',
     secondary: '#1d1d1d',
     background: '#1d1d1d',
-    paper: '#f5f5f5',
+    paper: '#000',
     text: '#f12f12',
   },
 ];

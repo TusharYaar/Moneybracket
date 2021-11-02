@@ -3,7 +3,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 
-import {Drawer} from 'react-native-paper';
+import {Drawer, withTheme} from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux';
 import {translateAppText} from '../helpers/translate';
 
 const DrawerContent = props => {
+  const {colors} = props.theme;
   const language = useSelector(state => state.settings.language);
   const translateScreenLabel = label => {
     return translateAppText(language, false, label);
@@ -19,7 +20,9 @@ const DrawerContent = props => {
     props.navigation.navigate(stackName);
   };
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView
+      {...props}
+      style={{backgroundColor: colors.surface}}>
       <Drawer.Section>
         <Drawer.Item
           icon={({color, size}) => (
@@ -71,6 +74,6 @@ const DrawerContent = props => {
   );
 };
 
-export default DrawerContent;
+export default withTheme(DrawerContent);
 
 const styles = StyleSheet.create({});

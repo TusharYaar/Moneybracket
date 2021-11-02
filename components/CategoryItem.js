@@ -1,16 +1,25 @@
 import React from 'react';
 import {StyleSheet, View, Image, TouchableNativeFeedback} from 'react-native';
-import {Headline, Paragraph} from 'react-native-paper';
+import {Headline, Paragraph, withTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const CategoryItem = ({item, onPress}) => {
+const CategoryItem = ({item, onPress, theme}) => {
+  const {colors, roundness} = theme;
   const handlePress = () => {
     onPress(item);
   };
   return (
     <TouchableNativeFeedback onPress={handlePress}>
-      <View style={styles.container}>
-        <Icon name="circle" size={30} color={item.color} />
+      <View
+        style={[
+          styles.container,
+          {
+            borderBottomColor: item.color,
+            backgroundColor: colors.surface,
+            borderRadius: roundness,
+          },
+        ]}>
+        <Icon name="buffer" size={30} color={item.color} />
         <View style={styles.textContainer}>
           <Headline category="h4">{item.category}</Headline>
           <Paragraph style={styles[item.type]}>{item.type}</Paragraph>
@@ -20,13 +29,15 @@ const CategoryItem = ({item, onPress}) => {
   );
 };
 
-export default CategoryItem;
+export default withTheme(CategoryItem);
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 10,
     alignItems: 'center',
+    borderBottomWidth: 6,
+    marginVertical: 10,
   },
   textContainer: {
     flexDirection: 'row',

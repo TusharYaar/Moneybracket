@@ -25,7 +25,7 @@ import TranslateText from '../../components/TranslateText';
 import {removeSettings} from '../../helpers/asyncFunctions';
 
 const AppearanceScreen = ({navigation, route, theme}) => {
-  const {colors} = theme;
+  const {colors, roundness} = theme;
   const language = useSelector(state => state.settings.language);
   const currentTheme = useSelector(state => state.settings.theme);
   const nativeNumbers = useSelector(state => state.settings.nativeNumbers);

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-
+import {withTheme} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 
 import CategoryItem from '../../components/CategoryItem';
@@ -19,7 +19,9 @@ const Filters = [
   },
 ];
 
-const AllCategories = ({navigation}) => {
+const AllCategories = ({navigation, theme}) => {
+  const {colors} = theme;
+  console.log(colors);
   const categories = useSelector(state => state.categories.categories);
 
   const [filters, setFilters] = useState('income,expense');
@@ -37,7 +39,7 @@ const AllCategories = ({navigation}) => {
     );
   }, [categories, filters]);
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, {backgroundColor: colors.background}]}>
       <DropDown
         label="Type"
         mode="filled"
@@ -64,10 +66,11 @@ const AllCategories = ({navigation}) => {
   );
 };
 
-export default AllCategories;
+export default withTheme(AllCategories);
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    padding: 10,
   },
 });

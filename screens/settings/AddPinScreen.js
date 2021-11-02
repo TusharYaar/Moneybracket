@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 
-import {Button, TextInput} from 'react-native-paper';
+import {Button, TextInput, withTheme, Title} from 'react-native-paper';
 
 import {useSelector, useDispatch} from 'react-redux';
 
 import {updateSecurity} from '../../store/actions/settings';
 
-const AddPinScreen = ({navigation}) => {
+const AddPinScreen = ({navigation, theme}) => {
+  const {colors} = theme;
   const security = useSelector(state => state.settings.security);
   const pin = useSelector(state => state.settings.security.pin);
   const [newPin, setNewPin] = useState('');
@@ -30,12 +31,13 @@ const AddPinScreen = ({navigation}) => {
   };
   console.log('Pin', pin.length);
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, {backgroundColor: colors.background}]}>
+      <Title>Add Pin</Title>
       {pin.length == 4 && (
         <TextInput
           label="Confirm current Pin"
           value={oldPin}
-          x
+          style={styles.input}
           maxLength={4}
           keyboardType={'number-pad'}
           onChangeText={text => setOldPin(text)}
@@ -43,6 +45,7 @@ const AddPinScreen = ({navigation}) => {
       )}
       <TextInput
         label="New Pin"
+        style={styles.input}
         value={newPin}
         maxLength={4}
         keyboardType={'number-pad'}
@@ -51,12 +54,16 @@ const AddPinScreen = ({navigation}) => {
       <TextInput
         label="Confirm new Pin"
         value={newPinConfirm}
+        style={styles.input}
         maxLength={4}
         keyboardType={'number-pad'}
         onChangeText={text => setNewPinConfirm(text)}
       />
       <Button
         onPress={setPin}
+        styles={styles.input}
+        mode="contained"
+        style={styles.button}
         disabled={
           newPin === newPinConfirm && newPin.length === 4 ? false : true
         }>
@@ -66,11 +73,17 @@ const AddPinScreen = ({navigation}) => {
   );
 };
 
-export default AddPinScreen;
+export default withTheme(AddPinScreen);
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 5,
+    padding: 10,
+  },
+  input: {
+    marginVertical: 10,
+  },
+  button: {
+    marginTop: 20,
   },
 });

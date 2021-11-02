@@ -9,13 +9,15 @@ import {
   Switch,
   Subheading,
   Caption,
+  withTheme,
 } from 'react-native-paper';
 
 import {useSelector, useDispatch} from 'react-redux';
 
 import {updateSecurity, updateLockedStatus} from '../../store/actions/settings';
 
-const SecurityScreen = ({navigation, route}) => {
+const SecurityScreen = ({navigation, route, theme}) => {
+  const {colors} = theme;
   const security = useSelector(state => state.settings.security);
   const dispatch = useDispatch();
 
@@ -56,7 +58,7 @@ const SecurityScreen = ({navigation, route}) => {
   };
 
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, {backgroundColor: colors.background}]}>
       <Title>Security</Title>
       <Subheading>Lock Settings</Subheading>
       <View>
@@ -125,10 +127,10 @@ const SecurityScreen = ({navigation, route}) => {
   );
 };
 
-export default SecurityScreen;
+export default withTheme(SecurityScreen);
 
 const styles = StyleSheet.create({
-  screen: {padding: 10},
+  screen: {padding: 10, flex: 1},
   switchOption: {
     flexDirection: 'row',
     justifyContent: 'space-between',
