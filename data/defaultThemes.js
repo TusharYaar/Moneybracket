@@ -16,9 +16,9 @@ export default defaultThemes = [
     label: 'Dark',
     isDark: true,
     primary: '#3d3d3d',
-    secondary: '#1d1d1d',
+    secondary: '#f12f12',
     background: '#1d1d1d',
     paper: '#000',
-    text: '#f12f12',
+    text: '#fdfdfd',
   },
 ];

@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 
-import {Button, TextInput, withTheme, Title} from 'react-native-paper';
+import {Button, TextInput, Title} from 'react-native-paper';
 
 import {useSelector, useDispatch} from 'react-redux';
 
 import {updateSecurity} from '../../store/actions/settings';
 
-const AddPinScreen = ({navigation, theme}) => {
-  const {colors} = theme;
+const AddPinScreen = ({navigation}) => {
   const security = useSelector(state => state.settings.security);
   const pin = useSelector(state => state.settings.security.pin);
   const [newPin, setNewPin] = useState('');
@@ -31,7 +30,7 @@ const AddPinScreen = ({navigation, theme}) => {
   };
   console.log('Pin', pin.length);
   return (
-    <View style={[styles.screen, {backgroundColor: colors.background}]}>
+    <View style={styles.screen}>
       <Title>Add Pin</Title>
       {pin.length == 4 && (
         <TextInput
@@ -73,7 +72,7 @@ const AddPinScreen = ({navigation, theme}) => {
   );
 };
 
-export default withTheme(AddPinScreen);
+export default AddPinScreen;
 
 const styles = StyleSheet.create({
   screen: {

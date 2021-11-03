@@ -11,27 +11,27 @@ const SettingScreen = ({navigation}) => {
   return (
     <View>
       <List.Item
-        title={<TranslateText translate="appearance" style={styles.listItem} />}
+        title={<TranslateText translate="appearance" category="subheading" />}
         left={props => <List.Icon {...props} icon="format-color-fill" />}
         onPress={() => handleClick('Appearance')}
       />
       <Divider />
       <List.Item
         title={
-          <TranslateText translate="notifications" style={styles.listItem} />
+          <TranslateText translate="notifications" category="subheading" />
         }
         left={props => <List.Icon {...props} icon="bell-ring" />}
         onPress={() => handleClick('Notifications')}
       />
       <Divider />
       <List.Item
-        title={<TranslateText translate="security" style={styles.listItem} />}
+        title={<TranslateText translate="security" category="subheading" />}
         left={props => <List.Icon {...props} icon="account-lock" />}
         onPress={() => handleClick('Security')}
       />
       <Divider />
       <List.Item
-        title={<TranslateText translate="currency" style={styles.listItem} />}
+        title={<TranslateText translate="currency" category="subheading" />}
         left={props => <List.Icon {...props} icon="credit-card" />}
         onPress={() => handleClick('Currency')}
       />
@@ -45,8 +45,6 @@ export default SettingScreen;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   listItem: {
     fontWeight: 'bold',

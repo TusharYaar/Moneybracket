@@ -9,7 +9,6 @@ import {
   Paragraph,
   Divider,
   Caption,
-  withTheme,
 } from 'react-native-paper';
 
 import Description from '../../components/Description';
@@ -24,8 +23,7 @@ import TranslateText from '../../components/TranslateText';
 
 import {removeSettings} from '../../helpers/asyncFunctions';
 
-const AppearanceScreen = ({navigation, route, theme}) => {
-  const {colors, roundness} = theme;
+const AppearanceScreen = ({navigation, route}) => {
   const language = useSelector(state => state.settings.language);
   const currentTheme = useSelector(state => state.settings.theme);
   const nativeNumbers = useSelector(state => state.settings.nativeNumbers);
@@ -41,12 +39,11 @@ const AppearanceScreen = ({navigation, route, theme}) => {
   };
 
   const handlechangeTheme = id => {
-    dispatch(updateTheme(id));
-    dispatch(changeTheme(id));
+    dispatch(updateTheme(id)); // update theme id in settings which is used to determine which theme to load on startup
+    dispatch(changeTheme(id)); // change theme in allThemes Reducer which provides the theme object
   };
-  console.log(colors.text);
   return (
-    <ScrollView style={[styles.screen, {backgroundColor: colors.background}]}>
+    <ScrollView style={styles.screen}>
       <Title>Appearance Screen</Title>
       <View style={styles.section}>
         <Subheading>
@@ -117,7 +114,7 @@ const AppearanceScreen = ({navigation, route, theme}) => {
   );
 };
 
-export default withTheme(AppearanceScreen);
+export default AppearanceScreen;
 
 const styles = StyleSheet.create({
   screen: {

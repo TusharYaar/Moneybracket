@@ -1,5 +1,6 @@
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {useTheme} from 'react-native-paper';
 
 import TranslateText from '../components/TranslateText';
 
@@ -7,8 +8,13 @@ import ExchangeRatesScreen from '../screens/exchange/ExchangeRatesScreen';
 import ConversionScreen from '../screens/exchange/ConversionScreen';
 const Tab = createMaterialTopTabNavigator();
 const ExchangeTabNavigator = () => {
+  const {colors} = useTheme();
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarIndicatorStyle: {backgroundColor: colors.accent},
+      }}>
       <Tab.Screen
         name="Rates"
         component={ExchangeRatesScreen}
@@ -25,5 +31,9 @@ const ExchangeTabNavigator = () => {
 export default ExchangeTabNavigator;
 
 const screenOptionsTab = title => ({
-  title: props => <TranslateText {...props}>{title}</TranslateText>,
+  title: props => (
+    <TranslateText {...props} category="subheading">
+      {title}
+    </TranslateText>
+  ),
 });

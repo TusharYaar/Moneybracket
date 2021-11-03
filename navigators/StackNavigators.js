@@ -1,7 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {IconButton} from 'react-native-paper';
+import {IconButton, useTheme} from 'react-native-paper';
 
 import SettingScreen from '../screens/settings/SettingScreen';
 import SecurityScreen from '../screens/settings/SecurityScreen';
@@ -34,156 +34,216 @@ const ExchangeStack = createNativeStackNavigator();
 const RecurringTransactionStack = createNativeStackNavigator();
 
 export const SettingsStackNavigator = () => {
+  const {colors} = useTheme();
+  const options = {
+    headerStyle: {
+      backgroundColor: colors.surface,
+    },
+    headerBackVisible: false,
+  };
   return (
-    <SettingsStack.Navigator>
+    <SettingsStack.Navigator screenOptions={options}>
       <SettingsStack.Screen
         name="Settings"
         component={SettingScreen}
-        options={({navigation}) =>
-          screenOptionsWithDrawer(navigation, 'settings')
-        }
+        options={({navigation}) => screenOptions(navigation, 'settings')}
       />
       <SettingsStack.Screen
         name="Appearance"
         component={AppearanceScreen}
-        options={() => screenOptionsWODrawer('appearance')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'appearance', 'arrow-left')
+        }
       />
       <SettingsStack.Screen
         name="AddTheme"
         component={AddThemeScreen}
-        options={() => screenOptionsWODrawer('appearance')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'appearance', 'arrow-left')
+        }
       />
       <SettingsStack.Screen
         name="ChooseColor"
         component={ChooseColorScreen}
-        options={() => screenOptionsWODrawer('appearance')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'appearance', 'arrow-left')
+        }
       />
       <SettingsStack.Screen
         name="Notifications"
         component={NotificationScreen}
-        options={() => screenOptionsWODrawer('notifications')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'notifications', 'arrow-left')
+        }
       />
       <SettingsStack.Screen
         name="Security"
         component={SecurityScreen}
-        options={() => screenOptionsWODrawer('security')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'security', 'arrow-left')
+        }
       />
       <SettingsStack.Screen
         name="AddPin"
         component={AddPinScreen}
-        options={() => screenOptionsWODrawer('security')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'security', 'arrow-left')
+        }
       />
 
       <SettingsStack.Screen
         name="Currency"
         component={CurrencyScreen}
-        options={() => screenOptionsWODrawer('currency')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'currency', 'arrow-left')
+        }
       />
     </SettingsStack.Navigator>
   );
 };
 
 export const HomeStackNavigator = () => {
+  const {colors} = useTheme();
+  const options = {
+    headerStyle: {
+      backgroundColor: colors.surface,
+    },
+    headerBackVisible: false,
+  };
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator screenOptions={options}>
       <HomeStack.Screen
         name="Home"
         component={HomeTabNavigator}
-        options={({navigation}) => screenOptionsWithDrawer(navigation, 'home')}
+        options={({navigation}) => screenOptions(navigation, 'home')}
       />
       <HomeStack.Screen
         name="AddTransaction"
         component={AddTransactionScreen}
-        options={() => screenOptionsWODrawer('add_transaction')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'add_transaction', 'arrow-left')
+        }
       />
       <HomeStack.Screen
         name="EditTransaction"
         component={EditTransactionScreen}
-        options={() => screenOptionsWODrawer('edit_transaction')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'edit_transaction', 'arrow-left')
+        }
       />
     </HomeStack.Navigator>
   );
 };
 
 export const CategoriesStackNavigator = () => {
+  const {colors} = useTheme();
+  const options = {
+    headerStyle: {
+      backgroundColor: colors.surface,
+    },
+    headerBackVisible: false,
+  };
   return (
-    <CategoriesStack.Navigator>
+    <CategoriesStack.Navigator screenOptions={options}>
       <CategoriesStack.Screen
         name="AllCategories"
         component={AllCategories}
-        options={({navigation}) =>
-          screenOptionsWithDrawer(navigation, 'categories')
-        }
+        options={({navigation}) => screenOptions(navigation, 'categories')}
       />
       <CategoriesStack.Screen
         name="AddCategory"
         component={AddCategory}
-        options={() => screenOptionsWODrawer('add_category')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'add_category', 'arrow-left')
+        }
       />
       <CategoriesStack.Screen
         name="ViewCategory"
         component={ViewCategory}
-        options={() => screenOptionsWODrawer('view_category')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'view_category', 'arrow-left')
+        }
       />
       <CategoriesStack.Screen
         name="ChooseColor"
         component={ChooseColorScreen}
-        options={() => screenOptionsWODrawer('appearance')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'appearance', 'arrow-left')
+        }
       />
     </CategoriesStack.Navigator>
   );
 };
 
 export const ExchangeStackNavigator = () => {
+  const {colors} = useTheme();
+  const options = {
+    headerStyle: {
+      backgroundColor: colors.surface,
+    },
+    headerBackVisible: false,
+  };
   return (
-    <ExchangeStack.Navigator>
+    <ExchangeStack.Navigator screenOptions={options}>
       <ExchangeStack.Screen
         name="Exchange"
         component={ExchangeTabNavigator}
-        options={({navigation}) =>
-          screenOptionsWithDrawer(navigation, 'exchange_rates')
-        }
+        options={({navigation}) => screenOptions(navigation, 'exchange_rates')}
       />
     </ExchangeStack.Navigator>
   );
 };
 
 export const RecurringTransactionStackNavigator = () => {
+  const {colors} = useTheme();
+  const options = {
+    headerStyle: {
+      backgroundColor: colors.surface,
+    },
+    headerBackVisible: false,
+  };
   return (
-    <RecurringTransactionStack.Navigator>
+    <RecurringTransactionStack.Navigator screenOptions={options}>
       <RecurringTransactionStack.Screen
         name="AllRecurringTransaction"
         component={AllRecurringTransactionsScreen}
         options={({navigation}) =>
-          screenOptionsWithDrawer(navigation, 'recurring_transactions')
+          screenOptions(navigation, 'recurring_transactions')
         }
       />
       <RecurringTransactionStack.Screen
         name="EditRecurringTransaction"
         component={EditRecurringTransactionScreen}
-        options={() => screenOptionsWODrawer('recurring_transactions')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'recurring_transactions', 'arrow-left')
+        }
       />
       <RecurringTransactionStack.Screen
         name="AddRecurringTransaction"
         component={AddRecurringTransactionScreen}
-        options={() => screenOptionsWODrawer('recurring_transactions')}
+        options={({navigation}) =>
+          screenOptions(navigation, 'recurring_transactions', 'arrow-left')
+        }
       />
     </RecurringTransactionStack.Navigator>
   );
 };
 
-const screenOptionsWithDrawer = (navigation, title) => ({
+const screenOptions = (navigation, title, icon = 'menu') => ({
   headerLeft: () => (
     <IconButton
-      icon="menu"
+      icon={icon}
       onPress={() => {
-        navigation.openDrawer();
+        icon === 'menu' ? navigation.openDrawer() : navigation.goBack();
       }}
     />
   ),
-  headerTitle: props => <TranslateText {...props}>{title}</TranslateText>,
-});
-
-const screenOptionsWODrawer = title => ({
-  headerTitle: props => <TranslateText {...props}>{title}</TranslateText>,
+  headerTitle: props => (
+    <TranslateText
+      {...props}
+      category="subheading"
+      style={{fontFamily: 'NotoSans-SemiBold'}}>
+      {title}
+    </TranslateText>
+  ),
 });

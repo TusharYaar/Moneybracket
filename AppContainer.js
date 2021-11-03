@@ -32,7 +32,7 @@ const AppContainer = () => {
   //   };
   // }, []);
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={currentThemeObj}>
       <PaperProvider theme={currentThemeObj}>
         <AppNavigator />
       </PaperProvider>
