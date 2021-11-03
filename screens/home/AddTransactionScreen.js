@@ -1,14 +1,17 @@
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableNativeFeedback,
-  FlatList,
-} from 'react-native';
-import {Card, Modal} from '@ui-kitten/components';
+import React, {useState, useRef, useMemo} from 'react';
+import {StyleSheet, View, TouchableNativeFeedback} from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Button, Caption, Menu, TextInput} from 'react-native-paper';
+import {
+  Button,
+  Caption,
+  Menu,
+  TextInput,
+  List,
+  useTheme,
+} from 'react-native-paper';
+
+import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 
 import ImageIcon from '../../components/ImageIcon';
 
@@ -21,12 +24,12 @@ import {insertTransactions} from '../../helpers/dbFunctions';
 import CategoryItem from '../../components/CategoryItem';
 
 const AddTransactionScreen = ({navigation}) => {
+  const {colors} = useTheme();
   const currency = useSelector(state => state.settings.currency);
   const categories = useSelector(state => state.categories.categories);
   const dispatch = useDispatch();
   const avalibleExchangeRates = useSelector(state => state.exchangeRates.rates);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const [modalOpen, setModalOpen] = useState(false);
   const [transactionDate, setTransactionDate] = useState(new Date());
   const [showDate, setShowDate] = useState(false);
   const [transactionAmount, setTransactionAmount] = useState('');
@@ -35,6 +38,9 @@ const AddTransactionScreen = ({navigation}) => {
     avalibleExchangeRates.find(item => item.code === currency.base),
   );
   const [changeCurrencyVisible, setChangeCurrencyVisible] = useState(false);
+
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ['70%', '90%'], []);
 
   const handleDateChange = ({nativeEvent, type}) => {
     setShowDate(false);
@@ -54,7 +60,9 @@ const AddTransactionScreen = ({navigation}) => {
   };
   const handleChangeCategory = category => {
     setSelectedCategory(category);
-    setModalOpen(false);
+  };
+  const openBottomSheet = () => {
+    bottomSheetRef.current.snapToIndex(1);
   };
 
   const handleSubmit = async () => {
@@ -136,7 +144,7 @@ const AddTransactionScreen = ({navigation}) => {
       />
       <View style={styles.selectContainer}>
         <Caption category="c1">Category</Caption>
-        <TouchableNativeFeedback onPress={() => setModalOpen(true)}>
+        <TouchableNativeFeedback onPress={openBottomSheet}>
           <View style={[styles.select, styles.padding]}>
             <View style={styles.select}>
               <ImageIcon uri={selectedCategory.imageUri} />
@@ -146,23 +154,38 @@ const AddTransactionScreen = ({navigation}) => {
           </View>
         </TouchableNativeFeedback>
       </View>
-      <Modal
-        visible={modalOpen}
-        onBackdropPress={() => setModalOpen(false)}
-        style={styles.modal}>
-        <Card>
-          <FlatList
-            data={categories}
-            keyExtractor={item => item.category}
-            renderItem={item => (
-              <CategoryItem item={item.item} onPress={handleChangeCategory} />
-            )}
-          />
-        </Card>
-      </Modal>
       <Button onPress={handleSubmit} disabled={!transactionAmount > 0}>
         Add Transaction
       </Button>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+        backgroundStyle={[
+          styles.bottomsheet,
+          {
+            backgroundColor: colors.background,
+            borderColor: colors.primary,
+          },
+        ]}
+        handleIndicatorStyle={{backgroundColor: colors.accent}}
+        enablePanDownToClose={true}>
+        <BottomSheetFlatList
+          data={categories}
+          keyExtractor={item => item.category}
+          contentContainerStyle={styles.contentContainer}
+          renderItem={item => (
+            <List.Item
+              title={item.item.category}
+              description={item.item.type}
+              left={props => (
+                <List.Icon {...props} icon="buffer" color={item.item.color} />
+              )}
+            />
+            // <CategoryItem item={item.item} onPress={handleChangeCategory} />
+          )}
+        />
+      </BottomSheet>
     </View>
   );
 };
@@ -208,5 +231,11 @@ const styles = StyleSheet.create({
   modal: {
     height: '80%',
     width: '80%',
+  },
+  bottomsheet: {
+    borderWidth: 2,
+  },
+  contentContainer: {
+    paddingHorizontal: 10,
   },
 });

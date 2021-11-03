@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
   image: {
     height: 64,
@@ -68,9 +67,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 5,
   },
-  // country: {
-  //   fontSize: 14,
-  // },
   textValue: {
     alignItems: 'center',
     flexDirection: 'row',
