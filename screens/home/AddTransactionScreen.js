@@ -15,13 +15,14 @@ import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 
 import ImageIcon from '../../components/ImageIcon';
 
+import BottomSheetCategory from '../../components/BottomSheetCategory';
+import BottomSheetCurrency from '../../components/BottomSheetCurrency';
+
 import TranslateText from '../../components/TranslateText';
 import {useSelector, useDispatch} from 'react-redux';
 import {addTransaction} from '../../store/actions/transactions';
 
 import {insertTransactions} from '../../helpers/dbFunctions';
-
-import CategoryItem from '../../components/CategoryItem';
 
 const AddTransactionScreen = ({navigation}) => {
   const {colors} = useTheme();
@@ -37,10 +38,9 @@ const AddTransactionScreen = ({navigation}) => {
   const [selectedCurrency, setSelectedCurrency] = useState(
     avalibleExchangeRates.find(item => item.code === currency.base),
   );
-  const [changeCurrencyVisible, setChangeCurrencyVisible] = useState(false);
-
+  const [bsType, setBsType] = useState('category');
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ['70%', '90%'], []);
+  const snapPoints = useMemo(() => [500], []);
 
   const handleDateChange = ({nativeEvent, type}) => {
     setShowDate(false);
@@ -54,15 +54,23 @@ const AddTransactionScreen = ({navigation}) => {
   };
 
   const handleChangeCurrency = code => {
-    setChangeCurrencyVisible(false);
     const item = avalibleExchangeRates.find(currency => code === currency.code);
     setSelectedCurrency(item);
   };
   const handleChangeCategory = category => {
     setSelectedCategory(category);
+    bottomSheetRef.current.close();
   };
-  const openBottomSheet = () => {
-    bottomSheetRef.current.snapToIndex(1);
+  const openBottomSheet = type => {
+    setBsType(type);
+    bottomSheetRef.current.snapToIndex(0);
+  };
+
+  const handleBsRender = ({item}) => {
+    if (bsType == 'category') {
+      return <BottomSheetCategory item={item} onPress={handleChangeCategory} />;
+    } else
+      return <BottomSheetCurrency item={item} onPress={handleChangeCurrency} />;
   };
 
   const handleSubmit = async () => {
@@ -110,22 +118,9 @@ const AddTransactionScreen = ({navigation}) => {
           keyboardType="decimal-pad"
         />
         <View style={styles.seperator} />
-        <Menu
-          visible={changeCurrencyVisible}
-          anchor={
-            <Button
-              onPress={() => setChangeCurrencyVisible(!changeCurrencyVisible)}>
-              {selectedCurrency.code}
-            </Button>
-          }>
-          {avalibleExchangeRates.map(rate => (
-            <Menu.Item
-              key={rate.code}
-              onPress={() => handleChangeCurrency(rate.code)}
-              title={`${rate.symbol} (${rate.code})`}
-            />
-          ))}
-        </Menu>
+        <Button onPress={() => openBottomSheet('currency')}>
+          {selectedCurrency.code}
+        </Button>
       </View>
       {selectedCurrency.code != currency.base && transactionAmount.length > 0 && (
         <Caption>
@@ -144,7 +139,7 @@ const AddTransactionScreen = ({navigation}) => {
       />
       <View style={styles.selectContainer}>
         <Caption category="c1">Category</Caption>
-        <TouchableNativeFeedback onPress={openBottomSheet}>
+        <TouchableNativeFeedback onPress={() => openBottomSheet('category')}>
           <View style={[styles.select, styles.padding]}>
             <View style={styles.select}>
               <ImageIcon uri={selectedCategory.imageUri} />
@@ -171,20 +166,12 @@ const AddTransactionScreen = ({navigation}) => {
         handleIndicatorStyle={{backgroundColor: colors.accent}}
         enablePanDownToClose={true}>
         <BottomSheetFlatList
-          data={categories}
+          data={bsType === 'category' ? categories : avalibleExchangeRates}
           keyExtractor={item => item.category}
           contentContainerStyle={styles.contentContainer}
-          renderItem={item => (
-            <List.Item
-              title={item.item.category}
-              description={item.item.type}
-              left={props => (
-                <List.Icon {...props} icon="buffer" color={item.item.color} />
-              )}
-            />
-            // <CategoryItem item={item.item} onPress={handleChangeCategory} />
-          )}
+          renderItem={item => handleBsRender(item)}
         />
+        {console.log(avalibleExchangeRates)}
       </BottomSheet>
     </View>
   );
@@ -239,3 +226,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
+
+{
+  /* <Menu
+          visible={changeCurrencyVisible}
+          anchor={
+            <Button
+              onPress={() => setChangeCurrencyVisible(!changeCurrencyVisible)}>
+              {selectedCurrency.code}
+            </Button>
+          }>
+          {avalibleExchangeRates.map(rate => (
+            <Menu.Item
+              key={rate.code}
+              onPress={() => handleChangeCurrency(rate.code)}
+              title={`${rate.symbol} (${rate.code})`}
+            />
+          ))}
+        </Menu> */
+}
