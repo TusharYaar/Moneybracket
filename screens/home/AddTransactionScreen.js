@@ -11,10 +11,8 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
-
-import BottomSheetCategory from '../../components/BottomSheetCategory';
-import BottomSheetCurrency from '../../components/BottomSheetCurrency';
+import CategoryBottomSheet from '../../components/CategoryBottomSheet';
+import CurrencyBottomSheet from '../../components/CurrencyBottomSheet';
 
 import TranslateText from '../../components/TranslateText';
 import {useSelector, useDispatch} from 'react-redux';
@@ -23,7 +21,6 @@ import {addTransaction} from '../../store/actions/transactions';
 import {insertTransactions} from '../../helpers/dbFunctions';
 
 const AddTransactionScreen = ({navigation}) => {
-  const {colors} = useTheme();
   const currency = useSelector(state => state.settings.currency);
   const categories = useSelector(state => state.categories.categories);
   const dispatch = useDispatch();
@@ -152,56 +149,17 @@ const AddTransactionScreen = ({navigation}) => {
       <Button onPress={handleSubmit} disabled={!transactionAmount > 0}>
         Add Transaction
       </Button>
-      <BottomSheet
-        ref={categoryBottomSheetRef}
-        index={-1}
+      <CategoryBottomSheet
+        fref={categoryBottomSheetRef}
         snapPoints={snapPoints}
-        backgroundStyle={[
-          styles.bottomsheet,
-          {
-            backgroundColor: colors.background,
-            borderColor: colors.primary,
-          },
-        ]}
-        handleIndicatorStyle={{backgroundColor: colors.accent}}
-        enablePanDownToClose={true}>
-        <BottomSheetFlatList
-          data={categories}
-          keyExtractor={item => item.category}
-          contentContainerStyle={styles.contentContainer}
-          renderItem={item => (
-            <BottomSheetCategory
-              item={item.item}
-              onPress={handleChangeCategory}
-            />
-          )}
-        />
-      </BottomSheet>
-      <BottomSheet
-        ref={currencyBottomSheetRef}
-        index={-1}
+        onPress={handleChangeCategory}
+      />
+
+      <CurrencyBottomSheet
+        fref={currencyBottomSheetRef}
         snapPoints={snapPoints}
-        backgroundStyle={[
-          styles.bottomsheet,
-          {
-            backgroundColor: colors.background,
-            borderColor: colors.primary,
-          },
-        ]}
-        handleIndicatorStyle={{backgroundColor: colors.accent}}
-        enablePanDownToClose={true}>
-        <BottomSheetFlatList
-          data={avalibleExchangeRates}
-          keyExtractor={item => item.category}
-          contentContainerStyle={styles.contentContainer}
-          renderItem={item => (
-            <BottomSheetCurrency
-              item={item.item}
-              onPress={handleChangeCurrency}
-            />
-          )}
-        />
-      </BottomSheet>
+        onPress={handleChangeCurrency}
+      />
     </View>
   );
 };
@@ -238,11 +196,5 @@ const styles = StyleSheet.create({
   modal: {
     height: '80%',
     width: '80%',
-  },
-  bottomsheet: {
-    borderWidth: 2,
-  },
-  contentContainer: {
-    paddingHorizontal: 10,
   },
 });
