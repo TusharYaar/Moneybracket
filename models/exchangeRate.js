@@ -3,7 +3,7 @@ export default class ExchangeRate {
     this.key = key;
     this.code = code;
     this.country = country;
-    this.flag = flag ? flag : 'notDefined';
+    this.flag = `https://flagcdn.com/64x48/${flag ? flag : 'in'}.png`;
     this.symbol = symbol;
   }
 }

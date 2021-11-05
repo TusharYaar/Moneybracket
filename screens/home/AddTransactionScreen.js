@@ -171,7 +171,6 @@ const AddTransactionScreen = ({navigation}) => {
           contentContainerStyle={styles.contentContainer}
           renderItem={item => handleBsRender(item)}
         />
-        {console.log(avalibleExchangeRates)}
       </BottomSheet>
     </View>
   );
