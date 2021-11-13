@@ -6,7 +6,7 @@ import {
   Button,
   Caption,
   TextInput,
-  useTheme,
+  IconButton,
   Subheading,
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -103,18 +103,20 @@ const AddTransactionScreen = ({navigation}) => {
           {selectedCurrency.code}
         </Button>
       </View>
-      <View>
-        {selectedCurrency.code != currency.base &&
-          transactionAmount.length > 0 && (
-            <Caption>
-              {currency.symbol}
-              {(
-                (1 / selectedCurrency.rate) *
-                parseInt(transactionAmount)
-              ).toFixed(2)}
-            </Caption>
+      {selectedCurrency.code != currency.base && transactionAmount.length > 0 && (
+        <Caption>
+          {currency.symbol}
+          {((1 / selectedCurrency.rate) * parseInt(transactionAmount)).toFixed(
+            2,
           )}
-        <Button onPress={() => setShowDate(true)}>Date</Button>
+        </Caption>
+      )}
+      <View>
+        <IconButton
+          onPress={() => setShowDate(true)}
+          icon="calendar"
+          size={30}
+        />
         {showDate && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -146,7 +148,10 @@ const AddTransactionScreen = ({navigation}) => {
           </View>
         </TouchableNativeFeedback>
       </View>
-      <Button onPress={handleSubmit} disabled={!transactionAmount > 0}>
+      <Button
+        onPress={handleSubmit}
+        disabled={!transactionAmount > 0}
+        style={{zIndex: 0}}>
         Add Transaction
       </Button>
       <CategoryBottomSheet
