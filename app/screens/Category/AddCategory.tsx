@@ -12,19 +12,35 @@ import {Category} from "../../realm/Category";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {StackParamList} from "../../navigators/StackNavigators";
 
+import ColorChoice from "../../components/ColorChoice";
+
 type Props = NativeStackScreenProps<StackParamList, "AddCategoryScreen">;
+
+const COLOR_OPTIONS = [
+  "#d5001a",
+  "#ff6a00",
+  "#ffb507",
+  "#ffd972",
+  "#fff5da",
+  "#f2f8d7",
+  "#b2ddcc",
+  "#42b3d5",
+  "#27539b",
+  "#182276  ",
+];
 
 const AddCategory = ({navigation}: Props) => {
   const [title, setTitle] = useState("Paisa hi Paise");
   const [type, setType] = useState("income");
+  const [color, setColor] = useState(COLOR_OPTIONS[0]);
   const realm = useRealm();
 
   const addNewCategory = useCallback(
-    (categoryTitle: string, categoryType: string) => {
+    (categoryTitle: string, categoryType: string, categoryColor: string) => {
       realm.write(() => {
         realm.create(
           "Category",
-          Category.generate(categoryTitle, categoryType),
+          Category.generate(categoryTitle, categoryType, categoryColor),
         );
         navigation.goBack();
       });
@@ -46,7 +62,17 @@ const AddCategory = ({navigation}: Props) => {
           <RadioButton value="expense" />
         </>
       </RadioButton.Group>
-      <Button onPress={() => addNewCategory(title, type)}>Add Category</Button>
+      {COLOR_OPTIONS.map(col => (
+        <ColorChoice
+          key={col}
+          color={col}
+          onPress={() => setColor(col)}
+          selected={col === color}
+        />
+      ))}
+      <Button onPress={() => addNewCategory(title, type, color)}>
+        Add Category
+      </Button>
     </View>
   );
 };

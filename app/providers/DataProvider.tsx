@@ -19,9 +19,6 @@ const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
   const category = useQuery(Category);
   const transaction = useQuery(Transaction);
 
-  console.log(category);
-  console.log(transaction);
-
   return (
     <DataContext.Provider value={{category, transaction}}>
       {children}
