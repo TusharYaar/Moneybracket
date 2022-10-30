@@ -32,7 +32,7 @@ export class Transaction extends Realm.Object {
       desciption: "string",
       amount: "int",
       currency: "string",
-      category: "Category",
+      category: "Category?",
       createdAt: "date",
     },
   };

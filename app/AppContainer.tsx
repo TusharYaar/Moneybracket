@@ -5,17 +5,19 @@ import {store} from "./store";
 import {Provider as StoreProvider} from "react-redux";
 import LockProvider from "./providers/LockProvider";
 import RealmProvider from "./realm";
+import DataProvider from "./providers/DataProvider";
 const AppContainer = () => {
   return (
-    // <SettingProvider>
     <RealmProvider>
-      <StoreProvider store={store}>
-        <ThemeProvider>
-          <LockProvider>
-            <App />
-          </LockProvider>
-        </ThemeProvider>
-      </StoreProvider>
+      <DataProvider>
+        <StoreProvider store={store}>
+          <ThemeProvider>
+            <LockProvider>
+              <App />
+            </LockProvider>
+          </ThemeProvider>
+        </StoreProvider>
+      </DataProvider>
     </RealmProvider>
   );
 };

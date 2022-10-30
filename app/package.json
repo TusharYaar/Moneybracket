@@ -23,6 +23,7 @@
     "react-native": "0.70.4",
     "react-native-calendars": "^1.1290.0",
     "react-native-gesture-handler": "^2.8.0",
+    "react-native-get-random-values": "^1.8.0",
     "react-native-mmkv": "^2.5.1",
     "react-native-pager-view": "^6.0.1",
     "react-native-paper": "^4.12.5",

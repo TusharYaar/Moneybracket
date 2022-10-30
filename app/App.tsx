@@ -1,5 +1,7 @@
 import React from "react";
 import MyDrawer from "./navigators/DrawerNavigator";
-export default function App() {
+const App = () => {
   return <MyDrawer />;
-}
+};
+
+export default App;
