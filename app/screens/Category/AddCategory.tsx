@@ -1,4 +1,4 @@
-import {StyleSheet, View} from "react-native";
+import {FlatList, StyleSheet, View} from "react-native";
 import React, {useState, useCallback} from "react";
 import {
   Caption,
@@ -26,7 +26,7 @@ const COLOR_OPTIONS = [
   "#b2ddcc",
   "#42b3d5",
   "#27539b",
-  "#182276  ",
+  "#182276",
 ];
 
 const AddCategory = ({navigation}: Props) => {
@@ -62,14 +62,23 @@ const AddCategory = ({navigation}: Props) => {
           <RadioButton value="expense" />
         </>
       </RadioButton.Group>
-      {COLOR_OPTIONS.map(col => (
-        <ColorChoice
-          key={col}
-          color={col}
-          onPress={() => setColor(col)}
-          selected={col === color}
-        />
-      ))}
+      <FlatList
+        horizontal={true}
+        data={COLOR_OPTIONS}
+        renderItem={({item}) => (
+          <ColorChoice
+            key={item}
+            color={item}
+            onPress={() => setColor(item)}
+            selected={color === item}
+          />
+        )}
+      />
+      {/* <ScrollView horizontal={true}>
+        {COLOR_OPTIONS.map(col => (
+          
+        ))}
+      </ScrollView> */}
       <Button onPress={() => addNewCategory(title, type, color)}>
         Add Category
       </Button>

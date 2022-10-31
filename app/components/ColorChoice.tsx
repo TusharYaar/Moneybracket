@@ -27,7 +27,7 @@ const ColorChoice = ({
 export default ColorChoice;
 
 const styles = StyleSheet.create({
-  item: {width: 20, height: 20},
+  item: {width: 40, height: 40, marginHorizontal: 5, borderRadius: 7},
   view: {
     display: "flex",
     flex: 1,

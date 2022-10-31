@@ -9,15 +9,15 @@ import DataProvider from "./providers/DataProvider";
 const AppContainer = () => {
   return (
     <RealmProvider>
-      <DataProvider>
-        <StoreProvider store={store}>
-          <ThemeProvider>
+      <ThemeProvider>
+        <DataProvider>
+          <StoreProvider store={store}>
             <LockProvider>
               <App />
             </LockProvider>
-          </ThemeProvider>
-        </StoreProvider>
-      </DataProvider>
+          </StoreProvider>
+        </DataProvider>
+      </ThemeProvider>
     </RealmProvider>
   );
 };

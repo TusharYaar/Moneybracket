@@ -12,6 +12,7 @@ import {NativeStackScreenProps} from "@react-navigation/native-stack";
 
 import {StackParamList} from "./StackNavigators";
 import {StyleSheet} from "react-native";
+import {useData} from "../providers/DataProvider";
 
 export type TabParamList = {
   AllTransactionScreen: undefined;
@@ -20,14 +21,29 @@ export type TabParamList = {
   ConversionScreen: undefined;
   AllCategoryScreen: undefined;
   CategoryChartScreen: undefined;
+  AllAccountScreen: undefined;
+  AccountChartScreen: undefined;
 };
 const Tab = createMaterialTopTabNavigator<TabParamList>();
 
-export const TrackerTabNavigator = () => {
+type TrackerTabProps = NativeStackScreenProps<StackParamList, "TrackerTab">;
+
+export const TrackerTabNavigator = ({navigation}: TrackerTabProps) => {
   return (
     <>
       <Tab.Navigator>
-        <Tab.Screen name="AllTransactionScreen" component={AllTransaction} />
+        <Tab.Screen name="AllTransactionScreen">
+          {props => (
+            <>
+              <AllTransaction {...props} />
+              <FAB
+                style={styles.fab}
+                icon="plus"
+                onPress={() => navigation.navigate("AddTransactionScreen")}
+              />
+            </>
+          )}
+        </Tab.Screen>
         <Tab.Screen name="TrackerChartScreen" component={TrackerCharts} />
       </Tab.Navigator>
     </>
@@ -44,7 +60,8 @@ export const ExchangeTabNavigator = () => {
 };
 
 type CategoryTabProps = NativeStackScreenProps<StackParamList, "CategoryTab">;
-export const CategoryTabNavigator = ({navigation}: CategoryTabProps) => {
+export const CategoryTabNavigator = ({}: CategoryTabProps) => {
+  const {showAddCategoryModal} = useData();
   return (
     <Tab.Navigator>
       <Tab.Screen name="AllCategoryScreen">
@@ -54,7 +71,7 @@ export const CategoryTabNavigator = ({navigation}: CategoryTabProps) => {
             <FAB
               style={styles.fab}
               icon="plus"
-              onPress={() => navigation.navigate("AddCategoryScreen")}
+              onPress={() => showAddCategoryModal()}
             />
           </>
         )}

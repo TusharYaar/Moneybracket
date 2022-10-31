@@ -1,64 +1,42 @@
-import React, {useCallback, useState} from "react";
+import React from "react";
 
 import {MaterialTopTabScreenProps} from "@react-navigation/material-top-tabs";
 import {TabParamList} from "../../navigators/TabNavigators";
 import {useData} from "../../providers/DataProvider";
 import CategoryItem from "../../components/CategoryItem";
 
-import DeleteDialog from "../../components/DeleteDialog";
-import {Category} from "../../realm/Category";
-import {useRealm} from "../../realm";
-import {FlatList} from "react-native";
+import {FlatList, StyleSheet, View} from "react-native";
+import {Paragraph} from "react-native-paper";
 
 type Props = MaterialTopTabScreenProps<TabParamList, "AllCategoryScreen">;
 
-type DialogStateType = {
-  item: null | Category;
-  visible: boolean;
-};
-
 const AllCategory = ({}: Props) => {
-  const realm = useRealm();
-  const [dialog, setDialog] = useState<DialogStateType>({
-    item: null,
-    visible: false,
-  });
-  const handleLongPress = useCallback((item: Category) => {
-    setDialog({item: item, visible: true});
-  }, []);
-
-  const handleDelete = () => {
-    realm.write(() => {
-      realm.delete(dialog.item);
-      setDialog({item: null, visible: false});
-    });
-  };
-
-  const handleDismiss = () => {
-    setDialog({item: null, visible: false});
-  };
-
+  const {showAddCategoryModal} = useData();
   const {category} = useData();
+
+  if (category.length === 0) {
+    return (
+      <View style={styles.screen}>
+        <Paragraph>No Category Added</Paragraph>
+      </View>
+    );
+  }
+
   return (
-    <>
-      <FlatList
-        data={category}
-        renderItem={({item}) => (
-          <CategoryItem
-            item={item}
-            onPress={handleLongPress}
-            onLongPress={handleLongPress}
-          />
-        )}
-        // estimatedItemSize={19}
-      />
-      <DeleteDialog
-        visible={dialog.visible}
-        onClickOk={handleDelete}
-        onClickCancel={handleDismiss}
-      />
-    </>
+    <FlatList
+      data={category}
+      renderItem={({item}) => (
+        <CategoryItem item={item} onPress={() => showAddCategoryModal(item)} />
+      )}
+    />
   );
 };
 
 export default AllCategory;
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    alignItems: "center",
+  },
+});
