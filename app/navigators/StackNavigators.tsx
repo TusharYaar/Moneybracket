@@ -7,7 +7,6 @@ import {
   ExchangeTabNavigator,
   TrackerTabNavigator,
 } from "./TabNavigators";
-import AddCategory from "../screens/Category/AddCategory";
 import {IconButton} from "react-native-paper";
 import {DrawerScreenProps} from "@react-navigation/drawer";
 import {DrawerParamList} from "./DrawerNavigator";
@@ -17,7 +16,7 @@ export type StackParamList = {
   AddTransactionScreen: undefined;
 
   CategoryTab: undefined;
-  AddCategoryScreen: undefined;
+  // AddCategoryScreen: undefined;
 
   ExchangeTab: undefined;
 
@@ -59,11 +58,6 @@ export const CategoryStackNavigator = () => {
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
         })}
-      />
-      <Stack.Screen
-        name="AddCategoryScreen"
-        component={AddCategory}
-        options={{animation: "slide_from_bottom"}}
       />
     </Stack.Navigator>
   );
