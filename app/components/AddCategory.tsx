@@ -3,7 +3,7 @@ import React, {useState, useCallback, useEffect} from "react";
 import {
   Modal,
   Portal,
-  Subheading,
+  Paragraph,
   TextInput,
   IconButton,
 } from "react-native-paper";
@@ -12,19 +12,9 @@ import {useRealm} from "../realm";
 import {Category} from "../realm/Category";
 import ColorChoice from "./ColorChoice";
 import SelectItem from "./SelectItem";
+import IconModal from "./IconModal";
 
-const COLOR_OPTIONS = [
-  // "#d5001a",
-  "#ff6a00",
-  "#ffb507",
-  "#ffd972",
-  "#fff5da",
-  "#f2f8d7",
-  "#b2ddcc",
-  "#42b3d5",
-  // "#27539b",
-  // "#182276",
-];
+import {COLORS} from "../data";
 
 const CATEGORY_TYPES = [
   {
@@ -44,42 +34,58 @@ type Props = {
   item?: Category;
   onDismiss: () => void;
 };
-type ValueProps = {title: string; type: string; color: string};
+type ValueProps = {title: string; type: string; color: string; icon: string};
 const AddCategory = ({visible, item, onDismiss}: Props) => {
   const [values, setValues] = useState<ValueProps>({
     title: "",
     type: "income",
-    color: COLOR_OPTIONS[0],
+    color: COLORS[0],
+    icon: "plus",
   });
+
+  const [iconModal, setIconModal] = useState(false);
+
   useEffect(() => {
     if (item) {
-      const {title, type, color} = item;
-      setValues({title, type, color});
+      const {title, type, color, icon} = item;
+      setValues({title, type, color, icon});
     } else {
-      setValues({title: "", type: "income", color: COLOR_OPTIONS[0]});
+      setValues({
+        title: "",
+        type: "income",
+        color: COLORS[0],
+        icon: "plus",
+      });
     }
   }, [item]);
   const realm = useRealm();
   const addNewCategory = useCallback(
-    ({title, type, color}: ValueProps) => {
+    ({title, type, color, icon}: ValueProps) => {
       realm.write(() => {
-        realm.create("Category", Category.generate(title, type, color));
+        realm.create("Category", Category.generate(title, type, color, icon));
         onDismiss();
       });
     },
     [realm, onDismiss],
   );
   const updateCategory = useCallback(
-    (category: Category, {title, type, color}: ValueProps) => {
+    (category: Category, {title, type, color, icon}: ValueProps) => {
       realm.write(() => {
         if (category.title !== title) category.title = title;
         if (category.color !== color) category.color = color;
         if (category.type !== type) category.type = type;
+        if (category.icon !== icon) category.icon = icon;
+
         onDismiss();
       });
     },
     [realm, onDismiss],
   );
+
+  const changeIcon = useCallback((icon: string) => {
+    setValues(prev => ({...prev, icon}));
+    setIconModal(false);
+  }, []);
 
   const handlePressAdd = () => {
     if (item) updateCategory(item, values);
@@ -96,86 +102,112 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
     [realm, onDismiss],
   );
 
-  return (
-    <>
+  const dismissIconModal = useCallback(() => {
+    setIconModal(false);
+  }, []);
+
+  if (iconModal) {
+    return (
       <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={onDismiss}
-          contentContainerStyle={styles.modal}>
-          <View style={styles.topContainer}>
-            <View style={styles.topBtnContainer}>
+        <IconModal
+          visible={true}
+          onDismiss={dismissIconModal}
+          color={values.color}
+          onItemSelect={changeIcon}
+        />
+      </Portal>
+    );
+  }
+
+  return (
+    <Portal>
+      <Modal
+        visible={visible}
+        onDismiss={onDismiss}
+        contentContainerStyle={styles.modal}>
+        <View style={styles.topContainer}>
+          <View style={styles.topBtnContainer}>
+            <IconButton
+              icon="close"
+              size={25}
+              onPress={onDismiss}
+              style={styles.iconBtn}
+            />
+            {item && (
               <IconButton
-                icon="close"
-                size={30}
-                onPress={onDismiss}
+                icon="delete"
+                size={25}
+                onPress={() => deleteCategory(item)}
                 style={styles.iconBtn}
               />
-              {item && (
+            )}
+          </View>
+          <View>
+            <Paragraph style={styles.subheading}>Icon and Title</Paragraph>
+            <View style={styles.iconInputContainer}>
+              <View style={{backgroundColor: values.color}}>
                 <IconButton
-                  icon="delete"
-                  size={30}
-                  onPress={() => deleteCategory(item)}
+                  size={43}
+                  icon={values.icon}
                   style={styles.iconBtn}
+                  onPress={() => setIconModal(true)}
                 />
-              )}
-            </View>
-            <View style={styles.titleContainer}>
-              <Subheading>Category Title</Subheading>
+              </View>
               <TextInput
                 value={values.title}
                 placeholder="Category Title"
+                style={styles.input}
                 onChangeText={text =>
                   setValues(prev => ({...prev, title: text}))
                 }
               />
             </View>
-            <IconButton
-              size={40}
-              icon={item ? "update" : "plus"}
-              style={[styles.addBtn, {backgroundColor: values.color}]}
-              onPress={handlePressAdd}
-            />
           </View>
-          <View>
-            <Subheading style={styles.subheading}>Category Type</Subheading>
-            <FlatList
-              horizontal={true}
-              data={CATEGORY_TYPES}
-              renderItem={option => (
-                <SelectItem
-                  selected={values.type === option.item.value}
-                  text={option.item.title}
-                  icon={option.item.icon}
-                  onPress={() =>
-                    setValues(prev => ({...prev, type: option.item.value}))
-                  }
-                />
-              )}
-              contentContainerStyle={styles.colors}
-            />
-          </View>
-          <View>
-            <Subheading style={styles.subheading}>Category Color</Subheading>
-            <FlatList
-              horizontal={true}
-              data={COLOR_OPTIONS}
-              renderItem={option => (
-                <ColorChoice
-                  key={option.item}
-                  color={option.item}
-                  onPress={() =>
-                    setValues(prev => ({...prev, color: option.item}))
-                  }
-                  selected={values.color === option.item}
-                />
-              )}
-              contentContainerStyle={styles.colors}
-            />
-          </View>
-        </Modal>
-      </Portal>
-    </>
+          <IconButton
+            size={40}
+            icon={item ? "update" : "plus"}
+            style={[styles.addBtn, {backgroundColor: values.color}]}
+            onPress={handlePressAdd}
+          />
+        </View>
+        <View>
+          <Paragraph style={styles.subheading}>Type</Paragraph>
+          <FlatList
+            horizontal={true}
+            data={CATEGORY_TYPES}
+            renderItem={option => (
+              <SelectItem
+                selected={values.type === option.item.value}
+                text={option.item.title}
+                icon={option.item.icon}
+                onPress={() =>
+                  setValues(prev => ({...prev, type: option.item.value}))
+                }
+              />
+            )}
+            contentContainerStyle={styles.colors}
+          />
+        </View>
+        <View>
+          <Paragraph style={styles.subheading}>Color</Paragraph>
+          <FlatList
+            horizontal={true}
+            data={COLORS}
+            renderItem={option => (
+              <ColorChoice
+                key={option.item}
+                color={option.item}
+                onPress={() =>
+                  setValues(prev => ({...prev, color: option.item}))
+                }
+                selected={values.color === option.item}
+              />
+            )}
+            contentContainerStyle={styles.colors}
+          />
+        </View>
+      </Modal>
+    </Portal>
   );
 };
 
@@ -187,6 +219,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   topContainer: {
+    flexDirection: "column",
     position: "relative",
     paddingBottom: 40,
     backgroundColor: "#f2f8d7",
@@ -198,14 +231,21 @@ const styles = StyleSheet.create({
   iconBtn: {
     margin: 0,
   },
-  titleContainer: {
+  iconInputContainer: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "center",
     paddingHorizontal: 10,
+  },
+  input: {
+    flex: 1,
+    fontSize: 20,
   },
   addBtn: {
     margin: 0,
     backgroundColor: "orange",
     position: "absolute",
-    bottom: -30,
+    bottom: -25,
     right: 10,
   },
   typeContainer: {

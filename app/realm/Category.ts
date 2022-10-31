@@ -5,14 +5,15 @@ export class Category extends Realm.Object {
   type!: string;
   createdAt!: Date;
   color!: string;
-
-  static generate(title: string, type: string, color: string) {
+  icon!: string;
+  static generate(title: string, type: string, color: string, icon: string) {
     return {
       _id: new Realm.BSON.ObjectId(),
       title,
       createdAt: new Date(),
       type,
       color,
+      icon,
     };
   }
 
@@ -26,6 +27,7 @@ export class Category extends Realm.Object {
       type: "string",
       createdAt: "date",
       color: "string",
+      icon: "string",
     },
   };
 }
