@@ -1,4 +1,4 @@
-import {createDrawerNavigator} from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   SettingStack,
   ExchangeStackNavigator,
@@ -18,7 +18,7 @@ const Drawer = createDrawerNavigator<DrawerParamList>();
 const MyDrawer = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="CategoryStack"
+      // initialRouteName="CategoryStack"
       screenOptions={{
         headerShown: false,
       }}>

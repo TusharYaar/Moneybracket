@@ -1,5 +1,5 @@
-import {View, StyleSheet, FlatList} from "react-native";
-import React, {useState, useCallback, useEffect} from "react";
+import { View, StyleSheet, FlatList } from "react-native";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Modal,
   Portal,
@@ -8,13 +8,13 @@ import {
   IconButton,
 } from "react-native-paper";
 
-import {useRealm} from "../realm";
-import {Category} from "../realm/Category";
+import { useRealm } from "../realm";
+import { Category } from "../realm/Category";
 import ColorChoice from "./ColorChoice";
 import SelectItem from "./SelectItem";
 import IconModal from "./IconModal";
 
-import {COLORS} from "../data";
+import { COLORS } from "../data";
 
 const CATEGORY_TYPES = [
   {
@@ -34,8 +34,8 @@ type Props = {
   item?: Category;
   onDismiss: () => void;
 };
-type ValueProps = {title: string; type: string; color: string; icon: string};
-const AddCategory = ({visible, item, onDismiss}: Props) => {
+type ValueProps = { title: string; type: string; color: string; icon: string };
+const AddCategory = ({ visible, item, onDismiss }: Props) => {
   const [values, setValues] = useState<ValueProps>({
     title: "",
     type: "income",
@@ -47,8 +47,8 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
 
   useEffect(() => {
     if (item) {
-      const {title, type, color, icon} = item;
-      setValues({title, type, color, icon});
+      const { title, type, color, icon } = item;
+      setValues({ title, type, color, icon });
     } else {
       setValues({
         title: "",
@@ -60,7 +60,7 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
   }, [item]);
   const realm = useRealm();
   const addNewCategory = useCallback(
-    ({title, type, color, icon}: ValueProps) => {
+    ({ title, type, color, icon }: ValueProps) => {
       realm.write(() => {
         realm.create("Category", Category.generate(title, type, color, icon));
         onDismiss();
@@ -69,7 +69,7 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
     [realm, onDismiss],
   );
   const updateCategory = useCallback(
-    (category: Category, {title, type, color, icon}: ValueProps) => {
+    (category: Category, { title, type, color, icon }: ValueProps) => {
       realm.write(() => {
         if (category.title !== title) category.title = title;
         if (category.color !== color) category.color = color;
@@ -83,7 +83,7 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
   );
 
   const changeIcon = useCallback((icon: string) => {
-    setValues(prev => ({...prev, icon}));
+    setValues(prev => ({ ...prev, icon }));
     setIconModal(false);
   }, []);
 
@@ -145,9 +145,9 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
           <View>
             <Paragraph style={styles.subheading}>Icon and Title</Paragraph>
             <View style={styles.iconInputContainer}>
-              <View style={{backgroundColor: values.color}}>
+              <View style={{ backgroundColor: values.color, borderTopLeftRadius: 7, borderBottomLeftRadius: 7 }}>
                 <IconButton
-                  size={43}
+                  size={38}
                   icon={values.icon}
                   style={styles.iconBtn}
                   onPress={() => setIconModal(true)}
@@ -156,17 +156,18 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
               <TextInput
                 value={values.title}
                 placeholder="Category Title"
+                mode="outlined"
                 style={styles.input}
                 onChangeText={text =>
-                  setValues(prev => ({...prev, title: text}))
+                  setValues(prev => ({ ...prev, title: text }))
                 }
               />
             </View>
           </View>
           <IconButton
             size={40}
-            icon={item ? "update" : "plus"}
-            style={[styles.addBtn, {backgroundColor: values.color}]}
+            icon={item ? "check" : "plus"}
+            style={[styles.addBtn, { backgroundColor: values.color }]}
             onPress={handlePressAdd}
           />
         </View>
@@ -181,7 +182,7 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
                 text={option.item.title}
                 icon={option.item.icon}
                 onPress={() =>
-                  setValues(prev => ({...prev, type: option.item.value}))
+                  setValues(prev => ({ ...prev, type: option.item.value }))
                 }
               />
             )}
@@ -198,7 +199,7 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
                 key={option.item}
                 color={option.item}
                 onPress={() =>
-                  setValues(prev => ({...prev, color: option.item}))
+                  setValues(prev => ({ ...prev, color: option.item }))
                 }
                 selected={values.color === option.item}
               />

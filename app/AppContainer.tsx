@@ -1,8 +1,6 @@
 import React from "react";
 import App from "./App";
 import ThemeProvider from "./themes";
-import {store} from "./store";
-import {Provider as StoreProvider} from "react-redux";
 import LockProvider from "./providers/LockProvider";
 import RealmProvider from "./realm";
 import DataProvider from "./providers/DataProvider";
@@ -11,11 +9,9 @@ const AppContainer = () => {
     <RealmProvider>
       <ThemeProvider>
         <DataProvider>
-          <StoreProvider store={store}>
-            <LockProvider>
-              <App />
-            </LockProvider>
-          </StoreProvider>
+          <LockProvider>
+            <App />
+          </LockProvider>
         </DataProvider>
       </ThemeProvider>
     </RealmProvider>

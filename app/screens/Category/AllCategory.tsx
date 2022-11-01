@@ -1,18 +1,18 @@
 import React from "react";
 
-import {MaterialTopTabScreenProps} from "@react-navigation/material-top-tabs";
-import {TabParamList} from "../../navigators/TabNavigators";
-import {useData} from "../../providers/DataProvider";
+import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
+import { TabParamList } from "../../navigators/TabNavigators";
+import { useData } from "../../providers/DataProvider";
 import CategoryItem from "../../components/CategoryItem";
 
-import {FlatList, StyleSheet, View} from "react-native";
-import {Paragraph} from "react-native-paper";
+import { FlatList, StyleSheet, View } from "react-native";
+import { Paragraph } from "react-native-paper";
 
 type Props = MaterialTopTabScreenProps<TabParamList, "AllCategoryScreen">;
 
-const AllCategory = ({}: Props) => {
-  const {showAddCategoryModal} = useData();
-  const {category} = useData();
+const AllCategory = ({ }: Props) => {
+  const { showAddCategoryModal } = useData();
+  const { category } = useData();
 
   if (category.length === 0) {
     return (
@@ -25,8 +25,8 @@ const AllCategory = ({}: Props) => {
   return (
     <FlatList
       data={category}
-      renderItem={({item}) => (
-        <CategoryItem item={item} onPress={() => showAddCategoryModal(item)} />
+      renderItem={({ item }) => (
+        <CategoryItem item={item} onPress={() => showAddCategoryModal(item)} style={styles.category} />
       )}
     />
   );
@@ -39,4 +39,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  category: {
+    margin: 10,
+  }
 });

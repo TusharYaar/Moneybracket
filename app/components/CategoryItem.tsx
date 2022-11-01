@@ -1,22 +1,23 @@
-import {StyleSheet, View} from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
-import {Category} from "../realm/Category";
-import {Paragraph, Subheading, TouchableRipple} from "react-native-paper";
+import { Category } from "../realm/Category";
+import { Paragraph, Subheading, TouchableRipple } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 type Props = {
   item: Category;
   onPress: (item: Category) => void;
+  style?: ViewStyle;
 };
 
-const CategoryItem = ({item, onPress}: Props) => {
+const CategoryItem = ({ item, onPress, style }: Props) => {
   return (
     <TouchableRipple
-      style={[styles.container, {borderColor: item.color}]}
+      style={[styles.container, { borderColor: item.color }, style]}
       onPress={() => onPress(item)}>
       <View style={styles.innerContainer}>
-        <View style={[styles.iconContainer, {backgroundColor: item.color}]}>
+        <View style={[styles.iconContainer, { backgroundColor: item.color }]}>
           <Icon name={item.icon} size={40} />
         </View>
         <View style={[styles.content]}>
@@ -32,7 +33,7 @@ export default CategoryItem;
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    // margin: 10,
     borderRadius: 7,
     borderWidth: 2,
   },

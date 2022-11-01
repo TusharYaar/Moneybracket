@@ -1,18 +1,18 @@
 import React from "react";
 // import {Calendar} from "react-native-calendars";
-import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Conversion from "../screens/Exchange/Conversion";
 import Rates from "../screens/Exchange/Rates";
 import AllTransaction from "../screens/Tracker/AllTransaction";
 import TrackerCharts from "../screens/Tracker/Charts";
 import CategoryCharts from "../screens/Category/Charts";
 import AllCategory from "../screens/Category/AllCategory";
-import {FAB} from "react-native-paper";
-import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import { FAB } from "react-native-paper";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import {StackParamList} from "./StackNavigators";
-import {StyleSheet} from "react-native";
-import {useData} from "../providers/DataProvider";
+import { StackParamList } from "./StackNavigators";
+import { StyleSheet } from "react-native";
+import { useData } from "../providers/DataProvider";
 
 export type TabParamList = {
   AllTransactionScreen: undefined;
@@ -28,7 +28,8 @@ const Tab = createMaterialTopTabNavigator<TabParamList>();
 
 type TrackerTabProps = NativeStackScreenProps<StackParamList, "TrackerTab">;
 
-export const TrackerTabNavigator = ({navigation}: TrackerTabProps) => {
+export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
+  const { showAddTransactionModal } = useData();
   return (
     <>
       <Tab.Navigator>
@@ -39,7 +40,7 @@ export const TrackerTabNavigator = ({navigation}: TrackerTabProps) => {
               <FAB
                 style={styles.fab}
                 icon="plus"
-                onPress={() => navigation.navigate("AddTransactionScreen")}
+                onPress={() => showAddTransactionModal()}
               />
             </>
           )}
@@ -60,8 +61,8 @@ export const ExchangeTabNavigator = () => {
 };
 
 type CategoryTabProps = NativeStackScreenProps<StackParamList, "CategoryTab">;
-export const CategoryTabNavigator = ({}: CategoryTabProps) => {
-  const {showAddCategoryModal} = useData();
+export const CategoryTabNavigator = ({ }: CategoryTabProps) => {
+  const { showAddCategoryModal } = useData();
   return (
     <Tab.Navigator>
       <Tab.Screen name="AllCategoryScreen">
