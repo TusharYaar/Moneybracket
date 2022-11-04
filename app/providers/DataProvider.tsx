@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState, useCallback } from "react";
+import React, { useContext, createContext, useMemo, useState, useCallback } from "react";
 import { Category } from "../realm/Category";
 import { Transaction } from "../realm/Transaction";
 
@@ -24,8 +24,13 @@ const DataContext = createContext<Props>({
 export const useData = () => useContext(DataContext);
 
 const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const category = useQuery(Category);
-  const transaction = useQuery(Transaction);
+  const _category = useQuery(Category);
+  const category = useMemo(() =>
+    _category.sorted("title")
+    , [_category]);
+
+  const _transaction = useQuery(Transaction);
+  const transaction = useMemo(() => _transaction.sorted("date", true), [_transaction]);
 
   const [addCategory, setAddCategory] = useState<{
     visible: boolean;

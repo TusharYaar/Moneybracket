@@ -6,8 +6,8 @@ export class Transaction extends Realm.Object {
   date!: Date;
   createdAt!: Date;
   note!: string;
-  currency!: Category;
-  category!: string;
+  currency!: string;
+  category!: Category;
 
   static generate(
     amount: number,

@@ -25,6 +25,7 @@ export class Category extends Realm.Object {
       _id: "objectId",
       title: "string",
       type: "string",
+      isFavorite: {type: "bool", default: false},
       createdAt: "date",
       color: "string",
       icon: "string",

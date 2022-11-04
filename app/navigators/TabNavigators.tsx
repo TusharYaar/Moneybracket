@@ -39,7 +39,7 @@ export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
               <AllTransaction {...props} />
               <FAB
                 style={styles.fab}
-                icon="plus"
+                icon="add"
                 onPress={() => showAddTransactionModal()}
               />
             </>
@@ -71,7 +71,7 @@ export const CategoryTabNavigator = ({ }: CategoryTabProps) => {
             <AllCategory {...props} />
             <FAB
               style={styles.fab}
-              icon="plus"
+              icon="add"
               onPress={() => showAddCategoryModal()}
             />
           </>
@@ -84,9 +84,7 @@ export const CategoryTabNavigator = ({ }: CategoryTabProps) => {
 
 const styles = StyleSheet.create({
   fab: {
-    position: "absolute",
-    margin: 16,
-    right: 0,
+    position: "absolute", margin: 16, right: 0,
     bottom: 0,
   },
 });

@@ -6,12 +6,12 @@ import {
   Paragraph,
   TextInput,
   IconButton,
+  Chip
 } from "react-native-paper";
 
 import { useRealm } from "../realm";
 import { Category } from "../realm/Category";
 import ColorChoice from "./ColorChoice";
-import SelectItem from "./SelectItem";
 import IconModal from "./IconModal";
 
 import { COLORS } from "../data";
@@ -20,12 +20,12 @@ const CATEGORY_TYPES = [
   {
     title: "Income",
     value: "income",
-    icon: "plus",
+    icon: "add",
   },
   {
     title: "Expense",
     value: "expense",
-    icon: "minus",
+    icon: "remove",
   },
 ];
 
@@ -40,7 +40,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
     title: "",
     type: "income",
     color: COLORS[0],
-    icon: "plus",
+    icon: "add",
   });
 
   const [iconModal, setIconModal] = useState(false);
@@ -54,7 +54,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
         title: "",
         type: "income",
         color: COLORS[0],
-        icon: "plus",
+        icon: "add",
       });
     }
   }, [item]);
@@ -75,7 +75,6 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
         if (category.color !== color) category.color = color;
         if (category.type !== type) category.type = type;
         if (category.icon !== icon) category.icon = icon;
-
         onDismiss();
       });
     },
@@ -124,7 +123,8 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
       <Modal
         visible={visible}
         onDismiss={onDismiss}
-        contentContainerStyle={styles.modal}>
+        style={styles.modal}
+        contentContainerStyle={styles.modalContainer}>
         <View style={styles.topContainer}>
           <View style={styles.topBtnContainer}>
             <IconButton
@@ -135,7 +135,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
             />
             {item && (
               <IconButton
-                icon="delete"
+                icon="trash"
                 size={25}
                 onPress={() => deleteCategory(item)}
                 style={styles.iconBtn}
@@ -166,7 +166,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
           </View>
           <IconButton
             size={40}
-            icon={item ? "check" : "plus"}
+            icon={item ? "checkmark-done" : "add"}
             style={[styles.addBtn, { backgroundColor: values.color }]}
             onPress={handlePressAdd}
           />
@@ -177,14 +177,20 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
             horizontal={true}
             data={CATEGORY_TYPES}
             renderItem={option => (
-              <SelectItem
+              <Chip
                 selected={values.type === option.item.value}
-                text={option.item.title}
-                icon={option.item.icon}
+                icon={values.type === option.item.value ? "checkmark" : option.item.icon}
                 onPress={() =>
                   setValues(prev => ({ ...prev, type: option.item.value }))
                 }
-              />
+              >
+                {option.item.title}
+              </Chip>
+
+
+              // <SelectItem
+              //   text={option.item.title}
+              // />
             )}
             contentContainerStyle={styles.colors}
           />
@@ -216,6 +222,11 @@ export default AddCategory;
 
 const styles = StyleSheet.create({
   modal: {
+    borderRadius: 7,
+  },
+
+  modalContainer: {
+    borderRadius: 7,
     backgroundColor: "white",
     marginHorizontal: 30,
   },
@@ -223,6 +234,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     position: "relative",
     paddingBottom: 40,
+    borderTopLeftRadius: 7,
+    borderTopRightRadius: 7,
     backgroundColor: "#f2f8d7",
   },
   topBtnContainer: {

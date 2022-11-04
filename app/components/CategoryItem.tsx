@@ -3,7 +3,7 @@ import React from "react";
 import { Category } from "../realm/Category";
 import { Paragraph, Subheading, TouchableRipple } from "react-native-paper";
 
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/Ionicons";
 
 type Props = {
   item: Category;

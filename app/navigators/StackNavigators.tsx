@@ -1,22 +1,19 @@
 import React from "react";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import AddTransaction from "../screens/Tracker/AddTransaction";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Setting from "../screens/Setting";
 import {
   CategoryTabNavigator,
   ExchangeTabNavigator,
   TrackerTabNavigator,
 } from "./TabNavigators";
-import {IconButton} from "react-native-paper";
-import {DrawerScreenProps} from "@react-navigation/drawer";
-import {DrawerParamList} from "./DrawerNavigator";
+import { IconButton } from "react-native-paper";
+import { DrawerScreenProps } from "@react-navigation/drawer";
+import { DrawerParamList } from "./DrawerNavigator";
 
 export type StackParamList = {
   TrackerTab: undefined;
-  AddTransactionScreen: undefined;
 
   CategoryTab: undefined;
-  // AddCategoryScreen: undefined;
 
   ExchangeTab: undefined;
 
@@ -26,22 +23,17 @@ export type StackParamList = {
 const Stack = createNativeStackNavigator<StackParamList>();
 
 type TrackerStackProps = DrawerScreenProps<DrawerParamList, "TrackerStack">;
-export const TrackerStackNavigator = ({}: TrackerStackProps) => {
+export const TrackerStackNavigator = ({ }: TrackerStackProps) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="TrackerTab"
         component={TrackerTabNavigator}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
         })}
-      />
-      <Stack.Screen
-        name="AddTransactionScreen"
-        component={AddTransaction}
-        options={{animation: "slide_from_bottom"}}
       />
     </Stack.Navigator>
   );
@@ -53,7 +45,7 @@ export const CategoryStackNavigator = () => {
       <Stack.Screen
         name="CategoryTab"
         component={CategoryTabNavigator}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
@@ -69,7 +61,7 @@ export const ExchangeStackNavigator = () => {
       <Stack.Screen
         name="ExchangeTab"
         component={ExchangeTabNavigator}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
@@ -85,7 +77,7 @@ export const SettingStack = () => {
       <Stack.Screen
         name="SettingScreen"
         component={Setting}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),

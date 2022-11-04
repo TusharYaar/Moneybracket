@@ -1,8 +1,8 @@
-import {StyleSheet, View} from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
-import {TouchableRipple} from "react-native-paper";
+import { TouchableRipple } from "react-native-paper";
 
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const ColorChoice = ({
   color,
@@ -15,10 +15,10 @@ const ColorChoice = ({
 }) => {
   return (
     <TouchableRipple
-      style={[styles.item, {backgroundColor: color}]}
+      style={[styles.item, { backgroundColor: color }]}
       onPress={onPress}>
       <View style={styles.view}>
-        {selected && <Icon name="check" size={20} />}
+        {selected && <Icon name="checkmark" size={20} />}
       </View>
     </TouchableRipple>
   );
@@ -27,7 +27,7 @@ const ColorChoice = ({
 export default ColorChoice;
 
 const styles = StyleSheet.create({
-  item: {width: 40, height: 40, marginHorizontal: 5, borderRadius: 7},
+  item: { width: 40, height: 40, marginHorizontal: 5, borderRadius: 7 },
   view: {
     display: "flex",
     flex: 1,

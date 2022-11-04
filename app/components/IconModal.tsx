@@ -1,9 +1,9 @@
 import React from "react";
-import {StyleSheet} from "react-native";
-import {FlashList} from "@shopify/flash-list";
-import {Modal, Portal, IconButton, Paragraph} from "react-native-paper";
+import { StyleSheet } from "react-native";
+import { FlashList } from "@shopify/flash-list";
+import { Modal, Portal, IconButton, Paragraph } from "react-native-paper";
 
-import {ICONS} from "../data";
+import { ICONS } from "../data";
 
 type Props = {
   visible: boolean;
@@ -12,7 +12,7 @@ type Props = {
   color: string;
 };
 
-const IconModal = ({visible, onDismiss, color, onItemSelect}: Props) => {
+const IconModal = ({ visible, onDismiss, color, onItemSelect }: Props) => {
   return (
     <Portal>
       <Modal
@@ -24,10 +24,11 @@ const IconModal = ({visible, onDismiss, color, onItemSelect}: Props) => {
           estimatedItemSize={71}
           numColumns={5}
           data={ICONS}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <IconButton
               icon={item}
-              color={color}
+              style={{ backgroundColor: color }}
+              // color={color}
               size={40}
               onPress={() => onItemSelect(item)}
             />
@@ -41,5 +42,5 @@ const IconModal = ({visible, onDismiss, color, onItemSelect}: Props) => {
 export default IconModal;
 
 const styles = StyleSheet.create({
-  modal: {flex: 1, backgroundColor: "white", margin: 20},
+  modal: { flex: 1, backgroundColor: "white", margin: 20 },
 });
