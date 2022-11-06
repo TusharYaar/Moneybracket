@@ -26,10 +26,12 @@
 		6206B0062A35491CA9A7A24C /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8FC0156105B446384D50E75 /* NotoSans-Regular.ttf */; };
 		491646C55EB74E61808591D5 /* NotoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 354F9F961E6644719771F918 /* NotoSans-SemiBold.ttf */; };
 		AAE4433141314C949428CB3A /* NotoSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD007B23C0F04958B7777BC4 /* NotoSans-Thin.ttf */; };
-		EF7D2701A3FD4AE1AF121585 /* Teko-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 854E54356835415B9C31AF4E /* Teko-Light.ttf */; };
-		96F6757B98BB487AA76CB847 /* Teko-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB755510C2CD49B486085572 /* Teko-Medium.ttf */; };
-		BE99579DEE604EEB8D720AAE /* Teko-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F503C0166DA34A10B73D3415 /* Teko-Regular.ttf */; };
-		B622297821204FF4B9148B5F /* Teko-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2518EC9D714D4C7C8D627FF9 /* Teko-SemiBold.ttf */; };
+		BF97198C059C40AAB4D16CF6 /* FiraCode-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65FCD02C3170476D8C346EFD /* FiraCode-Light.ttf */; };
+		5699719F34404B7AA7A159CE /* FiraCode-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD859384BB53487AA93E47FC /* FiraCode-Medium.ttf */; };
+		E5CBA55643BF4F3A994E7E59 /* FiraCode-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3E83104F5EF24015879E0290 /* FiraCode-Regular.ttf */; };
+		79CFF83E388E4BBB80124D22 /* Mali-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4618B43088694E00A49D2AD5 /* Mali-Light.ttf */; };
+		ACAEB0AEA53343C9BA770269 /* Mali-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C115B3BE3C0458FADEAB95F /* Mali-Medium.ttf */; };
+		8A4F10422EBF4329A7E1293A /* Mali-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2CD51D62C604CF8A1C11ABC /* Mali-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,10 +74,12 @@
 		C8FC0156105B446384D50E75 /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; name = "NotoSans-Regular.ttf"; path = "../assets/fonts/NotoSans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		354F9F961E6644719771F918 /* NotoSans-SemiBold.ttf */ = {isa = PBXFileReference; name = "NotoSans-SemiBold.ttf"; path = "../assets/fonts/NotoSans-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		FD007B23C0F04958B7777BC4 /* NotoSans-Thin.ttf */ = {isa = PBXFileReference; name = "NotoSans-Thin.ttf"; path = "../assets/fonts/NotoSans-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		854E54356835415B9C31AF4E /* Teko-Light.ttf */ = {isa = PBXFileReference; name = "Teko-Light.ttf"; path = "../assets/fonts/Teko-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		FB755510C2CD49B486085572 /* Teko-Medium.ttf */ = {isa = PBXFileReference; name = "Teko-Medium.ttf"; path = "../assets/fonts/Teko-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F503C0166DA34A10B73D3415 /* Teko-Regular.ttf */ = {isa = PBXFileReference; name = "Teko-Regular.ttf"; path = "../assets/fonts/Teko-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2518EC9D714D4C7C8D627FF9 /* Teko-SemiBold.ttf */ = {isa = PBXFileReference; name = "Teko-SemiBold.ttf"; path = "../assets/fonts/Teko-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		65FCD02C3170476D8C346EFD /* FiraCode-Light.ttf */ = {isa = PBXFileReference; name = "FiraCode-Light.ttf"; path = "../assets/fonts/FiraCode-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CD859384BB53487AA93E47FC /* FiraCode-Medium.ttf */ = {isa = PBXFileReference; name = "FiraCode-Medium.ttf"; path = "../assets/fonts/FiraCode-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3E83104F5EF24015879E0290 /* FiraCode-Regular.ttf */ = {isa = PBXFileReference; name = "FiraCode-Regular.ttf"; path = "../assets/fonts/FiraCode-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4618B43088694E00A49D2AD5 /* Mali-Light.ttf */ = {isa = PBXFileReference; name = "Mali-Light.ttf"; path = "../assets/fonts/Mali-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0C115B3BE3C0458FADEAB95F /* Mali-Medium.ttf */ = {isa = PBXFileReference; name = "Mali-Medium.ttf"; path = "../assets/fonts/Mali-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E2CD51D62C604CF8A1C11ABC /* Mali-Regular.ttf */ = {isa = PBXFileReference; name = "Mali-Regular.ttf"; path = "../assets/fonts/Mali-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,10 +200,12 @@
 				C8FC0156105B446384D50E75 /* NotoSans-Regular.ttf */,
 				354F9F961E6644719771F918 /* NotoSans-SemiBold.ttf */,
 				FD007B23C0F04958B7777BC4 /* NotoSans-Thin.ttf */,
-				854E54356835415B9C31AF4E /* Teko-Light.ttf */,
-				FB755510C2CD49B486085572 /* Teko-Medium.ttf */,
-				F503C0166DA34A10B73D3415 /* Teko-Regular.ttf */,
-				2518EC9D714D4C7C8D627FF9 /* Teko-SemiBold.ttf */,
+				65FCD02C3170476D8C346EFD /* FiraCode-Light.ttf */,
+				CD859384BB53487AA93E47FC /* FiraCode-Medium.ttf */,
+				3E83104F5EF24015879E0290 /* FiraCode-Regular.ttf */,
+				4618B43088694E00A49D2AD5 /* Mali-Light.ttf */,
+				0C115B3BE3C0458FADEAB95F /* Mali-Medium.ttf */,
+				E2CD51D62C604CF8A1C11ABC /* Mali-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -313,10 +319,12 @@
 				6206B0062A35491CA9A7A24C /* NotoSans-Regular.ttf in Resources */,
 				491646C55EB74E61808591D5 /* NotoSans-SemiBold.ttf in Resources */,
 				AAE4433141314C949428CB3A /* NotoSans-Thin.ttf in Resources */,
-				EF7D2701A3FD4AE1AF121585 /* Teko-Light.ttf in Resources */,
-				96F6757B98BB487AA76CB847 /* Teko-Medium.ttf in Resources */,
-				BE99579DEE604EEB8D720AAE /* Teko-Regular.ttf in Resources */,
-				B622297821204FF4B9148B5F /* Teko-SemiBold.ttf in Resources */,
+				BF97198C059C40AAB4D16CF6 /* FiraCode-Light.ttf in Resources */,
+				5699719F34404B7AA7A159CE /* FiraCode-Medium.ttf in Resources */,
+				E5CBA55643BF4F3A994E7E59 /* FiraCode-Regular.ttf in Resources */,
+				79CFF83E388E4BBB80124D22 /* Mali-Light.ttf in Resources */,
+				ACAEB0AEA53343C9BA770269 /* Mali-Medium.ttf in Resources */,
+				8A4F10422EBF4329A7E1293A /* Mali-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

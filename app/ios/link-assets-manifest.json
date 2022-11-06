@@ -2,6 +2,30 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/FiraCode-Light.ttf",
+      "sha1": "a4dc51dfbe9e8c43d4fb5d26a5c29702ce786f43"
+    },
+    {
+      "path": "assets/fonts/FiraCode-Medium.ttf",
+      "sha1": "97b27085d45ec1d72b02ff810d9a570839d91d5e"
+    },
+    {
+      "path": "assets/fonts/FiraCode-Regular.ttf",
+      "sha1": "85e2f3d6fb86f43adccd266a8ad0675978a01975"
+    },
+    {
+      "path": "assets/fonts/Mali-Light.ttf",
+      "sha1": "340f2799d47c1fe84eee321defff07149573ddac"
+    },
+    {
+      "path": "assets/fonts/Mali-Medium.ttf",
+      "sha1": "167c5b9dd18d94b8d4fde98b4adf40c7b01c6e06"
+    },
+    {
+      "path": "assets/fonts/Mali-Regular.ttf",
+      "sha1": "0d69218429954ab53a0cc47ff9d99e9eb28201c4"
+    },
+    {
       "path": "assets/fonts/Montserrat-Bold.ttf",
       "sha1": "04052dc3b846609216de1e0cbcec337c6b6e74f6"
     },
@@ -48,22 +72,6 @@
     {
       "path": "assets/fonts/NotoSans-Thin.ttf",
       "sha1": "3f89e6b1b7cc617b01e1841e4335b0b420ffa777"
-    },
-    {
-      "path": "assets/fonts/Teko-Light.ttf",
-      "sha1": "7a53cfddcb1b94277cd0c98a716de4219ad01c4d"
-    },
-    {
-      "path": "assets/fonts/Teko-Medium.ttf",
-      "sha1": "9b2926fea3daf1c1a13ae8d0d1bfce8218b16460"
-    },
-    {
-      "path": "assets/fonts/Teko-Regular.ttf",
-      "sha1": "af065fdd632f2f58db79b4991e50ca5f7f51fb9c"
-    },
-    {
-      "path": "assets/fonts/Teko-SemiBold.ttf",
-      "sha1": "596e2556c2a4667eddf8affa1a77628a7a2e3467"
     }
   ]
 }

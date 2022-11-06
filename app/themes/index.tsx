@@ -11,7 +11,7 @@ import AVALIBLE_FONTS from "./fonts";
 type Props = {
   current?: string;
   changeTheme: (theme: string) => void;
-  changeFont: (font: string) => void;
+  changeFont: (font: keyof typeof AVALIBLE_FONTS) => void;
   theme: CustomTheme;
 };
 
@@ -36,7 +36,10 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
 
   const handleThemeChange = () => {};
 
-  const handleFontChange = () => {};
+  const handleFontChange = (font: keyof typeof AVALIBLE_FONTS) => {
+    setFont(AVALIBLE_FONTS[font]);
+    SETTINGS.updateFont(font);
+  };
 
   return (
     <ThemeContext.Provider

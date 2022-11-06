@@ -14,11 +14,23 @@ const AVALIBLE_FONTS = {
       ),
     ),
   },
-  teko: {
-    id: "teko",
-    name: "Teko",
+  firacode: {
+    id: "firacode",
+    name: "Fira Code",
     fontConfig: configureFonts(
-      makeFontConfig("Teko-Thin", "Teko-Light", "Teko-Regular", "Teko-Medium"),
+      makeFontConfig(
+        "FiraCode-Light",
+        "FiraCode-Light",
+        "FiraCode-Regular",
+        "FiraCode-Medium",
+      ),
+    ),
+  },
+  mali: {
+    id: "mali",
+    name: "Mali",
+    fontConfig: configureFonts(
+      makeFontConfig("Mali-Light", "Mali-Light", "Mali-Regular", "Mali-Medium"),
     ),
   },
   notosans: {

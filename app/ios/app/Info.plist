@@ -65,10 +65,12 @@
 		<string>NotoSans-Regular.ttf</string>
 		<string>NotoSans-SemiBold.ttf</string>
 		<string>NotoSans-Thin.ttf</string>
-		<string>Teko-Light.ttf</string>
-		<string>Teko-Medium.ttf</string>
-		<string>Teko-Regular.ttf</string>
-		<string>Teko-SemiBold.ttf</string>
+		<string>FiraCode-Light.ttf</string>
+		<string>FiraCode-Medium.ttf</string>
+		<string>FiraCode-Regular.ttf</string>
+		<string>Mali-Light.ttf</string>
+		<string>Mali-Medium.ttf</string>
+		<string>Mali-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

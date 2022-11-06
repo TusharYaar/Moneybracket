@@ -21,3 +21,7 @@ export const getFromStorageOrDefault = (
     return def;
   } else return value;
 };
+
+export const setStorage = (key: string, value: string) => {
+  storage.set(key, value);
+};

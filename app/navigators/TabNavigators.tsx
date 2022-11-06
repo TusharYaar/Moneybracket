@@ -38,7 +38,10 @@ export const TrackerTabNavigator = ({navigation}: TrackerTabProps) => {
           tabBarLabelStyle: theme.fonts.regular,
         }}
       >
-        <Tab.Screen name="AllTransactionScreen">
+        <Tab.Screen
+          name="AllTransactionScreen"
+          options={{title: "transactions"}}
+        >
           {props => (
             <>
               <AllTransaction {...props} />
@@ -50,7 +53,11 @@ export const TrackerTabNavigator = ({navigation}: TrackerTabProps) => {
             </>
           )}
         </Tab.Screen>
-        <Tab.Screen name="TrackerChartScreen" component={TrackerCharts} />
+        <Tab.Screen
+          options={{title: "charts"}}
+          name="TrackerChartScreen"
+          component={TrackerCharts}
+        />
       </Tab.Navigator>
     </>
   );
