@@ -3,14 +3,14 @@ export class Category extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
   type!: string;
-  createdAt!: Date;
+  createdAt!: string;
   color!: string;
   icon!: string;
   static generate(title: string, type: string, color: string, icon: string) {
     return {
       _id: new Realm.BSON.ObjectId(),
       title,
-      createdAt: new Date(),
+      createdAt: new Date().toUTCString(),
       type,
       color,
       icon,
@@ -26,7 +26,7 @@ export class Category extends Realm.Object {
       title: "string",
       type: "string",
       isFavorite: {type: "bool", default: false},
-      createdAt: "date",
+      createdAt: "string",
       color: "string",
       icon: "string",
     },

@@ -33,20 +33,23 @@ export default CategoryItem;
 
 const styles = StyleSheet.create({
   container: {
-    // margin: 10,
-    borderRadius: 7,
+    borderRadius: 16,
     borderWidth: 2,
   },
   innerContainer: {
     flexDirection: "row",
     alignItems: "center",
+    borderRadius: 16,
+
   },
   iconContainer: {
-    padding: 10,
+    padding: 8,
+    borderTopLeftRadius: 16,
+    borderBottomLeftRadius: 16,
   },
   content: {
-    marginLeft: 10,
-    paddingHorizontal: 10,
+    marginLeft: 8,
+    paddingHorizontal: 8,
     flex: 1,
   },
 });

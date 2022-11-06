@@ -5,7 +5,7 @@ import { Modal, Portal, Paragraph, TouchableRipple, Caption, Subheading, Headlin
 
 import { View } from "react-native";
 
-import { CURRENCIES } from "../data";
+import { Rate, useExchangeRate } from "../providers/ExchangeRatesProvider";
 
 type Props = {
     visible: boolean;
@@ -14,15 +14,19 @@ type Props = {
 };
 
 const CurrencyModal = ({ visible, onDismiss, onItemSelect }: Props) => {
+    const { rates } = useExchangeRate();
     return (
         <Portal>
             <Modal
                 visible={visible}
                 onDismiss={onDismiss}
-                contentContainerStyle={styles.modal}>
+                contentContainerStyle={styles.modalContainer}
+                style={styles.modal}
+
+            >
                 <Paragraph>Choose Currency</Paragraph>
                 <FlashList
-                    data={CURRENCIES}
+                    data={rates}
                     estimatedItemSize={19}
                     renderItem={({ item }) => (
                         <Currency item={item} onPress={() => onItemSelect(item.code)} />
@@ -36,30 +40,41 @@ const CurrencyModal = ({ visible, onDismiss, onItemSelect }: Props) => {
 export default CurrencyModal;
 
 const styles = StyleSheet.create({
-    modal: { flex: 1, backgroundColor: "white", margin: 20 },
+    modal: {
+        borderRadius: 7,
+    },
+    modalContainer: {
+        flex: 1,
+        margin: 20,
+        borderRadius: 7,
+        backgroundColor: "white",
+
+    },
+
 });
 
 type CurrencyProps = {
-    item: typeof CURRENCIES[0];
+    item: Rate;
     onPress: () => void;
 }
 
-const Currency = ({ item: { code, symbol, name }, onPress }: CurrencyProps) => {
-    return (<TouchableRipple onPress={onPress}>
-        <View style={itemStyles.container}>
-            <View style={itemStyles.symbol}><Headline>{symbol}</Headline></View>
-            <View style={itemStyles.textContainer}>
-                <Subheading>{name}</Subheading>
-                <Caption>rate</Caption>
+const Currency = ({ item: { code, symbol, name, rate }, onPress }: CurrencyProps) => {
+    return (
+        <TouchableRipple onPress={onPress}>
+            <View style={itemStyles.container}>
+                <View style={itemStyles.symbol}><Headline>{symbol}</Headline></View>
+                <View style={itemStyles.textContainer}>
+                    <Subheading>{name}</Subheading>
+                    <Caption>1000 Your curr = {rate.toFixed(2)}</Caption>
+                </View>
             </View>
-        </View>
-    </TouchableRipple>
+        </TouchableRipple>
     )
 }
 
 const itemStyles = StyleSheet.create({
     container: {
-        modal: { flex: 1, backgroundColor: "white", margin: 20 },
+        // modal: { flex: 1, backgroundColor: "white", margin: 20 },
         padding: 10,
         flexDirection: "row"
     },

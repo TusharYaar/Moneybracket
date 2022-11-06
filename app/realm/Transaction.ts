@@ -3,8 +3,8 @@ import {Category} from "./Category";
 export class Transaction extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   amount!: number;
-  date!: Date;
-  createdAt!: Date;
+  date!: string;
+  createdAt!: string;
   note!: string;
   currency!: string;
   category!: Category;
@@ -20,8 +20,8 @@ export class Transaction extends Realm.Object {
       _id: new Realm.BSON.ObjectId(),
       note,
       amount,
-      date,
-      createdAt: new Date(),
+      date: date.toUTCString(),
+      createdAt: new Date().toUTCString(),
       category,
       currency,
     };
@@ -34,11 +34,11 @@ export class Transaction extends Realm.Object {
     properties: {
       _id: "objectId",
       note: "string",
-      date: "date",
+      date: "string",
       amount: "int",
       currency: "string",
       category: "Category?",
-      createdAt: "date",
+      createdAt: "string",
     },
   };
 }

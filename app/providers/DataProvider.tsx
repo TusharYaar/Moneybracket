@@ -30,7 +30,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     , [_category]);
 
   const _transaction = useQuery(Transaction);
-  const transaction = useMemo(() => _transaction.sorted("date", true), [_transaction]);
+  const transaction = useMemo(() => _transaction.sorted("date"), [_transaction]);
 
   const [addCategory, setAddCategory] = useState<{
     visible: boolean;

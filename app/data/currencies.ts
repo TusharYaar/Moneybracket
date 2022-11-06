@@ -1,4 +1,15 @@
-const OBJ = {
+type Props = {
+  [key: string]: {
+    symbol: string;
+    name: string;
+    symbol_native: string;
+    decimal_digits: number;
+    rounding: number;
+    code: string;
+    name_plural: string;
+  };
+};
+const CURRENCIES: Props = {
   USD: {
     symbol: "$",
     name: "US Dollar",
@@ -1072,6 +1083,5 @@ const OBJ = {
   },
 };
 
-const CURRENCIES = Object.values(OBJ);
-
 export default CURRENCIES;
+console.log("Cur", Object.keys(CURRENCIES).length);

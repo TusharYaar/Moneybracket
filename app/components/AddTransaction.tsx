@@ -42,7 +42,7 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
     const [currency, setCurrency] = useState("INR");
     const [viewModal, setViewModal] = useState("datepicker");
     const { category } = useData();
-    const containerStyle = { backgroundColor: 'white', marginHorizontal: 10, borderRadius: 7 };
+    const containerStyle = { backgroundColor: 'white', marginHorizontal: 20, borderRadius: 7 };
 
     const realm = useRealm();
 
@@ -64,7 +64,7 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
             setValues({
                 amount: `${item.amount}`,
                 category: item.category,
-                date: item.date,
+                date: new Date(item.date),
                 note: item.note
             })
         }
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     modal: {
-        borderRadius: 20,
+        borderRadius: 7,
     },
     iconBtn: {
         margin: 0,

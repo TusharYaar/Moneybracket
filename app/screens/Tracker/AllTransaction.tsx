@@ -1,23 +1,25 @@
 import React, { useMemo } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, ViewToken } from "react-native";
 
 import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
 import { TabParamList } from "../../navigators/TabNavigators";
 import { useData } from "../../providers/DataProvider";
 import { Paragraph } from "react-native-paper";
-import TransactionItem from "../../components/TransactionItem";
 import { Transaction } from "../../realm/Transaction";
 import GroupTransactions from "../../components/GroupTransactions";
 import { compareAsc } from "date-fns";
-// import { differenceInCalendarDays } from "date-fns";
+import { useSharedValue } from "react-native-reanimated";
+import { FlashList } from "@shopify/flash-list";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
 
 type GroupedTransactions = {
-  date: Date;
+  date: string;
   transactions: Transaction[];
 }
 const AllTransaction = ({ }: Props) => {
   const { transaction, showAddTransactionModal } = useData();
+
+  const visibleItems = useSharedValue<ViewToken[]>([]);
 
   const grouped = useMemo(() => {
     return transaction.reduce<GroupedTransactions[]>((result, val) => {
@@ -30,7 +32,7 @@ const AllTransaction = ({ }: Props) => {
         return result;
       }
       else {
-        if (compareAsc(result[result.length - 1].date, val.date) === 0) {
+        if (result[result.length - 1].date === val.date) {
           result[result.length - 1].transactions.push(val);
           return result;
         }
@@ -63,7 +65,15 @@ const AllTransaction = ({ }: Props) => {
 
 
   return (
-    <FlatList data={grouped} renderItem={({ item }) => (<GroupTransactions data={item} onPressItem={handlePressTransaction} />)} />
+    <FlashList data={grouped}
+      renderItem={({ item }) => (
+        <GroupTransactions data={item}
+          visibleItems={visibleItems}
+          onPressItem={handlePressTransaction} />
+      )}
+      estimatedItemSize={200}
+      onViewableItemsChanged={({ viewableItems }) => visibleItems.value = viewableItems}
+    />
   );
 };
 

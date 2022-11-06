@@ -28,7 +28,6 @@ const IconModal = ({ visible, onDismiss, color, onItemSelect }: Props) => {
             <IconButton
               icon={item}
               style={{ backgroundColor: color }}
-              // color={color}
               size={40}
               onPress={() => onItemSelect(item)}
             />
