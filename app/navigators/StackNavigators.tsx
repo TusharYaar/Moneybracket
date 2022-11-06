@@ -9,6 +9,7 @@ import {
 import { IconButton } from "react-native-paper";
 import { DrawerScreenProps } from "@react-navigation/drawer";
 import { DrawerParamList } from "./DrawerNavigator";
+import { useCustomTheme } from "../themes";
 
 export type StackParamList = {
   TrackerTab: undefined;
@@ -24,6 +25,9 @@ const Stack = createNativeStackNavigator<StackParamList>();
 
 type TrackerStackProps = DrawerScreenProps<DrawerParamList, "TrackerStack">;
 export const TrackerStackNavigator = ({ }: TrackerStackProps) => {
+
+  const { theme } = useCustomTheme();
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -33,6 +37,7 @@ export const TrackerStackNavigator = ({ }: TrackerStackProps) => {
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
+          headerTitleStyle: theme.fonts.regular
         })}
       />
     </Stack.Navigator>
@@ -40,6 +45,8 @@ export const TrackerStackNavigator = ({ }: TrackerStackProps) => {
 };
 
 export const CategoryStackNavigator = () => {
+  const { theme } = useCustomTheme();
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -49,6 +56,8 @@ export const CategoryStackNavigator = () => {
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
+          headerTitleStyle: theme.fonts.regular
+
         })}
       />
     </Stack.Navigator>
@@ -56,6 +65,8 @@ export const CategoryStackNavigator = () => {
 };
 
 export const ExchangeStackNavigator = () => {
+  const { theme } = useCustomTheme();
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -65,6 +76,8 @@ export const ExchangeStackNavigator = () => {
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
+          headerTitleStyle: theme.fonts.regular
+
         })}
       />
     </Stack.Navigator>
@@ -72,6 +85,8 @@ export const ExchangeStackNavigator = () => {
 };
 
 export const SettingStack = () => {
+  const { theme } = useCustomTheme();
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -81,6 +96,8 @@ export const SettingStack = () => {
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
+          headerTitleStyle: theme.fonts.regular
+
         })}
       />
     </Stack.Navigator>

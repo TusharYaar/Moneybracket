@@ -6,9 +6,10 @@ import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated"
 
 interface Props extends Rate {
     visibleItems: Animated.SharedValue<ViewToken[]>;
+    base: string;
 }
 
-const RateItem = ({ rate, symbol_native, name, name_plural, code, visibleItems }: Props) => {
+const RateItem = ({ rate, symbol_native, name, name_plural, code, visibleItems, base }: Props) => {
     const rStyle = useAnimatedStyle(() => {
         const isVisible = Boolean(visibleItems.value.find(({ item }) => item.code === code));
         return {
@@ -22,7 +23,7 @@ const RateItem = ({ rate, symbol_native, name, name_plural, code, visibleItems }
             <Headline style={styles.symbol}>{symbol_native}</Headline>
             <View>
                 <Subheading>{name}</Subheading>
-                <Caption numberOfLines={1}> 1000 YOUR CURR = {rate.toFixed(2)} {name_plural} </Caption>
+                <Caption numberOfLines={1}> 1000 {base} = {rate.toFixed(2)} {name_plural} </Caption>
             </View>
         </Animated.View>
     )

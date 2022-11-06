@@ -7,7 +7,6 @@ import { useData } from "../../providers/DataProvider";
 import { Paragraph } from "react-native-paper";
 import { Transaction } from "../../realm/Transaction";
 import GroupTransactions from "../../components/GroupTransactions";
-import { compareAsc } from "date-fns";
 import { useSharedValue } from "react-native-reanimated";
 import { FlashList } from "@shopify/flash-list";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;

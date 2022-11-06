@@ -5,19 +5,22 @@ import LockProvider from "./providers/LockProvider";
 import RealmProvider from "./realm";
 import DataProvider from "./providers/DataProvider";
 import ExchangeRatesProvider from "./providers/ExchangeRatesProvider";
+import SettingsProvider from "./providers/SettingsProvider";
 const AppContainer = () => {
   return (
-    <ExchangeRatesProvider>
-      <RealmProvider>
-        <ThemeProvider>
-          <DataProvider>
-            <LockProvider>
-              <App />
-            </LockProvider>
-          </DataProvider>
-        </ThemeProvider>
-      </RealmProvider>
-    </ExchangeRatesProvider>
+    <SettingsProvider>
+      <ExchangeRatesProvider>
+        <RealmProvider>
+          <ThemeProvider>
+            <DataProvider>
+              <LockProvider>
+                <App />
+              </LockProvider>
+            </DataProvider>
+          </ThemeProvider>
+        </RealmProvider>
+      </ExchangeRatesProvider>
+    </SettingsProvider>
   );
 };
 

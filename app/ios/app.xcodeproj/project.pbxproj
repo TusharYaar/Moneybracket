@@ -14,6 +14,22 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-app-appTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-app-appTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		122F09B8AC3F418E993AE743 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04A8C1FFF88744F1BA4839B9 /* Montserrat-Bold.ttf */; };
+		FFE6DE2F79B842AA8D4EDC3C /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23D20CE7EF934867B9882D9E /* Montserrat-Light.ttf */; };
+		8BAE1B3D69B34BBA944F7C1F /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A7CFC821454445FAE12C9C3 /* Montserrat-Medium.ttf */; };
+		8A03D5FB1CAB41E2A788B4F9 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 45FCC0A43FE3469C835F01AC /* Montserrat-Regular.ttf */; };
+		FDB133A3CF0B4E6BB52D984D /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 688094A9FEF34D48A5C7E7E2 /* Montserrat-SemiBold.ttf */; };
+		7834F305AA17425DBB59A5A5 /* Montserrat-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 249051EBA78340E58F85F60B /* Montserrat-Thin.ttf */; };
+		A2D46AB56EE54172B40BD0A8 /* NotoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 937D25F1EF2049EA83F3AB7E /* NotoSans-Bold.ttf */; };
+		2E1824CABCE44FDC9C14BE40 /* NotoSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD8C184F49834E6193A287C4 /* NotoSans-Light.ttf */; };
+		E4ACC644E2AD44A895F8A950 /* NotoSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C64544D5FB54671A64127AE /* NotoSans-Medium.ttf */; };
+		6206B0062A35491CA9A7A24C /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8FC0156105B446384D50E75 /* NotoSans-Regular.ttf */; };
+		491646C55EB74E61808591D5 /* NotoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 354F9F961E6644719771F918 /* NotoSans-SemiBold.ttf */; };
+		AAE4433141314C949428CB3A /* NotoSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD007B23C0F04958B7777BC4 /* NotoSans-Thin.ttf */; };
+		EF7D2701A3FD4AE1AF121585 /* Teko-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 854E54356835415B9C31AF4E /* Teko-Light.ttf */; };
+		96F6757B98BB487AA76CB847 /* Teko-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FB755510C2CD49B486085572 /* Teko-Medium.ttf */; };
+		BE99579DEE604EEB8D720AAE /* Teko-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F503C0166DA34A10B73D3415 /* Teko-Regular.ttf */; };
+		B622297821204FF4B9148B5F /* Teko-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2518EC9D714D4C7C8D627FF9 /* Teko-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +60,22 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = app/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-app-appTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-app-appTests.release.xcconfig"; path = "Target Support Files/Pods-app-appTests/Pods-app-appTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		04A8C1FFF88744F1BA4839B9 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		23D20CE7EF934867B9882D9E /* Montserrat-Light.ttf */ = {isa = PBXFileReference; name = "Montserrat-Light.ttf"; path = "../assets/fonts/Montserrat-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3A7CFC821454445FAE12C9C3 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; name = "Montserrat-Medium.ttf"; path = "../assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		45FCC0A43FE3469C835F01AC /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		688094A9FEF34D48A5C7E7E2 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		249051EBA78340E58F85F60B /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; name = "Montserrat-Thin.ttf"; path = "../assets/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		937D25F1EF2049EA83F3AB7E /* NotoSans-Bold.ttf */ = {isa = PBXFileReference; name = "NotoSans-Bold.ttf"; path = "../assets/fonts/NotoSans-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AD8C184F49834E6193A287C4 /* NotoSans-Light.ttf */ = {isa = PBXFileReference; name = "NotoSans-Light.ttf"; path = "../assets/fonts/NotoSans-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1C64544D5FB54671A64127AE /* NotoSans-Medium.ttf */ = {isa = PBXFileReference; name = "NotoSans-Medium.ttf"; path = "../assets/fonts/NotoSans-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C8FC0156105B446384D50E75 /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; name = "NotoSans-Regular.ttf"; path = "../assets/fonts/NotoSans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		354F9F961E6644719771F918 /* NotoSans-SemiBold.ttf */ = {isa = PBXFileReference; name = "NotoSans-SemiBold.ttf"; path = "../assets/fonts/NotoSans-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FD007B23C0F04958B7777BC4 /* NotoSans-Thin.ttf */ = {isa = PBXFileReference; name = "NotoSans-Thin.ttf"; path = "../assets/fonts/NotoSans-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		854E54356835415B9C31AF4E /* Teko-Light.ttf */ = {isa = PBXFileReference; name = "Teko-Light.ttf"; path = "../assets/fonts/Teko-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FB755510C2CD49B486085572 /* Teko-Medium.ttf */ = {isa = PBXFileReference; name = "Teko-Medium.ttf"; path = "../assets/fonts/Teko-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F503C0166DA34A10B73D3415 /* Teko-Regular.ttf */ = {isa = PBXFileReference; name = "Teko-Regular.ttf"; path = "../assets/fonts/Teko-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2518EC9D714D4C7C8D627FF9 /* Teko-SemiBold.ttf */ = {isa = PBXFileReference; name = "Teko-SemiBold.ttf"; path = "../assets/fonts/Teko-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +154,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				65C933BEBED74631999CCD97 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -147,6 +180,30 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		65C933BEBED74631999CCD97 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				04A8C1FFF88744F1BA4839B9 /* Montserrat-Bold.ttf */,
+				23D20CE7EF934867B9882D9E /* Montserrat-Light.ttf */,
+				3A7CFC821454445FAE12C9C3 /* Montserrat-Medium.ttf */,
+				45FCC0A43FE3469C835F01AC /* Montserrat-Regular.ttf */,
+				688094A9FEF34D48A5C7E7E2 /* Montserrat-SemiBold.ttf */,
+				249051EBA78340E58F85F60B /* Montserrat-Thin.ttf */,
+				937D25F1EF2049EA83F3AB7E /* NotoSans-Bold.ttf */,
+				AD8C184F49834E6193A287C4 /* NotoSans-Light.ttf */,
+				1C64544D5FB54671A64127AE /* NotoSans-Medium.ttf */,
+				C8FC0156105B446384D50E75 /* NotoSans-Regular.ttf */,
+				354F9F961E6644719771F918 /* NotoSans-SemiBold.ttf */,
+				FD007B23C0F04958B7777BC4 /* NotoSans-Thin.ttf */,
+				854E54356835415B9C31AF4E /* Teko-Light.ttf */,
+				FB755510C2CD49B486085572 /* Teko-Medium.ttf */,
+				F503C0166DA34A10B73D3415 /* Teko-Regular.ttf */,
+				2518EC9D714D4C7C8D627FF9 /* Teko-SemiBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -244,6 +301,22 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				122F09B8AC3F418E993AE743 /* Montserrat-Bold.ttf in Resources */,
+				FFE6DE2F79B842AA8D4EDC3C /* Montserrat-Light.ttf in Resources */,
+				8BAE1B3D69B34BBA944F7C1F /* Montserrat-Medium.ttf in Resources */,
+				8A03D5FB1CAB41E2A788B4F9 /* Montserrat-Regular.ttf in Resources */,
+				FDB133A3CF0B4E6BB52D984D /* Montserrat-SemiBold.ttf in Resources */,
+				7834F305AA17425DBB59A5A5 /* Montserrat-Thin.ttf in Resources */,
+				A2D46AB56EE54172B40BD0A8 /* NotoSans-Bold.ttf in Resources */,
+				2E1824CABCE44FDC9C14BE40 /* NotoSans-Light.ttf in Resources */,
+				E4ACC644E2AD44A895F8A950 /* NotoSans-Medium.ttf in Resources */,
+				6206B0062A35491CA9A7A24C /* NotoSans-Regular.ttf in Resources */,
+				491646C55EB74E61808591D5 /* NotoSans-SemiBold.ttf in Resources */,
+				AAE4433141314C949428CB3A /* NotoSans-Thin.ttf in Resources */,
+				EF7D2701A3FD4AE1AF121585 /* Teko-Light.ttf in Resources */,
+				96F6757B98BB487AA76CB847 /* Teko-Medium.ttf in Resources */,
+				BE99579DEE604EEB8D720AAE /* Teko-Regular.ttf in Resources */,
+				B622297821204FF4B9148B5F /* Teko-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

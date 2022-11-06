@@ -4,11 +4,15 @@ import { useExchangeRate } from "../../providers/ExchangeRatesProvider";
 import RateItem from "../../components/RateItem";
 import { useSharedValue } from "react-native-reanimated";
 import { FlashList } from "@shopify/flash-list";
+import { useSettings } from "../../providers/SettingsProvider";
 
 const Rates = () => {
 
   const { rates } = useExchangeRate();
   const visibleItems = useSharedValue<ViewToken[]>([]);
+  const { currency } = useSettings();
+
+
 
   if (rates.length === 0) {
     return (
@@ -18,9 +22,9 @@ const Rates = () => {
     );
   }
   else return <FlashList
-    data={rates}
+    data={rates.filter(rate => rate.code !== currency)}
     estimatedItemSize={114}
-    renderItem={({ item }) => <RateItem {...item} visibleItems={visibleItems} />}
+    renderItem={({ item }) => <RateItem {...item} visibleItems={visibleItems} base={currency} />}
     onViewableItemsChanged={({ viewableItems }) => visibleItems.value = viewableItems} />
 };
 

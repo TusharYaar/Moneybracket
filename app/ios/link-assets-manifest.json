@@ -1,0 +1,69 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Montserrat-Bold.ttf",
+      "sha1": "04052dc3b846609216de1e0cbcec337c6b6e74f6"
+    },
+    {
+      "path": "assets/fonts/Montserrat-Light.ttf",
+      "sha1": "6f21894a80049259ef71fcba135218695b41b67a"
+    },
+    {
+      "path": "assets/fonts/Montserrat-Medium.ttf",
+      "sha1": "6b57d12e018c64352e202f8ef3bf7f431f76d935"
+    },
+    {
+      "path": "assets/fonts/Montserrat-Regular.ttf",
+      "sha1": "de57aa03e4821fdbe6c34ec2c895e8b5c914e837"
+    },
+    {
+      "path": "assets/fonts/Montserrat-SemiBold.ttf",
+      "sha1": "8580dec824bbdb6ce24d04d3aaf360776339f0a7"
+    },
+    {
+      "path": "assets/fonts/Montserrat-Thin.ttf",
+      "sha1": "8c871991960f520a31635f95be6c346b659e2c8c"
+    },
+    {
+      "path": "assets/fonts/NotoSans-Bold.ttf",
+      "sha1": "a063702bfcc720d5bfa1bba00706e0296ddf4523"
+    },
+    {
+      "path": "assets/fonts/NotoSans-Light.ttf",
+      "sha1": "5490b1f49aafabd8eb969146cb7d90b85746a978"
+    },
+    {
+      "path": "assets/fonts/NotoSans-Medium.ttf",
+      "sha1": "b0e73a061b6a39e3dfd64aebd1626464c1e1696e"
+    },
+    {
+      "path": "assets/fonts/NotoSans-Regular.ttf",
+      "sha1": "1a17c06f6feb06281dc9b524c24fcf05abb82c35"
+    },
+    {
+      "path": "assets/fonts/NotoSans-SemiBold.ttf",
+      "sha1": "090a19da387041e7c3ca96d0625d8fa6583601df"
+    },
+    {
+      "path": "assets/fonts/NotoSans-Thin.ttf",
+      "sha1": "3f89e6b1b7cc617b01e1841e4335b0b420ffa777"
+    },
+    {
+      "path": "assets/fonts/Teko-Light.ttf",
+      "sha1": "7a53cfddcb1b94277cd0c98a716de4219ad01c4d"
+    },
+    {
+      "path": "assets/fonts/Teko-Medium.ttf",
+      "sha1": "9b2926fea3daf1c1a13ae8d0d1bfce8218b16460"
+    },
+    {
+      "path": "assets/fonts/Teko-Regular.ttf",
+      "sha1": "af065fdd632f2f58db79b4991e50ca5f7f51fb9c"
+    },
+    {
+      "path": "assets/fonts/Teko-SemiBold.ttf",
+      "sha1": "596e2556c2a4667eddf8affa1a77628a7a2e3467"
+    }
+  ]
+}

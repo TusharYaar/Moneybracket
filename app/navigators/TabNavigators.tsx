@@ -1,18 +1,18 @@
 import React from "react";
-// import {Calendar} from "react-native-calendars";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import Conversion from "../screens/Exchange/Conversion";
 import Rates from "../screens/Exchange/Rates";
 import AllTransaction from "../screens/Tracker/AllTransaction";
 import TrackerCharts from "../screens/Tracker/Charts";
 import CategoryCharts from "../screens/Category/Charts";
 import AllCategory from "../screens/Category/AllCategory";
-import { FAB } from "react-native-paper";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {FAB} from "react-native-paper";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
 
-import { StackParamList } from "./StackNavigators";
-import { StyleSheet } from "react-native";
-import { useData } from "../providers/DataProvider";
+import {StackParamList} from "./StackNavigators";
+import {StyleSheet} from "react-native";
+import {useData} from "../providers/DataProvider";
+import {useCustomTheme} from "../themes";
 
 export type TabParamList = {
   AllTransactionScreen: undefined;
@@ -28,11 +28,16 @@ const Tab = createMaterialTopTabNavigator<TabParamList>();
 
 type TrackerTabProps = NativeStackScreenProps<StackParamList, "TrackerTab">;
 
-export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
-  const { showAddTransactionModal } = useData();
+export const TrackerTabNavigator = ({navigation}: TrackerTabProps) => {
+  const {showAddTransactionModal} = useData();
+  const {theme} = useCustomTheme();
   return (
     <>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: theme.fonts.regular,
+        }}
+      >
         <Tab.Screen name="AllTransactionScreen">
           {props => (
             <>
@@ -52,8 +57,14 @@ export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
 };
 
 export const ExchangeTabNavigator = () => {
+  const {theme} = useCustomTheme();
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: theme.fonts.regular,
+      }}
+    >
       <Tab.Screen name="RatesScreen" component={Rates} />
       <Tab.Screen name="ConversionScreen" component={Conversion} />
     </Tab.Navigator>
@@ -61,10 +72,16 @@ export const ExchangeTabNavigator = () => {
 };
 
 type CategoryTabProps = NativeStackScreenProps<StackParamList, "CategoryTab">;
-export const CategoryTabNavigator = ({ }: CategoryTabProps) => {
-  const { showAddCategoryModal } = useData();
+export const CategoryTabNavigator = ({}: CategoryTabProps) => {
+  const {showAddCategoryModal} = useData();
+  const {theme} = useCustomTheme();
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: theme.fonts.regular,
+      }}
+    >
       <Tab.Screen name="AllCategoryScreen">
         {props => (
           <>
@@ -84,7 +101,9 @@ export const CategoryTabNavigator = ({ }: CategoryTabProps) => {
 
 const styles = StyleSheet.create({
   fab: {
-    position: "absolute", margin: 16, right: 0,
+    position: "absolute",
+    margin: 16,
+    right: 0,
     bottom: 0,
   },
 });
