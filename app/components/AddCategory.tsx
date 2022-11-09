@@ -1,29 +1,30 @@
-import { View, StyleSheet, FlatList } from "react-native";
-import React, { useState, useCallback, useEffect } from "react";
+import {View, StyleSheet, FlatList} from "react-native";
+import React, {useState, useCallback, useEffect} from "react";
 import {
   Modal,
   Portal,
   Paragraph,
   TextInput,
   IconButton,
-  Chip
+  Chip,
 } from "react-native-paper";
 
-import { useRealm } from "../realm";
-import { Category } from "../realm/Category";
+import {useRealm} from "../realm";
+import {Category} from "../realm/Category";
 import ColorChoice from "./ColorChoice";
 import IconModal from "./IconModal";
 
-import { COLORS } from "../data";
+import {COLORS} from "../data";
+import {useTranslation} from "react-i18next";
 
 const CATEGORY_TYPES = [
   {
-    title: "Income",
+    title: "income",
     value: "income",
     icon: "add",
   },
   {
-    title: "Expense",
+    title: "expense",
     value: "expense",
     icon: "remove",
   },
@@ -34,8 +35,13 @@ type Props = {
   item?: Category;
   onDismiss: () => void;
 };
-type ValueProps = { title: string; type: string; color: string; icon: string };
-const AddCategory = ({ visible, item, onDismiss }: Props) => {
+type ValueProps = {title: string; type: string; color: string; icon: string};
+const AddCategory = ({visible, item, onDismiss}: Props) => {
+  const {t} = useTranslation();
+  // console.log(t()));
+
+  // console.log(i18n.language);
+
   const [values, setValues] = useState<ValueProps>({
     title: "",
     type: "income",
@@ -47,8 +53,8 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
 
   useEffect(() => {
     if (item) {
-      const { title, type, color, icon } = item;
-      setValues({ title, type, color, icon });
+      const {title, type, color, icon} = item;
+      setValues({title, type, color, icon});
     } else {
       setValues({
         title: "",
@@ -60,7 +66,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
   }, [item]);
   const realm = useRealm();
   const addNewCategory = useCallback(
-    ({ title, type, color, icon }: ValueProps) => {
+    ({title, type, color, icon}: ValueProps) => {
       realm.write(() => {
         realm.create("Category", Category.generate(title, type, color, icon));
         onDismiss();
@@ -69,7 +75,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
     [realm, onDismiss],
   );
   const updateCategory = useCallback(
-    (category: Category, { title, type, color, icon }: ValueProps) => {
+    (category: Category, {title, type, color, icon}: ValueProps) => {
       realm.write(() => {
         if (category.title !== title) category.title = title;
         if (category.color !== color) category.color = color;
@@ -82,7 +88,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
   );
 
   const changeIcon = useCallback((icon: string) => {
-    setValues(prev => ({ ...prev, icon }));
+    setValues(prev => ({...prev, icon}));
     setIconModal(false);
   }, []);
 
@@ -124,7 +130,8 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
         visible={visible}
         onDismiss={onDismiss}
         style={styles.modal}
-        contentContainerStyle={styles.modalContainer}>
+        contentContainerStyle={styles.modalContainer}
+      >
         <View style={styles.topContainer}>
           <View style={styles.topBtnContainer}>
             <IconButton
@@ -143,9 +150,17 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
             )}
           </View>
           <View>
-            <Paragraph style={styles.subheading}>Icon and Title</Paragraph>
+            <Paragraph style={styles.subheading}>
+              {t("addCategory.iconAndTitle")}
+            </Paragraph>
             <View style={styles.iconInputContainer}>
-              <View style={{ backgroundColor: values.color, borderTopLeftRadius: 7, borderBottomLeftRadius: 7 }}>
+              <View
+                style={{
+                  backgroundColor: values.color,
+                  borderTopLeftRadius: 7,
+                  borderBottomLeftRadius: 7,
+                }}
+              >
                 <IconButton
                   size={38}
                   icon={values.icon}
@@ -159,7 +174,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
                 mode="outlined"
                 style={styles.input}
                 onChangeText={text =>
-                  setValues(prev => ({ ...prev, title: text }))
+                  setValues(prev => ({...prev, title: text}))
                 }
               />
             </View>
@@ -167,36 +182,40 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
           <IconButton
             size={40}
             icon={item ? "checkmark-done" : "add"}
-            style={[styles.addBtn, { backgroundColor: values.color }]}
+            style={[styles.addBtn, {backgroundColor: values.color}]}
             onPress={handlePressAdd}
           />
         </View>
         <View>
-          <Paragraph style={styles.subheading}>Type</Paragraph>
+          <Paragraph style={styles.subheading}>
+            {" "}
+            {t("addCategory.type")}
+          </Paragraph>
           <FlatList
             horizontal={true}
             data={CATEGORY_TYPES}
             renderItem={option => (
               <Chip
                 selected={values.type === option.item.value}
-                icon={values.type === option.item.value ? "checkmark" : option.item.icon}
+                icon={
+                  values.type === option.item.value
+                    ? "checkmark"
+                    : option.item.icon
+                }
                 onPress={() =>
-                  setValues(prev => ({ ...prev, type: option.item.value }))
+                  setValues(prev => ({...prev, type: option.item.value}))
                 }
               >
-                {option.item.title}
+                {t(option.item.title)}
               </Chip>
-
-
-              // <SelectItem
-              //   text={option.item.title}
-              // />
             )}
             contentContainerStyle={styles.colors}
           />
         </View>
         <View>
-          <Paragraph style={styles.subheading}>Color</Paragraph>
+          <Paragraph style={styles.subheading}>
+            {t("addCategory.color")}
+          </Paragraph>
           <FlatList
             horizontal={true}
             data={COLORS}
@@ -205,7 +224,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
                 key={option.item}
                 color={option.item}
                 onPress={() =>
-                  setValues(prev => ({ ...prev, color: option.item }))
+                  setValues(prev => ({...prev, color: option.item}))
                 }
                 selected={values.color === option.item}
               />

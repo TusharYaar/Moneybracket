@@ -4,7 +4,6 @@ import {useSettings} from "../providers/SettingsProvider";
 import {RadioButton} from "react-native-paper";
 import AVALIBLE_FONTS from "../themes/fonts";
 import {useCustomTheme} from "../themes";
-
 const Setting = () => {
   const {currency, language, theme, appLock, font} = useSettings();
   const {changeFont} = useCustomTheme();

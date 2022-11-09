@@ -1,0 +1,21 @@
+{
+    "transaction": "Transaction",
+    "income": "Income",
+    "expense": "Expense",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "note": "Note",
+    "optional":"Optional",    
+        
+
+
+    "addCategory": {
+        "iconAndTitle": "Icon and Title",
+        "type": "Type",
+        "color": "Color"
+    }
+    
+
+  
+}

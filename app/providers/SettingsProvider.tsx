@@ -1,4 +1,4 @@
-import {useContext, createContext, useState, useEffect} from "react";
+import {useContext, createContext, useState} from "react";
 import {getFromStorageOrDefault, setStorage} from "../utils/storage";
 
 import AVALIBLE_THEMES from "../themes/themes";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 const SETTING: Props = {
-  language: getFromStorageOrDefault("settings/language", "EN", true),
+  language: getFromStorageOrDefault("settings/language", "en", true),
   currency: getFromStorageOrDefault("settings/currency", "INR", true),
   theme: getFromStorageOrDefault(
     "settings/theme",
