@@ -19,14 +19,17 @@ const ThemeContext = createContext<Props>({
   current: "DEFAULT",
   changeTheme: () => {},
   changeFont: () => {},
-  theme: AVALIBLE_THEMES.defaultLight,
+  theme: AVALIBLE_THEMES[0],
 });
 
 export const useCustomTheme = () => useContext(ThemeContext);
 
 const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
   const SETTINGS = useSettings();
-  const [theme, setTheme] = useState(AVALIBLE_THEMES[SETTINGS.theme]);
+  const [theme, setTheme] = useState(
+    AVALIBLE_THEMES.find(theme => theme.id === SETTINGS.theme) ||
+      AVALIBLE_THEMES[0],
+  );
   const [font, setFont] = useState(
     AVALIBLE_FONTS.find(font => font.id === SETTINGS.font) as FontObject,
   );
@@ -35,7 +38,10 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
     return theme;
   }, [theme, font]);
 
-  const handleThemeChange = () => {};
+  const handleThemeChange = (theme: string) => {
+    setTheme(AVALIBLE_THEMES.find(_t => _t.id === theme) || AVALIBLE_THEMES[0]);
+    SETTINGS.updateTheme(theme);
+  };
 
   const handleFontChange = (font: string) => {
     setFont(AVALIBLE_FONTS.find(_f => _f.id === font) || AVALIBLE_FONTS[0]);

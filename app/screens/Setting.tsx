@@ -22,6 +22,20 @@ const Setting = ({navigation}: Props) => {
       >
         <Caption>{font}</Caption>
       </SettingItem>
+      <SettingItem
+        label={t("themeSettings")}
+        leftIcon="text"
+        onPress={() => navigation.navigate("ThemeSetting")}
+      >
+        <Caption>{theme}</Caption>
+      </SettingItem>
+      <SettingItem
+        label={t("currency")}
+        leftIcon="text"
+        onPress={() => navigation.navigate("FontSetting")}
+      >
+        <Caption>{currency}</Caption>
+      </SettingItem>
     </ScrollView>
   );
 };

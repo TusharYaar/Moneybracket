@@ -12,6 +12,7 @@ import {DrawerParamList} from "./DrawerNavigator";
 import {useCustomTheme} from "../themes";
 import FontSetting from "../screens/FontSetting";
 import {useTranslation} from "react-i18next";
+import ThemeSetting from "../screens/ThemeSetting";
 
 export type StackParamList = {
   TrackerTab: undefined;
@@ -22,6 +23,7 @@ export type StackParamList = {
 
   SettingScreen: undefined;
   FontSetting: undefined;
+  ThemeSetting: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -117,6 +119,17 @@ export const SettingStack = () => {
           ),
           headerTitleStyle: theme.fonts.regular,
           title: t("fontSettings"),
+        })}
+      />
+      <Stack.Screen
+        name="ThemeSetting"
+        component={ThemeSetting}
+        options={({navigation}) => ({
+          headerLeft: () => (
+            <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />
+          ),
+          headerTitleStyle: theme.fonts.regular,
+          title: t("themeSettings"),
         })}
       />
     </Stack.Navigator>

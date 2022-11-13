@@ -11,7 +11,7 @@ const AVALIBLE_FONTS: FontObject[] = [
         "Montserrat-Thin",
         "Montserrat-Light",
         "Montserrat-Regular",
-        "Montserrat-Bold",
+        "Montserrat-Medium",
       ),
     ),
   },

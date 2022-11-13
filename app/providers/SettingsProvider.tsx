@@ -1,28 +1,24 @@
 import {useContext, createContext, useState} from "react";
 import {getFromStorageOrDefault, setStorage} from "../utils/storage";
 
-import AVALIBLE_THEMES from "../themes/themes";
-import AVALIBLE_FONTS from "../themes/fonts";
 type Props = {
   language: string;
   currency: string;
   appLock: string;
-  theme: keyof typeof AVALIBLE_THEMES;
+  theme: string;
   font: string;
   updateFont: (font: string) => void;
+  updateTheme: (theme: string) => void;
 };
 
 const SETTING: Props = {
   language: getFromStorageOrDefault("settings/language", "en", true),
   currency: getFromStorageOrDefault("settings/currency", "INR", true),
-  theme: getFromStorageOrDefault(
-    "settings/theme",
-    "defaultLight",
-    true,
-  ) as keyof typeof AVALIBLE_THEMES,
+  theme: getFromStorageOrDefault("settings/theme", "defaultLight", true),
   font: getFromStorageOrDefault("settings/font", "montserrat", true),
   appLock: getFromStorageOrDefault("settings/appLock", "DISABLE", true),
   updateFont: () => {},
+  updateTheme: () => {},
 };
 
 const SettingContext = createContext<Props>(SETTING);
@@ -42,9 +38,13 @@ const SettingsProvider = ({
     setSettings(prev => ({...prev, font}));
     setStorage("settings/font", font);
   };
+  const updateTheme = (theme: string) => {
+    setSettings(prev => ({...prev, theme}));
+    setStorage("settings/theme", theme);
+  };
 
   return (
-    <SettingContext.Provider value={{...settings, updateFont}}>
+    <SettingContext.Provider value={{...settings, updateFont, updateTheme}}>
       {children}
     </SettingContext.Provider>
   );
