@@ -8,8 +8,8 @@ type Props = {
   currency: string;
   appLock: string;
   theme: keyof typeof AVALIBLE_THEMES;
-  font: keyof typeof AVALIBLE_FONTS;
-  updateFont: (font: keyof typeof AVALIBLE_FONTS) => void;
+  font: string;
+  updateFont: (font: string) => void;
 };
 
 const SETTING: Props = {
@@ -20,11 +20,7 @@ const SETTING: Props = {
     "defaultLight",
     true,
   ) as keyof typeof AVALIBLE_THEMES,
-  font: getFromStorageOrDefault(
-    "settings/font",
-    "montserrat",
-    true,
-  ) as keyof typeof AVALIBLE_FONTS,
+  font: getFromStorageOrDefault("settings/font", "montserrat", true),
   appLock: getFromStorageOrDefault("settings/appLock", "DISABLE", true),
   updateFont: () => {},
 };
@@ -39,8 +35,10 @@ const SettingsProvider = ({
   children: JSX.Element | JSX.Element[];
 }) => {
   const [settings, setSettings] = useState(SETTING);
+
   const updateSettings = (key: string) => {};
-  const updateFont = (font: keyof typeof AVALIBLE_FONTS) => {
+
+  const updateFont = (font: string) => {
     setSettings(prev => ({...prev, font}));
     setStorage("settings/font", font);
   };

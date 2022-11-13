@@ -10,6 +10,8 @@ import {IconButton} from "react-native-paper";
 import {DrawerScreenProps} from "@react-navigation/drawer";
 import {DrawerParamList} from "./DrawerNavigator";
 import {useCustomTheme} from "../themes";
+import FontSetting from "../screens/FontSetting";
+import {useTranslation} from "react-i18next";
 
 export type StackParamList = {
   TrackerTab: undefined;
@@ -19,6 +21,7 @@ export type StackParamList = {
   ExchangeTab: undefined;
 
   SettingScreen: undefined;
+  FontSetting: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -26,6 +29,7 @@ const Stack = createNativeStackNavigator<StackParamList>();
 type TrackerStackProps = DrawerScreenProps<DrawerParamList, "TrackerStack">;
 export const TrackerStackNavigator = ({}: TrackerStackProps) => {
   const {theme} = useCustomTheme();
+  const {t} = useTranslation();
 
   return (
     <Stack.Navigator>
@@ -37,7 +41,7 @@ export const TrackerStackNavigator = ({}: TrackerStackProps) => {
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
           headerTitleStyle: theme.fonts.regular,
-          title: "Tracker",
+          title: t("tracker"),
         })}
       />
     </Stack.Navigator>
@@ -46,6 +50,7 @@ export const TrackerStackNavigator = ({}: TrackerStackProps) => {
 
 export const CategoryStackNavigator = () => {
   const {theme} = useCustomTheme();
+  const {t} = useTranslation();
 
   return (
     <Stack.Navigator>
@@ -57,7 +62,7 @@ export const CategoryStackNavigator = () => {
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
           headerTitleStyle: theme.fonts.regular,
-          title: "Category",
+          title: t("category"),
         })}
       />
     </Stack.Navigator>
@@ -66,6 +71,7 @@ export const CategoryStackNavigator = () => {
 
 export const ExchangeStackNavigator = () => {
   const {theme} = useCustomTheme();
+  const {t} = useTranslation();
 
   return (
     <Stack.Navigator>
@@ -77,7 +83,7 @@ export const ExchangeStackNavigator = () => {
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
           headerTitleStyle: theme.fonts.regular,
-          title: "Exchange",
+          title: t("exchange"),
         })}
       />
     </Stack.Navigator>
@@ -86,6 +92,8 @@ export const ExchangeStackNavigator = () => {
 
 export const SettingStack = () => {
   const {theme} = useCustomTheme();
+
+  const {t} = useTranslation();
 
   return (
     <Stack.Navigator>
@@ -97,7 +105,18 @@ export const SettingStack = () => {
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
           headerTitleStyle: theme.fonts.regular,
-          title: "Settings",
+          title: t("settings"),
+        })}
+      />
+      <Stack.Screen
+        name="FontSetting"
+        component={FontSetting}
+        options={({navigation}) => ({
+          headerLeft: () => (
+            <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />
+          ),
+          headerTitleStyle: theme.fonts.regular,
+          title: t("fontSettings"),
         })}
       />
     </Stack.Navigator>

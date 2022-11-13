@@ -4,8 +4,6 @@ import {getFromStorageOrDefault} from "../utils/storage";
 
 import en from "./en.json";
 
-console.log(en);
-
 const resources = {
   en: {
     translation: en,

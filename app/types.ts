@@ -1,4 +1,4 @@
-import {Theme} from "react-native-paper";
+import {Fonts, Theme} from "react-native-paper/lib/typescript/types";
 export interface CustomTheme extends Theme {
   id: string;
   name: string;
@@ -19,4 +19,11 @@ export interface CustomTheme extends Theme {
     income: string;
     expense: string;
   };
+}
+
+export interface FontObject {
+  id: string;
+  name: string;
+  fontConfig: Fonts;
+  isPaid?: boolean;
 }

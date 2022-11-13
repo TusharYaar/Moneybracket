@@ -3,7 +3,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {Provider as PaperProvider} from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {CustomTheme} from "../types";
+import {CustomTheme, FontObject} from "../types";
 import AVALIBLE_THEMES from "./themes";
 import {useSettings} from "../providers/SettingsProvider";
 import AVALIBLE_FONTS from "./fonts";
@@ -11,7 +11,7 @@ import AVALIBLE_FONTS from "./fonts";
 type Props = {
   current?: string;
   changeTheme: (theme: string) => void;
-  changeFont: (font: keyof typeof AVALIBLE_FONTS) => void;
+  changeFont: (font: string) => void;
   theme: CustomTheme;
 };
 
@@ -27,17 +27,18 @@ export const useCustomTheme = () => useContext(ThemeContext);
 const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
   const SETTINGS = useSettings();
   const [theme, setTheme] = useState(AVALIBLE_THEMES[SETTINGS.theme]);
-  const [font, setFont] = useState(AVALIBLE_FONTS["montserrat"]);
-
+  const [font, setFont] = useState(
+    AVALIBLE_FONTS.find(font => font.id === SETTINGS.font) as FontObject,
+  );
   const themeObject = useMemo(() => {
-    theme.fonts = font.fontConfig;
+    theme.fonts = font ? font.fontConfig : AVALIBLE_FONTS[0].fontConfig;
     return theme;
   }, [theme, font]);
 
   const handleThemeChange = () => {};
 
-  const handleFontChange = (font: keyof typeof AVALIBLE_FONTS) => {
-    setFont(AVALIBLE_FONTS[font]);
+  const handleFontChange = (font: string) => {
+    setFont(AVALIBLE_FONTS.find(_f => _f.id === font) || AVALIBLE_FONTS[0]);
     SETTINGS.updateFont(font);
   };
 

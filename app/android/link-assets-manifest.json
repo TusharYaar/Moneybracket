@@ -2,6 +2,18 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/Caveat-Bold.ttf",
+      "sha1": "b8cf7188694f0ad229fec80e8074b1df6305cdfa"
+    },
+    {
+      "path": "assets/fonts/Caveat-Medium.ttf",
+      "sha1": "0cd0d0e17561fad5254d00dfc406e0662495de09"
+    },
+    {
+      "path": "assets/fonts/Caveat-Regular.ttf",
+      "sha1": "6c6e0943c8a1af2aa1fe7d751c62e84e18cc4c72"
+    },
+    {
       "path": "assets/fonts/FiraCode-Light.ttf",
       "sha1": "a4dc51dfbe9e8c43d4fb5d26a5c29702ce786f43"
     },
@@ -72,6 +84,30 @@
     {
       "path": "assets/fonts/NotoSans-Thin.ttf",
       "sha1": "3f89e6b1b7cc617b01e1841e4335b0b420ffa777"
+    },
+    {
+      "path": "assets/fonts/Poppins-Light.ttf",
+      "sha1": "e247a92158e112f8bf7b638c8d95381d66b00dbb"
+    },
+    {
+      "path": "assets/fonts/Poppins-Medium.ttf",
+      "sha1": "283f21b44efbdbf276ba802be2d949a36bbc4233"
+    },
+    {
+      "path": "assets/fonts/Poppins-Regular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
+    },
+    {
+      "path": "assets/fonts/ZillaSlab-Light.ttf",
+      "sha1": "2413d58a629a08286f5ec3b325827087189060d6"
+    },
+    {
+      "path": "assets/fonts/ZillaSlab-Medium.ttf",
+      "sha1": "0c73948eaff6a8080a669069009dc54fc9b73992"
+    },
+    {
+      "path": "assets/fonts/ZillaSlab-Regular.ttf",
+      "sha1": "d4d5b3b9cdb0cd88c2fc9f1777ab73163bbc18f4"
     }
   ]
 }

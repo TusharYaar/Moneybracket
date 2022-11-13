@@ -7,15 +7,13 @@
     "category": "Category",
     "note": "Note",
     "optional":"Optional",    
-        
-
 
     "addCategory": {
         "iconAndTitle": "Icon and Title",
         "type": "Type",
         "color": "Color"
-    }
-    
+    },
+    "dummyText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
 
   
 }

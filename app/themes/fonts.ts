@@ -1,8 +1,9 @@
 import {configureFonts} from "react-native-paper";
+import {FontObject} from "../types";
 import {makeFontConfig} from "../utils/fonts";
 
-const AVALIBLE_FONTS = {
-  montserrat: {
+const AVALIBLE_FONTS: FontObject[] = [
+  {
     id: "montserrat",
     name: "Montserrat",
     fontConfig: configureFonts(
@@ -14,7 +15,7 @@ const AVALIBLE_FONTS = {
       ),
     ),
   },
-  firacode: {
+  {
     id: "firacode",
     name: "Fira Code",
     fontConfig: configureFonts(
@@ -26,14 +27,50 @@ const AVALIBLE_FONTS = {
       ),
     ),
   },
-  mali: {
+  {
     id: "mali",
     name: "Mali",
     fontConfig: configureFonts(
       makeFontConfig("Mali-Light", "Mali-Light", "Mali-Regular", "Mali-Medium"),
     ),
   },
-  notosans: {
+  {
+    id: "caveat",
+    name: "Caveat",
+    fontConfig: configureFonts(
+      makeFontConfig(
+        "Caveat-Regular",
+        "Caveat-Regular",
+        "Caveat-Medium",
+        "Caveat-Bold",
+      ),
+    ),
+  },
+  {
+    id: "poppins",
+    name: "Poppins",
+    fontConfig: configureFonts(
+      makeFontConfig(
+        "Poppins-Light",
+        "Poppins-Light",
+        "Poppins-Regular",
+        "Poppins-Medium",
+      ),
+    ),
+  },
+  {
+    id: "zillaslab",
+    name: "Zilla Slab",
+    fontConfig: configureFonts(
+      makeFontConfig(
+        "ZillaSlab-Light",
+        "ZillaSlab-Light",
+        "ZillaSlab-Regular",
+        "ZillaSlab-Medium",
+      ),
+    ),
+  },
+  {
     id: "notosans",
     name: "Noto Sans",
     fontConfig: configureFonts(
@@ -45,6 +82,6 @@ const AVALIBLE_FONTS = {
       ),
     ),
   },
-};
+];
 
 export default AVALIBLE_FONTS;

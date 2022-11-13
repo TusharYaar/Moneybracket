@@ -16,21 +16,19 @@ const defaultLight: CustomTheme = {
     // background: "orange",
     border: "gold",
     card: "white",
-    disabled: "rgba(255, 255, 255, 0.38)",
     error: "#CF6679",
     notification: "#ff80ab",
     onSurface: "cyan",
     placeholder: "rgba(255, 255, 255, 0.54)",
     primary: "#BB86FC",
-    surface: "gray",
+    // surface: "gray",
     text: "brown",
     income: "green",
     expense: "red",
   },
   dark: true,
-  fonts: AVALIBLE_FONTS["montserrat"].fontConfig,
   mode: "adaptive",
-  roundness: 4,
+  roundness: 8,
 };
 
 export default defaultLight;
