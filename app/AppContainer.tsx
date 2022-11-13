@@ -9,6 +9,7 @@ import SettingsProvider from "./providers/SettingsProvider";
 import {I18nextProvider} from "react-i18next";
 
 import i18n from "./localization";
+import codePush from "react-native-code-push";
 const AppContainer = () => {
   return (
     <SettingsProvider>
@@ -29,4 +30,4 @@ const AppContainer = () => {
   );
 };
 
-export default AppContainer;
+export default codePush(AppContainer);

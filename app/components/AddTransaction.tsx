@@ -21,6 +21,7 @@ import CategoryModal from "./CategoryModal";
 import {useRealm} from "../realm";
 import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
+import {useCustomTheme} from "../themes";
 
 type Props = {
   visible: boolean;
@@ -36,6 +37,8 @@ type ValueProps = {
 };
 const AddTransaction = ({visible, item, onDismiss}: Props) => {
   const {t} = useTranslation();
+
+  const {theme} = useCustomTheme();
 
   const [values, setValues] = useState<ValueProps>({
     category: null,
@@ -163,10 +166,15 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
         <Modal
           visible={visible}
           onDismiss={onDismiss}
-          contentContainerStyle={containerStyle}
+          contentContainerStyle={[
+            containerStyle,
+            {backgroundColor: theme.colors.background},
+          ]}
           style={styles.modal}
         >
-          <View style={styles.topContainer}>
+          <View
+            style={[styles.topContainer, {backgroundColor: theme.colors.card}]}
+          >
             <View>
               <IconButton
                 icon="close"
@@ -244,7 +252,6 @@ export default AddTransaction;
 const styles = StyleSheet.create({
   topContainer: {
     paddingBottom: 40,
-    backgroundColor: "#f2f8d7",
     borderTopLeftRadius: 7,
     borderTopRightRadius: 7,
   },

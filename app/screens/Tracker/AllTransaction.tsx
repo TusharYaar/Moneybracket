@@ -1,23 +1,26 @@
-import React, { useMemo } from "react";
-import { View, StyleSheet, ViewToken } from "react-native";
+import React, {useMemo} from "react";
+import {View, StyleSheet, ViewToken} from "react-native";
 
-import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
-import { TabParamList } from "../../navigators/TabNavigators";
-import { useData } from "../../providers/DataProvider";
-import { Paragraph } from "react-native-paper";
-import { Transaction } from "../../realm/Transaction";
+import {MaterialTopTabScreenProps} from "@react-navigation/material-top-tabs";
+import {TabParamList} from "../../navigators/TabNavigators";
+import {useData} from "../../providers/DataProvider";
+import {Paragraph} from "react-native-paper";
+import {Transaction} from "../../realm/Transaction";
 import GroupTransactions from "../../components/GroupTransactions";
-import { useSharedValue } from "react-native-reanimated";
-import { FlashList } from "@shopify/flash-list";
+import {useSharedValue} from "react-native-reanimated";
+import {FlashList} from "@shopify/flash-list";
+import {useTranslation} from "react-i18next";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
 
 type GroupedTransactions = {
   date: string;
   transactions: Transaction[];
-}
-const AllTransaction = ({ }: Props) => {
-  const { transaction, showAddTransactionModal } = useData();
-
+};
+const AllTransaction = ({}: Props) => {
+  const {transaction, showAddTransactionModal} = useData();
+  const {t} = useTranslation("", {
+    keyPrefix: "screens.tracker.allTransaction",
+  });
   const visibleItems = useSharedValue<ViewToken[]>([]);
 
   const grouped = useMemo(() => {
@@ -29,13 +32,11 @@ const AllTransaction = ({ }: Props) => {
         };
         result.push(obj);
         return result;
-      }
-      else {
+      } else {
         if (result[result.length - 1].date === val.date) {
           result[result.length - 1].transactions.push(val);
           return result;
-        }
-        else {
+        } else {
           let obj: GroupedTransactions = {
             date: val.date,
             transactions: [val],
@@ -45,33 +46,32 @@ const AllTransaction = ({ }: Props) => {
         }
       }
     }, [] as GroupedTransactions[]);
-
   }, [transaction]);
 
-
-  const handlePressTransaction = (transaction: Transaction) => {
-
-  }
+  const handlePressTransaction = (transaction: Transaction) => {};
 
   if (transaction.length === 0) {
     return (
       <View style={styles.screen}>
-        <Paragraph>No Transaction added</Paragraph>
+        <Paragraph>{t("noTransaction")}</Paragraph>
       </View>
     );
   }
 
-
-
   return (
-    <FlashList data={grouped}
-      renderItem={({ item }) => (
-        <GroupTransactions data={item}
+    <FlashList
+      data={grouped}
+      renderItem={({item}) => (
+        <GroupTransactions
+          data={item}
           visibleItems={visibleItems}
-          onPressItem={handlePressTransaction} />
+          onPressItem={handlePressTransaction}
+        />
       )}
       estimatedItemSize={200}
-      onViewableItemsChanged={({ viewableItems }) => visibleItems.value = viewableItems}
+      onViewableItemsChanged={({viewableItems}) =>
+        (visibleItems.value = viewableItems)
+      }
     />
   );
 };

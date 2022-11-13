@@ -42,3 +42,5 @@ MYAPP_UPLOAD_STORE_FILE=<filename>.jks
 MYAPP_UPLOAD_KEY_ALIAS=<alias>
 MYAPP_UPLOAD_STORE_PASSWORD=<store password>
 MYAPP_UPLOAD_KEY_PASSWORD=<key password>
+MYAPP_STAGING_CODE_PUSH=<codepush staging key>
+MYAPP_PRODUCTION_CODE_PUSH=<codepush production key>

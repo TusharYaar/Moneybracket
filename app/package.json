@@ -26,6 +26,7 @@
     "react-i18next": "^12.0.0",
     "react-native": "0.70.4",
     "react-native-calendars": "^1.1290.0",
+    "react-native-code-push": "^7.0.5",
     "react-native-gesture-handler": "^2.8.0",
     "react-native-get-random-values": "^1.8.0",
     "react-native-mmkv": "^2.5.1",
