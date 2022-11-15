@@ -1,8 +1,14 @@
-import React, { useContext, createContext, useMemo, useState, useCallback } from "react";
-import { Category } from "../realm/Category";
-import { Transaction } from "../realm/Transaction";
+import React, {
+  useContext,
+  createContext,
+  useMemo,
+  useState,
+  useCallback,
+} from "react";
+import {Category} from "../realm/Category";
+import {Transaction} from "../realm/Transaction";
 
-import { useQuery } from "../realm/index";
+import {useQuery} from "../realm/index";
 import AddCategory from "../components/AddCategory";
 import AddTransaction from "../components/AddTransaction";
 type Props = {
@@ -10,27 +16,26 @@ type Props = {
   transaction: Realm.Results<Transaction>;
   showAddCategoryModal: (item?: Category) => void;
   showAddTransactionModal: (item?: Transaction) => void;
-
 };
 
 const DataContext = createContext<Props>({
   category: [] as unknown as Realm.Results<Category>,
   transaction: [] as unknown as Realm.Results<Transaction>,
-  showAddCategoryModal: () => { },
-  showAddTransactionModal: () => { },
-
+  showAddCategoryModal: () => {},
+  showAddTransactionModal: () => {},
 });
 
 export const useData = () => useContext(DataContext);
 
-const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
   const _category = useQuery(Category);
-  const category = useMemo(() =>
-    _category.sorted("title")
-    , [_category]);
+  const category = useMemo(() => _category.sorted("title"), [_category]);
 
   const _transaction = useQuery(Transaction);
-  const transaction = useMemo(() => _transaction.sorted("date"), [_transaction]);
+  const transaction = useMemo(
+    () => _transaction.sorted("date", true),
+    [_transaction],
+  );
 
   const [addCategory, setAddCategory] = useState<{
     visible: boolean;
@@ -41,36 +46,40 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   });
 
   const [addTransaction, setAddTransaction] = useState<{
-    visible: boolean; item: Transaction | undefined
+    visible: boolean;
+    item: Transaction | undefined;
   }>({
-    visible: false, item: undefined
-  })
-
+    visible: false,
+    item: undefined,
+  });
 
   const showAddCategoryModal = useCallback((item?: Category) => {
-    if (item) setAddCategory({ item, visible: true });
-    else setAddCategory({ item: undefined, visible: true });
+    if (item) setAddCategory({item, visible: true});
+    else setAddCategory({item: undefined, visible: true});
   }, []);
 
   const dismissAddCategoryModal = useCallback(() => {
-    setAddCategory(prev => ({ ...prev, visible: false }));
+    setAddCategory(prev => ({...prev, visible: false}));
   }, []);
-
 
   const showAddTransactionModal = useCallback((item?: Transaction) => {
-    if (item) setAddTransaction({ item, visible: true });
-    else setAddTransaction({ item: undefined, visible: true });
+    if (item) setAddTransaction({item, visible: true});
+    else setAddTransaction({item: undefined, visible: true});
   }, []);
-
 
   const dismissAddTransactionModal = useCallback(() => {
-    setAddTransaction(prev => ({ ...prev, visible: false }));
+    setAddTransaction(prev => ({...prev, visible: false}));
   }, []);
 
-
-
   return (
-    <DataContext.Provider value={{ category, transaction, showAddCategoryModal, showAddTransactionModal }}>
+    <DataContext.Provider
+      value={{
+        category,
+        transaction,
+        showAddCategoryModal,
+        showAddTransactionModal,
+      }}
+    >
       <AddCategory
         item={addCategory.item}
         visible={addCategory.visible}

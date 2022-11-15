@@ -16,7 +16,7 @@
     "screens":{
         "tracker": {
             "allTransaction" : {
-                "noTransaction": "No Transaction re Baba"
+                "noTransaction": "No Transactions Added"
             }
         }
         

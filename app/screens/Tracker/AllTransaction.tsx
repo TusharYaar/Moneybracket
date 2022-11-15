@@ -10,10 +10,11 @@ import GroupTransactions from "../../components/GroupTransactions";
 import {useSharedValue} from "react-native-reanimated";
 import {FlashList} from "@shopify/flash-list";
 import {useTranslation} from "react-i18next";
+import {format} from "date-fns";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
 
 type GroupedTransactions = {
-  date: string;
+  formattedDate: string;
   transactions: Transaction[];
 };
 const AllTransaction = ({}: Props) => {
@@ -27,18 +28,22 @@ const AllTransaction = ({}: Props) => {
     return transaction.reduce<GroupedTransactions[]>((result, val) => {
       if (result.length === 0) {
         let obj: GroupedTransactions = {
-          date: val.date,
+          formattedDate: format(val.date, "dd MMM, yy"),
           transactions: [val],
         };
         result.push(obj);
         return result;
       } else {
-        if (result[result.length - 1].date === val.date) {
-          result[result.length - 1].transactions.push(val);
+        const group = result[result.length - 1];
+        if (group.formattedDate === format(val.date, "dd MMM, yy")) {
+          result[result.length - 1] = {
+            formattedDate: group.formattedDate,
+            transactions: [...group.transactions, val],
+          };
           return result;
         } else {
           let obj: GroupedTransactions = {
-            date: val.date,
+            formattedDate: format(val.date, "dd MMM, yy"),
             transactions: [val],
           };
           result.push(obj);
@@ -47,7 +52,6 @@ const AllTransaction = ({}: Props) => {
       }
     }, [] as GroupedTransactions[]);
   }, [transaction]);
-
   const handlePressTransaction = (transaction: Transaction) => {};
 
   if (transaction.length === 0) {

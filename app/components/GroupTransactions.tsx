@@ -9,7 +9,7 @@ import {useCustomTheme} from "../themes";
 
 type Props = {
   data: {
-    date: string;
+    formattedDate: string;
     transactions: Transaction[];
   };
   onPressItem: (t: Transaction) => void;
@@ -31,7 +31,9 @@ const GroupTransactions = ({data, onPressItem, visibleItems}: Props) => {
 
   const rstyle = useAnimatedStyle(() => {
     const isVisible = Boolean(
-      visibleItems.value.find(({item}) => item.date === data.date),
+      visibleItems.value.find(
+        ({item}) => item.formattedDate === data.formattedDate,
+      ),
     );
     return {
       transform: [
@@ -44,7 +46,7 @@ const GroupTransactions = ({data, onPressItem, visibleItems}: Props) => {
   return (
     <Animated.View style={[styles.group, rstyle]}>
       <View style={styles.breif}>
-        <Subheading>{format(new Date(data.date), "d MMM, yy")}</Subheading>
+        <Subheading>{data.formattedDate}</Subheading>
         <Paragraph
           style={{
             color: totalAmt >= 0 ? theme.colors.income : theme.colors.expense,
