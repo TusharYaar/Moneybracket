@@ -11,6 +11,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import {useSettings} from "../providers/SettingsProvider";
 
 type Props = {
   data: Transaction;
@@ -19,7 +20,10 @@ type Props = {
 };
 
 const TransactionItem = ({data, onPress, style}: Props) => {
+  const {currency} = useSettings();
+
   const {theme} = useCustomTheme();
+
   const scale = useSharedValue(0.6);
   const aStyle = useAnimatedStyle(() => {
     return {
@@ -33,41 +37,26 @@ const TransactionItem = ({data, onPress, style}: Props) => {
 
   return (
     <Animated.View style={[styles.overflowContainer, aStyle, style]}>
-      <TouchableRipple
-        onPress={onPress}
-        style={[styles.outerContainer, {backgroundColor: data.category.color}]}
-      >
+      <TouchableRipple onPress={onPress} style={styles.outerContainer}>
         <View style={styles.innerContainer}>
           <Icon
             name={data.category.icon}
             size={36}
-            style={{color: chooseBetterContrast(data.category.color)}}
+            style={{
+              color: chooseBetterContrast(data.category.color),
+              backgroundColor: data.category.color,
+              padding: 8,
+              borderRadius: 8,
+            }}
           />
           <View style={styles.text}>
             <View>
-              <Subheading
-                style={{
-                  color: chooseBetterContrast(data.category.color),
-                  ...theme.fonts.regular,
-                }}
-              >
-                {data.category?.title}
-              </Subheading>
-              <Caption
-                style={{
-                  color: chooseBetterContrast(data.category?.color),
-                  ...theme.fonts.regular,
-                }}
-              >
-                {data.category?.type}
-              </Caption>
+              <Subheading>{data.category.title}</Subheading>
+              {data.note.length > 0 && <Caption>{data.note}</Caption>}
             </View>
-            <Title
-              style={{
-                color: chooseBetterContrast(data.category?.color),
-                ...theme.fonts.regular,
-              }}
-            >{`${data.amount}`}</Title>
+            <Title>{`${
+              data.category.type === "expense" ? "-" : "+"
+            } ${currency} ${data.amount}`}</Title>
           </View>
         </View>
       </TouchableRipple>
@@ -81,7 +70,6 @@ const styles = StyleSheet.create({
   overflowContainer: {
     borderRadius: 8,
     overflow: "hidden",
-    backgroundColor: "red",
   },
   outerContainer: {
     borderRadius: 8,
@@ -89,6 +77,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     flexDirection: "row",
     alignItems: "center",
+    // justifyContent: "center",
     paddingHorizontal: 8,
   },
   text: {
@@ -96,5 +85,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flex: 1,
+    paddingLeft: 8,
   },
 });
