@@ -38,10 +38,6 @@ type Props = {
 type ValueProps = {title: string; type: string; color: string; icon: string};
 const AddCategory = ({visible, item, onDismiss}: Props) => {
   const {t} = useTranslation();
-  // console.log(t()));
-
-  // console.log(i18n.language);
-
   const [values, setValues] = useState<ValueProps>({
     title: "",
     type: "income",

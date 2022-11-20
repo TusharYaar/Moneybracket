@@ -1,10 +1,16 @@
 import {StyleSheet, View} from "react-native";
-import React from "react";
+import React, {useEffect} from "react";
 import {Transaction} from "../realm/Transaction";
 import {Caption, Subheading, Title, TouchableRipple} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 import {chooseBetterContrast} from "../utils/colors";
 import {useCustomTheme} from "../themes";
+
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 type Props = {
   data: Transaction;
@@ -13,8 +19,19 @@ type Props = {
 
 const TransactionItem = ({data, onPress}: Props) => {
   const {theme} = useCustomTheme();
+  const scale = useSharedValue(0.6);
+  const aStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{scale: scale.value}],
+    };
+  });
+
+  useEffect(() => {
+    scale.value = withTiming(1);
+  }, []);
+
   return (
-    <View style={styles.overflowContainer}>
+    <Animated.View style={[styles.overflowContainer, aStyle]}>
       <TouchableRipple
         onPress={onPress}
         style={[styles.outerContainer, {backgroundColor: data.category.color}]}
@@ -33,27 +50,27 @@ const TransactionItem = ({data, onPress}: Props) => {
                   ...theme.fonts.regular,
                 }}
               >
-                {data.category.title}
+                {data.category?.title}
               </Subheading>
               <Caption
                 style={{
-                  color: chooseBetterContrast(data.category.color),
+                  color: chooseBetterContrast(data.category?.color),
                   ...theme.fonts.regular,
                 }}
               >
-                {data.category.type}
+                {data.category?.type}
               </Caption>
             </View>
             <Title
               style={{
-                color: chooseBetterContrast(data.category.color),
+                color: chooseBetterContrast(data.category?.color),
                 ...theme.fonts.regular,
               }}
             >{`${data.amount}`}</Title>
           </View>
         </View>
       </TouchableRipple>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -61,12 +78,12 @@ export default TransactionItem;
 
 const styles = StyleSheet.create({
   overflowContainer: {
-    marginTop: 8,
-    borderRadius: 16,
+    borderRadius: 8,
     overflow: "hidden",
+    backgroundColor: "red",
   },
   outerContainer: {
-    borderRadius: 16,
+    borderRadius: 8,
   },
   innerContainer: {
     flexDirection: "row",

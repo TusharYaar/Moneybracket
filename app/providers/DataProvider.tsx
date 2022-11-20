@@ -11,31 +11,59 @@ import {Transaction} from "../realm/Transaction";
 import {useQuery} from "../realm/index";
 import AddCategory from "../components/AddCategory";
 import AddTransaction from "../components/AddTransaction";
+import DateFilterModal from "../components/DateFilterModal";
 type Props = {
+  dateFilter: {
+    type: string;
+    startDate: Date;
+    endDate: Date;
+  };
   category: Realm.Results<Category & Realm.Object<unknown>>;
   transaction: Realm.Results<Transaction>;
   showAddCategoryModal: (item?: Category) => void;
   showAddTransactionModal: (item?: Transaction) => void;
+  showDateFilterModal: () => void;
+  updateDateFilter: (type: string, start: Date, end: Date) => void;
 };
 
 const DataContext = createContext<Props>({
+  dateFilter: {
+    type: "all",
+    startDate: new Date(),
+    endDate: new Date(),
+  },
   category: [] as unknown as Realm.Results<Category>,
   transaction: [] as unknown as Realm.Results<Transaction>,
   showAddCategoryModal: () => {},
   showAddTransactionModal: () => {},
+  showDateFilterModal: () => {},
+  updateDateFilter: () => {},
 });
 
 export const useData = () => useContext(DataContext);
 
 const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
+  const [dateFilter, setDateFilter] = useState({
+    type: "all",
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+
   const _category = useQuery(Category);
   const category = useMemo(() => _category.sorted("title"), [_category]);
 
   const _transaction = useQuery(Transaction);
-  const transaction = useMemo(
-    () => _transaction.sorted("date", true),
-    [_transaction],
-  );
+  const transaction = useMemo(() => {
+    if (dateFilter.type === "all") return _transaction.sorted("date", true);
+    else
+      return _transaction
+        .sorted("date", true)
+        .filtered(
+          "date > $0 AND date < $1",
+          dateFilter.startDate,
+          dateFilter.endDate,
+        );
+  }, [_transaction, dateFilter]);
 
   const [addCategory, setAddCategory] = useState<{
     visible: boolean;
@@ -52,6 +80,8 @@ const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
     visible: false,
     item: undefined,
   });
+
+  const [dateModalVisible, setDateModalVisible] = useState(false);
 
   const showAddCategoryModal = useCallback((item?: Category) => {
     if (item) setAddCategory({item, visible: true});
@@ -71,13 +101,34 @@ const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
     setAddTransaction(prev => ({...prev, visible: false}));
   }, []);
 
+  const showDateFilterModal = useCallback(() => {
+    setDateModalVisible(true);
+  }, []);
+  const dismissDateFilterModal = useCallback(() => {
+    setDateModalVisible(false);
+  }, []);
+
+  const updateDateFilter = useCallback(
+    (type: string, start: Date, end: Date) => {
+      setDateFilter({
+        type,
+        startDate: start,
+        endDate: end,
+      });
+    },
+    [],
+  );
+
   return (
     <DataContext.Provider
       value={{
+        dateFilter,
         category,
         transaction,
         showAddCategoryModal,
         showAddTransactionModal,
+        showDateFilterModal,
+        updateDateFilter,
       }}
     >
       <AddCategory
@@ -89,6 +140,10 @@ const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
         item={addTransaction.item}
         visible={addTransaction.visible}
         onDismiss={dismissAddTransactionModal}
+      />
+      <DateFilterModal
+        visible={dateModalVisible}
+        onDismiss={dismissDateFilterModal}
       />
       {children}
     </DataContext.Provider>

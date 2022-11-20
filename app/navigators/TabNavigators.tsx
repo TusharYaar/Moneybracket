@@ -13,6 +13,7 @@ import {StackParamList} from "./StackNavigators";
 import {StyleSheet} from "react-native";
 import {useData} from "../providers/DataProvider";
 import {useCustomTheme} from "../themes";
+import DateFilterSelector from "../components/DateFilterSelector";
 
 export type TabParamList = {
   AllTransactionScreen: undefined;
@@ -25,14 +26,12 @@ export type TabParamList = {
   AccountChartScreen: undefined;
 };
 const Tab = createMaterialTopTabNavigator<TabParamList>();
-
-type TrackerTabProps = NativeStackScreenProps<StackParamList, "TrackerTab">;
-
-export const TrackerTabNavigator = ({navigation}: TrackerTabProps) => {
-  const {showAddTransactionModal} = useData();
+export const TrackerTabNavigator = () => {
+  const {showAddTransactionModal, showDateFilterModal} = useData();
   const {theme} = useCustomTheme();
   return (
     <>
+      <DateFilterSelector onPress={showDateFilterModal} />
       <Tab.Navigator
         screenOptions={{
           tabBarLabelStyle: theme.fonts.regular,

@@ -12,9 +12,9 @@ import {Category} from "../realm/Category";
 import {Dcategories} from "../data/dummy";
 import COLORS from "../data/colors";
 import {ICONS} from "../data";
-import {add} from "date-fns";
 import {Transaction} from "../realm/Transaction";
 import {useData} from "../providers/DataProvider";
+import {generateDummyTransaction} from "../utils/dummy";
 
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 
@@ -41,31 +41,6 @@ const Setting = ({navigation}: Props) => {
     });
   }, [realm]);
 
-  const generateDummyTransaction = useCallback(() => {
-    let ar = [];
-    for (let i = 0; i < 500; i++) {
-      let amount = 1000;
-      let date = new Date();
-      if (Math.random() > 0.7) amount = Math.round(Math.random() * 10000);
-      else amount = Math.round(Math.random() * 3000);
-      let days = Math.round(Math.random() * 20);
-      if (Math.random() > 0.6) {
-        let months = Math.ceil(Math.random() * 6);
-        date = add(new Date(), {
-          days,
-          months,
-        });
-      } else {
-        date = add(new Date(), {
-          days,
-        });
-      }
-
-      ar.push({date, amount});
-    }
-    return ar;
-  }, []);
-
   const addDummy = useCallback(() => {
     realm.write(() => {
       const trans = generateDummyTransaction();
@@ -84,6 +59,11 @@ const Setting = ({navigation}: Props) => {
     });
   }, [realm]);
 
+  const deleteAllData = useCallback(() => {
+    realm.write(() => {
+      realm.deleteAll();
+    });
+  }, []);
   return (
     <ScrollView contentContainerStyle={styles.screen}>
       <SettingItem
@@ -107,15 +87,24 @@ const Setting = ({navigation}: Props) => {
       >
         <Caption>{currency}</Caption>
       </SettingItem>
+      {__DEV__ && (
+        <SettingItem
+          label={t("dummy Categories")}
+          leftIcon="text"
+          onPress={addDummyCategories}
+        />
+      )}
+      {__DEV__ && (
+        <SettingItem
+          label={t("dummy Trans")}
+          leftIcon="text"
+          onPress={addDummy}
+        />
+      )}
       <SettingItem
-        label={t("dummy Categories")}
+        label={t("deleteAllData")}
         leftIcon="text"
-        onPress={addDummyCategories}
-      />
-      <SettingItem
-        label={t("dummy Trans")}
-        leftIcon="text"
-        onPress={addDummy}
+        onPress={deleteAllData}
       />
     </ScrollView>
   );
