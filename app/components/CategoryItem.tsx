@@ -33,17 +33,17 @@ export default CategoryItem;
 
 const styles = StyleSheet.create({
   overflowContainer: {
-    borderRadius: 16,
+    borderRadius: 8,
     borderWidth: 2,
     overflow: "hidden",
   },
   container: {
-    borderRadius: 16,
+    borderRadius: 8,
   },
   innerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 16,
+    borderRadius: 8,
   },
   iconContainer: {
     padding: 8,

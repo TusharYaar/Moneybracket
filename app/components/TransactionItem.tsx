@@ -1,4 +1,4 @@
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, View, ViewStyle} from "react-native";
 import React, {useEffect} from "react";
 import {Transaction} from "../realm/Transaction";
 import {Caption, Subheading, Title, TouchableRipple} from "react-native-paper";
@@ -15,9 +15,10 @@ import Animated, {
 type Props = {
   data: Transaction;
   onPress: () => void;
+  style?: ViewStyle;
 };
 
-const TransactionItem = ({data, onPress}: Props) => {
+const TransactionItem = ({data, onPress, style}: Props) => {
   const {theme} = useCustomTheme();
   const scale = useSharedValue(0.6);
   const aStyle = useAnimatedStyle(() => {
@@ -31,7 +32,7 @@ const TransactionItem = ({data, onPress}: Props) => {
   }, []);
 
   return (
-    <Animated.View style={[styles.overflowContainer, aStyle]}>
+    <Animated.View style={[styles.overflowContainer, aStyle, style]}>
       <TouchableRipple
         onPress={onPress}
         style={[styles.outerContainer, {backgroundColor: data.category.color}]}

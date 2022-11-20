@@ -19,7 +19,6 @@ import DateTimePicker, {
 import CurrencyModal from "./CurrencyModal";
 import CategoryModal from "./CategoryModal";
 import {useRealm} from "../realm";
-import Icon from "react-native-vector-icons/Ionicons";
 import {useTranslation} from "react-i18next";
 import {useCustomTheme} from "../themes";
 

@@ -1,8 +1,8 @@
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import React, {useMemo, useState} from "react";
 import {Transaction} from "../realm/Transaction";
 import TransactionItem from "./TransactionItem";
-import {Button, Paragraph, Subheading} from "react-native-paper";
+import {Caption, Paragraph, Subheading} from "react-native-paper";
 import {useCustomTheme} from "../themes";
 
 type Props = {
@@ -50,14 +50,18 @@ const GroupTransactions = ({data, onPressItem}: Props) => {
       {visibleTrans.map(transaction => (
         <TransactionItem
           data={transaction}
+          style={styles.transaction}
           onPress={() => onPressItem(transaction)}
           key={transaction._objectKey()}
         />
       ))}
       {!viewAll && data.transactions.length > MAX_PER_DAY && (
-        <Button onPress={() => setViewAll(true)}>
-          {data.transactions.length - MAX_PER_DAY} more Transactions
-        </Button>
+        <TouchableWithoutFeedback onPress={() => setViewAll(true)}>
+          <Caption>
+            Tap to view {data.transactions.length - MAX_PER_DAY} more
+            Transactions
+          </Caption>
+        </TouchableWithoutFeedback>
       )}
     </View>
   );
@@ -73,5 +77,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,
+  },
+  transaction: {
+    marginVertical: 4,
   },
 });

@@ -25,12 +25,12 @@ function luminance(r: number, g: number, b: number) {
 
 export function chooseBetterContrast(
   primary: string,
-  options = ["#000000", "#FFFFFF"],
+  options = ["#393939", "#ffffff"],
 ): string {
   const {r, g, b} = hexToRgb(primary);
   const lumPrimary = luminance(r, g, b);
 
-  let max: [number, string] = [10, "#000000"];
+  let max: [number, string] = [10, "#757575"];
   options.forEach(color => {
     let colorHex = hexToRgb(color);
     let colLum = luminance(colorHex.r, colorHex.g, colorHex.b);
