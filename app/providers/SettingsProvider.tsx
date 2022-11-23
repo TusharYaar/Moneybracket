@@ -7,6 +7,7 @@ type Props = {
   appLock: string;
   theme: string;
   font: string;
+  dateFormat: string;
   updateFont: (font: string) => void;
   updateTheme: (theme: string) => void;
 };
@@ -17,6 +18,11 @@ const SETTING: Props = {
   theme: getFromStorageOrDefault("settings/theme", "defaultLight", true),
   font: getFromStorageOrDefault("settings/font", "montserrat", true),
   appLock: getFromStorageOrDefault("settings/appLock", "DISABLE", true),
+  dateFormat: getFromStorageOrDefault(
+    "settings/dateFormat",
+    "dd MMM, yy",
+    true,
+  ),
   updateFont: () => {},
   updateTheme: () => {},
 };

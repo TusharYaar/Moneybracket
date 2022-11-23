@@ -1,10 +1,11 @@
-import {StyleSheet, View} from "react-native";
+import {StyleSheet} from "react-native";
 import React, {useMemo} from "react";
 import {useCustomTheme} from "../themes";
 
 import {TouchableRipple, Paragraph} from "react-native-paper";
 import {useData} from "../providers/DataProvider";
 import {format} from "date-fns";
+import {useSettings} from "../providers/SettingsProvider";
 
 type Props = {
   onPress: () => void;
@@ -15,13 +16,15 @@ const DateFilterSelector = ({onPress}: Props) => {
     theme: {colors, fonts},
   } = useCustomTheme();
 
+  const {dateFormat} = useSettings();
+
   const {dateFilter} = useData();
 
   const text = useMemo(() => {
     switch (dateFilter.type) {
       case "today":
       case "yesterday":
-        return format(dateFilter.startDate, "dd MMMM, yy");
+        return format(dateFilter.startDate, dateFormat);
       case "thisWeek":
       case "lastWeek":
       case "thisMonth":
@@ -29,9 +32,10 @@ const DateFilterSelector = ({onPress}: Props) => {
       case "thisYear":
       case "last3Months":
       case "last6Months":
-        return `${format(dateFilter.startDate, "dd MMM, yy")} - ${format(
+      case "custom":
+        return `${format(dateFilter.startDate, dateFormat)} - ${format(
           dateFilter.endDate,
-          "dd MMM, yy",
+          dateFormat,
         )}`;
       case "all":
       default:

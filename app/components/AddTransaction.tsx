@@ -165,16 +165,11 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
         <Modal
           visible={visible}
           onDismiss={onDismiss}
-          contentContainerStyle={[
-            containerStyle,
-            {backgroundColor: theme.colors.background},
-          ]}
+          contentContainerStyle={[containerStyle]}
           style={styles.modal}
         >
-          <View
-            style={[styles.topContainer, {backgroundColor: theme.colors.card}]}
-          >
-            <View>
+          <View style={[styles.topContainer]}>
+            <View style={styles.actionBtnContainer}>
               <IconButton
                 icon="close"
                 size={25}
@@ -190,37 +185,48 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
                 />
               )}
             </View>
-            <Paragraph>{t("date")}</Paragraph>
-            <Button
-              icon="calendar"
-              mode="outlined"
-              onPress={() => setViewModal("datepicker")}
-            >
-              {values.date.toLocaleDateString()}
-            </Button>
-            <Paragraph>{t("amount")}</Paragraph>
-            <View style={styles.amountContainer}>
-              <Button mode="contained" onPress={() => setViewModal("currency")}>
-                {currency}
-              </Button>
-              <TextInput
-                value={values.amount}
-                onChangeText={text =>
-                  setValues(prev => ({...prev, amount: text}))
-                }
+            <View style={styles.topInnerContainer}>
+              <Paragraph>{t("date")}</Paragraph>
+              <Button
+                icon="calendar"
                 mode="outlined"
-                keyboardType="decimal-pad"
-                style={styles.input}
+                onPress={() => setViewModal("datepicker")}
+              >
+                {values.date.toLocaleDateString()}
+              </Button>
+              <Paragraph>{t("amount")}</Paragraph>
+              <View style={styles.amountContainer}>
+                <Button
+                  mode="contained"
+                  onPress={() => setViewModal("currency")}
+                >
+                  {currency}
+                </Button>
+                <TextInput
+                  value={values.amount}
+                  onChangeText={text =>
+                    setValues(prev => ({...prev, amount: text}))
+                  }
+                  mode="outlined"
+                  keyboardType="decimal-pad"
+                  style={styles.input}
+                />
+              </View>
+              <IconButton
+                size={40}
+                icon={item ? "checkmark-done" : "add"}
+                style={styles.addBtn}
+                onPress={handlePressAdd}
               />
             </View>
-            <IconButton
-              size={40}
-              icon={item ? "checkmark-done" : "add"}
-              style={styles.addBtn}
-              onPress={handlePressAdd}
-            />
           </View>
-          <View style={{padding: 10}}>
+          <View
+            style={{
+              padding: 10,
+              backgroundColor: theme.colors.surface,
+              zIndex: -1,
+            }}
+          >
             <Paragraph>{t("category")}</Paragraph>
             {values.category && (
               <CategoryItem
@@ -253,6 +259,14 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     borderTopLeftRadius: 7,
     borderTopRightRadius: 7,
+  },
+  actionBtnContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  topInnerContainer: {
+    padding: 10,
   },
   amountContainer: {
     flexDirection: "row",
