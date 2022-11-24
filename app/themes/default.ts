@@ -25,6 +25,7 @@ const defaultLight: CustomTheme = {
     text: "brown",
     income: "green",
     expense: "red",
+    cardToneBackground: "#dfdfdf",
   },
   dark: true,
   mode: "adaptive",
@@ -54,7 +55,9 @@ export const defaultDark: CustomTheme = {
     text: "white",
     income: "green",
     expense: "red",
+    cardToneBackground: "#282c34",
   },
+
   dark: true,
   mode: "adaptive",
   roundness: 8,

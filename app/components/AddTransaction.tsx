@@ -76,6 +76,22 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
     [realm, onDismiss],
   );
 
+  const updateTransaction = useCallback(
+    (trans: Transaction, values: ValueProps) => {
+      realm.write(() => {
+        if (trans.date !== values.date) trans.date = values.date;
+        if (trans.amount !== parseFloat(values.amount))
+          trans.amount = parseFloat(values.amount);
+        if (trans.category !== values.category && values.category)
+          trans.category = values.category;
+        if (trans.note !== values.note) trans.note = values.note;
+
+        onDismiss();
+      });
+    },
+    [onDismiss, realm],
+  );
+
   useEffect(() => {
     setViewModal("transaction");
     if (item) {
@@ -120,8 +136,8 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
   }, []);
 
   const handlePressAdd = () => {
-    // if (item) updateTransaction(item, values);
-    addNewTransaction(values);
+    if (item) updateTransaction(item, values);
+    else addNewTransaction(values);
   };
 
   const deleteTransaction = useCallback(
@@ -168,7 +184,12 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
           contentContainerStyle={[containerStyle]}
           style={styles.modal}
         >
-          <View style={[styles.topContainer]}>
+          <View
+            style={[
+              styles.topContainer,
+              {backgroundColor: theme.colors.cardToneBackground},
+            ]}
+          >
             <View style={styles.actionBtnContainer}>
               <IconButton
                 icon="close"
@@ -285,7 +306,7 @@ const styles = StyleSheet.create({
     margin: 0,
     backgroundColor: "orange",
     position: "absolute",
-    bottom: -25,
+    bottom: -70,
     right: 10,
     zIndex: 10,
   },

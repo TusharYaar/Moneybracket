@@ -16,6 +16,7 @@ import IconModal from "./IconModal";
 
 import {COLORS} from "../data";
 import {useTranslation} from "react-i18next";
+import {useCustomTheme} from "../themes";
 
 const CATEGORY_TYPES = [
   {
@@ -37,6 +38,8 @@ type Props = {
 };
 type ValueProps = {title: string; type: string; color: string; icon: string};
 const AddCategory = ({visible, item, onDismiss}: Props) => {
+  const {theme} = useCustomTheme();
+
   const {t} = useTranslation();
   const [values, setValues] = useState<ValueProps>({
     title: "",
@@ -128,7 +131,12 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
         style={styles.modal}
         contentContainerStyle={styles.modalContainer}
       >
-        <View style={styles.topContainer}>
+        <View
+          style={[
+            styles.topContainer,
+            {backgroundColor: theme.colors.cardToneBackground},
+          ]}
+        >
           <View style={styles.topBtnContainer}>
             <IconButton
               icon="close"
@@ -184,7 +192,6 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
         </View>
         <View>
           <Paragraph style={styles.subheading}>
-            {" "}
             {t("addCategory.type")}
           </Paragraph>
           <FlatList
@@ -251,7 +258,6 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     borderTopLeftRadius: 7,
     borderTopRightRadius: 7,
-    backgroundColor: "#f2f8d7",
   },
   topBtnContainer: {
     flexDirection: "row",
