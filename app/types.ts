@@ -1,4 +1,5 @@
 import {Fonts, Theme} from "react-native-paper/lib/typescript/types";
+import {Transaction} from "./realm/Transaction";
 export interface CustomTheme extends Theme {
   id: string;
   name: string;
@@ -27,4 +28,9 @@ export interface FontObject {
   name: string;
   fontConfig: Fonts;
   isPaid?: boolean;
+}
+
+export interface GroupedTransactions {
+  date: string;
+  transactions: Transaction[];
 }

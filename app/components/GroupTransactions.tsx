@@ -4,12 +4,10 @@ import {Transaction} from "../realm/Transaction";
 import TransactionItem from "./TransactionItem";
 import {Caption, Paragraph, Subheading} from "react-native-paper";
 import {useCustomTheme} from "../themes";
+import {GroupedTransactions} from "../types";
 
 type Props = {
-  data: {
-    formattedDate: string;
-    transactions: Transaction[];
-  };
+  data: GroupedTransactions;
   onPressItem: (t: Transaction) => void;
 };
 
@@ -37,7 +35,7 @@ const GroupTransactions = ({data, onPressItem}: Props) => {
   return (
     <View style={[styles.group]}>
       <View style={styles.breif}>
-        <Subheading>{data.formattedDate}</Subheading>
+        <Subheading>{data.date}</Subheading>
         <Paragraph
           style={{
             color: totalAmt >= 0 ? theme.colors.income : theme.colors.expense,

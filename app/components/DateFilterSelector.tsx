@@ -44,10 +44,7 @@ const DateFilterSelector = ({onPress}: Props) => {
   }, [dateFilter]);
 
   return (
-    <TouchableRipple
-      style={{backgroundColor: colors.surface}}
-      onPress={onPress}
-    >
+    <TouchableRipple style={{backgroundColor: colors.card}} onPress={onPress}>
       <Paragraph style={[styles.align, fonts.medium]}>{text}</Paragraph>
     </TouchableRipple>
   );

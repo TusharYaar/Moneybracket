@@ -1084,4 +1084,3 @@ const CURRENCIES: Props = {
 };
 
 export default CURRENCIES;
-console.log("Cur", Object.keys(CURRENCIES).length);

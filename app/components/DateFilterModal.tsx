@@ -1,13 +1,6 @@
 import {StyleSheet, View} from "react-native";
 import React, {useCallback, useState} from "react";
-import {
-  Button,
-  Caption,
-  Divider,
-  IconButton,
-  Modal,
-  Portal,
-} from "react-native-paper";
+import {Button, Caption, IconButton, Modal, Portal} from "react-native-paper";
 import {useCustomTheme} from "../themes";
 import {useData} from "../providers/DataProvider";
 import {
