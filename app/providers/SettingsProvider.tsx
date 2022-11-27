@@ -1,9 +1,11 @@
 import {useContext, createContext, useState} from "react";
+import {CURRENCIES} from "../data";
+import {Currency} from "../types";
 import {getFromStorageOrDefault, setStorage} from "../utils/storage";
 
 type Props = {
   language: string;
-  currency: string;
+  currency: Currency;
   appLock: string;
   theme: string;
   font: string;
@@ -14,7 +16,8 @@ type Props = {
 
 const SETTING: Props = {
   language: getFromStorageOrDefault("settings/language", "en", true),
-  currency: getFromStorageOrDefault("settings/currency", "INR", true),
+  currency:
+    CURRENCIES[getFromStorageOrDefault("settings/currency", "INR", true)],
   theme: getFromStorageOrDefault("settings/theme", "defaultLight", true),
   font: getFromStorageOrDefault("settings/font", "montserrat", true),
   appLock: getFromStorageOrDefault("settings/appLock", "DISABLE", true),

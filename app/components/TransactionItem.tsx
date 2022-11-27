@@ -1,10 +1,12 @@
 import {StyleSheet, View, ViewStyle} from "react-native";
 import React, {useEffect} from "react";
 import {Transaction} from "../realm/Transaction";
-import {Caption, Subheading, Title, TouchableRipple} from "react-native-paper";
+import {Caption, Subheading, TouchableRipple} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 import {chooseBetterContrast} from "../utils/colors";
 import {useCustomTheme} from "../themes";
+
+import Amount from "./Amount";
 
 import Animated, {
   useAnimatedStyle,
@@ -54,9 +56,12 @@ const TransactionItem = ({data, onPress, style}: Props) => {
               <Subheading>{data.category.title}</Subheading>
               {data.note.length > 0 && <Caption>{data.note}</Caption>}
             </View>
-            <Title>{`${
-              data.category.type === "expense" ? "-" : "+"
-            } ${currency} ${data.amount}`}</Title>
+            <Amount
+              amount={
+                data.category.type === "income" ? data.amount : data.amount * -1
+              }
+              sign={true}
+            />
           </View>
         </View>
       </TouchableRipple>
@@ -77,7 +82,6 @@ const styles = StyleSheet.create({
   innerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: "center",
     paddingHorizontal: 8,
   },
   text: {

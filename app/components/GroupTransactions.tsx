@@ -5,6 +5,7 @@ import TransactionItem from "./TransactionItem";
 import {Caption, Paragraph, Subheading} from "react-native-paper";
 import {useCustomTheme} from "../themes";
 import {GroupedTransactions} from "../types";
+import Amount from "./Amount";
 
 type Props = {
   data: GroupedTransactions;
@@ -36,14 +37,12 @@ const GroupTransactions = ({data, onPressItem}: Props) => {
     <View style={[styles.group]}>
       <View style={styles.breif}>
         <Subheading>{data.date}</Subheading>
-        <Paragraph
-          style={{
-            color: totalAmt >= 0 ? theme.colors.income : theme.colors.expense,
-            ...theme.fonts.medium,
-          }}
-        >
-          {totalAmt > 0 ? totalAmt : totalAmt * -1}
-        </Paragraph>
+        <Amount
+          amount={totalAmt}
+          sign={false}
+          type={totalAmt > 0 ? "income" : "expense"}
+          component="paragraph"
+        />
       </View>
       {visibleTrans.map(transaction => (
         <TransactionItem

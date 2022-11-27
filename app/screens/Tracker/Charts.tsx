@@ -52,7 +52,6 @@ const Charts = () => {
 
   return (
     <>
-      {/* <Surface> */}
       <List.Section style={{padding: 0, margin: 0}}>
         <List.Accordion
           title={`${selected.length} Categories Selected`}
@@ -65,6 +64,7 @@ const Charts = () => {
             {category.map(cat => (
               <CategoryChip
                 category={cat}
+                key={cat._id.toHexString()}
                 onPress={updateSelectedCategory}
                 selected={selected.includes(cat._id.toHexString())}
                 style={styles.chip}

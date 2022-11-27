@@ -11,6 +11,7 @@ import {FlashList} from "@shopify/flash-list";
 import {useTranslation} from "react-i18next";
 import {groupTransactionByDate} from "../../utils/transaction";
 import {useCustomTheme} from "../../themes";
+import Amount from "../../components/Amount";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
 
 const AllTransaction = ({}: Props) => {
@@ -72,41 +73,33 @@ const AllTransaction = ({}: Props) => {
         >
           <Surface style={styles.brief}>
             <Paragraph>Income</Paragraph>
-            <Title style={{color: theme.colors.income}}>{values.income}</Title>
+            <Amount sign={true} amount={values.income} type={"income"} />
           </Surface>
           <Surface style={styles.brief}>
             <Paragraph>Expense</Paragraph>
-            <Title style={{color: theme.colors.expense}}>
-              {values.expense}
-            </Title>
+            <Amount sign={true} amount={values.expense} type={"expense"} />
           </Surface>
           <Surface style={styles.brief}>
             <Paragraph>Transfer</Paragraph>
-            <Title>{values.transfer}</Title>
+            <Amount sign={true} amount={values.transfer} />
           </Surface>
           <Surface style={styles.brief}>
             <Paragraph>Total</Paragraph>
             <Caption>with transfer</Caption>
-            <Title
-              style={{
-                color:
-                  values.total < 0 ? theme.colors.expense : theme.colors.income,
-              }}
-            >
-              {Math.abs(values.total)}
-            </Title>
+            <Amount
+              sign={true}
+              amount={values.total}
+              type={values.total > 0 ? "income" : "expense"}
+            />
           </Surface>
           <Surface style={styles.brief}>
             <Paragraph>Total</Paragraph>
             <Caption>w/o transfer</Caption>
-            <Title
-              style={{
-                color:
-                  values.total < 0 ? theme.colors.expense : theme.colors.income,
-              }}
-            >
-              {Math.abs(values.total)}
-            </Title>
+            <Amount
+              sign={true}
+              amount={values.total - values.transfer}
+              type={values.total - values.transfer > 0 ? "income" : "expense"}
+            />
           </Surface>
         </ScrollView>
       </View>

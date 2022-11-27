@@ -1,4 +1,5 @@
 {
+    "amountValue": "{{amount,number}}",
     "transaction": "Transaction",
     "income": "Income",
     "expense": "Expense",
@@ -17,6 +18,11 @@
         "tracker": {
             "allTransaction" : {
                 "noTransaction": "No Transactions Added"
+            },
+            "charts": {
+                "categorySelected_zero": "No category selected",
+                "categorySelected_one": "One category selected",
+                "categorySelected_few": "{{count}} categories selected"
             }
         }
         

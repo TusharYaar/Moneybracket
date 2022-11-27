@@ -1,15 +1,6 @@
-type Props = {
-  [key: string]: {
-    symbol: string;
-    name: string;
-    symbol_native: string;
-    decimal_digits: number;
-    rounding: number;
-    code: string;
-    name_plural: string;
-  };
-};
-const CURRENCIES: Props = {
+import {Currency} from "../types";
+
+const CURRENCIES: {[key: string]: Currency} = {
   USD: {
     symbol: "$",
     name: "US Dollar",
@@ -445,7 +436,7 @@ const CURRENCIES: Props = {
   INR: {
     symbol: "Rs",
     name: "Indian Rupee",
-    symbol_native: "টকা",
+    symbol_native: "₹",
     decimal_digits: 2,
     rounding: 0,
     code: "INR",

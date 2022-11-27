@@ -21,6 +21,7 @@ import CategoryModal from "./CategoryModal";
 import {useRealm} from "../realm";
 import {useTranslation} from "react-i18next";
 import {useCustomTheme} from "../themes";
+import {useSettings} from "../providers/SettingsProvider";
 
 type Props = {
   visible: boolean;
@@ -45,7 +46,10 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
     date: new Date(),
     note: "",
   });
-  const [currency, setCurrency] = useState("INR");
+
+  const {currency: defaultCurrency} = useSettings();
+
+  const [currency, setCurrency] = useState(defaultCurrency.code);
   const [viewModal, setViewModal] = useState("datepicker");
   const {category} = useData();
   const containerStyle = {
