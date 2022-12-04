@@ -8,7 +8,7 @@ import {useCustomTheme} from "../themes";
 type Props = {
   amount: number;
   component?: "caption" | "title" | "paragraph";
-  type?: "income" | "expense";
+  type?: "income" | "expense" | "transfer";
   sign?: boolean;
   weight?: "regular" | "medium" | "light" | "thin";
 };

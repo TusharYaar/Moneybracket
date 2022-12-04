@@ -1,6 +1,5 @@
 import {DefaultTheme, DarkTheme} from "react-native-paper";
 import {CustomTheme} from "../types";
-import AVALIBLE_FONTS from "./fonts";
 
 const defaultLight: CustomTheme = {
   ...DefaultTheme,
@@ -22,9 +21,9 @@ const defaultLight: CustomTheme = {
     placeholder: "rgba(255, 255, 255, 0.54)",
     primary: "#BB86FC",
     // surface: "gray",
-    text: "brown",
     income: "green",
     expense: "red",
+    transfer: "blue",
     cardToneBackground: "#dfdfdf",
   },
   dark: true,
@@ -55,6 +54,7 @@ export const defaultDark: CustomTheme = {
     text: "white",
     income: "green",
     expense: "red",
+    transfer: "blue",
     cardToneBackground: "#282c34",
   },
 

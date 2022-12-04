@@ -19,6 +19,7 @@ export interface CustomTheme extends Theme {
     border: string;
     income: string;
     expense: string;
+    transfer: string;
     cardToneBackground: string;
   };
 }

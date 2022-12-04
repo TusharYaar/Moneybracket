@@ -34,7 +34,9 @@ const CategoryChip = ({
   }, [category]);
 
   return (
-    <View style={[styles.overflowContainer, style]}>
+    <View
+      style={[styles.overflowContainer, {borderColor: category.color}, style]}
+    >
       <TouchableRipple
         onPress={handlePress}
         style={{
@@ -68,11 +70,12 @@ const styles = StyleSheet.create({
   overflowContainer: {
     borderRadius: 50,
     overflow: "hidden",
+    borderWidth: 2,
   },
   innerContainer: {
     flexDirection: "row",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: 3,
+    paddingHorizontal: 5,
     alignItems: "center",
   },
   title: {

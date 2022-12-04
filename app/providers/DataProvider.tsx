@@ -54,16 +54,8 @@ const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
 
   const _transaction = useQuery(Transaction);
   const transaction = useMemo(() => {
-    if (dateFilter.type === "all") return _transaction.sorted("date", true);
-    else
-      return _transaction
-        .sorted("date", true)
-        .filtered(
-          "date > $0 AND date < $1",
-          dateFilter.startDate,
-          dateFilter.endDate,
-        );
-  }, [_transaction, dateFilter]);
+    return _transaction.sorted("date", true);
+  }, [_transaction]);
 
   const [addCategory, setAddCategory] = useState<{
     visible: boolean;

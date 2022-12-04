@@ -4,7 +4,6 @@ import {Transaction} from "../realm/Transaction";
 import {Caption, Subheading, TouchableRipple} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 import {chooseBetterContrast} from "../utils/colors";
-import {useCustomTheme} from "../themes";
 
 import Amount from "./Amount";
 
@@ -13,7 +12,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import {useSettings} from "../providers/SettingsProvider";
 
 type Props = {
   data: Transaction;
@@ -22,10 +20,6 @@ type Props = {
 };
 
 const TransactionItem = ({data, onPress, style}: Props) => {
-  const {currency} = useSettings();
-
-  const {theme} = useCustomTheme();
-
   const scale = useSharedValue(0.6);
   const aStyle = useAnimatedStyle(() => {
     return {

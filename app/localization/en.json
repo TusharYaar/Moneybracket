@@ -1,5 +1,5 @@
 {
-    "amountValue": "{{amount,number}}",
+    "amountValue": "{{amount, number}}",
     "transaction": "Transaction",
     "income": "Income",
     "expense": "Expense",
@@ -8,6 +8,9 @@
     "category": "Category",
     "note": "Note",
     "optional":"Optional",    
+
+
+    "tracker": "tracker",
 
     "addCategory": {
         "iconAndTitle": "Icon and Title",
@@ -20,9 +23,8 @@
                 "noTransaction": "No Transactions Added"
             },
             "charts": {
-                "categorySelected_zero": "No category selected",
-                "categorySelected_one": "One category selected",
-                "categorySelected_few": "{{count}} categories selected"
+                "categorySelected": "{{count}} category selected",
+                "categorySelected_plural": "{{count}} categories selected"
             }
         }
         

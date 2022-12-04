@@ -16,18 +16,20 @@ type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
 
 const AllTransaction = ({}: Props) => {
   const {transaction, showAddTransactionModal, dateFilter} = useData();
-  const {theme} = useCustomTheme();
   const {t} = useTranslation("", {
     keyPrefix: "screens.tracker.allTransaction",
   });
 
   const grouped = useMemo(() => {
-    return groupTransactionByDate(
-      transaction,
-      dateFilter.startDate,
-      dateFilter.endDate,
-    );
+    if (dateFilter.type !== "all")
+      return groupTransactionByDate(
+        transaction,
+        dateFilter.startDate,
+        dateFilter.endDate,
+      );
+    return groupTransactionByDate(transaction);
   }, [transaction, dateFilter]);
+
   const handlePressTransaction = (transaction: Transaction) => {
     showAddTransactionModal(transaction);
   };
@@ -49,12 +51,11 @@ const AllTransaction = ({}: Props) => {
       }
       if (trans.category.type === "transfer") {
         transfer += trans.amount;
-        // total += trans.amount;
       }
     });
 
     return {income, expense, transfer, total};
-  }, []);
+  }, [transaction]);
 
   if (transaction.length === 0) {
     return (
@@ -81,20 +82,13 @@ const AllTransaction = ({}: Props) => {
           </Surface>
           <Surface style={styles.brief}>
             <Paragraph>Transfer</Paragraph>
-            <Amount sign={true} amount={values.transfer} />
+            <Amount sign={true} type="transfer" amount={values.transfer} />
           </Surface>
           <Surface style={styles.brief}>
-            <Paragraph>Total</Paragraph>
-            <Caption>with transfer</Caption>
-            <Amount
-              sign={true}
-              amount={values.total}
-              type={values.total > 0 ? "income" : "expense"}
-            />
-          </Surface>
-          <Surface style={styles.brief}>
-            <Paragraph>Total</Paragraph>
-            <Caption>w/o transfer</Caption>
+            <View style={styles.titleContainer}>
+              <Paragraph>Total</Paragraph>
+              <Caption style={styles.titleCaption}>w/o transfer</Caption>
+            </View>
             <Amount
               sign={true}
               amount={values.total - values.transfer}
@@ -130,5 +124,12 @@ const styles = StyleSheet.create({
     elevation: 2,
     paddingHorizontal: 10,
     marginHorizontal: 5,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
+  titleCaption: {
+    marginLeft: 5,
   },
 });

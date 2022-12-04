@@ -49,7 +49,7 @@ const Setting = ({navigation}: Props) => {
           "Transaction",
           Transaction.generate(
             element.amount,
-            currency,
+            currency.code,
             element.date,
             "",
             category[Math.floor(Math.random() * category.length)],
@@ -85,7 +85,7 @@ const Setting = ({navigation}: Props) => {
         leftIcon="text"
         onPress={() => navigation.navigate("FontSetting")}
       >
-        <Caption>{currency}</Caption>
+        <Caption>{currency.name}</Caption>
       </SettingItem>
       {__DEV__ && (
         <SettingItem
