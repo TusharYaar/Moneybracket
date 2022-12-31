@@ -1,3 +1,4 @@
+import {endOfDay, endOfMonth, startOfDay, startOfMonth} from "date-fns";
 import {format, compareAsc} from "date-fns/esm";
 import {Results} from "realm";
 import {Transaction} from "../realm/Transaction";
@@ -44,4 +45,40 @@ export const groupTransactionByDate = (
       }
     }
   }, [] as GroupedTransactions[]);
+};
+
+export const calcuateTotal = (transactions: Results<Transaction>) => {
+  let calculated = {
+    allTime: {
+      income: 0,
+      expense: 0,
+      transfer: 0,
+    },
+    thisMonth: {
+      income: 0,
+      expense: 0,
+      transfer: 0,
+    },
+    today: {
+      income: 0,
+      expense: 0,
+      transfer: 0,
+    },
+  };
+  const today = new Date();
+
+  transactions.forEach(({category, date, amount}) => {
+    calculated.allTime[category.type as keyof typeof calculated.allTime] +=
+      amount;
+    if (transactionWithinDates(date, startOfDay(today), endOfDay(today)))
+      calculated.today[category.type as keyof typeof calculated.today] +=
+        amount;
+
+    if (transactionWithinDates(date, startOfMonth(date), endOfMonth(today)))
+      calculated.thisMonth[
+        category.type as keyof typeof calculated.thisMonth
+      ] += amount;
+  });
+
+  return calculated;
 };

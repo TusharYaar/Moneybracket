@@ -9,7 +9,7 @@ import {Transaction} from "../../realm/Transaction";
 import GroupTransactions from "../../components/GroupTransactions";
 import {FlashList} from "@shopify/flash-list";
 import {useTranslation} from "react-i18next";
-import {groupTransactionByDate} from "../../utils/transaction";
+import {calcuateTotal, groupTransactionByDate} from "../../utils/transaction";
 import {useCustomTheme} from "../../themes";
 import Amount from "../../components/Amount";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
@@ -34,28 +34,7 @@ const AllTransaction = ({}: Props) => {
     showAddTransactionModal(transaction);
   };
 
-  const values = useMemo(() => {
-    let income = 0,
-      expense = 0,
-      transfer = 0,
-      total = 0;
-
-    transaction.forEach(trans => {
-      if (trans.category.type === "income") {
-        income += trans.amount;
-        total += trans.amount;
-      }
-      if (trans.category.type === "expense") {
-        expense += trans.amount;
-        total -= trans.amount;
-      }
-      if (trans.category.type === "transfer") {
-        transfer += trans.amount;
-      }
-    });
-
-    return {income, expense, transfer, total};
-  }, [transaction]);
+  const values = useMemo(() => calcuateTotal(transaction), [transaction]);
 
   if (transaction.length === 0) {
     return (
@@ -74,15 +53,27 @@ const AllTransaction = ({}: Props) => {
         >
           <Surface style={styles.brief}>
             <Paragraph>Income</Paragraph>
-            <Amount sign={true} amount={values.income} type={"income"} />
+            <Amount
+              sign={true}
+              amount={values.allTime.income}
+              type={"income"}
+            />
           </Surface>
           <Surface style={styles.brief}>
             <Paragraph>Expense</Paragraph>
-            <Amount sign={true} amount={values.expense} type={"expense"} />
+            <Amount
+              sign={true}
+              amount={values.allTime.expense * -1}
+              type={"expense"}
+            />
           </Surface>
           <Surface style={styles.brief}>
             <Paragraph>Transfer</Paragraph>
-            <Amount sign={true} type="transfer" amount={values.transfer} />
+            <Amount
+              sign={true}
+              type="transfer"
+              amount={values.allTime.transfer}
+            />
           </Surface>
           <Surface style={styles.brief}>
             <View style={styles.titleContainer}>
@@ -91,8 +82,12 @@ const AllTransaction = ({}: Props) => {
             </View>
             <Amount
               sign={true}
-              amount={values.total - values.transfer}
-              type={values.total - values.transfer > 0 ? "income" : "expense"}
+              amount={values.allTime.income - values.allTime.expense}
+              type={
+                values.allTime.income - values.allTime.expense > 0
+                  ? "income"
+                  : "expense"
+              }
             />
           </Surface>
         </ScrollView>
