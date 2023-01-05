@@ -1,8 +1,7 @@
 import {StyleSheet} from "react-native";
 import React, {useMemo} from "react";
-import {useCustomTheme} from "../themes";
 
-import {TouchableRipple, Paragraph} from "react-native-paper";
+import {TouchableRipple, Text} from "react-native-paper";
 import {useData} from "../providers/DataProvider";
 import {format} from "date-fns";
 import {useSettings} from "../providers/SettingsProvider";
@@ -12,10 +11,6 @@ type Props = {
 };
 
 const DateFilterSelector = ({onPress}: Props) => {
-  const {
-    theme: {colors, fonts},
-  } = useCustomTheme();
-
   const {dateFormat} = useSettings();
 
   const {dateFilter} = useData();
@@ -44,8 +39,10 @@ const DateFilterSelector = ({onPress}: Props) => {
   }, [dateFilter]);
 
   return (
-    <TouchableRipple style={{backgroundColor: colors.card}} onPress={onPress}>
-      <Paragraph style={[styles.align, fonts.medium]}>{text}</Paragraph>
+    <TouchableRipple onPress={onPress}>
+      <Text style={[styles.align]} variant="labelSmall">
+        {text}
+      </Text>
     </TouchableRipple>
   );
 };
@@ -54,6 +51,7 @@ export default DateFilterSelector;
 
 const styles = StyleSheet.create({
   align: {
+    margin: 4,
     textAlign: "center",
   },
 });

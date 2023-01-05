@@ -4,7 +4,7 @@ import {View, StyleSheet, ScrollView} from "react-native";
 import {MaterialTopTabScreenProps} from "@react-navigation/material-top-tabs";
 import {TabParamList} from "../../navigators/TabNavigators";
 import {useData} from "../../providers/DataProvider";
-import {Caption, Paragraph, Surface, Title} from "react-native-paper";
+import {Text, Surface} from "react-native-paper";
 import {Transaction} from "../../realm/Transaction";
 import GroupTransactions from "../../components/GroupTransactions";
 import {FlashList} from "@shopify/flash-list";
@@ -39,7 +39,7 @@ const AllTransaction = ({}: Props) => {
   if (transaction.length === 0) {
     return (
       <View style={styles.screen}>
-        <Paragraph>{t("noTransaction")}</Paragraph>
+        <Text>{t("noTransaction")}</Text>
       </View>
     );
   }
@@ -52,7 +52,7 @@ const AllTransaction = ({}: Props) => {
           contentContainerStyle={styles.briefContainer}
         >
           <Surface style={styles.brief}>
-            <Paragraph>Income</Paragraph>
+            <Text variant="labelMedium">Income</Text>
             <Amount
               sign={true}
               amount={values.allTime.income}
@@ -60,7 +60,7 @@ const AllTransaction = ({}: Props) => {
             />
           </Surface>
           <Surface style={styles.brief}>
-            <Paragraph>Expense</Paragraph>
+            <Text variant="labelMedium">Expense</Text>
             <Amount
               sign={true}
               amount={values.allTime.expense * -1}
@@ -68,7 +68,7 @@ const AllTransaction = ({}: Props) => {
             />
           </Surface>
           <Surface style={styles.brief}>
-            <Paragraph>Transfer</Paragraph>
+            <Text variant="labelMedium">Transfer</Text>
             <Amount
               sign={true}
               type="transfer"
@@ -77,8 +77,8 @@ const AllTransaction = ({}: Props) => {
           </Surface>
           <Surface style={styles.brief}>
             <View style={styles.titleContainer}>
-              <Paragraph>Total</Paragraph>
-              <Caption style={styles.titleCaption}>w/o transfer</Caption>
+              <Text variant="labelMedium">Total</Text>
+              <Text style={styles.titleCaption}>w/o transfer</Text>
             </View>
             <Amount
               sign={true}

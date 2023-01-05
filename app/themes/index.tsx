@@ -34,7 +34,7 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
     AVALIBLE_FONTS.find(font => font.id === SETTINGS.font) as FontObject,
   );
   const themeObject = useMemo(() => {
-    theme.fonts = font ? font.fontConfig : AVALIBLE_FONTS[0].fontConfig;
+    // theme.fonts = font ? font.fontConfig : AVALIBLE_FONTS[0].fontConfig;
     return theme;
   }, [theme, font]);
 
@@ -62,9 +62,7 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
           icon: props => <Ionicons {...props} />,
         }}
       >
-        <NavigationContainer theme={themeObject}>
-          {children}
-        </NavigationContainer>
+        <NavigationContainer>{children}</NavigationContainer>
       </PaperProvider>
     </ThemeContext.Provider>
   );

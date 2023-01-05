@@ -2,8 +2,7 @@ import {StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import React, {useMemo, useState} from "react";
 import {Transaction} from "../realm/Transaction";
 import TransactionItem from "./TransactionItem";
-import {Caption, Paragraph, Subheading} from "react-native-paper";
-import {useCustomTheme} from "../themes";
+import {Text, Paragraph, Subheading} from "react-native-paper";
 import {GroupedTransactions} from "../types";
 import Amount from "./Amount";
 
@@ -15,7 +14,6 @@ type Props = {
 const MAX_PER_DAY = 3;
 
 const GroupTransactions = ({data, onPressItem}: Props) => {
-  const {theme} = useCustomTheme();
   const [viewAll, setViewAll] = useState(false);
   const totalAmt = useMemo(
     () =>
@@ -36,12 +34,11 @@ const GroupTransactions = ({data, onPressItem}: Props) => {
   return (
     <View style={[styles.group]}>
       <View style={styles.breif}>
-        <Subheading>{data.date}</Subheading>
+        <Text variant="labelMedium">{data.date}</Text>
         <Amount
           amount={totalAmt}
           sign={false}
           type={totalAmt > 0 ? "income" : "expense"}
-          component="paragraph"
         />
       </View>
       {visibleTrans.map(transaction => (
@@ -54,10 +51,10 @@ const GroupTransactions = ({data, onPressItem}: Props) => {
       ))}
       {!viewAll && data.transactions.length > MAX_PER_DAY && (
         <TouchableWithoutFeedback onPress={() => setViewAll(true)}>
-          <Caption>
+          <Text variant="bodySmall">
             Tap to view {data.transactions.length - MAX_PER_DAY} more
             Transactions
-          </Caption>
+          </Text>
         </TouchableWithoutFeedback>
       )}
     </View>

@@ -1,7 +1,7 @@
 import {StyleSheet, View, ViewStyle} from "react-native";
 import React from "react";
 import {Category} from "../realm/Category";
-import {Paragraph, Subheading, TouchableRipple} from "react-native-paper";
+import {Text, TouchableRipple} from "react-native-paper";
 
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -20,8 +20,8 @@ const CategoryItem = ({item, onPress, style}: Props) => {
             <Icon name={item.icon} size={40} />
           </View>
           <View style={[styles.content]}>
-            <Subheading>{item.title}</Subheading>
-            <Paragraph>{item.type}</Paragraph>
+            <Text variant="titleMedium">{item.title}</Text>
+            <Text variant="bodySmall">{item.type}</Text>
           </View>
         </View>
       </TouchableRipple>

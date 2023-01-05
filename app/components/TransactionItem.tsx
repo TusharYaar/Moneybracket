@@ -1,7 +1,7 @@
 import {StyleSheet, View, ViewStyle} from "react-native";
 import React, {useEffect} from "react";
 import {Transaction} from "../realm/Transaction";
-import {Caption, Subheading, TouchableRipple} from "react-native-paper";
+import {Text, TouchableRipple} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 import {chooseBetterContrast} from "../utils/colors";
 
@@ -32,8 +32,8 @@ const TransactionItem = ({data, onPress, style}: Props) => {
   }, []);
 
   return (
-    <Animated.View style={[styles.overflowContainer, aStyle, style]}>
-      <TouchableRipple onPress={onPress} style={styles.outerContainer}>
+    <Animated.View style={[aStyle, style]}>
+      <TouchableRipple onPress={onPress}>
         <View style={styles.innerContainer}>
           <Icon
             name={data.category.icon}
@@ -47,8 +47,10 @@ const TransactionItem = ({data, onPress, style}: Props) => {
           />
           <View style={styles.text}>
             <View>
-              <Subheading>{data.category.title}</Subheading>
-              {data.note.length > 0 && <Caption>{data.note}</Caption>}
+              <Text variant="bodyLarge">{data.category.title}</Text>
+              {data.note.length > 0 && (
+                <Text variant="bodySmall">{data.note}</Text>
+              )}
             </View>
             <Amount
               amount={
@@ -66,17 +68,9 @@ const TransactionItem = ({data, onPress, style}: Props) => {
 export default TransactionItem;
 
 const styles = StyleSheet.create({
-  overflowContainer: {
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-  outerContainer: {
-    borderRadius: 8,
-  },
   innerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 8,
   },
   text: {
     flexDirection: "row",

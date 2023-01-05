@@ -52,7 +52,7 @@ const CategoryChip = ({
           />
           <Text
             style={[
-              {color: selected ? textColor : theme.colors.text},
+              // {color: selected ? textColor : theme.colors.text},
               styles.title,
             ]}
           >

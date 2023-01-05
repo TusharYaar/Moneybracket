@@ -3,10 +3,11 @@ import React, {useState, useCallback, useEffect} from "react";
 import {
   Modal,
   Portal,
-  Paragraph,
+  Text,
   TextInput,
   IconButton,
   Chip,
+  SegmentedButtons,
 } from "react-native-paper";
 
 import {useRealm} from "../realm";
@@ -16,17 +17,21 @@ import IconModal from "./IconModal";
 
 import {COLORS} from "../data";
 import {useTranslation} from "react-i18next";
-import {useCustomTheme} from "../themes";
 
 const CATEGORY_TYPES = [
   {
-    title: "income",
+    label: "income",
     value: "income",
     icon: "add",
   },
   {
-    title: "expense",
+    label: "expense",
     value: "expense",
+    icon: "remove",
+  },
+  {
+    label: "transfer",
+    value: "transfer",
     icon: "remove",
   },
 ];
@@ -38,8 +43,6 @@ type Props = {
 };
 type ValueProps = {title: string; type: string; color: string; icon: string};
 const AddCategory = ({visible, item, onDismiss}: Props) => {
-  const {theme} = useCustomTheme();
-
   const {t} = useTranslation();
   const [values, setValues] = useState<ValueProps>({
     title: "",
@@ -64,6 +67,11 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
     }
   }, [item]);
   const realm = useRealm();
+
+  const changeType = useCallback((type: string) => {
+    setValues(prev => ({...prev, type}));
+  }, []);
+
   const addNewCategory = useCallback(
     ({title, type, color, icon}: ValueProps) => {
       realm.write(() => {
@@ -134,7 +142,7 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
         <View
           style={[
             styles.topContainer,
-            {backgroundColor: theme.colors.cardToneBackground},
+            // {backgroundColor: theme.colors.cardToneBackground},
           ]}
         >
           <View style={styles.topBtnContainer}>
@@ -154,9 +162,9 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
             )}
           </View>
           <View>
-            <Paragraph style={styles.subheading}>
+            <Text variant="labelLarge" style={styles.subheading}>
               {t("addCategory.iconAndTitle")}
-            </Paragraph>
+            </Text>
             <View style={styles.iconInputContainer}>
               <View
                 style={{
@@ -191,34 +199,19 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
           />
         </View>
         <View>
-          <Paragraph style={styles.subheading}>
+          <Text style={styles.subheading} variant="labelLarge">
             {t("addCategory.type")}
-          </Paragraph>
-          <FlatList
-            horizontal={true}
-            data={CATEGORY_TYPES}
-            renderItem={option => (
-              <Chip
-                selected={values.type === option.item.value}
-                icon={
-                  values.type === option.item.value
-                    ? "checkmark"
-                    : option.item.icon
-                }
-                onPress={() =>
-                  setValues(prev => ({...prev, type: option.item.value}))
-                }
-              >
-                {t(option.item.title)}
-              </Chip>
-            )}
-            contentContainerStyle={styles.colors}
+          </Text>
+          <SegmentedButtons
+            value={values.type}
+            onValueChange={changeType}
+            buttons={CATEGORY_TYPES}
           />
         </View>
         <View>
-          <Paragraph style={styles.subheading}>
+          <Text style={styles.subheading} variant="labelLarge">
             {t("addCategory.color")}
-          </Paragraph>
+          </Text>
           <FlatList
             horizontal={true}
             data={COLORS}

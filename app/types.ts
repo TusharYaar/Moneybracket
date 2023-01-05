@@ -1,26 +1,31 @@
-import {Fonts, Theme} from "react-native-paper/lib/typescript/types";
+import {
+  MD3Colors,
+  MD3Theme,
+  Fonts,
+  MD3Typescale,
+} from "react-native-paper/lib/typescript/types";
 import {Transaction} from "./realm/Transaction";
-export interface CustomTheme extends Theme {
+export interface CustomTheme extends MD3Theme {
   id: string;
   name: string;
-  colors: {
-    primary: string;
-    background: string;
-    surface: string;
-    accent: string;
-    error: string;
-    text: string;
-    onSurface: string;
-    disabled: string;
-    placeholder: string;
-    backdrop: string;
-    notification: string;
-    card: string;
-    border: string;
+  colors: MD3Colors & {
+    //   primary: string;
+    //   background: string;
+    //   surface: string;
+    //   accent: string;
+    //   error: string;
+    //   text: string;
+    //   onSurface: string;
+    //   disabled: string;
+    //   placeholder: string;
+    //   backdrop: string;
+    //   notification: string;
+    //   card: string;
+    //   border: string;
     income: string;
     expense: string;
     transfer: string;
-    cardToneBackground: string;
+    //   cardToneBackground: string;
   };
 }
 
