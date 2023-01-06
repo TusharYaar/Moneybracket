@@ -53,10 +53,11 @@ const TransactionItem = ({data, onPress, style}: Props) => {
               )}
             </View>
             <Amount
+              variant="titleMedium"
               amount={
                 data.category.type === "income" ? data.amount : data.amount * -1
               }
-              sign={true}
+              type={data.category.type}
             />
           </View>
         </View>

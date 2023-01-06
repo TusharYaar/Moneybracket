@@ -34,7 +34,7 @@ export const TrackerTabNavigator = () => {
       <DateFilterSelector onPress={showDateFilterModal} />
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: theme.fonts.regular,
+          tabBarLabelStyle: theme.fonts.titleSmall,
         }}
       >
         <Tab.Screen
@@ -68,7 +68,7 @@ export const ExchangeTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarLabelStyle: theme.fonts.regular,
+        tabBarLabelStyle: theme.fonts.titleSmall,
       }}
     >
       <Tab.Screen name="RatesScreen" component={Rates} />
@@ -85,7 +85,7 @@ export const CategoryTabNavigator = ({}: CategoryTabProps) => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarLabelStyle: theme.fonts.regular,
+        tabBarLabelStyle: theme.fonts.titleSmall,
       }}
     >
       <Tab.Screen name="AllCategoryScreen">

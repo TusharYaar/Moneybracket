@@ -3,45 +3,45 @@ import {FontObject} from "../types";
 import {makeFontConfig} from "../utils/fonts";
 
 const AVALIBLE_FONTS: FontObject[] = [
-  {
-    id: "montserrat",
-    name: "Montserrat",
-    fontConfig: configureFonts({
-      config: makeFontConfig(
-        "Montserrat-Thin",
-        "Montserrat-Light",
-        "Montserrat-Regular",
-        "Montserrat-Medium",
-      ),
-      isV3: false,
-    }),
-  },
-  {
-    id: "firacode",
-    name: "Fira Code",
-    fontConfig: configureFonts({
-      config: makeFontConfig(
-        "FiraCode-Light",
-        "FiraCode-Light",
-        "FiraCode-Regular",
-        "FiraCode-Medium",
-      ),
-      isV3: false,
-    }),
-  },
-  {
-    id: "mali",
-    name: "Mali",
-    fontConfig: configureFonts({
-      config: makeFontConfig(
-        "Mali-Light",
-        "Mali-Light",
-        "Mali-Regular",
-        "Mali-Medium",
-      ),
-      isV3: false,
-    }),
-  },
+  // {
+  //   id: "montserrat",
+  //   name: "Montserrat-Regular",
+  //   fontConfig: configureFonts({
+  //     config: makeFontConfig(
+  //       "Montserrat-Thin",
+  //       "Montserrat-Light",
+  //       "Montserrat-Regular",
+  //       "Montserrat-Medium",
+  //     ),
+  //     isV3: false,
+  //   }),
+  // },
+  // {
+  //   id: "firacode",
+  //   name: "FiraCode-Regular",
+  //   fontConfig: configureFonts({
+  //     config: makeFontConfig(
+  //       "FiraCode-Light",
+  //       "FiraCode-Light",
+  //       "FiraCode-Regular",
+  //       "FiraCode-Medium",
+  //     ),
+  //     isV3: false,
+  //   }),
+  // },
+  // {
+  //   id: "mali",
+  //   name: "Mali-Regular",
+  //   fontConfig: configureFonts({
+  //     config: makeFontConfig(
+  //       "Mali-Light",
+  //       "Mali-Light",
+  //       "Mali-Regular",
+  //       "Mali-Medium",
+  //     ),
+  //     isV3: false,
+  //   }),
+  // },
   // {
   //   id: "caveat",
   //   name: "Caveat",

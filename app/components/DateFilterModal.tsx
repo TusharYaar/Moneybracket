@@ -167,7 +167,7 @@ const DateFilterModal = ({visible, onDismiss}: Props) => {
               style={styles.btn}
               onPress={() => handleChangeFilter("yesterday")}
             >
-              yesterday
+              Yesterday
             </Button>
             <Button
               mode={dateFilter.type === "thisWeek" ? "contained" : "text"}
@@ -223,7 +223,7 @@ const DateFilterModal = ({visible, onDismiss}: Props) => {
               style={styles.btn}
               onPress={() => handleChangeFilter("all")}
             >
-              All time
+              All Time
             </Button>
             <View>
               <Caption>Custom</Caption>
@@ -244,7 +244,7 @@ const DateFilterModal = ({visible, onDismiss}: Props) => {
                     icon="swap-horizontal"
                     onPress={swapCustomPeriodDates}
                     size={16}
-                    color={theme.colors.primary}
+                    // color={theme.colors.primary}
                   />
                   <Button onPress={() => setModalTypeVisible("endDate")}>
                     {customPeriod.changed
@@ -257,7 +257,7 @@ const DateFilterModal = ({visible, onDismiss}: Props) => {
                         handleCustomFilter(customPeriod.start, customPeriod.end)
                       }
                       size={16}
-                      color={theme.colors.primary}
+                      // color={theme.colors.primary}
                       icon="checkmark"
                     />
                   )}

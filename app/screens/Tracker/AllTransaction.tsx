@@ -10,7 +10,6 @@ import GroupTransactions from "../../components/GroupTransactions";
 import {FlashList} from "@shopify/flash-list";
 import {useTranslation} from "react-i18next";
 import {calcuateTotal, groupTransactionByDate} from "../../utils/transaction";
-import {useCustomTheme} from "../../themes";
 import Amount from "../../components/Amount";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
 
@@ -52,36 +51,38 @@ const AllTransaction = ({}: Props) => {
           contentContainerStyle={styles.briefContainer}
         >
           <Surface style={styles.brief}>
-            <Text variant="labelMedium">Income</Text>
+            <Text variant="labelLarge">Income</Text>
             <Amount
-              sign={true}
+              variant="titleLarge"
               amount={values.allTime.income}
               type={"income"}
             />
           </Surface>
           <Surface style={styles.brief}>
-            <Text variant="labelMedium">Expense</Text>
+            <Text variant="labelLarge">Expense</Text>
             <Amount
-              sign={true}
+              variant="titleLarge"
               amount={values.allTime.expense * -1}
               type={"expense"}
             />
           </Surface>
           <Surface style={styles.brief}>
-            <Text variant="labelMedium">Transfer</Text>
+            <Text variant="labelLarge">Transfer</Text>
             <Amount
-              sign={true}
+              variant="titleLarge"
               type="transfer"
               amount={values.allTime.transfer}
             />
           </Surface>
           <Surface style={styles.brief}>
             <View style={styles.titleContainer}>
-              <Text variant="labelMedium">Total</Text>
-              <Text style={styles.titleCaption}>w/o transfer</Text>
+              <Text variant="labelLarge">Total</Text>
+              <Text style={styles.titleCaption} variant="bodySmall">
+                w/o transfer
+              </Text>
             </View>
             <Amount
-              sign={true}
+              variant="titleLarge"
               amount={values.allTime.income - values.allTime.expense}
               type={
                 values.allTime.income - values.allTime.expense > 0

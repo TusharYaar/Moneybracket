@@ -42,7 +42,7 @@ export const TrackerStackNavigator = ({}: TrackerStackProps) => {
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
-          headerTitleStyle: theme.fonts.regular,
+          headerTitleStyle: theme.fonts.titleLarge,
           title: t("tracker"),
         })}
       />
@@ -63,7 +63,7 @@ export const CategoryStackNavigator = () => {
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
-          headerTitleStyle: theme.fonts.regular,
+          headerTitleStyle: theme.fonts.titleLarge,
           title: t("category"),
         })}
       />
@@ -84,7 +84,7 @@ export const ExchangeStackNavigator = () => {
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
-          headerTitleStyle: theme.fonts.regular,
+          headerTitleStyle: theme.fonts.titleLarge,
           title: t("exchange"),
         })}
       />
@@ -106,7 +106,7 @@ export const SettingStack = () => {
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />
           ),
-          headerTitleStyle: theme.fonts.regular,
+          headerTitleStyle: theme.fonts.titleLarge,
           title: t("settings"),
         })}
       />
@@ -117,7 +117,7 @@ export const SettingStack = () => {
           headerLeft: () => (
             <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />
           ),
-          headerTitleStyle: theme.fonts.regular,
+          headerTitleStyle: theme.fonts.titleLarge,
           title: t("fontSettings"),
         })}
       />
@@ -128,7 +128,7 @@ export const SettingStack = () => {
           headerLeft: () => (
             <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />
           ),
-          headerTitleStyle: theme.fonts.regular,
+          headerTitleStyle: theme.fonts.titleLarge,
           title: t("themeSettings"),
         })}
       />

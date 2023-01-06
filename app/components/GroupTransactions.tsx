@@ -34,10 +34,11 @@ const GroupTransactions = ({data, onPressItem}: Props) => {
   return (
     <View style={[styles.group]}>
       <View style={styles.breif}>
-        <Text variant="labelMedium">{data.date}</Text>
+        <Text variant="labelLarge">{data.date}</Text>
         <Amount
+          variant="labelLarge"
           amount={totalAmt}
-          sign={false}
+          sign={true}
           type={totalAmt > 0 ? "income" : "expense"}
         />
       </View>

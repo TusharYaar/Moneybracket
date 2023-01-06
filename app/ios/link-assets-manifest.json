@@ -14,8 +14,8 @@
       "sha1": "6c6e0943c8a1af2aa1fe7d751c62e84e18cc4c72"
     },
     {
-      "path": "assets/fonts/FiraCode-Light.ttf",
-      "sha1": "a4dc51dfbe9e8c43d4fb5d26a5c29702ce786f43"
+      "path": "assets/fonts/Delius-Regular.ttf",
+      "sha1": "49ee4a09aa824e4b36701b7ca2edde5fe8364750"
     },
     {
       "path": "assets/fonts/FiraCode-Medium.ttf",
@@ -26,8 +26,12 @@
       "sha1": "85e2f3d6fb86f43adccd266a8ad0675978a01975"
     },
     {
-      "path": "assets/fonts/Mali-Light.ttf",
-      "sha1": "340f2799d47c1fe84eee321defff07149573ddac"
+      "path": "assets/fonts/Lexend-Regular.ttf",
+      "sha1": "0af1323597034bccfe8b8c62b0dde2b269ae0c2e"
+    },
+    {
+      "path": "assets/fonts/Lexend-SemiBold.ttf",
+      "sha1": "c99d3ae1e3f1f7916904fe18954fb0775bc96590"
     },
     {
       "path": "assets/fonts/Mali-Medium.ttf",
@@ -42,14 +46,6 @@
       "sha1": "04052dc3b846609216de1e0cbcec337c6b6e74f6"
     },
     {
-      "path": "assets/fonts/Montserrat-Light.ttf",
-      "sha1": "6f21894a80049259ef71fcba135218695b41b67a"
-    },
-    {
-      "path": "assets/fonts/Montserrat-Medium.ttf",
-      "sha1": "6b57d12e018c64352e202f8ef3bf7f431f76d935"
-    },
-    {
       "path": "assets/fonts/Montserrat-Regular.ttf",
       "sha1": "de57aa03e4821fdbe6c34ec2c895e8b5c914e837"
     },
@@ -58,16 +54,8 @@
       "sha1": "8580dec824bbdb6ce24d04d3aaf360776339f0a7"
     },
     {
-      "path": "assets/fonts/Montserrat-Thin.ttf",
-      "sha1": "8c871991960f520a31635f95be6c346b659e2c8c"
-    },
-    {
       "path": "assets/fonts/NotoSans-Bold.ttf",
       "sha1": "a063702bfcc720d5bfa1bba00706e0296ddf4523"
-    },
-    {
-      "path": "assets/fonts/NotoSans-Light.ttf",
-      "sha1": "5490b1f49aafabd8eb969146cb7d90b85746a978"
     },
     {
       "path": "assets/fonts/NotoSans-Medium.ttf",
@@ -82,24 +70,12 @@
       "sha1": "090a19da387041e7c3ca96d0625d8fa6583601df"
     },
     {
-      "path": "assets/fonts/NotoSans-Thin.ttf",
-      "sha1": "3f89e6b1b7cc617b01e1841e4335b0b420ffa777"
-    },
-    {
-      "path": "assets/fonts/Poppins-Light.ttf",
-      "sha1": "e247a92158e112f8bf7b638c8d95381d66b00dbb"
-    },
-    {
       "path": "assets/fonts/Poppins-Medium.ttf",
       "sha1": "283f21b44efbdbf276ba802be2d949a36bbc4233"
     },
     {
       "path": "assets/fonts/Poppins-Regular.ttf",
       "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
-    },
-    {
-      "path": "assets/fonts/ZillaSlab-Light.ttf",
-      "sha1": "2413d58a629a08286f5ec3b325827087189060d6"
     },
     {
       "path": "assets/fonts/ZillaSlab-Medium.ttf",

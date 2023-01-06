@@ -3,10 +3,11 @@ import {NavigationContainer} from "@react-navigation/native";
 import {Provider as PaperProvider} from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {CustomTheme, FontObject} from "../types";
+import {CustomTheme} from "../types";
 import AVALIBLE_THEMES from "./themes";
 import {useSettings} from "../providers/SettingsProvider";
-import AVALIBLE_FONTS from "./fonts";
+import AVALIBLE_FONTS from "./fonts/index";
+import {MD3Typescale} from "react-native-paper/lib/typescript/types";
 
 type Props = {
   current?: string;
@@ -31,10 +32,11 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
       AVALIBLE_THEMES[0],
   );
   const [font, setFont] = useState(
-    AVALIBLE_FONTS.find(font => font.id === SETTINGS.font) as FontObject,
+    AVALIBLE_FONTS.find(f => f.id === SETTINGS.font)?.name,
   );
   const themeObject = useMemo(() => {
-    // theme.fonts = font ? font.fontConfig : AVALIBLE_FONTS[0].fontConfig;
+    theme.fonts = AVALIBLE_FONTS.find(f => f.id === SETTINGS.font)
+      ?.font as MD3Typescale;
     return theme;
   }, [theme, font]);
 
@@ -44,7 +46,9 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
   };
 
   const handleFontChange = (font: string) => {
-    setFont(AVALIBLE_FONTS.find(_f => _f.id === font) || AVALIBLE_FONTS[0]);
+    setFont(
+      AVALIBLE_FONTS.find(_f => _f.id === font)?.name || AVALIBLE_FONTS[0].name,
+    );
     SETTINGS.updateFont(font);
   };
 

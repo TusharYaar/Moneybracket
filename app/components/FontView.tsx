@@ -1,7 +1,7 @@
 import {StyleSheet, ViewStyle} from "react-native";
 import React from "react";
 
-import {Button, Headline, Paragraph, Surface} from "react-native-paper";
+import {Button, Text, Surface} from "react-native-paper";
 import {useCustomTheme} from "../themes";
 import {FontObject} from "../types";
 import {useTranslation} from "react-i18next";
@@ -18,14 +18,15 @@ const FontView = ({font, selected, onPress, style}: Props) => {
   const {theme} = useCustomTheme();
   return (
     <Surface style={[style]}>
-      <Headline style={[font.fontConfig.medium]}>{font.name}</Headline>
-      <Paragraph numberOfLines={2} style={[font.fontConfig.regular]}>
+      <Text style={font.font.titleLarge}>{font.name}</Text>
+      <Text numberOfLines={2} style={font.font.bodyLarge}>
         {t("dummyText")}
-      </Paragraph>
+      </Text>
       <Button
         mode={selected ? "contained" : "outlined"}
         disabled={selected}
         onPress={onPress}
+        labelStyle={font.font.labelMedium}
         style={[styles.button, {borderColor: theme.colors.primary}]}
       >
         {selected ? t("selected") : t("select")}

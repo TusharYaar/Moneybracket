@@ -2,7 +2,7 @@ import {Realm} from "@realm/react";
 export class Category extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
-  type!: string;
+  type!: "income" | "expense" | "transfer";
   createdAt!: string;
   color!: string;
   icon!: string;
