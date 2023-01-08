@@ -19,7 +19,10 @@ const FontView = ({font, selected, onPress, style}: Props) => {
   return (
     <Surface style={[style]}>
       <Text style={font.font.titleLarge}>{font.name}</Text>
-      <Text numberOfLines={2} style={font.font.bodyLarge}>
+      <Text numberOfLines={1} style={font.font.labelLarge}>
+        {t("dummyText")}
+      </Text>
+      <Text numberOfLines={1} style={font.font.bodyMedium}>
         {t("dummyText")}
       </Text>
       <Button

@@ -12,6 +12,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import {useCustomTheme} from "../themes";
 
 type Props = {
   data: Transaction;
@@ -21,6 +22,9 @@ type Props = {
 
 const TransactionItem = ({data, onPress, style}: Props) => {
   const scale = useSharedValue(0.6);
+  const {
+    theme: {roundness},
+  } = useCustomTheme();
   const aStyle = useAnimatedStyle(() => {
     return {
       transform: [{scale: scale.value}],
@@ -42,7 +46,7 @@ const TransactionItem = ({data, onPress, style}: Props) => {
               color: chooseBetterContrast(data.category.color),
               backgroundColor: data.category.color,
               padding: 8,
-              borderRadius: 8,
+              borderRadius: roundness * 4,
             }}
           />
           <View style={styles.text}>

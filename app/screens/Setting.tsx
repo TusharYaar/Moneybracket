@@ -6,7 +6,7 @@ import SettingItem from "../components/SettingItem";
 
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {StackParamList} from "../navigators/StackNavigators";
-import {Caption} from "react-native-paper";
+import {Text} from "react-native-paper";
 import {useRealm} from "../realm";
 import {Category} from "../realm/Category";
 import {Dcategories} from "../data/dummy";
@@ -15,6 +15,8 @@ import {ICONS} from "../data";
 import {Transaction} from "../realm/Transaction";
 import {useData} from "../providers/DataProvider";
 import {generateDummyTransaction} from "../utils/dummy";
+import AVALIBLE_FONTS from "../themes/fonts/index";
+import AVALIBLE_THEMES from "../themes/themes";
 
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 
@@ -51,7 +53,7 @@ const Setting = ({navigation}: Props) => {
             element.amount,
             currency.code,
             element.date,
-            "",
+            "dummy transaction",
             category[Math.floor(Math.random() * category.length)],
           ),
         );
@@ -71,21 +73,21 @@ const Setting = ({navigation}: Props) => {
         leftIcon="text"
         onPress={() => navigation.navigate("FontSetting")}
       >
-        <Caption>{font}</Caption>
+        <Text>{AVALIBLE_FONTS.find(f => f.id === font)?.name}</Text>
       </SettingItem>
       <SettingItem
         label={t("themeSettings")}
         leftIcon="text"
         onPress={() => navigation.navigate("ThemeSetting")}
       >
-        <Caption>{theme}</Caption>
+        <Text>{AVALIBLE_THEMES.find(t => t.id === theme)?.name}</Text>
       </SettingItem>
       <SettingItem
         label={t("currency")}
         leftIcon="text"
         onPress={() => navigation.navigate("FontSetting")}
       >
-        <Caption>{currency.name}</Caption>
+        <Text>{currency.name}</Text>
       </SettingItem>
       {__DEV__ && (
         <SettingItem

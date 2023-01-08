@@ -7,19 +7,18 @@
     "date": "Date",
     "category": "Category",
     "note": "Note",
-    "optional":"Optional",    
-
-
+    "optional": "Optional",
     "tracker": "tracker",
-
-    "addCategory": {
-        "iconAndTitle": "Icon and Title",
-        "type": "Type",
-        "color": "Color"
+    "modals": {
+        "addCategory": {
+            "iconAndTitle": "Category Icon and Title",
+            "type": "Category Type",
+            "color": "Category Color"
+        }
     },
-    "screens":{
+    "screens": {
         "tracker": {
-            "allTransaction" : {
+            "allTransaction": {
                 "noTransaction": "No Transactions Added"
             },
             "charts": {
@@ -27,7 +26,6 @@
                 "categorySelected_plural": "{{count}} categories selected"
             }
         }
-        
     },
     "dummyText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
 }

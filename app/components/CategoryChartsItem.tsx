@@ -1,7 +1,7 @@
-import {StyleSheet, Text, View, ViewStyle} from "react-native";
+import {StyleSheet, View, ViewStyle} from "react-native";
 import React from "react";
 
-import {Surface, Title, Caption} from "react-native-paper";
+import {Surface, Text} from "react-native-paper";
 import {useCustomTheme} from "../themes";
 
 import Icon from "react-native-vector-icons/Ionicons";
@@ -28,18 +28,17 @@ const CategoryChartsItem = ({
   const {
     theme: {colors},
   } = useCustomTheme();
-
-  const {currency} = useSettings();
-
   return (
     <Surface style={[styles.surface, style]}>
       <View style={styles.container}>
         <Icon name={icon} color={color} size={30} />
         <View style={styles.textContainer}>
-          <Title style={styles.title} ellipsizeMode="tail">
+          <Text variant="labelLarge" ellipsizeMode="tail">
             {title}
-          </Title>
-          <Caption style={{color: colors[type]}}>{type}</Caption>
+          </Text>
+          <Text style={{color: colors[type]}} variant="labelMedium">
+            {type}
+          </Text>
         </View>
       </View>
       <View style={styles.amountContainer}>
@@ -53,11 +52,11 @@ export default CategoryChartsItem;
 
 const styles = StyleSheet.create({
   surface: {
-    elevation: 3,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
     flexWrap: "wrap",
+    padding: 4,
   },
   container: {
     flexDirection: "row",
@@ -68,9 +67,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: "column",
     alignItems: "flex-start",
-  },
-  title: {
-    marginHorizontal: 5,
+    marginHorizontal: 4,
   },
   amountContainer: {
     maxWidth: "40%",

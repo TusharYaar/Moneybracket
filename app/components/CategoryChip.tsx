@@ -35,13 +35,17 @@ const CategoryChip = ({
 
   return (
     <View
-      style={[styles.overflowContainer, {borderColor: category.color}, style]}
+      style={[
+        styles.overflowContainer,
+        {borderColor: category.color, borderRadius: theme.roundness * 4},
+        style,
+      ]}
     >
       <TouchableRipple
         onPress={handlePress}
         style={{
           backgroundColor: selected ? category.color : "transparent",
-          borderRadius: 50,
+          borderRadius: theme.roundness * 4,
         }}
       >
         <View style={[styles.innerContainer, containerStyle]}>
@@ -52,7 +56,7 @@ const CategoryChip = ({
           />
           <Text
             style={[
-              // {color: selected ? textColor : theme.colors.text},
+              {color: selected ? textColor : theme.colors.onBackground},
               styles.title,
             ]}
           >

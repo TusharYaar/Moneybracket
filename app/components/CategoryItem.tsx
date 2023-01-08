@@ -4,6 +4,7 @@ import {Category} from "../realm/Category";
 import {Text, TouchableRipple} from "react-native-paper";
 
 import Icon from "react-native-vector-icons/Ionicons";
+import {useCustomTheme} from "../themes";
 
 type Props = {
   item: Category;
@@ -12,8 +13,18 @@ type Props = {
 };
 
 const CategoryItem = ({item, onPress, style}: Props) => {
+  const {
+    theme: {roundness},
+  } = useCustomTheme();
+
   return (
-    <View style={[styles.overflowContainer, {borderColor: item.color}, style]}>
+    <View
+      style={[
+        styles.overflowContainer,
+        {borderColor: item.color, borderRadius: roundness * 4},
+        style,
+      ]}
+    >
       <TouchableRipple style={styles.container} onPress={() => onPress(item)}>
         <View style={styles.innerContainer}>
           <View style={[styles.iconContainer, {backgroundColor: item.color}]}>

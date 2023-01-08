@@ -14,6 +14,7 @@ const ThemeSetting = () => {
       data={AVALIBLE_THEMES}
       renderItem={({item}) => (
         <ThemeObject
+          key={item.id}
           theme={item}
           selected={theme === item.id}
           onSelect={() => changeTheme(item.id)}

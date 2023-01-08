@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Headline, Surface, Theme} from "react-native-paper";
+import {Button, Headline, Surface} from "react-native-paper";
 import {CustomTheme} from "../types";
 import {ViewStyle, View} from "react-native";
 import ColorChoice from "./ColorChoice";
@@ -11,7 +11,7 @@ type Props = {
   style?: ViewStyle;
 };
 
-const COLORS_VALS = ["primary", "accent", "text"];
+const COLORS_VALS = ["primary", "secondary", "onBackground"];
 
 const ThemeObject = ({theme, selected, onSelect, style}: Props) => {
   return (
@@ -20,7 +20,7 @@ const ThemeObject = ({theme, selected, onSelect, style}: Props) => {
       <View>
         {COLORS_VALS.map(color => (
           <ColorChoice
-            color={theme.colors[color as keyof CustomTheme["colors"]]}
+            color={theme.colors[color as keyof CustomTheme["colors"]] as string}
             selected={false}
             onPress={() => {}}
           />

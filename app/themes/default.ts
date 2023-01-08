@@ -3,8 +3,9 @@ import {CustomTheme} from "../types";
 
 const defaultLight: CustomTheme = {
   ...MD3LightTheme,
-  name: "default Theme",
+  name: "Default Theme",
   id: "defaultLight",
+  roundness: 0,
   colors: {
     ...MD3LightTheme.colors,
     //   accent: "#03dac6",
@@ -21,7 +22,7 @@ const defaultLight: CustomTheme = {
     income: "#16a34a",
     expense: "#dc2626",
     transfer: "#0284c7",
-    //   cardToneBackground: "#dfdfdf",
+    cardToneBackground: "#dfdfdf",
   },
   // dark: true,
   // mode: "adaptive",
@@ -52,7 +53,7 @@ export const defaultDark: CustomTheme = {
     income: "green",
     expense: "red",
     transfer: "blue",
-    //   cardToneBackground: "#282c34",
+    cardToneBackground: "#282c34",
   },
 
   // dark: true,

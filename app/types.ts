@@ -25,7 +25,7 @@ export interface CustomTheme extends MD3Theme {
     income: string;
     expense: string;
     transfer: string;
-    //   cardToneBackground: string;
+    cardToneBackground: string;
   };
 }
 

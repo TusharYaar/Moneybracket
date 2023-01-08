@@ -6,7 +6,6 @@ import {
   Text,
   TextInput,
   IconButton,
-  Chip,
   SegmentedButtons,
 } from "react-native-paper";
 
@@ -17,6 +16,7 @@ import IconModal from "./IconModal";
 
 import {COLORS} from "../data";
 import {useTranslation} from "react-i18next";
+import {useCustomTheme} from "../themes";
 
 const CATEGORY_TYPES = [
   {
@@ -41,9 +41,17 @@ type Props = {
   item?: Category;
   onDismiss: () => void;
 };
-type ValueProps = {title: string; type: string; color: string; icon: string};
+type ValueProps = {
+  title: string;
+  type: "income" | "expense" | "transfer";
+  color: string;
+  icon: string;
+};
 const AddCategory = ({visible, item, onDismiss}: Props) => {
-  const {t} = useTranslation();
+  const {t} = useTranslation("", {
+    keyPrefix: "modals.addCategory",
+  });
+  const {theme} = useCustomTheme();
   const [values, setValues] = useState<ValueProps>({
     title: "",
     type: "income",
@@ -68,7 +76,7 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
   }, [item]);
   const realm = useRealm();
 
-  const changeType = useCallback((type: string) => {
+  const changeType = useCallback((type: ValueProps["type"]) => {
     setValues(prev => ({...prev, type}));
   }, []);
 
@@ -136,81 +144,76 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
       <Modal
         visible={visible}
         onDismiss={onDismiss}
-        style={styles.modal}
+        style={{borderRadius: theme.roundness * 4}}
         contentContainerStyle={styles.modalContainer}
       >
         <View
           style={[
-            styles.topContainer,
-            // {backgroundColor: theme.colors.cardToneBackground},
+            styles.actionBtnContainer,
+            {backgroundColor: theme.colors.cardToneBackground},
           ]}
         >
-          <View style={styles.topBtnContainer}>
+          <IconButton icon="close" onPress={onDismiss} style={{margin: 0}} />
+          {item && (
             <IconButton
-              icon="close"
-              size={25}
-              onPress={onDismiss}
-              style={styles.iconBtn}
+              icon="trash"
+              style={{margin: 0}}
+              onPress={() => deleteCategory(item)}
             />
-            {item && (
-              <IconButton
-                icon="trash"
-                size={25}
-                onPress={() => deleteCategory(item)}
-                style={styles.iconBtn}
+          )}
+        </View>
+        <View
+          style={[
+            {backgroundColor: theme.colors.cardToneBackground, padding: 8},
+          ]}
+        >
+          <Text variant="labelLarge">{t("iconAndTitle")}</Text>
+          <TextInput
+            left={
+              <TextInput.Icon
+                icon={values.icon}
+                onPress={() => setIconModal(true)}
               />
-            )}
-          </View>
-          <View>
-            <Text variant="labelLarge" style={styles.subheading}>
-              {t("addCategory.iconAndTitle")}
-            </Text>
-            <View style={styles.iconInputContainer}>
-              <View
-                style={{
-                  backgroundColor: values.color,
-                  borderTopLeftRadius: 7,
-                  borderBottomLeftRadius: 7,
-                }}
-              >
-                <IconButton
-                  size={38}
-                  icon={values.icon}
-                  style={styles.iconBtn}
-                  onPress={() => setIconModal(true)}
-                />
-              </View>
-              <TextInput
-                value={values.title}
-                placeholder="Category Title"
-                mode="outlined"
-                style={styles.input}
-                onChangeText={text =>
-                  setValues(prev => ({...prev, title: text}))
-                }
-              />
-            </View>
-          </View>
+            }
+            value={values.title}
+            placeholder="Category Title"
+            mode="outlined"
+            style={theme.fonts.titleLarge}
+            onChangeText={text => setValues(prev => ({...prev, title: text}))}
+          />
+        </View>
+        <View style={styles.dualToneContainer}>
+          <View
+            style={[
+              styles.dualToneColor,
+              {backgroundColor: theme.colors.cardToneBackground},
+            ]}
+          />
           <IconButton
             size={40}
             icon={item ? "checkmark-done" : "add"}
-            style={[styles.addBtn, {backgroundColor: values.color}]}
+            style={{
+              marginHorizontal: 8,
+              marginVertical: 0,
+              backgroundColor: values.color,
+              borderRadius: theme.roundness * 4,
+            }}
             onPress={handlePressAdd}
           />
         </View>
-        <View>
-          <Text style={styles.subheading} variant="labelLarge">
-            {t("addCategory.type")}
+        <View style={{paddingHorizontal: 8}}>
+          <Text variant="labelLarge" style={{marginBottom: 4}}>
+            {t("type")}
           </Text>
           <SegmentedButtons
             value={values.type}
-            onValueChange={changeType}
+            onValueChange={type => changeType(type as ValueProps["type"])}
             buttons={CATEGORY_TYPES}
           />
         </View>
         <View>
-          <Text style={styles.subheading} variant="labelLarge">
-            {t("addCategory.color")}
+          <Text variant="labelLarge" style={{margin: 8, marginBottom: 4}}>
+            {t("color")}
           </Text>
           <FlatList
             horizontal={true}
@@ -236,54 +239,26 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
 export default AddCategory;
 
 const styles = StyleSheet.create({
-  modal: {
-    borderRadius: 7,
-  },
-
   modalContainer: {
-    borderRadius: 7,
     backgroundColor: "white",
-    marginHorizontal: 30,
+    marginHorizontal: 24,
   },
-  topContainer: {
-    flexDirection: "column",
-    position: "relative",
-    paddingBottom: 40,
-    borderTopLeftRadius: 7,
-    borderTopRightRadius: 7,
-  },
-  topBtnContainer: {
+  actionBtnContainer: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
   },
-  iconBtn: {
-    margin: 0,
-  },
-  iconInputContainer: {
-    flexDirection: "row",
+
+  dualToneContainer: {
+    position: "relative",
     alignItems: "flex-end",
-    justifyContent: "center",
-    paddingHorizontal: 10,
   },
-  input: {
-    flex: 1,
-    fontSize: 20,
-  },
-  addBtn: {
-    margin: 0,
-    backgroundColor: "orange",
+  dualToneColor: {
+    width: "100%",
+    height: "50%",
     position: "absolute",
-    bottom: -25,
-    right: 10,
-  },
-  typeContainer: {
-    padding: 10,
-  },
-  typeOptions: {
-    flexDirection: "row",
-  },
-  subheading: {
-    marginLeft: 10,
+    left: 0,
+    top: 0,
   },
   colors: {
     paddingBottom: 10,

@@ -1,7 +1,7 @@
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import React from "react";
 
-import {Caption} from "react-native-paper";
+import {Text} from "react-native-paper";
 import {useCustomTheme} from "../themes";
 
 type Props = {
@@ -12,15 +12,18 @@ type Props = {
 
 const LegendItem = ({amount, title, color}: Props) => {
   const {
-    theme: {fonts},
+    theme: {roundness},
   } = useCustomTheme();
 
   return (
     <View style={styles.container}>
-      <View style={[styles.legend, {backgroundColor: color}]} />
-      <Caption
-        style={[fonts.medium]}
-      >{`${title} ${amount.toFixed()}%`}</Caption>
+      <View
+        style={[
+          styles.legend,
+          {backgroundColor: color, borderRadius: roundness},
+        ]}
+      />
+      <Text>{`${title} ${amount.toFixed()}%`}</Text>
     </View>
   );
 };
@@ -31,11 +34,11 @@ const styles = StyleSheet.create({
   legend: {
     width: 20,
     height: 20,
-    borderRadius: 7,
     marginHorizontal: 5,
   },
   container: {
     flexDirection: "row",
     alignItems: "center",
+    marginVertical: 2,
   },
 });

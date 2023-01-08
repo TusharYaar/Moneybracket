@@ -2,7 +2,7 @@ import {StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import React, {useMemo, useState} from "react";
 import {Transaction} from "../realm/Transaction";
 import TransactionItem from "./TransactionItem";
-import {Text, Paragraph, Subheading} from "react-native-paper";
+import {Text} from "react-native-paper";
 import {GroupedTransactions} from "../types";
 import Amount from "./Amount";
 
@@ -18,7 +18,9 @@ const GroupTransactions = ({data, onPressItem}: Props) => {
   const totalAmt = useMemo(
     () =>
       data.transactions.reduce((agg, curr) => {
-        return curr.category?.type === "expense"
+        return curr.category.type === "transfer"
+          ? agg
+          : curr.category.type === "expense"
           ? agg - curr.amount
           : agg + curr.amount;
       }, 0),

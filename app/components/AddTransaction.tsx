@@ -3,10 +3,10 @@ import React, {useState, useCallback, useEffect} from "react";
 import {
   Modal,
   Portal,
-  Paragraph,
   TextInput,
   IconButton,
   Button,
+  Text,
 } from "react-native-paper";
 import {Transaction} from "../realm/Transaction";
 import CategoryItem from "./CategoryItem";
@@ -52,11 +52,6 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
   const [currency, setCurrency] = useState(defaultCurrency.code);
   const [viewModal, setViewModal] = useState("datepicker");
   const {category} = useData();
-  const containerStyle = {
-    backgroundColor: "white",
-    marginHorizontal: 20,
-    borderRadius: 7,
-  };
 
   const realm = useRealm();
 
@@ -185,83 +180,108 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
         <Modal
           visible={visible}
           onDismiss={onDismiss}
-          contentContainerStyle={[containerStyle]}
-          style={styles.modal}
+          contentContainerStyle={styles.modal}
         >
           <View
             style={[
-              styles.topContainer,
+              styles.actionBtnContainer,
               {backgroundColor: theme.colors.cardToneBackground},
             ]}
           >
-            <View style={styles.actionBtnContainer}>
+            <IconButton
+              icon="close"
+              onPress={onDismiss}
+              style={styles.iconBtn}
+            />
+            {item && (
               <IconButton
-                icon="close"
-                size={25}
-                onPress={onDismiss}
+                icon="trash"
                 style={styles.iconBtn}
+                onPress={() => deleteTransaction(item)}
               />
-              {item && (
-                <IconButton
-                  icon="trash"
-                  size={25}
-                  style={styles.iconBtn}
-                  onPress={() => deleteTransaction(item)}
-                />
-              )}
-            </View>
-            <View style={styles.topInnerContainer}>
-              <Paragraph>{t("date")}</Paragraph>
-              <Button
-                icon="calendar"
-                mode="outlined"
-                onPress={() => setViewModal("datepicker")}
-              >
-                {values.date.toLocaleDateString()}
-              </Button>
-              <Paragraph>{t("amount")}</Paragraph>
-              <View style={styles.amountContainer}>
-                <Button
-                  mode="contained"
-                  onPress={() => setViewModal("currency")}
-                >
-                  {currency}
-                </Button>
-                <TextInput
-                  value={values.amount}
-                  onChangeText={text =>
-                    setValues(prev => ({...prev, amount: text}))
-                  }
-                  mode="outlined"
-                  keyboardType="decimal-pad"
-                  style={styles.input}
-                />
-              </View>
-              <IconButton
-                size={40}
-                icon={item ? "checkmark-done" : "add"}
-                style={styles.addBtn}
-                onPress={handlePressAdd}
-              />
-            </View>
+            )}
           </View>
           <View
             style={{
-              padding: 10,
-              backgroundColor: theme.colors.surface,
-              zIndex: -1,
+              backgroundColor: theme.colors.cardToneBackground,
+              padding: 8,
             }}
           >
-            <Paragraph>{t("category")}</Paragraph>
+            <Text variant="labelLarge" style={{marginBottom: 4}}>
+              {t("date")}
+            </Text>
+            <Button
+              icon="calendar"
+              mode="outlined"
+              onPress={() => setViewModal("datepicker")}
+            >
+              {values.date.toLocaleDateString()}
+            </Button>
+          </View>
+          <View
+            style={{
+              backgroundColor: theme.colors.cardToneBackground,
+              padding: 8,
+            }}
+          >
+            <Text variant="labelLarge">{t("amount")}</Text>
+            <TextInput
+              right={
+                <TextInput.Icon
+                  onPress={() => setViewModal("currency")}
+                  icon="repeat"
+                />
+              }
+              left={<TextInput.Affix text={currency} />}
+              value={values.amount}
+              onChangeText={text =>
+                setValues(prev => ({...prev, amount: text}))
+              }
+              mode="outlined"
+              keyboardType="decimal-pad"
+              style={theme.fonts.titleLarge}
+            />
+          </View>
+          <View style={styles.dualToneContainer}>
+            <View
+              style={[
+                styles.dualToneColor,
+                {backgroundColor: theme.colors.cardToneBackground},
+              ]}
+            />
+            <IconButton
+              size={40}
+              icon={item ? "checkmark-done" : "add"}
+              style={{
+                marginHorizontal: 8,
+                marginVertical: 0,
+                borderRadius: theme.roundness * 4,
+                backgroundColor: theme.colors.inversePrimary,
+              }}
+              onPress={handlePressAdd}
+            />
+          </View>
+          <View
+            style={{
+              backgroundColor: theme.colors.surface,
+              zIndex: -1,
+              paddingHorizontal: 8,
+            }}
+          >
+            <Text variant="labelLarge" style={{marginBottom: 4}}>
+              {t("category")}
+            </Text>
             {values.category && (
               <CategoryItem
                 item={values.category}
                 onPress={() => setViewModal("category")}
               />
             )}
-            <Paragraph>
+          </View>
+          <View style={{padding: 8}}>
+            <Text variant="labelLarge" style={{marginBottom: 0}}>
               {t("note")} ({t("optional")})
-            </Paragraph>
+            </Text>
             <TextInput
               multiline
               mode="outlined"
@@ -280,38 +300,27 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
 export default AddTransaction;
 
 const styles = StyleSheet.create({
-  topContainer: {
-    paddingBottom: 40,
-    borderTopLeftRadius: 7,
-    borderTopRightRadius: 7,
-  },
   actionBtnContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  topInnerContainer: {
-    padding: 10,
-  },
-  amountContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  input: {
-    flex: 1,
-  },
   modal: {
-    borderRadius: 7,
+    margin: 24,
+    backgroundColor: "white",
   },
   iconBtn: {
     margin: 0,
   },
-  addBtn: {
-    margin: 0,
-    backgroundColor: "orange",
+  dualToneContainer: {
+    position: "relative",
+    alignItems: "flex-end",
+  },
+  dualToneColor: {
+    width: "100%",
+    height: "50%",
     position: "absolute",
-    bottom: -70,
-    right: 10,
-    zIndex: 10,
+    left: 0,
+    top: 0,
   },
 });

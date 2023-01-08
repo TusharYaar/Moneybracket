@@ -3,6 +3,7 @@ import React from "react";
 import {TouchableRipple} from "react-native-paper";
 
 import Icon from "react-native-vector-icons/Ionicons";
+import {useCustomTheme} from "../themes";
 
 const ColorChoice = ({
   color,
@@ -13,9 +14,15 @@ const ColorChoice = ({
   onPress: () => void;
   selected: boolean;
 }) => {
+  const {
+    theme: {roundness},
+  } = useCustomTheme();
   return (
     <TouchableRipple
-      style={[styles.item, {backgroundColor: color}]}
+      style={[
+        styles.item,
+        {backgroundColor: color, borderRadius: roundness * 4},
+      ]}
       onPress={onPress}
     >
       <View style={styles.view}>

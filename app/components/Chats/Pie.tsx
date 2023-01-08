@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions, ViewStyle, View} from "react-native";
 import React, {useMemo} from "react";
 import {PieChart} from "react-native-chart-kit";
-import {Caption, Subheading, Surface} from "react-native-paper";
+import {Text, Surface} from "react-native-paper";
 import LegendItem from "../LegendItem";
 
 type Props = {
@@ -31,7 +31,7 @@ const Pie = ({data, style, title}: Props) => {
         backgroundColor="transparent"
       />
       <View style={styles.legend}>
-        {title && <Subheading style={styles.title}>{title}</Subheading>}
+        {title && <Text style={styles.title}>{title}</Text>}
         {data.map(cat => (
           <LegendItem
             key={cat.title}
@@ -58,5 +58,6 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
+    marginTop: -30,
   },
 });

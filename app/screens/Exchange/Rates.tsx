@@ -24,9 +24,9 @@ const Rates = () => {
         estimatedItemSize={114}
         renderItem={({item}) => (
           <RateItem
-            {...item}
+            item={item}
             visibleItems={visibleItems}
-            base={currency.code}
+            base={currency.symbol_native}
           />
         )}
         onViewableItemsChanged={({viewableItems}) =>
