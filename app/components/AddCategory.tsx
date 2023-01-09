@@ -18,6 +18,8 @@ import {COLORS} from "../data";
 import {useTranslation} from "react-i18next";
 import {useCustomTheme} from "../themes";
 
+import {chooseBetterContrast} from "../utils/colors";
+
 const CATEGORY_TYPES = [
   {
     label: "income",
@@ -32,7 +34,7 @@ const CATEGORY_TYPES = [
   {
     label: "transfer",
     value: "transfer",
-    icon: "remove",
+    icon: "swap-horizontal",
   },
 ];
 
@@ -172,6 +174,7 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
             left={
               <TextInput.Icon
                 icon={values.icon}
+                style={{borderRadius: theme.roundness * 4}}
                 onPress={() => setIconModal(true)}
               />
             }
@@ -190,6 +193,7 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
             ]}
           />
           <IconButton
+            iconColor={chooseBetterContrast(values.color)}
             size={40}
             icon={item ? "checkmark-done" : "add"}
             style={{

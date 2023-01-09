@@ -1,11 +1,7 @@
 import {StyleSheet, View} from "react-native";
 import React, {ReactNode} from "react";
-
 import {Surface, TouchableRipple, Text} from "react-native-paper";
-
 import Icon from "react-native-vector-icons/Ionicons";
-import {useCustomTheme} from "../themes";
-
 type Props = {
   label: string;
   leftIcon: string;
@@ -21,14 +17,15 @@ const SettingItem = ({
   rightIcon,
   label,
 }: Props) => {
-  const {theme} = useCustomTheme();
   return (
     <Surface style={styles.surface}>
       <TouchableRipple onPress={onPress}>
         <View style={styles.innerContainer}>
           <View style={styles.labelContainer}>
             <Icon name={leftIcon} size={26} />
-            <Text style={[styles.itemLabel]}>{label}</Text>
+            <Text style={[styles.itemLabel]} variant="bodyMedium">
+              {label}
+            </Text>
           </View>
           {children}
           {rightIcon && (

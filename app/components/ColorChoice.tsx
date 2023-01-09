@@ -26,7 +26,7 @@ const ColorChoice = ({
       onPress={onPress}
     >
       <View style={styles.view}>
-        {selected && <Icon name="checkmark" size={20} />}
+        {selected && <Icon name="checkmark" size={28} />}
       </View>
     </TouchableRipple>
   );
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     marginHorizontal: 5,
-    borderRadius: 8,
   },
   view: {
     display: "flex",
