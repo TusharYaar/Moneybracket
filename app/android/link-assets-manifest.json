@@ -10,14 +10,6 @@
       "sha1": "0cd0d0e17561fad5254d00dfc406e0662495de09"
     },
     {
-      "path": "assets/fonts/Caveat-Regular.ttf",
-      "sha1": "6c6e0943c8a1af2aa1fe7d751c62e84e18cc4c72"
-    },
-    {
-      "path": "assets/fonts/Delius-Regular.ttf",
-      "sha1": "49ee4a09aa824e4b36701b7ca2edde5fe8364750"
-    },
-    {
       "path": "assets/fonts/FiraCode-Medium.ttf",
       "sha1": "97b27085d45ec1d72b02ff810d9a570839d91d5e"
     },
@@ -34,36 +26,12 @@
       "sha1": "c99d3ae1e3f1f7916904fe18954fb0775bc96590"
     },
     {
-      "path": "assets/fonts/Mali-Medium.ttf",
-      "sha1": "167c5b9dd18d94b8d4fde98b4adf40c7b01c6e06"
-    },
-    {
-      "path": "assets/fonts/Mali-Regular.ttf",
-      "sha1": "0d69218429954ab53a0cc47ff9d99e9eb28201c4"
-    },
-    {
-      "path": "assets/fonts/Montserrat-Black.ttf",
-      "sha1": "fca130f21601346cce37bb8a9526ff01af66d912"
-    },
-    {
       "path": "assets/fonts/Montserrat-Bold.ttf",
       "sha1": "04052dc3b846609216de1e0cbcec337c6b6e74f6"
     },
     {
-      "path": "assets/fonts/Montserrat-ExtraBold.ttf",
-      "sha1": "1914bc1981e6ceceadb2f6d72455b4e89e04965c"
-    },
-    {
       "path": "assets/fonts/Montserrat-Medium.ttf",
       "sha1": "6b57d12e018c64352e202f8ef3bf7f431f76d935"
-    },
-    {
-      "path": "assets/fonts/Montserrat-Regular.ttf",
-      "sha1": "de57aa03e4821fdbe6c34ec2c895e8b5c914e837"
-    },
-    {
-      "path": "assets/fonts/Montserrat-SemiBold.ttf",
-      "sha1": "8580dec824bbdb6ce24d04d3aaf360776339f0a7"
     },
     {
       "path": "assets/fonts/NotoSans-Bold.ttf",
@@ -72,14 +40,6 @@
     {
       "path": "assets/fonts/NotoSans-Medium.ttf",
       "sha1": "b0e73a061b6a39e3dfd64aebd1626464c1e1696e"
-    },
-    {
-      "path": "assets/fonts/NotoSans-Regular.ttf",
-      "sha1": "1a17c06f6feb06281dc9b524c24fcf05abb82c35"
-    },
-    {
-      "path": "assets/fonts/NotoSans-SemiBold.ttf",
-      "sha1": "090a19da387041e7c3ca96d0625d8fa6583601df"
     },
     {
       "path": "assets/fonts/Poppins-Medium.ttf",
