@@ -1,7 +1,6 @@
 import {View, StyleSheet, FlatList} from "react-native";
 import React, {useState, useCallback, useEffect} from "react";
 import {
-  Modal,
   Portal,
   Text,
   TextInput,
@@ -19,6 +18,7 @@ import {useTranslation} from "react-i18next";
 import {useCustomTheme} from "../themes";
 
 import {chooseBetterContrast} from "../utils/colors";
+import ModalContainer from "./ModalContainer";
 
 const CATEGORY_TYPES = [
   {
@@ -115,8 +115,9 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
   };
 
   const deleteCategory = useCallback(
-    (category: Category) => {
+    (category: Category | undefined) => {
       realm.write(() => {
+        if (!category) return;
         realm.delete(category);
         onDismiss();
       });
@@ -130,129 +131,98 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
 
   if (iconModal) {
     return (
-      <Portal>
-        <IconModal
-          visible={true}
-          onDismiss={dismissIconModal}
-          color={values.color}
-          onItemSelect={changeIcon}
-        />
-      </Portal>
+      <IconModal
+        visible={true}
+        onDismiss={dismissIconModal}
+        color={values.color}
+        onItemSelect={changeIcon}
+      />
     );
   }
 
   return (
-    <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        style={{borderRadius: theme.roundness * 4}}
-        contentContainerStyle={styles.modalContainer}
+    <ModalContainer
+      title="Add Category"
+      visible={visible}
+      showDelete={Boolean(item)}
+      onDismiss={onDismiss}
+      onDelete={() => deleteCategory(item)}
+      barColor={theme.colors.cardToneBackground}
+    >
+      <View
+        style={[{backgroundColor: theme.colors.cardToneBackground, padding: 8}]}
       >
+        <Text variant="labelLarge">{t("iconAndTitle")}</Text>
+        <TextInput
+          left={
+            <TextInput.Icon
+              icon={values.icon}
+              style={{borderRadius: theme.roundness * 4}}
+              onPress={() => setIconModal(true)}
+            />
+          }
+          value={values.title}
+          placeholder="Category Title"
+          mode="outlined"
+          style={theme.fonts.titleLarge}
+          onChangeText={text => setValues(prev => ({...prev, title: text}))}
+        />
+      </View>
+      <View style={styles.dualToneContainer}>
         <View
           style={[
-            styles.actionBtnContainer,
+            styles.dualToneColor,
             {backgroundColor: theme.colors.cardToneBackground},
           ]}
-        >
-          <IconButton icon="close" onPress={onDismiss} style={{margin: 0}} />
-          {item && (
-            <IconButton
-              icon="trash"
-              style={{margin: 0}}
-              onPress={() => deleteCategory(item)}
+        />
+        <IconButton
+          iconColor={chooseBetterContrast(values.color)}
+          size={40}
+          icon={item ? "checkmark-done" : "add"}
+          style={{
+            marginHorizontal: 8,
+            marginVertical: 0,
+            backgroundColor: values.color,
+            borderRadius: theme.roundness * 4,
+          }}
+          onPress={handlePressAdd}
+        />
+      </View>
+      <View style={{paddingHorizontal: 8}}>
+        <Text variant="labelLarge" style={{marginBottom: 4}}>
+          {t("type")}
+        </Text>
+        <SegmentedButtons
+          value={values.type}
+          onValueChange={type => changeType(type as ValueProps["type"])}
+          buttons={CATEGORY_TYPES}
+        />
+      </View>
+      <View>
+        <Text variant="labelLarge" style={{margin: 8, marginBottom: 4}}>
+          {t("color")}
+        </Text>
+        <FlatList
+          horizontal={true}
+          data={COLORS}
+          renderItem={option => (
+            <ColorChoice
+              key={option.item}
+              color={option.item}
+              onPress={() => setValues(prev => ({...prev, color: option.item}))}
+              selected={values.color === option.item}
             />
           )}
-        </View>
-        <View
-          style={[
-            {backgroundColor: theme.colors.cardToneBackground, padding: 8},
-          ]}
-        >
-          <Text variant="labelLarge">{t("iconAndTitle")}</Text>
-          <TextInput
-            left={
-              <TextInput.Icon
-                icon={values.icon}
-                style={{borderRadius: theme.roundness * 4}}
-                onPress={() => setIconModal(true)}
-              />
-            }
-            value={values.title}
-            placeholder="Category Title"
-            mode="outlined"
-            style={theme.fonts.titleLarge}
-            onChangeText={text => setValues(prev => ({...prev, title: text}))}
-          />
-        </View>
-        <View style={styles.dualToneContainer}>
-          <View
-            style={[
-              styles.dualToneColor,
-              {backgroundColor: theme.colors.cardToneBackground},
-            ]}
-          />
-          <IconButton
-            iconColor={chooseBetterContrast(values.color)}
-            size={40}
-            icon={item ? "checkmark-done" : "add"}
-            style={{
-              marginHorizontal: 8,
-              marginVertical: 0,
-              backgroundColor: values.color,
-              borderRadius: theme.roundness * 4,
-            }}
-            onPress={handlePressAdd}
-          />
-        </View>
-        <View style={{paddingHorizontal: 8}}>
-          <Text variant="labelLarge" style={{marginBottom: 4}}>
-            {t("type")}
-          </Text>
-          <SegmentedButtons
-            value={values.type}
-            onValueChange={type => changeType(type as ValueProps["type"])}
-            buttons={CATEGORY_TYPES}
-          />
-        </View>
-        <View>
-          <Text variant="labelLarge" style={{margin: 8, marginBottom: 4}}>
-            {t("color")}
-          </Text>
-          <FlatList
-            horizontal={true}
-            data={COLORS}
-            renderItem={option => (
-              <ColorChoice
-                key={option.item}
-                color={option.item}
-                onPress={() =>
-                  setValues(prev => ({...prev, color: option.item}))
-                }
-                selected={values.color === option.item}
-              />
-            )}
-            contentContainerStyle={styles.colors}
-          />
-        </View>
-      </Modal>
-    </Portal>
+          contentContainerStyle={styles.colors}
+        />
+      </View>
+    </ModalContainer>
   );
 };
 
 export default AddCategory;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    backgroundColor: "white",
-    marginHorizontal: 24,
-  },
-  actionBtnContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
   dualToneContainer: {
     position: "relative",
     alignItems: "flex-end",

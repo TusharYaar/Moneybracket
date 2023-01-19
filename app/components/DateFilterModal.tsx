@@ -25,6 +25,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import {useSettings} from "../providers/SettingsProvider";
+import ModalContainer from "./ModalContainer";
 
 type Props = {
   visible: boolean;
@@ -144,129 +145,123 @@ const DateFilterModal = ({visible, onDismiss}: Props) => {
     );
   } else
     return (
-      <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={onDismiss}
-          contentContainerStyle={[
-            styles.modalContainerStyle,
-            {backgroundColor: theme.colors.background},
-          ]}
-          style={styles.modal}
-        >
-          <View style={styles.btnContainer}>
-            <Button
-              mode={dateFilter.type === "today" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("today")}
+      <ModalContainer
+        visible={visible}
+        onDismiss={onDismiss}
+        contentContainerStyle={[styles.modalContainerStyle]}
+        title={"Select Period"}
+      >
+        <View style={styles.btnContainer}>
+          <Button
+            mode={dateFilter.type === "today" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("today")}
+          >
+            Today
+          </Button>
+          <Button
+            mode={dateFilter.type === "yesterday" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("yesterday")}
+          >
+            Yesterday
+          </Button>
+          <Button
+            mode={dateFilter.type === "thisWeek" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("thisWeek")}
+          >
+            This Week
+          </Button>
+          <Button
+            mode={dateFilter.type === "lastWeek" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("lastWeek")}
+          >
+            Last Week
+          </Button>
+          <Button
+            mode={dateFilter.type === "thisMonth" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("thisMonth")}
+          >
+            This Month
+          </Button>
+          <Button
+            mode={dateFilter.type === "lastMonth" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("lastMonth")}
+          >
+            Last Month
+          </Button>
+          <Button
+            mode={dateFilter.type === "thisYear" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("thisYear")}
+          >
+            This Year
+          </Button>
+          <Button
+            mode={dateFilter.type === "last3Months" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("last3Months")}
+          >
+            Last 3 Months
+          </Button>
+          <Button
+            mode={dateFilter.type === "last6Months" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("last6Months")}
+          >
+            Last 6 Months
+          </Button>
+          <Button
+            mode={dateFilter.type === "all" ? "contained" : "text"}
+            style={styles.btn}
+            onPress={() => handleChangeFilter("all")}
+          >
+            All Time
+          </Button>
+          <View>
+            <Caption>Custom</Caption>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              Today
-            </Button>
-            <Button
-              mode={dateFilter.type === "yesterday" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("yesterday")}
-            >
-              Yesterday
-            </Button>
-            <Button
-              mode={dateFilter.type === "thisWeek" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("thisWeek")}
-            >
-              This Week
-            </Button>
-            <Button
-              mode={dateFilter.type === "lastWeek" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("lastWeek")}
-            >
-              Last Week
-            </Button>
-            <Button
-              mode={dateFilter.type === "thisMonth" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("thisMonth")}
-            >
-              This Month
-            </Button>
-            <Button
-              mode={dateFilter.type === "lastMonth" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("lastMonth")}
-            >
-              Last Month
-            </Button>
-            <Button
-              mode={dateFilter.type === "thisYear" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("thisYear")}
-            >
-              This Year
-            </Button>
-            <Button
-              mode={dateFilter.type === "last3Months" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("last3Months")}
-            >
-              Last 3 Months
-            </Button>
-            <Button
-              mode={dateFilter.type === "last6Months" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("last6Months")}
-            >
-              Last 6 Months
-            </Button>
-            <Button
-              mode={dateFilter.type === "all" ? "contained" : "text"}
-              style={styles.btn}
-              onPress={() => handleChangeFilter("all")}
-            >
-              All Time
-            </Button>
-            <View>
-              <Caption>Custom</Caption>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <View style={styles.customPeriodBtnContainer}>
-                  <Button onPress={() => setModalTypeVisible("startDate")}>
-                    {customPeriod.changed
-                      ? format(customPeriod.start, dateFormat)
-                      : "Start Date"}
-                  </Button>
+              <View style={styles.customPeriodBtnContainer}>
+                <Button onPress={() => setModalTypeVisible("startDate")}>
+                  {customPeriod.changed
+                    ? format(customPeriod.start, dateFormat)
+                    : "Start Date"}
+                </Button>
+                <IconButton
+                  icon="swap-horizontal"
+                  onPress={swapCustomPeriodDates}
+                  style={{borderRadius: theme.roundness * 4}}
+                  size={16}
+                />
+                <Button onPress={() => setModalTypeVisible("endDate")}>
+                  {customPeriod.changed
+                    ? format(customPeriod.end, dateFormat)
+                    : "End Date"}
+                </Button>
+                {customPeriod.changed && (
                   <IconButton
-                    icon="swap-horizontal"
-                    onPress={swapCustomPeriodDates}
+                    onPress={() =>
+                      handleCustomFilter(customPeriod.start, customPeriod.end)
+                    }
                     size={16}
-                    // color={theme.colors.primary}
+                    icon="checkmark"
                   />
-                  <Button onPress={() => setModalTypeVisible("endDate")}>
-                    {customPeriod.changed
-                      ? format(customPeriod.end, dateFormat)
-                      : "End Date"}
-                  </Button>
-                  {customPeriod.changed && (
-                    <IconButton
-                      onPress={() =>
-                        handleCustomFilter(customPeriod.start, customPeriod.end)
-                      }
-                      size={16}
-                      // color={theme.colors.primary}
-                      icon="checkmark"
-                    />
-                  )}
-                </View>
+                )}
               </View>
             </View>
           </View>
-        </Modal>
-      </Portal>
+        </View>
+      </ModalContainer>
     );
 };
 

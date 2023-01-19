@@ -9,6 +9,7 @@ interface Props {
   onPress?: () => void;
   visibleItems?: Animated.SharedValue<ViewToken[]>;
   base: string;
+  isDefault?: boolean;
 }
 
 const RateItem = ({
@@ -16,6 +17,7 @@ const RateItem = ({
   onPress,
   visibleItems,
   base,
+  isDefault,
 }: Props) => {
   const rStyle = useAnimatedStyle(() => {
     const isVisible = Boolean(
@@ -32,15 +34,14 @@ const RateItem = ({
       <TouchableRipple onPress={onPress}>
         <View style={styles.container}>
           <Text variant="headlineSmall" numberOfLines={1} style={styles.symbol}>
-            {symbol_native}
+            {symbol}
           </Text>
           <View>
             <Text variant="titleMedium" numberOfLines={1}>
               {name}
             </Text>
             <Text numberOfLines={1} variant="bodyMedium">
-              {base}1000 = {symbol_native}
-              {rate.toFixed(2)}
+              {`${base} 1000 = ${symbol_native} ${rate.toFixed(2)}`}
             </Text>
           </View>
         </View>

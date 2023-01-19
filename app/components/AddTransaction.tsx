@@ -1,13 +1,6 @@
 import {StyleSheet, View} from "react-native";
 import React, {useState, useCallback, useEffect} from "react";
-import {
-  Modal,
-  Portal,
-  TextInput,
-  IconButton,
-  Button,
-  Text,
-} from "react-native-paper";
+import {TextInput, IconButton, Button, Text} from "react-native-paper";
 import {Transaction} from "../realm/Transaction";
 import CategoryItem from "./CategoryItem";
 import {useData} from "../providers/DataProvider";
@@ -22,6 +15,9 @@ import {useRealm} from "../realm";
 import {useTranslation} from "react-i18next";
 import {useCustomTheme} from "../themes";
 import {useSettings} from "../providers/SettingsProvider";
+import ModalContainer from "./ModalContainer";
+import {useExchangeRate} from "../providers/ExchangeRatesProvider";
+import Amount from "./Amount";
 
 type Props = {
   visible: boolean;
@@ -48,7 +44,7 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
   });
 
   const {currency: defaultCurrency} = useSettings();
-
+  const {rates} = useExchangeRate();
   const [currency, setCurrency] = useState(defaultCurrency.code);
   const [viewModal, setViewModal] = useState("datepicker");
   const {category} = useData();
@@ -140,8 +136,9 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
   };
 
   const deleteTransaction = useCallback(
-    (transaction: Transaction) => {
+    (transaction: Transaction | undefined) => {
       realm.write(() => {
+        if (!transaction) return;
         realm.delete(transaction);
         onDismiss();
       });
@@ -176,121 +173,109 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
     );
   if (visible && viewModal === "transaction")
     return (
-      <Portal>
-        <Modal
-          visible={visible}
-          onDismiss={onDismiss}
-          contentContainerStyle={styles.modal}
+      <ModalContainer
+        visible={visible}
+        title={"Add Transaction"}
+        onDelete={() => deleteTransaction(item)}
+        showDelete={Boolean(item)}
+        barColor={theme.colors.cardToneBackground}
+        onDismiss={onDismiss}
+      >
+        <View
+          style={{
+            backgroundColor: theme.colors.cardToneBackground,
+            padding: 8,
+          }}
         >
+          <Text variant="labelLarge" style={{marginBottom: 4}}>
+            {t("date")}
+          </Text>
+          <Button
+            icon="calendar"
+            mode="outlined"
+            onPress={() => setViewModal("datepicker")}
+          >
+            {values.date.toLocaleDateString()}
+          </Button>
+        </View>
+        <View
+          style={{
+            backgroundColor: theme.colors.cardToneBackground,
+            padding: 8,
+          }}
+        >
+          <Text variant="labelLarge">{t("amount")}</Text>
+          <TextInput
+            right={
+              <TextInput.Icon
+                onPress={() => setViewModal("currency")}
+                icon="repeat"
+              />
+            }
+            left={<TextInput.Affix text={currency} />}
+            value={values.amount}
+            onChangeText={text => setValues(prev => ({...prev, amount: text}))}
+            mode="outlined"
+            keyboardType="decimal-pad"
+            style={theme.fonts.titleLarge}
+          />
+          {currency !== defaultCurrency.code ? (
+            <Amount
+              amount={
+                parseFloat(values.amount) *
+                (rates.find(rate => rate.code === currency)?.rate as number)
+              }
+            />
+          ) : null}
+        </View>
+        <View style={styles.dualToneContainer}>
           <View
             style={[
-              styles.actionBtnContainer,
+              styles.dualToneColor,
               {backgroundColor: theme.colors.cardToneBackground},
             ]}
-          >
-            <IconButton
-              icon="close"
-              onPress={onDismiss}
-              style={styles.iconBtn}
-            />
-            {item && (
-              <IconButton
-                icon="trash"
-                style={styles.iconBtn}
-                onPress={() => deleteTransaction(item)}
-              />
-            )}
-          </View>
-          <View
+          />
+          <IconButton
+            size={40}
+            icon={item ? "checkmark-done" : "add"}
             style={{
-              backgroundColor: theme.colors.cardToneBackground,
-              padding: 8,
+              marginHorizontal: 8,
+              marginVertical: 0,
+              borderRadius: theme.roundness * 4,
+              backgroundColor: theme.colors.inversePrimary,
             }}
-          >
-            <Text variant="labelLarge" style={{marginBottom: 4}}>
-              {t("date")}
-            </Text>
-            <Button
-              icon="calendar"
-              mode="outlined"
-              onPress={() => setViewModal("datepicker")}
-            >
-              {values.date.toLocaleDateString()}
-            </Button>
-          </View>
-          <View
-            style={{
-              backgroundColor: theme.colors.cardToneBackground,
-              padding: 8,
-            }}
-          >
-            <Text variant="labelLarge">{t("amount")}</Text>
-            <TextInput
-              right={
-                <TextInput.Icon
-                  onPress={() => setViewModal("currency")}
-                  icon="repeat"
-                />
-              }
-              left={<TextInput.Affix text={currency} />}
-              value={values.amount}
-              onChangeText={text =>
-                setValues(prev => ({...prev, amount: text}))
-              }
-              mode="outlined"
-              keyboardType="decimal-pad"
-              style={theme.fonts.titleLarge}
+            onPress={handlePressAdd}
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: theme.colors.surface,
+            zIndex: -1,
+            paddingHorizontal: 8,
+          }}
+        >
+          <Text variant="labelLarge" style={{marginBottom: 4}}>
+            {t("category")}
+          </Text>
+          {values.category && (
+            <CategoryItem
+              item={values.category}
+              onPress={() => setViewModal("category")}
             />
-          </View>
-          <View style={styles.dualToneContainer}>
-            <View
-              style={[
-                styles.dualToneColor,
-                {backgroundColor: theme.colors.cardToneBackground},
-              ]}
-            />
-            <IconButton
-              size={40}
-              icon={item ? "checkmark-done" : "add"}
-              style={{
-                marginHorizontal: 8,
-                marginVertical: 0,
-                borderRadius: theme.roundness * 4,
-                backgroundColor: theme.colors.inversePrimary,
-              }}
-              onPress={handlePressAdd}
-            />
-          </View>
-          <View
-            style={{
-              backgroundColor: theme.colors.surface,
-              zIndex: -1,
-              paddingHorizontal: 8,
-            }}
-          >
-            <Text variant="labelLarge" style={{marginBottom: 4}}>
-              {t("category")}
-            </Text>
-            {values.category && (
-              <CategoryItem
-                item={values.category}
-                onPress={() => setViewModal("category")}
-              />
-            )}
-          </View>
-          <View style={{padding: 8}}>
-            <Text variant="labelLarge" style={{marginBottom: 0}}>
-              {t("note")} ({t("optional")})
-            </Text>
-            <TextInput
-              multiline
-              mode="outlined"
-              value={values.note}
-              onChangeText={text => setValues(prev => ({...prev, note: text}))}
-            />
-          </View>
-        </Modal>
-      </Portal>
+          )}
+        </View>
+        <View style={{padding: 8}}>
+          <Text variant="labelLarge" style={{marginBottom: 0}}>
+            {t("note")} ({t("optional")})
+          </Text>
+          <TextInput
+            multiline
+            mode="outlined"
+            value={values.note}
+            onChangeText={text => setValues(prev => ({...prev, note: text}))}
+          />
+        </View>
+      </ModalContainer>
     );
   else {
     return <View />;
@@ -300,18 +285,6 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
 export default AddTransaction;
 
 const styles = StyleSheet.create({
-  actionBtnContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  modal: {
-    margin: 24,
-    backgroundColor: "white",
-  },
-  iconBtn: {
-    margin: 0,
-  },
   dualToneContainer: {
     position: "relative",
     alignItems: "flex-end",
