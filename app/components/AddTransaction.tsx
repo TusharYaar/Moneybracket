@@ -30,22 +30,22 @@ type ValueProps = {
   amount: string;
   date: Date;
   note: string;
+  currency: string;
 };
 const AddTransaction = ({visible, item, onDismiss}: Props) => {
   const {t} = useTranslation();
 
+  const {currency: defaultCurrency} = useSettings();
   const {theme} = useCustomTheme();
-
   const [values, setValues] = useState<ValueProps>({
     category: null,
     amount: "0",
     date: new Date(),
     note: "",
+    currency: defaultCurrency.code,
   });
 
-  const {currency: defaultCurrency} = useSettings();
   const {rates} = useExchangeRate();
-  const [currency, setCurrency] = useState(defaultCurrency.code);
   const [viewModal, setViewModal] = useState("datepicker");
   const {category} = useData();
 
@@ -90,11 +90,13 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
   useEffect(() => {
     setViewModal("transaction");
     if (item) {
+      const {amount, category, date, note} = item;
       setValues({
-        amount: `${item.amount}`,
-        category: item.category,
-        date: new Date(item.date),
-        note: item.note,
+        amount: `${amount}`,
+        category: category,
+        date: new Date(date),
+        note: note,
+        currency: defaultCurrency.code,
       });
     } else {
       setValues({
@@ -102,9 +104,10 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
         category: category[0],
         date: new Date(),
         note: "",
+        currency: defaultCurrency.code,
       });
     }
-  }, [item]);
+  }, [item, defaultCurrency]);
 
   const updateDate = useCallback((date: DateTimePickerEvent) => {
     if (date.nativeEvent.timestamp) {
@@ -117,7 +120,7 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
   }, []);
 
   const updateCurrency = useCallback((code: string) => {
-    setCurrency(code.toUpperCase());
+    setValues(prev => ({...prev, currency: code.toUpperCase()}));
     setViewModal("transaction");
   }, []);
 
@@ -212,18 +215,19 @@ const AddTransaction = ({visible, item, onDismiss}: Props) => {
                 icon="repeat"
               />
             }
-            left={<TextInput.Affix text={currency} />}
+            left={<TextInput.Affix text={values.currency} />}
             value={values.amount}
             onChangeText={text => setValues(prev => ({...prev, amount: text}))}
             mode="outlined"
             keyboardType="decimal-pad"
             style={theme.fonts.titleLarge}
           />
-          {currency !== defaultCurrency.code ? (
+          {values.currency !== defaultCurrency.code ? (
             <Amount
               amount={
                 parseFloat(values.amount) *
-                (rates.find(rate => rate.code === currency)?.rate as number)
+                (rates.find(rate => rate.code === values.currency)
+                  ?.rate as number)
               }
             />
           ) : null}

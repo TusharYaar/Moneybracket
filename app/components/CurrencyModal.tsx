@@ -22,7 +22,7 @@ const CurrencyModal = ({visible, onDismiss, onItemSelect}: Props) => {
       contentContainerStyle={{flex: 1}}
     >
       <FlashList
-        data={rates.sort((a, b) => (a.code === currency.code ? -1 : 1))}
+        data={rates.sort((a, b) => (a.isFavorite ? -1 : 1))}
         estimatedItemSize={19}
         renderItem={({item}) => (
           <RateItem

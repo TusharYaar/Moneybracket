@@ -8,6 +8,7 @@ const RATES = [
     rounding: 0,
     symbol: "AED",
     symbol_native: "د.إ.‏",
+    isFavorite: true,
   },
   {
     code: "AFN",
@@ -468,6 +469,7 @@ const RATES = [
     rounding: 0,
     symbol: "Rs",
     symbol_native: "টকা",
+    isFavorite: true,
   },
   {
     code: "IQD",
@@ -1058,6 +1060,7 @@ const RATES = [
     rounding: 0,
     symbol: "$",
     symbol_native: "$",
+    isFavorite: true,
   },
   {
     code: "UYU",

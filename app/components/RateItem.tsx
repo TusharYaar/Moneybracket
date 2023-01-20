@@ -1,7 +1,7 @@
 import {StyleSheet, View, ViewToken} from "react-native";
 import React from "react";
 import {Rate} from "../providers/ExchangeRatesProvider";
-import {Text, TouchableRipple} from "react-native-paper";
+import {IconButton, Text, TouchableRipple} from "react-native-paper";
 import Animated, {useAnimatedStyle, withTiming} from "react-native-reanimated";
 
 interface Props {
@@ -9,15 +9,19 @@ interface Props {
   onPress?: () => void;
   visibleItems?: Animated.SharedValue<ViewToken[]>;
   base: string;
+  toggleFavorite?: () => void;
   isDefault?: boolean;
+  value?: number;
 }
 
 const RateItem = ({
-  item: {rate, symbol_native, name, code, symbol},
+  item: {rate, symbol_native, name, code, symbol, isFavorite},
   onPress,
   visibleItems,
   base,
   isDefault,
+  value,
+  toggleFavorite,
 }: Props) => {
   const rStyle = useAnimatedStyle(() => {
     const isVisible = Boolean(
@@ -36,14 +40,20 @@ const RateItem = ({
           <Text variant="headlineSmall" numberOfLines={1} style={styles.symbol}>
             {symbol}
           </Text>
-          <View>
+          <View style={{flex: 1}}>
             <Text variant="titleMedium" numberOfLines={1}>
               {name}
             </Text>
             <Text numberOfLines={1} variant="bodyMedium">
-              {`${base} 1000 = ${symbol_native} ${rate.toFixed(2)}`}
+              {`${base} ${value ? value : "1000"} = ${symbol_native} ${
+                value ? ((value / 1000) * rate).toFixed(2) : rate.toFixed(2)
+              }`}
             </Text>
           </View>
+          <IconButton
+            icon={isFavorite ? "star" : "star-outline"}
+            onPress={toggleFavorite}
+          />
         </View>
       </TouchableRipple>
     </Animated.View>

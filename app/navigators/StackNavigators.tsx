@@ -1,11 +1,7 @@
 import React from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import Setting from "../screens/Setting";
-import {
-  CategoryTabNavigator,
-  ExchangeTabNavigator,
-  TrackerTabNavigator,
-} from "./TabNavigators";
+import {CategoryTabNavigator, TrackerTabNavigator} from "./TabNavigators";
 import {IconButton} from "react-native-paper";
 import {DrawerScreenProps} from "@react-navigation/drawer";
 import {DrawerParamList} from "./DrawerNavigator";
@@ -13,13 +9,14 @@ import {useCustomTheme} from "../themes";
 import FontSetting from "../screens/FontSetting";
 import {useTranslation} from "react-i18next";
 import ThemeSetting from "../screens/ThemeSetting";
+import Rates from "../screens/Exchange/Rates";
 
 export type StackParamList = {
   TrackerTab: undefined;
 
   CategoryTab: undefined;
 
-  ExchangeTab: undefined;
+  ExchangeRateScreen: undefined;
 
   SettingScreen: undefined;
   FontSetting: undefined;
@@ -78,8 +75,8 @@ export const ExchangeStackNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="ExchangeTab"
-        component={ExchangeTabNavigator}
+        name="ExchangeRateScreen"
+        component={Rates}
         options={({navigation}) => ({
           headerLeft: () => (
             <IconButton icon="menu" onPress={() => navigation.openDrawer()} />

@@ -30,6 +30,7 @@ export type Rate = {
   rounding: number;
   code: string;
   name_plural: string;
+  isFavorite?: boolean;
 };
 
 const ExchangeRateContext = createContext({
@@ -60,7 +61,7 @@ const ExchangeRatesProvider = ({children}: {children: JSX.Element}) => {
     const getRates = async () => {
       let result = await fetchRates("INR");
       result.sort((a, b) => a.name.localeCompare(b.name));
-      setRates(result);
+      setRates(result as Rate[]);
     };
     getRates();
   }, []);

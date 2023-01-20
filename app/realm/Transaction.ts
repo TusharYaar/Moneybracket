@@ -15,6 +15,7 @@ export class Transaction extends Realm.Object {
     date: Date,
     note: string,
     category: Category,
+    isFavorite = false,
   ) {
     return {
       _id: new Realm.BSON.ObjectId(),
@@ -24,6 +25,7 @@ export class Transaction extends Realm.Object {
       createdAt: new Date().toUTCString(),
       category,
       currency,
+      isFavorite,
     };
   }
 
@@ -39,6 +41,7 @@ export class Transaction extends Realm.Object {
       currency: "string",
       category: "Category?",
       createdAt: "string",
+      isFavorite: "bool",
     },
   };
 }

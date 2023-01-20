@@ -1,7 +1,5 @@
 import React from "react";
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
-import Conversion from "../screens/Exchange/Conversion";
-import Rates from "../screens/Exchange/Rates";
 import AllTransaction from "../screens/Tracker/AllTransaction";
 import TrackerCharts from "../screens/Tracker/Charts";
 import CategoryCharts from "../screens/Category/Charts";
@@ -18,8 +16,6 @@ import DateFilterSelector from "../components/DateFilterSelector";
 export type TabParamList = {
   AllTransactionScreen: undefined;
   TrackerChartScreen: undefined;
-  RatesScreen: undefined;
-  ConversionScreen: undefined;
   AllCategoryScreen: undefined;
   CategoryChartScreen: undefined;
   AllAccountScreen: undefined;
@@ -59,21 +55,6 @@ export const TrackerTabNavigator = () => {
         />
       </Tab.Navigator>
     </>
-  );
-};
-
-export const ExchangeTabNavigator = () => {
-  const {theme} = useCustomTheme();
-
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarLabelStyle: theme.fonts.titleSmall,
-      }}
-    >
-      <Tab.Screen name="RatesScreen" component={Rates} />
-      <Tab.Screen name="ConversionScreen" component={Conversion} />
-    </Tab.Navigator>
   );
 };
 
