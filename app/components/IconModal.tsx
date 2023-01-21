@@ -1,4 +1,4 @@
-import React, {useDeferredValue, useState} from "react";
+import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
 import {FlashList} from "@shopify/flash-list";
 import {IconButton, Text, TextInput} from "react-native-paper";
@@ -8,6 +8,7 @@ import {useCustomTheme} from "../themes";
 
 import {chooseBetterContrast} from "../utils/colors";
 import ModalContainer from "./ModalContainer";
+import {useDebounce} from "use-debounce";
 
 type Props = {
   visible: boolean;
@@ -19,7 +20,7 @@ type Props = {
 const IconModal = ({visible, onDismiss, color, onItemSelect}: Props) => {
   const {theme} = useCustomTheme();
   const [search, setSearch] = useState("");
-  const query = useDeferredValue(search);
+  const [query] = useDebounce(search, 500);
   return (
     <ModalContainer
       visible={visible}
@@ -35,7 +36,7 @@ const IconModal = ({visible, onDismiss, color, onItemSelect}: Props) => {
         estimatedItemSize={71}
         extraData={query}
         numColumns={5}
-        data={ICONS.filter(icon => icon.includes(search))}
+        data={ICONS.filter(icon => icon.includes(search.toLowerCase()))}
         renderItem={({item}) => (
           <IconButton
             accessibilityLabel={`${item} icon`}

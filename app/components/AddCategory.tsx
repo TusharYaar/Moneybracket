@@ -1,7 +1,6 @@
 import {View, StyleSheet, FlatList} from "react-native";
 import React, {useState, useCallback, useEffect} from "react";
 import {
-  Portal,
   Text,
   TextInput,
   IconButton,
@@ -13,12 +12,13 @@ import {Category} from "../realm/Category";
 import ColorChoice from "./ColorChoice";
 import IconModal from "./IconModal";
 
-import {COLORS} from "../data";
+import {COLORS, ICONS} from "../data";
 import {useTranslation} from "react-i18next";
 import {useCustomTheme} from "../themes";
 
 import {chooseBetterContrast} from "../utils/colors";
 import ModalContainer from "./ModalContainer";
+import {useDebounce} from "use-debounce";
 
 const CATEGORY_TYPES = [
   {
@@ -62,6 +62,14 @@ const AddCategory = ({visible, item, onDismiss}: Props) => {
   });
 
   const [iconModal, setIconModal] = useState(false);
+  const [search] = useDebounce(values.title, 500);
+
+  useEffect(() => {
+    const icon = ICONS.find(i =>
+      i.toLowerCase().includes(search.toLowerCase()),
+    );
+    if (icon) setValues(prev => ({...prev, icon}));
+  }, [search]);
 
   useEffect(() => {
     if (item) {

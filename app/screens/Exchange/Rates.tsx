@@ -1,5 +1,5 @@
 import {Text, View} from "react-native";
-import React, {useDeferredValue, useEffect} from "react";
+import React, {useEffect} from "react";
 import {useExchangeRate} from "../../providers/ExchangeRatesProvider";
 import RateItem from "../../components/RateItem";
 import {FlashList} from "@shopify/flash-list";
@@ -9,6 +9,7 @@ import {useCustomTheme} from "../../themes";
 import CurrencyModal from "../../components/CurrencyModal";
 import {NativeStackScreenProps} from "@react-navigation/native-stack";
 import {StackParamList} from "../../navigators/StackNavigators";
+import {useDebounce} from "use-debounce";
 
 type Props = NativeStackScreenProps<StackParamList, "ExchangeRateScreen">;
 
@@ -37,8 +38,9 @@ const Rates = ({navigation}: Props) => {
     currency: currency.code,
   });
   const [searchValue, setSearchvalue] = React.useState("");
+  const [search] = useDebounce(searchValue, 1000);
 
-  const amount = useDeferredValue(values.amount);
+  const [amount] = useDebounce(values.amount, 1000);
 
   const [viewCurrencyModal, setViewCurrencyModal] = React.useState(false);
 
@@ -96,20 +98,20 @@ const Rates = ({navigation}: Props) => {
           data={rates
             .filter(
               a =>
-                searchValue.length === 0 ||
-                a.name.toLowerCase().includes(searchValue.toLowerCase()),
+                search.length === 0 ||
+                a.name.toLowerCase().includes(search.toLowerCase()),
             )
             .sort(a => (a.isFavorite ? -1 : 0))}
           estimatedItemSize={114}
           renderItem={({item}) => (
             <RateItem
               item={item}
-              value={parseFloat(amount)}
+              value={parseFloat(amount.length > 0 ? amount : "1000")}
               base={currency.symbol_native}
               toggleFavorite={() => toggleFavorite(item.code)}
             />
           )}
-          extraData={amount}
+          extraData={amount + search}
         />
       </View>
     );
