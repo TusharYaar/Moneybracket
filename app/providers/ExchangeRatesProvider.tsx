@@ -97,7 +97,7 @@ const ExchangeRatesProvider = ({children}: {children: JSX.Element}) => {
         rate: rates[value[0]],
         isFavorite: favorites.includes(value[0]),
       }))
-      .sort((a, b) => (a.isFavorite ? -1 : a.name.localeCompare(b.name)));
+      .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
   }, [rates, favorites]);
 
   const toggleFavorite = useCallback((code: string) => {

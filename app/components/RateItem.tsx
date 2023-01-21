@@ -44,11 +44,21 @@ const RateItem = ({
             <Text variant="titleMedium" numberOfLines={1}>
               {name}
             </Text>
-            <Text numberOfLines={1} variant="bodyMedium">
-              {`${base} ${value ? value : "1000"} = ${symbol_native} ${
-                value ? ((value / 1000) * rate).toFixed(2) : rate.toFixed(2)
-              }`}
-            </Text>
+            <View style={{flex: 1, flexDirection: "row", flexWrap: "wrap"}}>
+              <Text numberOfLines={1} variant="bodyMedium">
+                {`${base} ${value ? value : "1000"}`}
+              </Text>
+              <Text numberOfLines={1} variant="bodyMedium">
+                {" = "}
+              </Text>
+              <Text numberOfLines={1} variant="bodyMedium">
+                {`${symbol_native} ${
+                  value && value > 0
+                    ? ((value / 1000) * rate).toFixed(2)
+                    : rate.toFixed(2)
+                }`}
+              </Text>
+            </View>
           </View>
           <IconButton
             icon={isFavorite ? "star" : "star-outline"}

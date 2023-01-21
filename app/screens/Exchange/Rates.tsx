@@ -1,24 +1,42 @@
 import {Text, View} from "react-native";
-import React, {useDeferredValue} from "react";
+import React, {useDeferredValue, useEffect} from "react";
 import {useExchangeRate} from "../../providers/ExchangeRatesProvider";
 import RateItem from "../../components/RateItem";
 import {FlashList} from "@shopify/flash-list";
 import {useSettings} from "../../providers/SettingsProvider";
-import {TextInput} from "react-native-paper";
+import {IconButton, TextInput} from "react-native-paper";
 import {useCustomTheme} from "../../themes";
 import CurrencyModal from "../../components/CurrencyModal";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import {StackParamList} from "../../navigators/StackNavigators";
 
-const Rates = () => {
+type Props = NativeStackScreenProps<StackParamList, "ExchangeRateScreen">;
+
+const Rates = ({navigation}: Props) => {
   const {rates, toggleFavorite} = useExchangeRate();
   const {currency} = useSettings();
   const {
     theme: {fonts, roundness},
   } = useCustomTheme();
+  const [showSearchInput, setShowSearchInput] = React.useState(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: props => (
+        <IconButton
+          icon="search"
+          style={{borderRadius: roundness * 4}}
+          onPress={() => setShowSearchInput(prev => !prev)}
+        />
+      ),
+    });
+  }, [navigation]);
 
   const [values, setValues] = React.useState({
     amount: "1000",
     currency: currency.code,
   });
+  const [searchValue, setSearchvalue] = React.useState("");
 
   const amount = useDeferredValue(values.amount);
 
@@ -59,9 +77,29 @@ const Rates = () => {
             keyboardType="decimal-pad"
             style={fonts.titleLarge}
           />
+          {showSearchInput && (
+            <TextInput
+              left={
+                <TextInput.Icon
+                  icon="search"
+                  style={{borderRadius: roundness * 4}}
+                />
+              }
+              value={searchValue}
+              onChangeText={text => setSearchvalue(text)}
+              mode="outlined"
+              style={fonts.titleLarge}
+            />
+          )}
         </View>
         <FlashList
-          data={rates.sort(a => (a.isFavorite ? -1 : 1))}
+          data={rates
+            .filter(
+              a =>
+                searchValue.length === 0 ||
+                a.name.toLowerCase().includes(searchValue.toLowerCase()),
+            )
+            .sort(a => (a.isFavorite ? -1 : 0))}
           estimatedItemSize={114}
           renderItem={({item}) => (
             <RateItem
