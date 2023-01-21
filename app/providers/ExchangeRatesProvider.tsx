@@ -13,6 +13,8 @@ import {ExchangeRatesServerResponse} from "../types";
 import {getFromStorageOrDefault, setStorage} from "../utils/storage";
 import {format} from "date-fns";
 import {useSettings} from "./SettingsProvider";
+import {useCustomTheme} from "../themes";
+import {parseISO} from "date-fns/esm";
 
 export type RateType = {
   rate: number;
@@ -36,23 +38,30 @@ const DEFAULT = {
     new Date("2023-01-21").toISOString(),
     true,
   ),
+  favorites: JSON.parse(
+    getFromStorageOrDefault("rates/favorites", JSON.stringify(["INR"]), true),
+  ),
 };
 
 const ExchangeRateContext = createContext({
   rates: [] as RateType[],
   fetchRates: () => {},
+  toggleFavorite: (code: string) => {},
+  favorites: [] as string[],
 });
 
 export const useExchangeRate = () => useContext(ExchangeRateContext);
 
 const ExchangeRatesProvider = ({children}: {children: JSX.Element}) => {
+  const {showErrorSnackbar, showSuccessSnackbar} = useCustomTheme();
+
   const {
     currency: {code},
   } = useSettings();
   const [rates, setRates] = useState(DEFAULT.rates);
+  const [favorites, setFavorites] = useState<string[]>(DEFAULT.favorites);
 
   const fetchRates = useCallback(async () => {
-    console.log("Fetching Rates");
     try {
       const request = await fetch(
         `https://api.exchangerate.host/latest/?base=${code}&amount=1000&v=${format(
@@ -64,27 +73,49 @@ const ExchangeRatesProvider = ({children}: {children: JSX.Element}) => {
       setStorage("rates/lastUpdated", new Date(response.date).toISOString());
       setStorage("rates/rates", JSON.stringify(response.rates));
       setRates(response.rates);
+      showSuccessSnackbar("Rates Updated Successfully");
     } catch (e) {
-      console.log(e);
+      showErrorSnackbar("Error");
     }
   }, [code]);
 
   useEffect(() => {
     const getRates = async () => {
-      await fetchRates();
+      if (
+        format(parseISO(DEFAULT.lastUpdated), "yyyy-MM-dd") !==
+        format(new Date(), "yyyy-MM-dd")
+      )
+        await fetchRates();
     };
     getRates();
   }, []);
 
-  const _rates = useMemo(() => {
-    return Object.entries(CURRENCIES).map(value => ({
-      ...value[1],
-      rate: rates[value[0]],
-    }));
-  }, [rates]);
+  const _rates: RateType[] = useMemo(() => {
+    return Object.entries(CURRENCIES)
+      .map(value => ({
+        ...value[1],
+        rate: rates[value[0]],
+        isFavorite: favorites.includes(value[0]),
+      }))
+      .sort((a, b) => (a.isFavorite ? -1 : a.name.localeCompare(b.name)));
+  }, [rates, favorites]);
+
+  const toggleFavorite = useCallback((code: string) => {
+    setFavorites(prev => {
+      const arr = prev.includes(code)
+        ? prev.filter(a => a !== code)
+        : [...prev, code];
+      setStorage("rates/favorites", JSON.stringify(arr));
+      return arr;
+    });
+  }, []);
+
+  console.log(favorites);
 
   return (
-    <ExchangeRateContext.Provider value={{rates: _rates, fetchRates}}>
+    <ExchangeRateContext.Provider
+      value={{rates: _rates, fetchRates, toggleFavorite, favorites}}
+    >
       {children}
     </ExchangeRateContext.Provider>
   );

@@ -1,6 +1,12 @@
-import React, {useContext, createContext, useState, useMemo} from "react";
+import React, {
+  useContext,
+  createContext,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import {NavigationContainer} from "@react-navigation/native";
-import {Provider as PaperProvider} from "react-native-paper";
+import {Provider as PaperProvider, Snackbar} from "react-native-paper";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CustomTheme} from "../types";
@@ -14,6 +20,8 @@ type Props = {
   changeTheme: (theme: string) => void;
   changeFont: (font: string) => void;
   theme: CustomTheme;
+  showErrorSnackbar: (message: string) => void;
+  showSuccessSnackbar: (message: string) => void;
 };
 
 const ThemeContext = createContext<Props>({
@@ -21,6 +29,8 @@ const ThemeContext = createContext<Props>({
   changeTheme: () => {},
   changeFont: () => {},
   theme: AVALIBLE_THEMES[0],
+  showErrorSnackbar: (message: string) => {},
+  showSuccessSnackbar: (message: string) => {},
 });
 
 export const useCustomTheme = () => useContext(ThemeContext);
@@ -40,6 +50,12 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
     return theme;
   }, [theme, font]);
 
+  const [snackbar, setSnackbar] = useState({
+    message: "",
+    visible: false,
+    type: "error",
+  });
+
   const handleThemeChange = (theme: string) => {
     setTheme(AVALIBLE_THEMES.find(_t => _t.id === theme) || AVALIBLE_THEMES[0]);
     SETTINGS.updateTheme(theme);
@@ -51,6 +67,16 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
     );
     SETTINGS.updateFont(font);
   };
+  const showSuccessSnackbar = useCallback((message: string) => {
+    setSnackbar({message, visible: true, type: "success"});
+  }, []);
+  const showErrorSnackbar = useCallback((message: string) => {
+    setSnackbar({message, visible: true, type: "error"});
+  }, []);
+
+  const dismissSnackbar = useCallback(() => {
+    setSnackbar({message: "", visible: false, type: "error"});
+  }, []);
 
   return (
     <ThemeContext.Provider
@@ -58,6 +84,8 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
         changeTheme: handleThemeChange,
         changeFont: handleFontChange,
         theme,
+        showSuccessSnackbar,
+        showErrorSnackbar,
       }}
     >
       <PaperProvider
@@ -66,7 +94,12 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
           icon: props => <Ionicons {...props} />,
         }}
       >
-        <NavigationContainer>{children}</NavigationContainer>
+        <NavigationContainer>
+          {children}
+          <Snackbar visible={snackbar.visible} onDismiss={dismissSnackbar}>
+            {snackbar.message}
+          </Snackbar>
+        </NavigationContainer>
       </PaperProvider>
     </ThemeContext.Provider>
   );

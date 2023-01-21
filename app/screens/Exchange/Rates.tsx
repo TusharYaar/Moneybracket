@@ -1,8 +1,7 @@
-import {Text, View, ViewToken} from "react-native";
+import {Text, View} from "react-native";
 import React, {useDeferredValue} from "react";
 import {useExchangeRate} from "../../providers/ExchangeRatesProvider";
 import RateItem from "../../components/RateItem";
-import {useSharedValue} from "react-native-reanimated";
 import {FlashList} from "@shopify/flash-list";
 import {useSettings} from "../../providers/SettingsProvider";
 import {TextInput} from "react-native-paper";
@@ -10,8 +9,7 @@ import {useCustomTheme} from "../../themes";
 import CurrencyModal from "../../components/CurrencyModal";
 
 const Rates = () => {
-  const {rates} = useExchangeRate();
-  const visibleItems = useSharedValue<ViewToken[]>([]);
+  const {rates, toggleFavorite} = useExchangeRate();
   const {currency} = useSettings();
   const {
     theme: {fonts, roundness},
@@ -68,15 +66,12 @@ const Rates = () => {
           renderItem={({item}) => (
             <RateItem
               item={item}
-              visibleItems={visibleItems}
               value={parseFloat(amount)}
               base={currency.symbol_native}
+              toggleFavorite={() => toggleFavorite(item.code)}
             />
           )}
           extraData={amount}
-          onViewableItemsChanged={({viewableItems}) =>
-            (visibleItems.value = viewableItems)
-          }
         />
       </View>
     );
