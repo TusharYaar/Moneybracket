@@ -4,24 +4,17 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useMemo,
 } from "react";
 import RATES from "../data/rates";
 import {CURRENCIES} from "../data";
 
-type ServerResponse = {
-  motd: {
-    msg: string;
-    url: string;
-  };
-  success: boolean;
-  base: string;
-  date: string;
-  rates: {
-    [key: string]: number;
-  };
-};
+import {ExchangeRatesServerResponse} from "../types";
+import {getFromStorageOrDefault, setStorage} from "../utils/storage";
+import {format} from "date-fns";
+import {useSettings} from "./SettingsProvider";
 
-export type Rate = {
+export type RateType = {
   rate: number;
   symbol: string;
   name: string;
@@ -33,41 +26,65 @@ export type Rate = {
   isFavorite?: boolean;
 };
 
+const DEFAULT = {
+  rates: JSON.parse(
+    getFromStorageOrDefault("rates/rates", JSON.stringify(RATES), true),
+  ),
+  base: getFromStorageOrDefault("rates/base", "INR", true),
+  lastUpdated: getFromStorageOrDefault(
+    "rates/lastUpdated",
+    new Date("2023-01-21").toISOString(),
+    true,
+  ),
+};
+
 const ExchangeRateContext = createContext({
-  rates: [] as Rate[],
+  rates: [] as RateType[],
+  fetchRates: () => {},
 });
 
 export const useExchangeRate = () => useContext(ExchangeRateContext);
 
 const ExchangeRatesProvider = ({children}: {children: JSX.Element}) => {
-  const [rates, setRates] = useState<Rate[]>([]);
+  const {
+    currency: {code},
+  } = useSettings();
+  const [rates, setRates] = useState(DEFAULT.rates);
 
-  const fetchRates = useCallback(async (base: string) => {
-    // TODO: remove after done with changes
-    return RATES;
-    const request = await fetch(
-      `https://api.exchangerate.host/latest/?base=${base}&amount=1000`,
-    );
-    const response = (await request.json()) as ServerResponse;
-    const _rates = [];
-    for (const curr in response.rates) {
-      if (CURRENCIES[curr] !== undefined)
-        _rates.push({...CURRENCIES[curr], rate: response.rates[curr]});
+  const fetchRates = useCallback(async () => {
+    console.log("Fetching Rates");
+    try {
+      const request = await fetch(
+        `https://api.exchangerate.host/latest/?base=${code}&amount=1000&v=${format(
+          new Date(),
+          "yyyy-MM-dd",
+        )}`,
+      );
+      const response = (await request.json()) as ExchangeRatesServerResponse;
+      setStorage("rates/lastUpdated", new Date(response.date).toISOString());
+      setStorage("rates/rates", JSON.stringify(response.rates));
+      setRates(response.rates);
+    } catch (e) {
+      console.log(e);
     }
-    return _rates;
-  }, []);
+  }, [code]);
 
   useEffect(() => {
     const getRates = async () => {
-      let result = await fetchRates("INR");
-      result.sort((a, b) => a.name.localeCompare(b.name));
-      setRates(result as Rate[]);
+      await fetchRates();
     };
     getRates();
   }, []);
 
+  const _rates = useMemo(() => {
+    return Object.entries(CURRENCIES).map(value => ({
+      ...value[1],
+      rate: rates[value[0]],
+    }));
+  }, [rates]);
+
   return (
-    <ExchangeRateContext.Provider value={{rates}}>
+    <ExchangeRateContext.Provider value={{rates: _rates, fetchRates}}>
       {children}
     </ExchangeRateContext.Provider>
   );

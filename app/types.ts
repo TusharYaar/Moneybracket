@@ -50,3 +50,16 @@ export type Currency = {
   code: string;
   name_plural: string;
 };
+
+export type ExchangeRatesServerResponse = {
+  motd: {
+    msg: string;
+    url: string;
+  };
+  success: boolean;
+  base: string;
+  date: string;
+  rates: {
+    [key: string]: number;
+  };
+};

@@ -1,11 +1,11 @@
 import {StyleSheet, View, ViewToken} from "react-native";
 import React from "react";
-import {Rate} from "../providers/ExchangeRatesProvider";
+import {RateType} from "../providers/ExchangeRatesProvider";
 import {IconButton, Text, TouchableRipple} from "react-native-paper";
 import Animated, {useAnimatedStyle, withTiming} from "react-native-reanimated";
 
 interface Props {
-  item: Rate;
+  item: RateType;
   onPress?: () => void;
   visibleItems?: Animated.SharedValue<ViewToken[]>;
   base: string;
