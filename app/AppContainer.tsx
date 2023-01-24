@@ -59,17 +59,17 @@ let AppContainer = () => {
   return (
     <RealmProvider>
       <SettingsProvider>
-        <I18nextProvider i18n={i18n}>
-          <ThemeProvider>
-            <DataProvider>
-              <ExchangeRatesProvider>
+        <ExchangeRatesProvider>
+          <I18nextProvider i18n={i18n}>
+            <ThemeProvider>
+              <DataProvider>
                 <LockProvider>
                   <App />
                 </LockProvider>
-              </ExchangeRatesProvider>
-            </DataProvider>
-          </ThemeProvider>
-        </I18nextProvider>
+              </DataProvider>
+            </ThemeProvider>
+          </I18nextProvider>
+        </ExchangeRatesProvider>
       </SettingsProvider>
     </RealmProvider>
   );

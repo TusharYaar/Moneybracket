@@ -13,7 +13,6 @@ import {ExchangeRatesServerResponse} from "../types";
 import {getFromStorageOrDefault, setStorage} from "../utils/storage";
 import {format} from "date-fns";
 import {useSettings} from "./SettingsProvider";
-import {useCustomTheme} from "../themes";
 import {parseISO} from "date-fns/esm";
 
 export type RateType = {
@@ -53,8 +52,6 @@ const ExchangeRateContext = createContext({
 export const useExchangeRate = () => useContext(ExchangeRateContext);
 
 const ExchangeRatesProvider = ({children}: {children: JSX.Element}) => {
-  const {showErrorSnackbar, showSuccessSnackbar} = useCustomTheme();
-
   const {
     currency: {code},
   } = useSettings();
@@ -73,9 +70,8 @@ const ExchangeRatesProvider = ({children}: {children: JSX.Element}) => {
       setStorage("rates/lastUpdated", new Date(response.date).toISOString());
       setStorage("rates/rates", JSON.stringify(response.rates));
       setRates(response.rates);
-      showSuccessSnackbar("Rates Updated Successfully");
     } catch (e) {
-      showErrorSnackbar("Error");
+      console.log(e);
     }
   }, [code]);
 
@@ -97,6 +93,7 @@ const ExchangeRatesProvider = ({children}: {children: JSX.Element}) => {
         rate: rates[value[0]],
         isFavorite: favorites.includes(value[0]),
       }))
+      .filter(rate => rate.rate)
       .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
   }, [rates, favorites]);
 
@@ -109,8 +106,6 @@ const ExchangeRatesProvider = ({children}: {children: JSX.Element}) => {
       return arr;
     });
   }, []);
-
-  console.log(favorites);
 
   return (
     <ExchangeRateContext.Provider
