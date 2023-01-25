@@ -1,0 +1,112 @@
+import {MD3Typescale} from "react-native-paper/lib/typescript/types";
+
+const _default: MD3Typescale = {
+  bodyLarge: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 16,
+    fontWeight: "400",
+    letterSpacing: 0.15,
+    lineHeight: 24,
+  },
+  bodyMedium: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 14,
+    fontWeight: "400",
+    letterSpacing: 0.25,
+    lineHeight: 20,
+  },
+  bodySmall: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 12,
+    fontWeight: "400",
+    letterSpacing: 0.4,
+    lineHeight: 16,
+  },
+  default: {fontFamily: "Poppins-Regular", fontWeight: "400", letterSpacing: 0},
+  displayLarge: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 57,
+    fontWeight: "400",
+    letterSpacing: 0,
+    lineHeight: 64,
+  },
+  displayMedium: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 45,
+    fontWeight: "400",
+    letterSpacing: 0,
+    lineHeight: 52,
+  },
+  displaySmall: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 36,
+    fontWeight: "400",
+    letterSpacing: 0,
+    lineHeight: 44,
+  },
+  headlineLarge: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 32,
+    fontWeight: "400",
+    letterSpacing: 0,
+    lineHeight: 40,
+  },
+  headlineMedium: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 28,
+    fontWeight: "400",
+    letterSpacing: 0,
+    lineHeight: 36,
+  },
+  headlineSmall: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 24,
+    fontWeight: "400",
+    letterSpacing: 0,
+    lineHeight: 32,
+  },
+  labelLarge: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 14,
+    fontWeight: "500",
+    letterSpacing: 0.1,
+    lineHeight: 20,
+  },
+  labelMedium: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 12,
+    fontWeight: "500",
+    letterSpacing: 0.5,
+    lineHeight: 16,
+  },
+  labelSmall: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 11,
+    fontWeight: "500",
+    letterSpacing: 0.5,
+    lineHeight: 16,
+  },
+  titleLarge: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 22,
+    fontWeight: "400",
+    letterSpacing: 0,
+    lineHeight: 28,
+  },
+  titleMedium: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 16,
+    fontWeight: "500",
+    letterSpacing: 0.15,
+    lineHeight: 24,
+  },
+  titleSmall: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 14,
+    fontWeight: "500",
+    letterSpacing: 0.1,
+    lineHeight: 20,
+  },
+};
+
+export default _default;

@@ -1,0 +1,31 @@
+{
+    "amountValue": "{{amount, number}}",
+    "transaction": "Transaction",
+    "income": "Income",
+    "expense": "Expense",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "note": "Note",
+    "optional": "Optional",
+    "tracker": "tracker",
+    "modals": {
+        "addCategory": {
+            "iconAndTitle": "Category Icon and Title",
+            "type": "Category Type",
+            "color": "Category Color"
+        }
+    },
+    "screens": {
+        "tracker": {
+            "allTransaction": {
+                "noTransaction": "No Transactions Added"
+            },
+            "charts": {
+                "categorySelected": "{{count}} category selected",
+                "categorySelected_plural": "{{count}} categories selected"
+            }
+        }
+    },
+    "dummyText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+}
