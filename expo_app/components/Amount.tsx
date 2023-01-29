@@ -17,11 +17,10 @@ const Amount = ({ variant = "titleSmall", amount, type, sign }: Props) => {
   const {
     theme: { colors },
   } = useCustomTheme();
-
   return (
-    <Text variant={variant} style={type && { color: colors[type] }}>{`${
-      sign && amount !== 0 ? (amount > 0 ? "+ " : "- ") : ""
-    }${currency.symbol_native}${amount}`}</Text>
+    <Text variant={variant} style={type && { color: colors[type] }}>
+      {`${sign && amount !== 0 ? (amount > 0 ? "+ " : "- ") : ""}${currency.symbol_native}${amount}`}
+    </Text>
   );
 };
 

@@ -80,9 +80,9 @@ const Setting = ({ navigation }: Props) => {
         <Text>{currency.name}</Text>
       </SettingItem>
       {__DEV__ && <SettingItem label={"dummy Categories"} leftIcon="text" onPress={addDummyCategories} />}
-      {__DEV__ && <SettingItem label={"dummy Trans"} leftIcon="text" onPress={addDummy} />}
+      {__DEV__ && category.length > 0 && <SettingItem label={"dummy Trans"} leftIcon="text" onPress={addDummy} />}
       <SettingItem label={"deleteAllData"} leftIcon="text" onPress={deleteAllData} />
-      <SettingItem label={"exportPDF"} leftIcon="text" onPress={() => navigation.navigate("ExportScreen")} />
+      <SettingItem label={"export"} leftIcon="text" onPress={() => navigation.navigate("ExportScreen")} />
       <SettingItem label={"backup"} leftIcon="text" onPress={() => navigation.navigate("BackupScreen")} />
     </ScrollView>
   );

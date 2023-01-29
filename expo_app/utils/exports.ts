@@ -103,7 +103,22 @@ export const createJSON = (transaction: Realm.Results<Transaction>) => {
     note: item.note,
     category: item.category.title,
     type: item.category.type,
-    createdAt: item.createdAt,
+    date: item.date.toISOString(),
   }));
   return data;
+};
+
+export const getType = (file: string) => {
+  const extension = file.split(".");
+  switch (extension[extension.length - 1]) {
+    case "pdf":
+      return "application/pdf";
+    case "csv":
+      return "text/csv";
+    case "xlsx":
+      return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+    default:
+      return "text/plain";
+  }
 };

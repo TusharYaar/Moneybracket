@@ -1,15 +1,18 @@
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 
 import * as FileSystem from "expo-file-system";
 import * as Print from "expo-print";
+import { startActivityAsync } from "expo-intent-launcher";
 import { shareAsync } from "expo-sharing";
 
-import { createCSV, createHTML, createJSON } from "../../utils/exports";
+import { createCSV, createHTML, createJSON, getType } from "../../utils/exports";
 import { useData } from "../../providers/DataProvider";
 import { Button, Text } from "react-native-paper";
 
 import { EXPORTS_DIRECTORY } from "../../data";
+import { FlashList } from "@shopify/flash-list";
+import ExportItem from "../../components/ExportItem";
 
 const Exports = () => {
   const { transaction } = useData();
@@ -40,6 +43,16 @@ const Exports = () => {
     });
 
     setFiles((prev) => [location, ...prev]);
+    const curi = await FileSystem.getContentUriAsync(location);
+    try {
+      startActivityAsync("android.intent.action.VIEW", {
+        data: curi,
+        flags: 1,
+        type: "application/pdf",
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }, [transaction]);
 
   const exportCSV = useCallback(async () => {
@@ -48,6 +61,7 @@ const Exports = () => {
     FileSystem.writeAsStringAsync(location, data, {
       encoding: "utf8",
     });
+
     setFiles((prev) => [location, ...prev]);
   }, [transaction]);
 
@@ -60,18 +74,62 @@ const Exports = () => {
     setFiles((prev) => [location, ...prev]);
   }, [transaction]);
 
+  const openFile = useCallback(async (file: string) => {
+    try {
+      const location = `${EXPORTS_DIRECTORY}/${file}`;
+      const curi = await FileSystem.getContentUriAsync(location);
+      startActivityAsync("android.intent.action.VIEW", {
+        data: curi,
+        flags: 1,
+        type: getType(file),
+      });
+    } catch (e) {
+      console.log(e);
+      console.log("unable to open the file: No app Installed");
+    }
+  }, []);
+
   return (
-    <ScrollView>
-      <Button onPress={exportPDF}>Export PDF</Button>
-      <Button onPress={exportCSV}>Create CSV</Button>
-      <Button onPress={exportJSON}>Export JSON</Button>
-      <View>
-        <Text>{JSON.stringify(files)}</Text>
+    <View style={styles.screen}>
+      <View style={styles.btnContainer}>
+        <Button onPress={exportPDF} style={styles.btn}>
+          Export PDF
+        </Button>
+        <Button onPress={exportCSV} style={styles.btn}>
+          Create CSV
+        </Button>
+        <Button onPress={exportJSON} style={styles.btn}>
+          Export JSON
+        </Button>
+        <Button onPress={exportJSON} style={styles.btn} disabled={true}>
+          Export Excel
+        </Button>
       </View>
-    </ScrollView>
+      <Text>Recent Exports</Text>
+      {files.length > 0 && (
+        <FlashList
+          data={files}
+          renderItem={({ item }) => <ExportItem item={item} onPress={() => openFile(item)} />}
+          estimatedItemSize={100}
+        />
+      )}
+    </View>
   );
 };
 
 export default Exports;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
+
+  btnContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    padding: 10,
+  },
+  btn: {
+    width: "50%",
+  },
+});
