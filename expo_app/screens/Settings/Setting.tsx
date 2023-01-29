@@ -1,22 +1,23 @@
 import { ScrollView, StyleSheet } from "react-native";
 import React, { useCallback } from "react";
-import { useSettings } from "../providers/SettingsProvider";
+import { useSettings } from "../../providers/SettingsProvider";
 // import {useTranslation} from "react-i18next";
-import SettingItem from "../components/SettingItem";
+import SettingItem from "../../components/SettingItem";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "../navigators/StackNavigators";
+import { StackParamList } from "../../navigators/StackNavigators";
 import { Text } from "react-native-paper";
-import { useRealm } from "../realm";
-import { Category } from "../realm/Category";
-import { Dcategories } from "../data/dummy";
-import COLORS from "../data/colors";
-import { ICONS } from "../data";
-import { Transaction } from "../realm/Transaction";
-import { useData } from "../providers/DataProvider";
-import { generateDummyTransaction } from "../utils/dummy";
-import AVALIBLE_FONTS from "../themes/fonts/index";
-import AVALIBLE_THEMES from "../themes/themes";
+import { useRealm } from "../../realm";
+import { Category } from "../../realm/Category";
+import { Dcategories } from "../../data/dummy";
+import COLORS from "../../data/colors";
+import { ICONS } from "../../data";
+import { Transaction } from "../../realm/Transaction";
+import { useData } from "../../providers/DataProvider";
+import { generateDummyTransaction } from "../../utils/dummy";
+
+import AVALIBLE_FONTS from "../../themes/fonts/index";
+import AVALIBLE_THEMES from "../../themes/themes";
 
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 
@@ -25,7 +26,7 @@ const Setting = ({ navigation }: Props) => {
   // const {t} = useTranslation();
   const realm = useRealm();
 
-  const { category } = useData();
+  const { category, transaction } = useData();
 
   const addDummyCategories = useCallback(() => {
     realm.write(() => {
@@ -66,6 +67,7 @@ const Setting = ({ navigation }: Props) => {
       realm.deleteAll();
     });
   }, []);
+
   return (
     <ScrollView contentContainerStyle={styles.screen}>
       <SettingItem label={"fontSettings"} leftIcon="text" onPress={() => navigation.navigate("FontSetting")}>
@@ -80,6 +82,8 @@ const Setting = ({ navigation }: Props) => {
       {__DEV__ && <SettingItem label={"dummy Categories"} leftIcon="text" onPress={addDummyCategories} />}
       {__DEV__ && <SettingItem label={"dummy Trans"} leftIcon="text" onPress={addDummy} />}
       <SettingItem label={"deleteAllData"} leftIcon="text" onPress={deleteAllData} />
+      <SettingItem label={"exportPDF"} leftIcon="text" onPress={() => navigation.navigate("ExportScreen")} />
+      <SettingItem label={"backup"} leftIcon="text" onPress={() => navigation.navigate("BackupScreen")} />
     </ScrollView>
   );
 };

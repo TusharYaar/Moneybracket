@@ -8,6 +8,7 @@ import AVALIBLE_THEMES from "./themes";
 import { useSettings } from "../providers/SettingsProvider";
 import AVALIBLE_FONTS from "./fonts/index";
 import { MD3Typescale } from "react-native-paper/lib/typescript/types";
+import { StatusBar } from "expo-status-bar";
 
 type Props = {
   current?: string;
@@ -83,6 +84,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
         }}
       >
         <NavigationContainer>
+          <StatusBar />
           {children}
           <Snackbar visible={snackbar.visible} onDismiss={dismissSnackbar}>
             {snackbar.message}

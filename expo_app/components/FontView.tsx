@@ -22,8 +22,11 @@ const FontView = ({ font, selected, onPress, style }: Props) => {
       <Text numberOfLines={1} style={font.font.labelLarge}>
         {/* {t("dummyText")} */}
       </Text>
-      <Text numberOfLines={1} style={font.font.bodyMedium}>
+      <Text numberOfLines={2} style={font.font.bodyMedium}>
         {/* {t("dummyText")} */}
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur quas et quam accusantium obcaecati ipsum
+        nulla rerum, harum sit asperiores aperiam aliquam ab voluptate debitis tempora ratione assumenda quia
+        perspiciatis.
       </Text>
       <Button
         mode={selected ? "contained" : "outlined"}

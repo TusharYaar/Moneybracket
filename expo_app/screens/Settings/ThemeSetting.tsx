@@ -1,18 +1,18 @@
-import {FlatList, StyleSheet} from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import React from "react";
-import AVALIBLE_THEMES from "../themes/themes";
-import ThemeObject from "../components/ThemeObject";
-import {useSettings} from "../providers/SettingsProvider";
-import {useCustomTheme} from "../themes";
+import AVALIBLE_THEMES from "../../themes/themes";
+import ThemeObject from "../../components/ThemeObject";
+import { useSettings } from "../../providers/SettingsProvider";
+import { useCustomTheme } from "../../themes";
 
 const ThemeSetting = () => {
-  const {theme} = useSettings();
-  const {changeTheme} = useCustomTheme();
+  const { theme } = useSettings();
+  const { changeTheme } = useCustomTheme();
 
   return (
     <FlatList
       data={AVALIBLE_THEMES}
-      renderItem={({item}) => (
+      renderItem={({ item }) => (
         <ThemeObject
           key={item.id}
           theme={item}
