@@ -16,6 +16,7 @@ import { useSettings } from "../providers/SettingsProvider";
 import ModalContainer from "./ModalContainer";
 import { useExchangeRate } from "../providers/ExchangeRatesProvider";
 import Amount from "./Amount";
+import DeleteDialog from "./DeleteDialog";
 
 type Props = {
   visible: boolean;
@@ -44,8 +45,9 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
   });
 
   const { rates } = useExchangeRate();
-  const [viewModal, setViewModal] = useState("datepicker");
   const { category } = useData();
+  const [viewModal, setViewModal] = useState("datepicker");
+  const [showDelete, setShowDelete] = useState(false);
 
   const realm = useRealm();
 
@@ -127,6 +129,7 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
 
   const deleteTransaction = useCallback(
     (transaction: Transaction | undefined) => {
+      setShowDelete(false);
       realm.write(() => {
         if (!transaction) return;
         realm.delete(transaction);
@@ -147,7 +150,7 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
       <ModalContainer
         visible={visible}
         title={"Add Transaction"}
-        onDelete={() => deleteTransaction(item)}
+        onDelete={() => setShowDelete(true)}
         showDelete={Boolean(item)}
         barColor={theme.colors.cardToneBackground}
         onDismiss={onDismiss}
@@ -217,13 +220,31 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
           <Text variant="labelLarge" style={{ marginBottom: 0 }}>
             {"note"} ({"optional"})
           </Text>
-          <TextInput
-            multiline
-            mode="outlined"
-            value={values.note}
-            onChangeText={(text) => setValues((prev) => ({ ...prev, note: text }))}
-          />
+          <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+            <TextInput
+              multiline
+              mode="outlined"
+              value={values.note}
+              style={{ flex: 1 }}
+              onChangeText={(text) => setValues((prev) => ({ ...prev, note: text }))}
+            />
+            <IconButton
+              icon="image"
+              onPress={() => {}}
+              style={{
+                marginRight: 0,
+                // marginVertical: 0,
+                borderRadius: theme.roundness * 4,
+                backgroundColor: theme.colors.inversePrimary,
+              }}
+            />
+          </View>
         </View>
+        <DeleteDialog
+          visible={showDelete}
+          cnacelAction={() => setShowDelete(false)}
+          deleteAction={() => deleteTransaction(item)}
+        />
       </ModalContainer>
     );
   else {

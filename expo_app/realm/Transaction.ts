@@ -7,9 +7,19 @@ export class Transaction extends Realm.Object {
   createdAt!: string;
   note!: string;
   currency!: string;
+  isFavorite!: boolean;
+  image!: string;
   category!: Category;
 
-  static generate(amount: number, currency: string, date: Date, note: string, category: Category, isFavorite = false) {
+  static generate(
+    amount: number,
+    currency: string,
+    date: Date,
+    note: string,
+    category: Category,
+    isFavorite = false,
+    image = ""
+  ) {
     return {
       _id: new Realm.BSON.ObjectId(),
       note,
@@ -18,6 +28,7 @@ export class Transaction extends Realm.Object {
       createdAt: new Date().toUTCString(),
       category,
       currency,
+      image,
       isFavorite,
     };
   }
@@ -35,6 +46,7 @@ export class Transaction extends Realm.Object {
       category: "Category?",
       createdAt: "string",
       isFavorite: "bool",
+      image: "string",
     },
   };
 }
