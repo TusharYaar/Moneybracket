@@ -2,7 +2,7 @@
   "expo": {
     "name": "Money Bracket",
     "slug": "moneybracket",
-    "version": "1.0.0",
+    "version": "0.5.0",
     "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,6 +22,7 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -30,6 +31,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7f819d50-7144-4e92-9f26-a4e970e6325d"
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import React, { useState, useCallback, useEffect } from "react";
-import { TextInput, IconButton, Button, Text } from "react-native-paper";
+import { TextInput, IconButton, Button, Text, TouchableRipple, Dialog } from "react-native-paper";
 import { Transaction } from "../realm/Transaction";
 import CategoryItem from "./CategoryItem";
 import { useData } from "../providers/DataProvider";
@@ -17,6 +17,9 @@ import ModalContainer from "./ModalContainer";
 import { useExchangeRate } from "../providers/ExchangeRatesProvider";
 import Amount from "./Amount";
 import DeleteDialog from "./DeleteDialog";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import { IMAGES_DIRECTORY } from "../data";
 
 type Props = {
   visible: boolean;
@@ -30,10 +33,10 @@ type ValueProps = {
   date: Date;
   note: string;
   currency: string;
+  image: string;
 };
 const AddTransaction = ({ visible, item, onDismiss }: Props) => {
   // const {t} = useTranslation();
-
   const { currency: defaultCurrency } = useSettings();
   const { theme } = useCustomTheme();
   const [values, setValues] = useState<ValueProps>({
@@ -42,20 +45,55 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
     date: new Date(),
     note: "",
     currency: defaultCurrency.code,
+    image: "",
   });
 
   const { rates } = useExchangeRate();
   const { category } = useData();
   const [viewModal, setViewModal] = useState("datepicker");
   const [showDelete, setShowDelete] = useState(false);
+  const [showImageOptions, setShowImageOptions] = useState(false);
+  const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
+  const [imagePermission, requestImagePermission] = ImagePicker.useMediaLibraryPermissions();
+
+  const checkFolder = useCallback(async () => {
+    const { exists } = await FileSystem.getInfoAsync(IMAGES_DIRECTORY);
+    if (!exists) {
+      await FileSystem.makeDirectoryAsync(IMAGES_DIRECTORY, { intermediates: true });
+    }
+  }, []);
+
+  useEffect(() => {
+    checkFolder();
+  }, []);
+
+  useEffect(() => {
+    if (cameraPermission && !cameraPermission.granted && cameraPermission.canAskAgain) requestCameraPermission();
+    if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) requestImagePermission();
+  }, [cameraPermission, requestCameraPermission, imagePermission, requestImagePermission]);
 
   const realm = useRealm();
 
+  const moveImage = useCallback(async (image: string) => {
+    const name = image.split("/");
+    await FileSystem.moveAsync({
+      from: image,
+      to: `${IMAGES_DIRECTORY}/${name[name.length - 1]}`,
+    });
+    return `${IMAGES_DIRECTORY}/${name[name.length - 1]}`;
+  }, []);
+
   const addNewTransaction = useCallback(
-    ({ amount, date, note, category }: ValueProps) => {
+    async ({ amount, date, note, category, image }: ValueProps) => {
+      const img = image.length > 0 ? await moveImage(image) : "";
+      console.log(img);
       realm.write(() => {
-        if (category)
-          realm.create("Transaction", Transaction.generate(parseFloat(amount), "INR", date, note, category));
+        if (category) {
+          realm.create(
+            "Transaction",
+            Transaction.generate(parseFloat(amount), "INR", date, note, category, false, img)
+          );
+        }
         onDismiss();
       });
     },
@@ -63,29 +101,32 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
   );
 
   const updateTransaction = useCallback(
-    (trans: Transaction, values: ValueProps) => {
+    async (trans: Transaction, values: ValueProps) => {
+      const img = values.image.length > 0 ? await moveImage(values.image) : "";
+
       realm.write(() => {
         if (trans.date !== values.date) trans.date = values.date;
         if (trans.amount !== parseFloat(values.amount)) trans.amount = parseFloat(values.amount);
         if (trans.category !== values.category && values.category) trans.category = values.category;
         if (trans.note !== values.note) trans.note = values.note;
-
+        if (trans.image !== values.image) trans.image = img;
         onDismiss();
       });
     },
-    [onDismiss, realm]
+    [onDismiss, realm, moveImage]
   );
 
   useEffect(() => {
     setViewModal("transaction");
     if (item) {
-      const { amount, category, date, note } = item;
+      const { amount, category, date, note, image } = item;
       setValues({
         amount: `${amount}`,
         category: category,
         date: new Date(date),
         note: note,
         currency: defaultCurrency.code,
+        image,
       });
     } else {
       setValues({
@@ -94,6 +135,7 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
         date: new Date(),
         note: "",
         currency: defaultCurrency.code,
+        image: "",
       });
     }
   }, [item, defaultCurrency]);
@@ -138,6 +180,29 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
     },
     [realm, onDismiss]
   );
+
+  const handleCamera = useCallback(async () => {
+    setShowImageOptions(false);
+    const { assets, canceled } = await ImagePicker.launchCameraAsync();
+    if (!canceled) {
+      setValues((prev) => ({ ...prev, image: assets[0].uri }));
+    }
+  }, []);
+  const removeImage = useCallback(() => {
+    setValues((prev) => ({ ...prev, image: "" }));
+    setShowImageOptions(false);
+  }, []);
+
+  const handlePickImage = useCallback(async () => {
+    setShowImageOptions(false);
+    const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+      allowsMultipleSelection: false,
+      allowsEditing: true,
+    });
+    if (!canceled && assets.length > 0) {
+      setValues((prev) => ({ ...prev, image: assets[0].uri }));
+    }
+  }, []);
 
   if (visible && viewModal === "datepicker")
     return <DateTimePicker mode="date" value={values.date} testID="dateTimePicker" onChange={updateDate} />;
@@ -230,21 +295,37 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
             />
             <IconButton
               icon="image"
-              onPress={() => {}}
+              onPress={() => setShowImageOptions(true)}
               style={{
                 marginRight: 0,
-                // marginVertical: 0,
                 borderRadius: theme.roundness * 4,
                 backgroundColor: theme.colors.inversePrimary,
               }}
             />
           </View>
         </View>
+        {values.image.length > 0 && (
+          <TouchableRipple style={{ marginHorizontal: 8, marginBottom: 8 }} onPress={() => {}}>
+            <Image
+              source={{
+                uri: values.image,
+              }}
+              style={{ height: 100 }}
+            />
+          </TouchableRipple>
+        )}
         <DeleteDialog
           visible={showDelete}
-          cnacelAction={() => setShowDelete(false)}
+          cancelAction={() => setShowDelete(false)}
           deleteAction={() => deleteTransaction(item)}
         />
+        <Dialog visible={showImageOptions} onDismiss={() => setShowImageOptions(false)}>
+          <Dialog.Content>
+            <Button onPress={handleCamera}>Open Camera</Button>
+            <Button onPress={handlePickImage}>Pick Image</Button>
+            {values.image.length > 0 && <Button onPress={removeImage}>Remove Image</Button>}
+          </Dialog.Content>
+        </Dialog>
       </ModalContainer>
     );
   else {

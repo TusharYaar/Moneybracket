@@ -7,7 +7,8 @@ const CURRENCIES = _CURRENCIES;
 
 import { documentDirectory } from "expo-file-system";
 
-export const EXPORTS_DIRECTORY = `${documentDirectory}/Exports`;
-export const BACKUP_DIRECTORY = `${documentDirectory}/Backups`;
+export const EXPORTS_DIRECTORY = `${documentDirectory}Exports`;
+export const BACKUP_DIRECTORY = `${documentDirectory}Backups`;
+export const IMAGES_DIRECTORY = `${documentDirectory}Images`;
 
 export { ICONS, COLORS, CURRENCIES };

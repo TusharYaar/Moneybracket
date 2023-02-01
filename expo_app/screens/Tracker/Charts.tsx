@@ -15,7 +15,7 @@ import CategoryChartsItem from "../../components/CategoryChartsItem";
 import { groupTransactionByDate } from "../../utils/transaction";
 import { endOfMonth, startOfMonth } from "date-fns";
 import {} from "date-fns/esm";
-import Pie from "../../components/Chats/Pie";
+import Pie from "../../components/Charts/Pie";
 
 const Charts = () => {
   const { transaction, category } = useData();
