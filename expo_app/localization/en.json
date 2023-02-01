@@ -1,31 +1,77 @@
 {
     "amountValue": "{{amount, number}}",
-    "transaction": "Transaction",
     "income": "Income",
     "expense": "Expense",
+    "transfer": "Transfer",
     "amount": "Amount",
     "date": "Date",
     "category": "Category",
+    "transaction": "Transaction",
     "note": "Note",
     "optional": "Optional",
     "tracker": "tracker",
-    "modals": {
+    "cancel": "No, Cancel",
+    "delete": "Yes, Delete",
+    "components": {
         "addCategory": {
+            "title": "Add A Category",
             "iconAndTitle": "Category Icon and Title",
             "type": "Category Type",
             "color": "Category Color"
+        },
+        "addTransaction": {
+            "title": "Add A Transaction",
+            "amount": "Amount",
+            "date": "Date",
+            "category": "Category",
+            "note": "Note",
+            "optional": "Optional"
+        },
+        "fontView": {
+            "dummyText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+            "select": "Select",
+            "selected": "Selected"
         }
     },
     "screens": {
         "tracker": {
             "allTransaction": {
-                "noTransaction": "No Transactions Added"
+                "noTransaction": "No Transactions. Try Changing the Period or add a transaction"
             },
             "charts": {
                 "categorySelected": "{{count}} category selected",
                 "categorySelected_plural": "{{count}} categories selected"
             }
+        },
+        "settings": {
+            "backup": {},
+            "export": {
+                "export": "Export",
+                "exportAs": "Export As",
+                "pdf": "PDF",
+                "json": "JSON",
+                "excel": "Excel",
+                "csv": "CSV",
+                "recentExports": "Recent Exports",
+                "noExports": "You have no exports"
+            },
+            "setting": {
+                "font": "Font",
+                "theme": "Theme",
+                "currency": "Currency",
+                "language": "Language",
+                "dateFormat": "Date Format",
+                "deleteAllData": "Delete All Data",
+                "export": "Export",
+                "backup": "Backup",
+                "confirmDeleteBody": "Are you sure you want to delete all data. This includes all Transction data and Categories.",
+                "confirmDeleteTitle": "Delete All Data?"
+            },
+            "theme": {}
         }
     },
-    "dummyText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+    "languages": {
+        "en": "English",
+        "hi": "Hindi"
+    }
 }

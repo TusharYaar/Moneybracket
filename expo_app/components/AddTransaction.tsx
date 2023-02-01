@@ -10,7 +10,7 @@ import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/dat
 import CurrencyModal from "./CurrencyModal";
 import CategoryModal from "./CategoryModal";
 import { useRealm } from "../realm";
-// import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useCustomTheme } from "../themes";
 import { useSettings } from "../providers/SettingsProvider";
 import ModalContainer from "./ModalContainer";
@@ -20,6 +20,7 @@ import DeleteDialog from "./DeleteDialog";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import { IMAGES_DIRECTORY } from "../data";
+import { format } from "date-fns";
 
 type Props = {
   visible: boolean;
@@ -36,8 +37,8 @@ type ValueProps = {
   image: string;
 };
 const AddTransaction = ({ visible, item, onDismiss }: Props) => {
-  // const {t} = useTranslation();
-  const { currency: defaultCurrency } = useSettings();
+  const { t } = useTranslation("", { keyPrefix: "components.addTransaction" });
+  const { currency: defaultCurrency, dateFormat } = useSettings();
   const { theme } = useCustomTheme();
   const [values, setValues] = useState<ValueProps>({
     category: null,
@@ -214,7 +215,7 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
     return (
       <ModalContainer
         visible={visible}
-        title={"Add Transaction"}
+        title={t("title")}
         onDelete={() => setShowDelete(true)}
         showDelete={Boolean(item)}
         barColor={theme.colors.cardToneBackground}
@@ -227,10 +228,10 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
           }}
         >
           <Text variant="labelLarge" style={{ marginBottom: 4 }}>
-            {"date"}
+            {t("date")}
           </Text>
           <Button icon="calendar" mode="outlined" onPress={() => setViewModal("datepicker")}>
-            {values.date.toLocaleDateString()}
+            {format(values.date, dateFormat)}
           </Button>
         </View>
         <View
@@ -239,7 +240,7 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
             padding: 8,
           }}
         >
-          <Text variant="labelLarge">{"amount"}</Text>
+          <Text variant="labelLarge">{t("amount")}</Text>
           <TextInput
             right={<TextInput.Icon onPress={() => setViewModal("currency")} icon="repeat" />}
             left={<TextInput.Affix text={values.currency} />}
@@ -277,13 +278,13 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
           }}
         >
           <Text variant="labelLarge" style={{ marginBottom: 4 }}>
-            {"category"}
+            {t("category")}
           </Text>
           {values.category && <CategoryItem item={values.category} onPress={() => setViewModal("category")} />}
         </View>
         <View style={{ padding: 8 }}>
           <Text variant="labelLarge" style={{ marginBottom: 0 }}>
-            {"note"} ({"optional"})
+            {`${t("note")} (${t("optional")})`}
           </Text>
           <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
             <TextInput

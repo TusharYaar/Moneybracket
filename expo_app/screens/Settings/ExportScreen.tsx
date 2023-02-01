@@ -8,13 +8,15 @@ import { shareAsync } from "expo-sharing";
 
 import { createCSV, createHTML, createJSON, getType } from "../../utils/exports";
 import { useData } from "../../providers/DataProvider";
-import { Button, Text } from "react-native-paper";
+import { Button, Surface, Text } from "react-native-paper";
 
 import { EXPORTS_DIRECTORY } from "../../data";
 import { FlashList } from "@shopify/flash-list";
 import ExportItem from "../../components/ExportItem";
+import { useTranslation } from "react-i18next";
 
 const Exports = () => {
+  const { t } = useTranslation("", { keyPrefix: "screens.settings.export" });
   const { transaction } = useData();
   const [files, setFiles] = useState([]);
   // TODO: Define Types for include Fields
@@ -91,21 +93,25 @@ const Exports = () => {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.btnContainer}>
-        <Button onPress={exportPDF} style={styles.btn}>
-          Export PDF
-        </Button>
-        <Button onPress={exportCSV} style={styles.btn}>
-          Create CSV
-        </Button>
-        <Button onPress={exportJSON} style={styles.btn}>
-          Export JSON
-        </Button>
-        <Button onPress={exportJSON} style={styles.btn} disabled={true}>
-          Export Excel
-        </Button>
-      </View>
-      <Text>Recent Exports</Text>
+      <Surface>
+        <Text>{t("exportAs")}</Text>
+        <View style={styles.btnContainer}>
+          <Button onPress={exportPDF} style={styles.btn}>
+            {t("pdf")}
+          </Button>
+          <Button onPress={exportCSV} style={styles.btn}>
+            {t("csv")}
+          </Button>
+          <Button onPress={exportJSON} style={styles.btn}>
+            {t("json")}
+          </Button>
+          <Button onPress={exportJSON} style={styles.btn} disabled={true}>
+            {t("excel")}
+          </Button>
+        </View>
+      </Surface>
+      <Text>{t("recentExports")}</Text>
+      {files.length === 0 && <Text>{t("noExports")}</Text>}
       {files.length > 0 && (
         <FlashList
           data={files}
@@ -122,12 +128,12 @@ export default Exports;
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    padding: 8,
   },
 
   btnContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    padding: 10,
   },
   btn: {
     width: "50%",

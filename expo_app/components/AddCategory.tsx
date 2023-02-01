@@ -8,7 +8,7 @@ import ColorChoice from "./ColorChoice";
 import IconModal from "./IconModal";
 
 import { COLORS, ICONS } from "../data";
-// import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useCustomTheme } from "../themes";
 
 import { chooseBetterContrast } from "../utils/colors";
@@ -45,9 +45,10 @@ type ValueProps = {
   icon: string;
 };
 const AddCategory = ({ visible, item, onDismiss }: Props) => {
-  // const {t} = useTranslation("", {
-  //   keyPrefix: "modals.addCategory",
-  // });
+  const { t } = useTranslation("", {
+    keyPrefix: "components.addCategory",
+  });
+  const { t: wt } = useTranslation();
   const { theme } = useCustomTheme();
   const [values, setValues] = useState<ValueProps>({
     title: "",
@@ -136,7 +137,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
 
   return (
     <ModalContainer
-      title="Add Category"
+      title={t("title")}
       visible={visible}
       showDelete={Boolean(item)}
       onDismiss={onDismiss}
@@ -144,7 +145,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
       barColor={theme.colors.cardToneBackground}
     >
       <View style={[{ backgroundColor: theme.colors.cardToneBackground, padding: 8 }]}>
-        <Text variant="labelLarge">{"iconAndTitle"}</Text>
+        <Text variant="labelLarge">{t("iconAndTitle")}</Text>
         <TextInput
           left={
             <TextInput.Icon
@@ -177,17 +178,17 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
       </View>
       <View style={{ paddingHorizontal: 8 }}>
         <Text variant="labelLarge" style={{ marginBottom: 4 }}>
-          {"type"}
+          {t("type")}
         </Text>
         <SegmentedButtons
           value={values.type}
           onValueChange={(type) => changeType(type as ValueProps["type"])}
-          buttons={CATEGORY_TYPES}
+          buttons={CATEGORY_TYPES.map((type) => ({ ...type, label: wt(type.label) }))}
         />
       </View>
       <View>
         <Text variant="labelLarge" style={{ margin: 8, marginBottom: 4 }}>
-          {"color"}
+          {t("color")}
         </Text>
         <FlatList
           horizontal={true}
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
     top: 0,
   },
   colors: {
-    paddingBottom: 10,
+    paddingBottom: 8,
     paddingHorizontal: 5,
   },
 });

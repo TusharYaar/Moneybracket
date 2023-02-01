@@ -20,7 +20,7 @@ const SETTING: Props = {
   theme: getFromStorageOrDefault("settings/theme", "defaultLight", true),
   font: getFromStorageOrDefault("settings/font", "montserrat", true),
   appLock: getFromStorageOrDefault("settings/appLock", "DISABLE", true),
-  dateFormat: getFromStorageOrDefault("settings/dateFormat", "dd MMM, yy", true),
+  dateFormat: getFromStorageOrDefault("settings/dateFormat", "dd MMM, yyyy", true),
   updateFont: () => {},
   updateTheme: () => {},
 };
@@ -30,7 +30,7 @@ const SettingContext = createContext<Props>(SETTING);
 export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const [settings, setSettings] = useState(SETTING);
+  const [settings, setSettings] = useState({ ...SETTING, dateFormat: "dd MMM, yyyy" });
 
   const updateSettings = (key: string) => {};
 

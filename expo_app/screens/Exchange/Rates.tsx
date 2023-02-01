@@ -16,7 +16,7 @@ type Props = NativeStackScreenProps<StackParamList, "ExchangeRateScreen">;
 
 const Rates = ({ navigation }: Props) => {
   const { rates, toggleFavorite, lastUpdated } = useExchangeRate();
-  const { currency } = useSettings();
+  const { currency, dateFormat } = useSettings();
   const {
     theme: { fonts, roundness },
   } = useCustomTheme();
@@ -89,7 +89,7 @@ const Rates = ({ navigation }: Props) => {
               style={fonts.titleLarge}
             />
           )}
-          <Text>Last Updated {format(new Date(lastUpdated), "dd MMM yy")} </Text>
+          <Text>Last Updated {format(new Date(lastUpdated), dateFormat)} </Text>
         </View>
         <FlashList
           data={rates

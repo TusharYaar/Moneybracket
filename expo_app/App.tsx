@@ -8,9 +8,9 @@ import SettingsProvider from "./providers/SettingsProvider";
 
 import AppDrawer from "./navigators/DrawerNavigator";
 
-// import {I18nextProvider} from "react-i18next";
+import { I18nextProvider } from "react-i18next";
 
-// import i18n from "./localization";
+import i18n from "./localization";
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -44,15 +44,15 @@ const App = () => {
     <RealmProvider>
       <SettingsProvider>
         <ExchangeRatesProvider>
-          {/* <I18nextProvider i18n={i18n}> */}
-          <ThemeProvider>
-            <DataProvider>
-              <LockProvider>
-                <AppDrawer />
-              </LockProvider>
-            </DataProvider>
-          </ThemeProvider>
-          {/* </I18nextProvider> */}
+          <I18nextProvider i18n={i18n}>
+            <ThemeProvider>
+              <DataProvider>
+                <LockProvider>
+                  <AppDrawer />
+                </LockProvider>
+              </DataProvider>
+            </ThemeProvider>
+          </I18nextProvider>
         </ExchangeRatesProvider>
       </SettingsProvider>
     </RealmProvider>

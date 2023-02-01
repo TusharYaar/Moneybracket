@@ -8,20 +8,23 @@ import { Text, Surface } from "react-native-paper";
 import { Transaction } from "../../realm/Transaction";
 import GroupTransactions from "../../components/GroupTransactions";
 import { FlashList } from "@shopify/flash-list";
-// import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { calcuateTotal, groupTransactionByDate } from "../../utils/transaction";
 import Amount from "../../components/Amount";
+import { useSettings } from "../../providers/SettingsProvider";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
 
 const AllTransaction = ({}: Props) => {
+  const { dateFormat } = useSettings();
   const { transaction, showAddTransactionModal, dateFilter } = useData();
-  // const {t} = useTranslation("", {
-  //   keyPrefix: "screens.tracker.allTransaction",
-  // });
+  const { t } = useTranslation("", {
+    keyPrefix: "screens.tracker.allTransaction",
+  });
 
   const grouped = useMemo(() => {
-    if (dateFilter.type !== "all") return groupTransactionByDate(transaction, dateFilter.startDate, dateFilter.endDate);
-    return groupTransactionByDate(transaction);
+    if (dateFilter.type !== "all")
+      return groupTransactionByDate(transaction, dateFilter.startDate, dateFilter.endDate, dateFormat);
+    return groupTransactionByDate(transaction, null, null, dateFormat);
   }, [transaction, dateFilter]);
 
   const handlePressTransaction = (transaction: Transaction) => {
@@ -33,7 +36,7 @@ const AllTransaction = ({}: Props) => {
   if (transaction.length === 0) {
     return (
       <View style={styles.screen}>
-        <Text>{"noTransaction"}</Text>
+        <Text>{t("noTransaction")}</Text>
       </View>
     );
   }
