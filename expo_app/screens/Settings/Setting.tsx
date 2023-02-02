@@ -19,14 +19,21 @@ import { generateDummyTransaction } from "../../utils/dummy";
 import AVALIBLE_FONTS from "../../themes/fonts/index";
 import AVALIBLE_THEMES from "../../themes/themes";
 import DeleteDialog from "../../components/DeleteDialog";
+import CurrencyModal from "../../components/CurrencyModal";
+import LanguageModal from "../../components/LanguageModal";
+import DateFormatModal from "../../components/DateFormatModal";
 
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 
 const Setting = ({ navigation }: Props) => {
-  const { currency, language, theme, appLock, font, dateFormat } = useSettings();
-  const { t } = useTranslation("", { keyPrefix: "screens.settings.setting" });
+  const { currency, language, theme, appLock, font, dateFormat, updateCurrency, updateLanguage, updateDateFormat } =
+    useSettings();
+  const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
   const [deleteModal, setDeleteModal] = useState(false);
+  const [currencyModal, setCurrencyModal] = useState(false);
+  const [languageModal, setLanguageModal] = useState(false);
+  const [dateModal, setDateModal] = useState(false);
 
   const realm = useRealm();
 
@@ -77,6 +84,16 @@ const Setting = ({ navigation }: Props) => {
     });
   }, []);
 
+  const handleUpdateLanguage = useCallback((lang: string) => {
+    updateLanguage(lang);
+    i18n.changeLanguage(lang);
+    setLanguageModal(false);
+  }, []);
+  const handleUpdateDateFormat = useCallback((format: string) => {
+    updateDateFormat(format);
+    setDateModal(false);
+  }, []);
+
   return (
     <ScrollView contentContainerStyle={styles.screen}>
       <SettingItem label={t("font")} leftIcon="text" onPress={() => navigation.navigate("FontSetting")}>
@@ -85,17 +102,13 @@ const Setting = ({ navigation }: Props) => {
       <SettingItem label={t("theme")} leftIcon="color-fill-outline" onPress={() => navigation.navigate("ThemeSetting")}>
         <Text>{AVALIBLE_THEMES.find((t) => t.id === theme)?.name}</Text>
       </SettingItem>
-      <SettingItem label={t("currency")} leftIcon="text" onPress={() => navigation.navigate("FontSetting")}>
+      <SettingItem label={t("currency")} leftIcon="text" onPress={() => setCurrencyModal(true)}>
         <Text>{currency.name}</Text>
       </SettingItem>
-      <SettingItem label={t("language")} leftIcon="language" onPress={() => navigation.navigate("FontSetting")}>
+      <SettingItem label={t("language")} leftIcon="language" onPress={() => setLanguageModal(true)}>
         <Text>{wt(`languages.${language}`)}</Text>
       </SettingItem>
-      <SettingItem
-        label={t("dateFormat")}
-        leftIcon="calendar-outline"
-        onPress={() => navigation.navigate("FontSetting")}
-      >
+      <SettingItem label={t("dateFormat")} leftIcon="calendar-outline" onPress={() => setDateModal(true)}>
         <Text>{dateFormat}</Text>
       </SettingItem>
       {__DEV__ && <SettingItem label={"dummy Categories"} leftIcon="text" onPress={addDummyCategories} />}
@@ -109,6 +122,21 @@ const Setting = ({ navigation }: Props) => {
         cancelAction={dismissModal}
         body={t("confirmDeleteBody")}
         title={t("confirmDeleteTitle")}
+      />
+      <CurrencyModal
+        visible={currencyModal}
+        onDismiss={() => setCurrencyModal(false)}
+        onItemSelect={(item) => updateCurrency(item)}
+      />
+      <LanguageModal
+        visible={languageModal}
+        onDismiss={() => setLanguageModal(false)}
+        onItemSelect={handleUpdateLanguage}
+      />
+      <DateFormatModal
+        visible={dateModal}
+        onDismiss={() => setDateModal(false)}
+        onItemSelect={handleUpdateDateFormat}
       />
     </ScrollView>
   );

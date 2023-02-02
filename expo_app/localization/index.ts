@@ -3,10 +3,14 @@ import { initReactI18next } from "react-i18next";
 import { getFromStorageOrDefault } from "../utils/storage";
 
 import en from "./en.json";
+import hi from "./hi.json";
 
-const resources = {
+export const resources = {
   en: {
     translation: en,
+  },
+  hi: {
+    translation: hi,
   },
 };
 
@@ -23,6 +27,6 @@ i18n
   .then(() => {
     const lang = getFromStorageOrDefault("settings/language", "en");
     lang.toLowerCase();
-    i18n.changeLanguage("en");
+    i18n.changeLanguage("hi");
   });
 export default i18n;

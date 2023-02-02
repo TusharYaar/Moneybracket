@@ -36,7 +36,7 @@
     "screens": {
         "tracker": {
             "allTransaction": {
-                "noTransaction": "No Transactions. Try Changing the Period or add a transaction"
+                "noTransaction": "No Transactions. Try Changing the Period or add a transaction "
             },
             "charts": {
                 "categorySelected": "{{count}} category selected",
