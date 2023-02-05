@@ -1,10 +1,5 @@
-import {
-  MD3Colors,
-  MD3Theme,
-  Fonts,
-  MD3Typescale,
-} from "react-native-paper/lib/typescript/types";
-import {Transaction} from "./realm/Transaction";
+import { MD3Colors, MD3Theme, Fonts, MD3Typescale } from "react-native-paper/lib/typescript/types";
+import { Transaction } from "./realm/Transaction";
 export interface CustomTheme extends MD3Theme {
   id: string;
   name: string;
@@ -37,7 +32,8 @@ export interface FontObject {
 }
 
 export interface GroupedTransactions {
-  date: string;
+  //TODO: remove string from this type
+  date: Date;
   transactions: Transaction[];
 }
 

@@ -5,6 +5,8 @@ import TransactionItem from "./TransactionItem";
 import { Text } from "react-native-paper";
 import { GroupedTransactions } from "../types";
 import Amount from "./Amount";
+import { useSettings } from "../providers/SettingsProvider";
+import { format } from "date-fns";
 
 type Props = {
   data: GroupedTransactions;
@@ -14,6 +16,7 @@ type Props = {
 const MAX_PER_DAY = 3;
 
 const GroupTransactions = ({ data, onPressItem }: Props) => {
+  const { dateFormat } = useSettings();
   const [viewAll, setViewAll] = useState(false);
   const totalAmt = useMemo(
     () =>
@@ -35,7 +38,7 @@ const GroupTransactions = ({ data, onPressItem }: Props) => {
   return (
     <View style={[styles.group]}>
       <View style={styles.breif}>
-        <Text variant="labelLarge">{data.date}</Text>
+        <Text variant="labelLarge">{format(data.date, dateFormat)}</Text>
         <Amount variant="labelLarge" amount={totalAmt} sign={true} type={totalAmt > 0 ? "income" : "expense"} />
       </View>
       {visibleTrans.map((transaction) => (

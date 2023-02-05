@@ -15,16 +15,14 @@ import { useSettings } from "../../providers/SettingsProvider";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
 
 const AllTransaction = ({}: Props) => {
-  const { dateFormat } = useSettings();
   const { transaction, showAddTransactionModal, dateFilter } = useData();
   const { t } = useTranslation("", {
     keyPrefix: "screens.tracker.allTransaction",
   });
 
   const grouped = useMemo(() => {
-    if (dateFilter.type !== "all")
-      return groupTransactionByDate(transaction, dateFilter.startDate, dateFilter.endDate, dateFormat);
-    return groupTransactionByDate(transaction, null, null, dateFormat);
+    if (dateFilter.type !== "all") return groupTransactionByDate(transaction, dateFilter.startDate, dateFilter.endDate);
+    return groupTransactionByDate(transaction);
   }, [transaction, dateFilter]);
 
   const handlePressTransaction = (transaction: Transaction) => {
