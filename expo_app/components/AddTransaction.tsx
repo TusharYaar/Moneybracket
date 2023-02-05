@@ -3,7 +3,6 @@ import React, { useState, useCallback, useEffect } from "react";
 import { TextInput, IconButton, Button, Text, TouchableRipple, Dialog } from "react-native-paper";
 import { Transaction } from "../realm/Transaction";
 import CategoryItem from "./CategoryItem";
-import { useData } from "../providers/DataProvider";
 import { Category } from "../realm/Category";
 
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
@@ -26,6 +25,7 @@ type Props = {
   visible: boolean;
   item?: Transaction;
   onDismiss: () => void;
+  category: Realm.Results<Category>;
 };
 
 type ValueProps = {
@@ -36,7 +36,7 @@ type ValueProps = {
   currency: string;
   image: string;
 };
-const AddTransaction = ({ visible, item, onDismiss }: Props) => {
+const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
   const { t } = useTranslation("", { keyPrefix: "components.addTransaction" });
   const { currency: defaultCurrency, dateFormat } = useSettings();
   const { theme } = useCustomTheme();
@@ -50,7 +50,6 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
   });
 
   const { rates } = useExchangeRate();
-  const { category } = useData();
   const [viewModal, setViewModal] = useState("datepicker");
   const [showDelete, setShowDelete] = useState(false);
   const [showImageOptions, setShowImageOptions] = useState(false);
@@ -210,7 +209,9 @@ const AddTransaction = ({ visible, item, onDismiss }: Props) => {
   if (visible && viewModal === "currency")
     return <CurrencyModal visible={visible} onItemSelect={updateCurrency} onDismiss={dismissDataModal} />;
   if (visible && viewModal === "category")
-    return <CategoryModal visible={visible} onItemSelect={updateCategory} onDismiss={dismissDataModal} />;
+    return (
+      <CategoryModal visible={visible} onItemSelect={updateCategory} onDismiss={dismissDataModal} category={category} />
+    );
   if (visible && viewModal === "transaction")
     return (
       <ModalContainer
