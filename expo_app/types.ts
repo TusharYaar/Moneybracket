@@ -32,7 +32,6 @@ export interface FontObject {
 }
 
 export interface GroupedTransactions {
-  //TODO: remove string from this type
   date: Date;
   transactions: Transaction[];
 }

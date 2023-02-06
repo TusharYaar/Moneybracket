@@ -13,4 +13,13 @@ export const EXPORTS_DIRECTORY = `${documentDirectory}Exports`;
 export const BACKUP_DIRECTORY = `${documentDirectory}Backups`;
 export const IMAGES_DIRECTORY = `${documentDirectory}Images`;
 
+export const SETTING_KEYS = {
+  language: "settings/language",
+  currency: "settings/currency",
+  appLock: "settings/theme",
+  theme: "settings/font",
+  font: "settings/appLock",
+  dateFormat: "settings/dateFormat",
+};
+
 export { ICONS, COLORS, CURRENCIES, DATE };
