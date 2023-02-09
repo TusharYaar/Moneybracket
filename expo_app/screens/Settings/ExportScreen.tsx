@@ -80,6 +80,9 @@ const Exports = () => {
     try {
       const location = `${EXPORTS_DIRECTORY}/${file}`;
       const curi = await FileSystem.getContentUriAsync(location);
+      console.log(location);
+      console.log(curi);
+      return;
       startActivityAsync("android.intent.action.VIEW", {
         data: curi,
         flags: 1,

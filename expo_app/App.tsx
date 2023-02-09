@@ -17,6 +17,7 @@ import * as SplashScreen from "expo-splash-screen";
 
 SplashScreen.preventAutoHideAsync();
 const App = () => {
+  // TODO: use loadAsync to load fonts form Document DIrectory and download them when required
   const [fontsLoaded] = useFonts({
     "Caveat-Bold": require("./assets/fonts/Caveat-Bold.ttf"),
     "Caveat-Medium": require("./assets/fonts/Caveat-Medium.ttf"),

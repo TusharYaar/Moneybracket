@@ -39,7 +39,10 @@
             "recurring": "Recurring Transactions",
             "category": "Categories",
             "exchange": "Exchange Rates",
-            "setting": "Settings"
+            "setting": "Settings",
+            "about": "About",
+            "help": "Help",
+            "store": "Store"
         },
         "tab": {
             "allTransaction": "Transactions",
@@ -54,7 +57,10 @@
             "FontSetting": "Fonts",
             "ThemeSetting": "Themes",
             "ExportScreen": "Exports",
-            "BackupScreen": "Backup & Restore"
+            "BackupScreen": "Backup & Restore",
+            "AboutScreen": "About",
+            "HelpScreen": "Help",
+            "StoreScreen": "Store"
         }
     },
     "screens": {

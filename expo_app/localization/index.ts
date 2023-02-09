@@ -26,7 +26,6 @@ i18n
   })
   .then(() => {
     const lang = getFromStorageOrDefault("settings/language", "en");
-    lang.toLowerCase();
-    i18n.changeLanguage("hi");
+    i18n.changeLanguage(lang);
   });
 export default i18n;

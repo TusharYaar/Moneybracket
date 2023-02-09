@@ -12,6 +12,9 @@ import Rates from "../screens/Exchange/Rates";
 import ExportScreen from "../screens/Settings/ExportScreen";
 import BackupScreen from "../screens/Settings/BackupScreen";
 import { useTranslation } from "react-i18next";
+import HelpScreen from "../screens/HelpScreen";
+import AboutScreen from "../screens/AboutScreen";
+import StoreScreen from "../screens/StoreScreen";
 
 export type StackParamList = {
   TrackerTab: undefined;
@@ -25,6 +28,10 @@ export type StackParamList = {
   ThemeSetting: undefined;
   ExportScreen: undefined;
   BackupScreen: undefined;
+
+  HelpScreen: undefined;
+  StoreScreen: undefined;
+  AboutScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -89,7 +96,6 @@ export const ExchangeStackNavigator = () => {
 
 export const SettingStack = () => {
   const { theme } = useCustomTheme();
-
   const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
 
   return (
@@ -137,6 +143,63 @@ export const SettingStack = () => {
           headerLeft: () => <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />,
           headerTitleStyle: theme.fonts.titleMedium,
           title: t("BackupScreen"),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const HelpStackNavigator = () => {
+  const { theme } = useCustomTheme();
+  const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="HelpScreen"
+        component={HelpScreen}
+        options={({ navigation }) => ({
+          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
+          headerTitleStyle: theme.fonts.titleMedium,
+          title: t("HelpScreen"),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const AboutStackNavigator = () => {
+  const { theme } = useCustomTheme();
+  const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="AboutScreen"
+        component={AboutScreen}
+        options={({ navigation }) => ({
+          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
+          headerTitleStyle: theme.fonts.titleMedium,
+          title: t("AboutScreen"),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const StoreStackNavigator = () => {
+  const { theme } = useCustomTheme();
+  const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="StoreScreen"
+        component={StoreScreen}
+        options={({ navigation }) => ({
+          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
+          headerTitleStyle: theme.fonts.titleMedium,
+          title: t("StoreScreen"),
         })}
       />
     </Stack.Navigator>

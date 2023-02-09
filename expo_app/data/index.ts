@@ -22,4 +22,10 @@ export const SETTING_KEYS = {
   dateFormat: "settings/dateFormat",
 };
 
+export const STORE_KEYS = {
+  coins: "store/coins",
+  fonts: "store/fonts",
+  themes: "store/themes",
+};
+
 export { ICONS, COLORS, CURRENCIES, DATE };
