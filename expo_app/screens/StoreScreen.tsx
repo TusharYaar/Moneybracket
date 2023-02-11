@@ -1,7 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-
+import React, { useEffect } from "react";
+import Purchases from "react-native-purchases";
 const StoreScreen = () => {
+  useEffect(() => {
+    async function f() {
+      try {
+        console.log(await Purchases.canMakePayments());
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    f();
+  }, []);
   return (
     <View>
       <Text>StoreScreen</Text>

@@ -14,6 +14,7 @@ import i18n from "./localization";
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import Purchases from "react-native-purchases";
 
 SplashScreen.preventAutoHideAsync();
 const App = () => {
@@ -34,6 +35,11 @@ const App = () => {
     "ZillaSlab-Medium": require("./assets/fonts/ZillaSlab-Medium.ttf"),
     "ZillaSlab-Regular": require("./assets/fonts/ZillaSlab-Regular.ttf"),
   });
+
+  useEffect(() => {
+    Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
+    Purchases.setDebugLogsEnabled(true);
+  }, []);
 
   useEffect(() => {
     const hideSplashScreen = async () => {
