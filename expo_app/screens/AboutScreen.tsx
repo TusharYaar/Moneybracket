@@ -8,13 +8,26 @@ const AboutScreen = () => {
   return (
     <View style={styles.screen}>
       <Text variant="titleLarge">About The App</Text>
-      <Text>
-        The project is open-source, i.e. entire code of the app is avalible on Github for free. Anyone can have a look
-        at it, and make your own app. All the features of the app are free to use.
+      <Text variant="bodyLarge">
+        Our app is a powerful and simple tool to help you manage your personal finances. We understand how important it
+        is to be in control of your money, and that's why we've created this app.
       </Text>
-
-      <Text variant="titleLarge">About The Developer</Text>
-      <Text>Hello, my name is Tushar S Agrawal. 4th Year Student.</Text>
+      <Text variant="bodyLarge">
+        Our app is open source, which means that it's free for everyone to use and contribute to. You can access all of
+        the code and make any changes you want, and you can use it for personal use without any restrictions.
+      </Text>
+      <Text variant="bodyLarge">
+        Our app is also ad-free, meaning you won't be bombarded with annoying pop-ups or advertisements while using it.
+        This makes for a clean and seamless experience, and it also ensures your privacy is protected.
+      </Text>
+      <Text variant="bodyLarge">
+        The only paid options we offer are customization options such as font and theme changes. This is to help support
+        our ongoing development and maintenance of the app.
+      </Text>
+      <Text variant="bodyLarge">
+        We hope you find our finance tracker app useful and that it helps you take control of your finances. If you have
+        any questions or feedback, please don't hesitate to reach out to us.
+      </Text>
     </View>
   );
 };

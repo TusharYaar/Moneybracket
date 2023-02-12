@@ -11,7 +11,6 @@ import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { calcuateTotal, groupTransactionByDate } from "../../utils/transaction";
 import Amount from "../../components/Amount";
-import { useSettings } from "../../providers/SettingsProvider";
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
 
 const AllTransaction = ({}: Props) => {
@@ -85,22 +84,23 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     alignItems: "center",
+    padding: 8,
   },
   briefContainer: {
     justifyContent: "space-around",
-    paddingVertical: 10,
-    paddingHorizontal: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 4,
   },
   brief: {
     elevation: 2,
-    paddingHorizontal: 10,
-    marginHorizontal: 5,
+    paddingHorizontal: 8,
+    marginHorizontal: 4,
   },
   titleContainer: {
     flexDirection: "row",
     alignItems: "flex-end",
   },
   titleCaption: {
-    marginLeft: 5,
+    marginLeft: 4,
   },
 });

@@ -38,7 +38,9 @@ const Stack = createNativeStackNavigator<StackParamList>();
 
 type TrackerStackProps = DrawerScreenProps<DrawerParamList, "TrackerStack">;
 export const TrackerStackNavigator = ({}: TrackerStackProps) => {
-  const { theme } = useCustomTheme();
+  const {
+    theme: { fonts, roundness },
+  } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
 
   return (
@@ -47,8 +49,10 @@ export const TrackerStackNavigator = ({}: TrackerStackProps) => {
         name="TrackerTab"
         component={TrackerTabNavigator}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerLeft: () => (
+            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
           title: t("TrackerTab"),
         })}
       />
@@ -57,7 +61,9 @@ export const TrackerStackNavigator = ({}: TrackerStackProps) => {
 };
 
 export const CategoryStackNavigator = () => {
-  const { theme } = useCustomTheme();
+  const {
+    theme: { fonts, roundness },
+  } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
 
   return (
@@ -66,8 +72,10 @@ export const CategoryStackNavigator = () => {
         name="CategoryTab"
         component={CategoryTabNavigator}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerLeft: () => (
+            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
           title: t("CategoryTab"),
         })}
       />
@@ -76,7 +84,9 @@ export const CategoryStackNavigator = () => {
 };
 
 export const ExchangeStackNavigator = () => {
-  const { theme } = useCustomTheme();
+  const {
+    theme: { fonts, roundness },
+  } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
 
   return (
@@ -85,8 +95,10 @@ export const ExchangeStackNavigator = () => {
         name="ExchangeRateScreen"
         component={Rates}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerLeft: () => (
+            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
           title: t("ExchangeRateScreen"),
         })}
       />
@@ -95,7 +107,9 @@ export const ExchangeStackNavigator = () => {
 };
 
 export const SettingStack = () => {
-  const { theme } = useCustomTheme();
+  const {
+    theme: { fonts, roundness },
+  } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
 
   return (
@@ -104,8 +118,10 @@ export const SettingStack = () => {
         name="SettingScreen"
         component={Setting}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerLeft: () => (
+            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
           title: t("SettingScreen"),
         })}
       />
@@ -114,7 +130,7 @@ export const SettingStack = () => {
         component={FontSetting}
         options={({ navigation }) => ({
           headerLeft: () => <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerTitleStyle: fonts.titleMedium,
           title: t("FontSetting"),
         })}
       />
@@ -123,7 +139,7 @@ export const SettingStack = () => {
         component={ThemeSetting}
         options={({ navigation }) => ({
           headerLeft: () => <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerTitleStyle: fonts.titleMedium,
           title: t("ThemeSetting"),
         })}
       />
@@ -132,7 +148,7 @@ export const SettingStack = () => {
         component={ExportScreen}
         options={({ navigation }) => ({
           headerLeft: () => <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerTitleStyle: fonts.titleMedium,
           title: t("ExportScreen"),
         })}
       />
@@ -140,8 +156,10 @@ export const SettingStack = () => {
         name="BackupScreen"
         component={BackupScreen}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerLeft: () => (
+            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
           title: t("BackupScreen"),
         })}
       />
@@ -150,7 +168,9 @@ export const SettingStack = () => {
 };
 
 export const HelpStackNavigator = () => {
-  const { theme } = useCustomTheme();
+  const {
+    theme: { fonts, roundness },
+  } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
 
   return (
@@ -159,8 +179,10 @@ export const HelpStackNavigator = () => {
         name="HelpScreen"
         component={HelpScreen}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerLeft: () => (
+            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
           title: t("HelpScreen"),
         })}
       />
@@ -169,7 +191,9 @@ export const HelpStackNavigator = () => {
 };
 
 export const AboutStackNavigator = () => {
-  const { theme } = useCustomTheme();
+  const {
+    theme: { fonts, roundness },
+  } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
 
   return (
@@ -178,8 +202,10 @@ export const AboutStackNavigator = () => {
         name="AboutScreen"
         component={AboutScreen}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerLeft: () => (
+            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
           title: t("AboutScreen"),
         })}
       />
@@ -188,7 +214,9 @@ export const AboutStackNavigator = () => {
 };
 
 export const StoreStackNavigator = () => {
-  const { theme } = useCustomTheme();
+  const {
+    theme: { fonts, roundness },
+  } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
 
   return (
@@ -197,8 +225,10 @@ export const StoreStackNavigator = () => {
         name="StoreScreen"
         component={StoreScreen}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="menu" onPress={() => navigation.openDrawer()} />,
-          headerTitleStyle: theme.fonts.titleMedium,
+          headerLeft: () => (
+            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
           title: t("StoreScreen"),
         })}
       />

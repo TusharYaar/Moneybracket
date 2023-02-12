@@ -37,8 +37,8 @@ const App = () => {
   });
 
   useEffect(() => {
-    Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
-    Purchases.setDebugLogsEnabled(true);
+    // TODO: ADD API Key
+    Purchases.configure({ apiKey: "" });
   }, []);
 
   useEffect(() => {

@@ -136,7 +136,7 @@ const DateFilterModal = ({ visible, onDismiss, updateDateFilter, filter }: Props
       <ModalContainer
         visible={visible}
         onDismiss={onDismiss}
-        contentContainerStyle={[styles.modalContainerStyle]}
+        contentContainerStyle={[styles.modalContainerStyle, { borderRadius: theme.roundness * 4 }]}
         title={"Select Period"}
       >
         <View style={styles.btnContainer}>
@@ -249,13 +249,9 @@ const DateFilterModal = ({ visible, onDismiss, updateDateFilter, filter }: Props
 
 export default DateFilterModal;
 const styles = StyleSheet.create({
-  modal: {
-    borderRadius: 7,
-  },
   modalContainerStyle: {
     backgroundColor: "white",
     marginHorizontal: 20,
-    borderRadius: 7,
   },
   btnContainer: {
     flexDirection: "row",
