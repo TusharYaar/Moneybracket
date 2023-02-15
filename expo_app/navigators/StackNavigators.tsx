@@ -15,9 +15,14 @@ import { useTranslation } from "react-i18next";
 import HelpScreen from "../screens/HelpScreen";
 import AboutScreen from "../screens/AboutScreen";
 import StoreScreen from "../screens/StoreScreen";
+import AllRecurring from "../screens/Recurring/AllRecurring";
+import SearchScreen from "../screens/Tracker/SearchScreen";
 
 export type StackParamList = {
   TrackerTab: undefined;
+  SearchScreen: undefined;
+
+  RecurringScreen: undefined;
 
   CategoryTab: undefined;
 
@@ -54,6 +59,39 @@ export const TrackerStackNavigator = ({}: TrackerStackProps) => {
           ),
           headerTitleStyle: fonts.titleMedium,
           title: t("TrackerTab"),
+        })}
+      />
+      <Stack.Screen
+        name="SearchScreen"
+        component={SearchScreen}
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <IconButton icon="arrow-back" onPress={() => navigation.goBack()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
+          title: t("searchScreen"),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+export const RecurringStackNavigator = () => {
+  const {
+    theme: { fonts, roundness },
+  } = useCustomTheme();
+  const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="RecurringScreen"
+        component={AllRecurring}
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+          ),
+          headerTitleStyle: fonts.titleMedium,
+          title: t("RecurringScreen"),
         })}
       />
     </Stack.Navigator>
@@ -129,7 +167,9 @@ export const SettingStack = () => {
         name="FontSetting"
         component={FontSetting}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />,
+          headerLeft: () => (
+            <IconButton icon="arrow-back" onPress={() => navigation.goBack()} style={{ borderRadius: roundness * 4 }} />
+          ),
           headerTitleStyle: fonts.titleMedium,
           title: t("FontSetting"),
         })}
@@ -138,7 +178,9 @@ export const SettingStack = () => {
         name="ThemeSetting"
         component={ThemeSetting}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />,
+          headerLeft: () => (
+            <IconButton icon="arrow-back" onPress={() => navigation.goBack()} style={{ borderRadius: roundness * 4 }} />
+          ),
           headerTitleStyle: fonts.titleMedium,
           title: t("ThemeSetting"),
         })}
@@ -147,7 +189,9 @@ export const SettingStack = () => {
         name="ExportScreen"
         component={ExportScreen}
         options={({ navigation }) => ({
-          headerLeft: () => <IconButton icon="arrow-back" onPress={() => navigation.goBack()} />,
+          headerLeft: () => (
+            <IconButton icon="arrow-back" onPress={() => navigation.goBack()} style={{ borderRadius: roundness * 4 }} />
+          ),
           headerTitleStyle: fonts.titleMedium,
           title: t("ExportScreen"),
         })}
@@ -157,7 +201,7 @@ export const SettingStack = () => {
         component={BackupScreen}
         options={({ navigation }) => ({
           headerLeft: () => (
-            <IconButton icon="menu" onPress={() => navigation.openDrawer()} style={{ borderRadius: roundness * 4 }} />
+            <IconButton icon="arrow-back" onPress={() => navigation.goBack()} style={{ borderRadius: roundness * 4 }} />
           ),
           headerTitleStyle: fonts.titleMedium,
           title: t("BackupScreen"),

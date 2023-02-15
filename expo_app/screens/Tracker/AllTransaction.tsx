@@ -1,19 +1,33 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 
 import { MaterialTopTabScreenProps } from "@react-navigation/material-top-tabs";
 import { TabParamList } from "../../navigators/TabNavigators";
 import { useData } from "../../providers/DataProvider";
-import { Text, Surface } from "react-native-paper";
+import { Text, Surface, IconButton } from "react-native-paper";
 import { Transaction } from "../../realm/Transaction";
 import GroupTransactions from "../../components/GroupTransactions";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { calcuateTotal, groupTransactionByDate } from "../../utils/transaction";
 import Amount from "../../components/Amount";
-type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen">;
+import { StackParamList } from "../../navigators/StackNavigators";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-const AllTransaction = ({}: Props) => {
+type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen"> & {
+  stackNavigation: NativeStackNavigationProp<StackParamList, "TrackerTab", undefined>;
+};
+
+const AllTransaction = ({ stackNavigation }: Props) => {
+  useEffect(() => {
+    stackNavigation.setOptions({
+      headerRight: () => (
+        <View>
+          <IconButton icon="search" onPress={() => stackNavigation.navigate("SearchScreen")} />
+        </View>
+      ),
+    });
+  }, []);
   const { transaction, showAddTransactionModal, dateFilter } = useData();
   const { t } = useTranslation("", {
     keyPrefix: "screens.tracker.allTransaction",

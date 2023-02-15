@@ -68,8 +68,7 @@ const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (cameraPermission && !cameraPermission.granted && cameraPermission.canAskAgain) requestCameraPermission();
-    if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) requestImagePermission();
+    // if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) requestImagePermission();
   }, [cameraPermission, requestCameraPermission, imagePermission, requestImagePermission]);
 
   const realm = useRealm();
@@ -131,14 +130,14 @@ const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
     } else {
       setValues({
         amount: "100",
-        category: category[0],
+        category: category.length > 0 ? category[0] : null,
         date: new Date(),
         note: "",
         currency: defaultCurrency.code,
         image: "",
       });
     }
-  }, [item, defaultCurrency]);
+  }, [item, defaultCurrency, category]);
 
   const updateDate = useCallback((date: DateTimePickerEvent) => {
     if (date.nativeEvent.timestamp) {
@@ -182,30 +181,48 @@ const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
   );
 
   const handleCamera = useCallback(async () => {
-    setShowImageOptions(false);
-    const { assets, canceled } = await ImagePicker.launchCameraAsync();
-    if (!canceled) {
-      setValues((prev) => ({ ...prev, image: assets[0].uri }));
+    if (cameraPermission && !cameraPermission.granted && cameraPermission.canAskAgain) await requestCameraPermission();
+    if (!cameraPermission) {
+      setShowImageOptions(false);
+      const { assets, canceled } = await ImagePicker.launchCameraAsync();
+      if (!canceled) {
+        setValues((prev) => ({ ...prev, image: assets[0].uri }));
+      }
+    } else {
+      console.log("No camera Permissions");
     }
   }, []);
   const removeImage = useCallback(() => {
     setValues((prev) => ({ ...prev, image: "" }));
     setShowImageOptions(false);
-  }, []);
+  }, [cameraPermission]);
 
   const handlePickImage = useCallback(async () => {
-    setShowImageOptions(false);
-    const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
-      allowsMultipleSelection: false,
-      allowsEditing: true,
-    });
-    if (!canceled && assets.length > 0) {
-      setValues((prev) => ({ ...prev, image: assets[0].uri }));
+    if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) await requestImagePermission();
+    if (imagePermission.granted) {
+      setShowImageOptions(false);
+      const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+        allowsMultipleSelection: false,
+        allowsEditing: true,
+      });
+      if (!canceled && assets.length > 0) {
+        setValues((prev) => ({ ...prev, image: assets[0].uri }));
+      }
+    } else {
+      console.log("please provide permission");
     }
-  }, []);
+  }, [imagePermission]);
 
   if (visible && viewModal === "datepicker")
-    return <DateTimePicker mode="date" value={values.date} testID="dateTimePicker" onChange={updateDate} />;
+    return (
+      <DateTimePicker
+        mode="date"
+        display="calendar"
+        value={values.date}
+        testID="dateTimePicker"
+        onChange={updateDate}
+      />
+    );
   if (visible && viewModal === "currency")
     return <CurrencyModal visible={visible} onItemSelect={updateCurrency} onDismiss={dismissDataModal} />;
   if (visible && viewModal === "category")
@@ -268,6 +285,7 @@ const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
               borderRadius: theme.roundness * 4,
               backgroundColor: theme.colors.inversePrimary,
             }}
+            disabled={values.category === null}
             onPress={handlePressAdd}
           />
         </View>
@@ -281,6 +299,7 @@ const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
           <Text variant="labelLarge" style={{ marginBottom: 4 }}>
             {t("category")}
           </Text>
+          {!values.category && <Text>Please Add A category</Text>}
           {values.category && <CategoryItem item={values.category} onPress={() => setViewModal("category")} />}
         </View>
         <View style={{ padding: 8 }}>

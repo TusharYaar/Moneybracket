@@ -23,7 +23,10 @@ export type TabParamList = {
   AccountChartScreen: undefined;
 };
 const Tab = createMaterialTopTabNavigator<TabParamList>();
-export const TrackerTabNavigator = () => {
+
+type TrackerTabProps = NativeStackScreenProps<StackParamList, "TrackerTab">;
+
+export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
   const { showAddTransactionModal, showDateFilterModal } = useData();
   const { theme } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.tab" });
@@ -38,7 +41,7 @@ export const TrackerTabNavigator = () => {
         <Tab.Screen name="AllTransactionScreen" options={{ title: t("allTransaction") }}>
           {(props) => (
             <>
-              <AllTransaction {...props} />
+              <AllTransaction {...props} stackNavigation={navigation} />
               <FAB style={styles.fab} icon="add" onPress={() => showAddTransactionModal()} />
             </>
           )}

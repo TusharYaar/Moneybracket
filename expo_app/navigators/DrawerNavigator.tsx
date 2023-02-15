@@ -7,11 +7,13 @@ import {
   StoreStackNavigator,
   AboutStackNavigator,
   HelpStackNavigator,
+  RecurringStackNavigator,
 } from "./StackNavigators";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 export type DrawerParamList = {
+  RecurringStack: undefined;
   TrackerStack: undefined;
   ExchangeStack: undefined;
   SettingStack: undefined;
@@ -31,6 +33,7 @@ const MyDrawer = () => {
       }}
     >
       <Drawer.Screen name="TrackerStack" component={TrackerStackNavigator} options={{ title: t("tracker") }} />
+      <Drawer.Screen name="RecurringStack" component={RecurringStackNavigator} options={{ title: t("recurring") }} />
       <Drawer.Screen name="CategoryStack" component={CategoryStackNavigator} options={{ title: t("category") }} />
       <Drawer.Screen name="ExchangeStack" component={ExchangeStackNavigator} options={{ title: t("exchange") }} />
       <Drawer.Screen name="SettingStack" component={SettingStack} options={{ title: t("setting") }} />

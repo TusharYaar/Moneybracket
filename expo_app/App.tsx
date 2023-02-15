@@ -37,8 +37,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    // TODO: ADD API Key
-    Purchases.configure({ apiKey: "" });
+    Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
   }, []);
 
   useEffect(() => {
