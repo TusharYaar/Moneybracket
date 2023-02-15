@@ -7,12 +7,24 @@ import caveat from "./caveat";
 import notosans from "./notosans";
 import poppins from "./poppins";
 import zillaslab from "./zillaslab";
+import serif from "./serif";
+import monospace from "./monospace";
 
 const AVALIBLE_FONTS: FontObject[] = [
+  {
+    id: "serif",
+    name: "Serif",
+    font: serif,
+  },
   {
     id: "sanserif",
     name: "San Serif",
     font: sanserif,
+  },
+  {
+    id: "monospace",
+    name: "Monospace",
+    font: monospace,
   },
   {
     id: "montserrat",
