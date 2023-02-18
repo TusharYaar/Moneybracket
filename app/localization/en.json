@@ -94,6 +94,7 @@
                 "deleteAllData": "Delete All Data",
                 "export": "Export",
                 "backup": "Backup",
+                "lock": "Enable App Lock",
                 "confirmDeleteBody": "Are you sure you want to delete all data. This includes all Transction data and Categories.",
                 "confirmDeleteTitle": "Delete All Data?"
             },

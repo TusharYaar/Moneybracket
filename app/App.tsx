@@ -12,10 +12,10 @@ import { I18nextProvider } from "react-i18next";
 
 import i18n from "./localization";
 
-// import * as SplashScreen from "expo-splash-screen";
+// import {preventAutoHideAsync} from "expo-splash-screen";
 import Purchases from "react-native-purchases";
 
-// SplashScreen.preventAutoHideAsync();
+// preventAutoHideAsync();
 const App = () => {
   // TODO: use loadAsync to load fonts form Document DIrectory and download them when required
   // const [fontsLoaded] = useFonts({
