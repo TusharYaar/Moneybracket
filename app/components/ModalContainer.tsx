@@ -1,7 +1,7 @@
-import {StyleProp, StyleSheet, View, ViewStyle} from "react-native";
-import React, {ReactNode} from "react";
-import {IconButton, Modal, Portal, Text} from "react-native-paper";
-import {useCustomTheme} from "../themes";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import React, { ReactNode } from "react";
+import { IconButton, Modal, Portal, Text } from "react-native-paper";
+import { useCustomTheme } from "../themes";
 
 type Props = {
   children: ReactNode;
@@ -24,32 +24,44 @@ const ModalContainer = ({
   barColor,
   contentContainerStyle,
 }: Props) => {
-  const {theme} = useCustomTheme();
+  const { theme } = useCustomTheme();
   return (
     <Portal>
       <Modal
         onDismiss={onDismiss}
         visible={visible}
-        style={{borderRadius: 0}}
+        style={{ borderRadius: theme.roundness * 4 }}
         contentContainerStyle={[
           {
             margin: 16,
             backgroundColor: theme.colors.surface,
+            borderRadius: theme.roundness * 4,
           },
           contentContainerStyle,
         ]}
       >
-        <View style={[styles.actionBtnContainer, {backgroundColor: barColor}]}>
+        <View
+          style={[
+            styles.actionBtnContainer,
+            {
+              backgroundColor: barColor,
+              borderTopLeftRadius: theme.roundness * 4,
+              borderTopRightRadius: theme.roundness * 4,
+            },
+          ]}
+        >
           <IconButton
             icon="close"
             onPress={onDismiss}
-            style={[styles.closeBtn, {borderRadius: theme.roundness * 4}]}
+            style={[styles.closeBtn, { borderRadius: theme.roundness * 4 }]}
           />
-          <Text variant="titleMedium">{title}</Text>
+          <Text variant="titleMedium" style={{ color: theme.colors.onSurface }}>
+            {title}
+          </Text>
           {showDelete && (
             <IconButton
-              icon="trash"
-              style={[styles.trashBtn, {borderRadius: theme.roundness * 4}]}
+              icon="trash-outline"
+              style={[styles.trashBtn, { borderRadius: theme.roundness * 4 }]}
               onPress={onDelete}
             />
           )}
@@ -66,7 +78,7 @@ const styles = StyleSheet.create({
   actionBtnContainer: {
     position: "relative",
     flexDirection: "row",
-    padding: 10,
+    padding: 8,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -1,19 +1,19 @@
-import {StyleSheet} from "react-native";
-import React, {useMemo} from "react";
+import { StyleSheet } from "react-native";
+import React, { useMemo } from "react";
 
-import {TouchableRipple, Text} from "react-native-paper";
-import {useData} from "../providers/DataProvider";
-import {format} from "date-fns";
-import {useSettings} from "../providers/SettingsProvider";
+import { TouchableRipple, Text } from "react-native-paper";
+import { useData } from "../providers/DataProvider";
+import { format } from "date-fns";
+import { useSettings } from "../providers/SettingsProvider";
 
 type Props = {
   onPress: () => void;
 };
 
-const DateFilterSelector = ({onPress}: Props) => {
-  const {dateFormat} = useSettings();
+const DateFilterSelector = ({ onPress }: Props) => {
+  const { dateFormat } = useSettings();
 
-  const {dateFilter} = useData();
+  const { dateFilter } = useData();
 
   const text = useMemo(() => {
     switch (dateFilter.type) {
@@ -28,10 +28,7 @@ const DateFilterSelector = ({onPress}: Props) => {
       case "last3Months":
       case "last6Months":
       case "custom":
-        return `${format(dateFilter.startDate, dateFormat)} - ${format(
-          dateFilter.endDate,
-          dateFormat,
-        )}`;
+        return `${format(dateFilter.startDate, dateFormat)} - ${format(dateFilter.endDate, dateFormat)}`;
       case "all":
       default:
         return "All Time";
@@ -40,7 +37,7 @@ const DateFilterSelector = ({onPress}: Props) => {
 
   return (
     <TouchableRipple onPress={onPress}>
-      <Text style={[styles.align]} variant="labelSmall">
+      <Text style={[styles.align]} variant="labelLarge">
         {text}
       </Text>
     </TouchableRipple>

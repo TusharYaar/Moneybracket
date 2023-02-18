@@ -1,5 +1,5 @@
-import {Realm} from "@realm/react";
-import {Category} from "./Category";
+import { Realm } from "@realm/react";
+import { Category } from "./Category";
 export class Transaction extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   amount!: number;
@@ -7,6 +7,8 @@ export class Transaction extends Realm.Object {
   createdAt!: string;
   note!: string;
   currency!: string;
+  isFavorite!: boolean;
+  image!: string;
   category!: Category;
 
   static generate(
@@ -16,6 +18,7 @@ export class Transaction extends Realm.Object {
     note: string,
     category: Category,
     isFavorite = false,
+    image = ""
   ) {
     return {
       _id: new Realm.BSON.ObjectId(),
@@ -25,6 +28,7 @@ export class Transaction extends Realm.Object {
       createdAt: new Date().toUTCString(),
       category,
       currency,
+      image,
       isFavorite,
     };
   }
@@ -42,6 +46,7 @@ export class Transaction extends Realm.Object {
       category: "Category?",
       createdAt: "string",
       isFavorite: "bool",
+      image: "string",
     },
   };
 }

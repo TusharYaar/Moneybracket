@@ -1,14 +1,8 @@
-import React, {
-  useContext,
-  createContext,
-  useMemo,
-  useState,
-  useCallback,
-} from "react";
-import {Category} from "../realm/Category";
-import {Transaction} from "../realm/Transaction";
+import React, { useContext, createContext, useMemo, useState, useCallback } from "react";
+import { Category } from "../realm/Category";
+import { Transaction } from "../realm/Transaction";
 
-import {useQuery} from "../realm/index";
+import { useQuery } from "../realm/index";
 import AddCategory from "../components/AddCategory";
 import AddTransaction from "../components/AddTransaction";
 import DateFilterModal from "../components/DateFilterModal";
@@ -42,7 +36,7 @@ const DataContext = createContext<Props>({
 
 export const useData = () => useContext(DataContext);
 
-const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
+const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const [dateFilter, setDateFilter] = useState({
     type: "all",
     startDate: new Date(),
@@ -76,21 +70,21 @@ const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
   const [dateModalVisible, setDateModalVisible] = useState(false);
 
   const showAddCategoryModal = useCallback((item?: Category) => {
-    if (item) setAddCategory({item, visible: true});
-    else setAddCategory({item: undefined, visible: true});
+    if (item) setAddCategory({ item, visible: true });
+    else setAddCategory({ item: undefined, visible: true });
   }, []);
 
   const dismissAddCategoryModal = useCallback(() => {
-    setAddCategory(prev => ({...prev, visible: false}));
+    setAddCategory((prev) => ({ ...prev, visible: false }));
   }, []);
 
   const showAddTransactionModal = useCallback((item?: Transaction) => {
-    if (item) setAddTransaction({item, visible: true});
-    else setAddTransaction({item: undefined, visible: true});
+    if (item) setAddTransaction({ item, visible: true });
+    else setAddTransaction({ item: undefined, visible: true });
   }, []);
 
   const dismissAddTransactionModal = useCallback(() => {
-    setAddTransaction(prev => ({...prev, visible: false}));
+    setAddTransaction((prev) => ({ ...prev, visible: false }));
   }, []);
 
   const showDateFilterModal = useCallback(() => {
@@ -100,16 +94,13 @@ const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
     setDateModalVisible(false);
   }, []);
 
-  const updateDateFilter = useCallback(
-    (type: string, start: Date, end: Date) => {
-      setDateFilter({
-        type,
-        startDate: start,
-        endDate: end,
-      });
-    },
-    [],
-  );
+  const updateDateFilter = useCallback((type: string, start: Date, end: Date) => {
+    setDateFilter({
+      type,
+      startDate: start,
+      endDate: end,
+    });
+  }, []);
 
   return (
     <DataContext.Provider
@@ -123,12 +114,9 @@ const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
         updateDateFilter,
       }}
     >
-      <AddCategory
-        item={addCategory.item}
-        visible={addCategory.visible}
-        onDismiss={dismissAddCategoryModal}
-      />
+      <AddCategory item={addCategory.item} visible={addCategory.visible} onDismiss={dismissAddCategoryModal} />
       <AddTransaction
+        category={category}
         item={addTransaction.item}
         visible={addTransaction.visible}
         onDismiss={dismissAddTransactionModal}
@@ -136,6 +124,8 @@ const DataProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
       <DateFilterModal
         visible={dateModalVisible}
         onDismiss={dismissDateFilterModal}
+        updateDateFilter={updateDateFilter}
+        filter={dateFilter}
       />
       {children}
     </DataContext.Provider>

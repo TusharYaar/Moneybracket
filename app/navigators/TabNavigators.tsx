@@ -1,17 +1,18 @@
 import React from "react";
-import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import AllTransaction from "../screens/Tracker/AllTransaction";
 import TrackerCharts from "../screens/Tracker/Charts";
 import CategoryCharts from "../screens/Category/Charts";
 import AllCategory from "../screens/Category/AllCategory";
-import {FAB} from "react-native-paper";
-import {NativeStackScreenProps} from "@react-navigation/native-stack";
+import { FAB } from "react-native-paper";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-import {StackParamList} from "./StackNavigators";
-import {StyleSheet} from "react-native";
-import {useData} from "../providers/DataProvider";
-import {useCustomTheme} from "../themes";
+import { StackParamList } from "./StackNavigators";
+import { StyleSheet } from "react-native";
+import { useData } from "../providers/DataProvider";
+import { useCustomTheme } from "../themes";
 import DateFilterSelector from "../components/DateFilterSelector";
+import { useTranslation } from "react-i18next";
 
 export type TabParamList = {
   AllTransactionScreen: undefined;
@@ -22,9 +23,13 @@ export type TabParamList = {
   AccountChartScreen: undefined;
 };
 const Tab = createMaterialTopTabNavigator<TabParamList>();
-export const TrackerTabNavigator = () => {
-  const {showAddTransactionModal, showDateFilterModal} = useData();
-  const {theme} = useCustomTheme();
+
+type TrackerTabProps = NativeStackScreenProps<StackParamList, "TrackerTab">;
+
+export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
+  const { showAddTransactionModal, showDateFilterModal } = useData();
+  const { theme } = useCustomTheme();
+  const { t } = useTranslation("", { keyPrefix: "navigator.tab" });
   return (
     <>
       <DateFilterSelector onPress={showDateFilterModal} />
@@ -33,26 +38,15 @@ export const TrackerTabNavigator = () => {
           tabBarLabelStyle: theme.fonts.titleSmall,
         }}
       >
-        <Tab.Screen
-          name="AllTransactionScreen"
-          options={{title: "transactions"}}
-        >
-          {props => (
+        <Tab.Screen name="AllTransactionScreen" options={{ title: t("allTransaction") }}>
+          {(props) => (
             <>
-              <AllTransaction {...props} />
-              <FAB
-                style={styles.fab}
-                icon="add"
-                onPress={() => showAddTransactionModal()}
-              />
+              <AllTransaction {...props} stackNavigation={navigation} />
+              <FAB style={styles.fab} icon="add" onPress={() => showAddTransactionModal()} />
             </>
           )}
         </Tab.Screen>
-        <Tab.Screen
-          options={{title: "charts"}}
-          name="TrackerChartScreen"
-          component={TrackerCharts}
-        />
+        <Tab.Screen options={{ title: t("charts") }} name="TrackerChartScreen" component={TrackerCharts} />
       </Tab.Navigator>
     </>
   );
@@ -60,8 +54,9 @@ export const TrackerTabNavigator = () => {
 
 type CategoryTabProps = NativeStackScreenProps<StackParamList, "CategoryTab">;
 export const CategoryTabNavigator = ({}: CategoryTabProps) => {
-  const {showAddCategoryModal} = useData();
-  const {theme} = useCustomTheme();
+  const { showAddCategoryModal } = useData();
+  const { theme } = useCustomTheme();
+  const { t } = useTranslation("", { keyPrefix: "navigator.tab" });
 
   return (
     <Tab.Navigator
@@ -69,19 +64,15 @@ export const CategoryTabNavigator = ({}: CategoryTabProps) => {
         tabBarLabelStyle: theme.fonts.titleSmall,
       }}
     >
-      <Tab.Screen name="AllCategoryScreen">
-        {props => (
+      <Tab.Screen name="AllCategoryScreen" options={{ title: t("category") }}>
+        {(props) => (
           <>
             <AllCategory {...props} />
-            <FAB
-              style={styles.fab}
-              icon="add"
-              onPress={() => showAddCategoryModal()}
-            />
+            <FAB style={styles.fab} icon="add" onPress={() => showAddCategoryModal()} />
           </>
         )}
       </Tab.Screen>
-      <Tab.Screen name="CategoryChartScreen" component={CategoryCharts} />
+      <Tab.Screen name="CategoryChartScreen" component={CategoryCharts} options={{ title: t("charts") }} />
     </Tab.Navigator>
   );
 };
