@@ -1,7 +1,7 @@
-import React from "react";
-import { Button, Headline } from "react-native-paper";
+import React, { useCallback, useState } from "react";
+import { Button, Text } from "react-native-paper";
 import { CustomTheme } from "../types";
-import { ViewStyle, View, ImageBackground, StyleSheet } from "react-native";
+import { ViewStyle, View, Image, StyleSheet, ImageLoadEventData, NativeSyntheticEvent } from "react-native";
 import { useCustomTheme } from "../themes";
 
 type Props = {
@@ -19,35 +19,57 @@ const ThemeObject = ({ theme, selected, onSelect, style, imageSize }: Props) => 
   const {
     theme: { colors, roundness },
   } = useCustomTheme();
+  const [loaded, setLoaded] = useState(false);
+
+  const handleLoad = useCallback((event: NativeSyntheticEvent<ImageLoadEventData>) => {
+    setLoaded(true);
+  }, []);
   return (
-    <View style={[style, { borderRadius: roundness * 4 }]}>
-      <ImageBackground
+    <View style={[style, { borderRadius: roundness * 4, position: "relative" }]}>
+      <Image
         source={{
           uri: theme.image,
         }}
-        imageStyle={{
-          borderRadius: roundness * 4,
-        }}
-        style={[imageSize, { flexDirection: "column-reverse", borderRadius: roundness * 4 }]}
-      >
-        <View
-          style={{
+        style={[imageSize, { borderRadius: roundness * 4 }]}
+        onLoad={handleLoad}
+      />
+      {!loaded && (
+        <View style={styles.loading}>
+          <Text>Loading....</Text>
+        </View>
+      )}
+      <View
+        style={[
+          styles.details,
+          {
             backgroundColor: colors.cardToneBackground,
-            padding: 8,
             borderBottomLeftRadius: roundness * 4,
             borderBottomRightRadius: roundness * 4,
-          }}
-        >
-          <Headline>{theme.name}</Headline>
-          <Button disabled={selected} onPress={onSelect} mode={selected ? "contained" : "outlined"}>
-            {selected ? "Selected" : "Select"}
-          </Button>
-        </View>
-      </ImageBackground>
+          },
+        ]}
+      >
+        <Text variant="headlineMedium">{theme.name}</Text>
+        <Button disabled={selected} onPress={onSelect} mode={selected ? "contained" : "outlined"}>
+          {selected ? "Selected" : "Select"}
+        </Button>
+      </View>
     </View>
   );
 };
 
 export default ThemeObject;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  details: {
+    padding: 8,
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    position: "absolute",
+  },
+});

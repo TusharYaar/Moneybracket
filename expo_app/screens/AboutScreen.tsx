@@ -1,12 +1,15 @@
 import React from "react";
 
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image, ScrollView } from "react-native";
 
 import { Text } from "react-native-paper";
 
 const AboutScreen = () => {
   return (
-    <View style={styles.screen}>
+    <ScrollView style={styles.screen}>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Image source={require("../assets/icon.png")} style={{ width: 100, height: 100 }} />
+      </View>
       <Text variant="titleLarge">About The App</Text>
       <Text variant="bodyLarge">
         Our app is a powerful and simple tool to help you manage your personal finances. We understand how important it
@@ -28,7 +31,19 @@ const AboutScreen = () => {
         We hope you find our finance tracker app useful and that it helps you take control of your finances. If you have
         any questions or feedback, please don't hesitate to reach out to us.
       </Text>
-    </View>
+      <Text variant="bodyLarge">
+        We hope you find our finance tracker app useful and that it helps you take control of your finances. If you have
+        any questions or feedback, please don't hesitate to reach out to us.
+      </Text>
+      <Text variant="bodyLarge">
+        We hope you find our finance tracker app useful and that it helps you take control of your finances. If you have
+        any questions or feedback, please don't hesitate to reach out to us.
+      </Text>
+      <Text variant="bodyLarge" style={{ marginBottom: 8 }}>
+        We hope you find our finance tracker app useful and that it helps you take control of your finances. If you have
+        any questions or feedback, please don't hesitate to reach out to us.
+      </Text>
+    </ScrollView>
   );
 };
 export default AboutScreen;

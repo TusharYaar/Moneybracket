@@ -26,12 +26,6 @@ const AVALIBLE_FONTS: FontObject[] = [
     name: "Monospace",
     font: monospace,
   },
-  {
-    id: "montserrat",
-    name: "Montserrat",
-    font: montserrat,
-    isPaid: true,
-  },
 ];
 
 export const ALL_FONTS: FontObject[] = [

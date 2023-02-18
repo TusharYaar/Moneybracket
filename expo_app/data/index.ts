@@ -12,6 +12,7 @@ import { documentDirectory } from "expo-file-system";
 export const EXPORTS_DIRECTORY = `${documentDirectory}Exports`;
 export const BACKUP_DIRECTORY = `${documentDirectory}Backups`;
 export const IMAGES_DIRECTORY = `${documentDirectory}Images`;
+export const FONTS_DIRECTORY = `${documentDirectory}Fonts`;
 
 export const SETTING_KEYS = {
   language: "settings/language",
@@ -20,12 +21,6 @@ export const SETTING_KEYS = {
   theme: "settings/font",
   font: "settings/appLock",
   dateFormat: "settings/dateFormat",
-};
-
-export const STORE_KEYS = {
-  coins: "store/coins",
-  fonts: "store/fonts",
-  themes: "store/themes",
 };
 
 export { ICONS, COLORS, CURRENCIES, DATE };
