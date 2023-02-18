@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Dialog, Portal, Paragraph, Button } from "react-native-paper";
+import { Dialog, Portal, Text, Button } from "react-native-paper";
 
 type Props = {
   visible: boolean;
@@ -19,7 +19,7 @@ const DeleteDialog = ({ visible, cancelAction, deleteAction, cancelText, deleteT
       <Dialog visible={visible} dismissable={false}>
         <Dialog.Title>{title ? title : t("delete")}</Dialog.Title>
         <Dialog.Content>
-          <Paragraph>{body ? body : "Develpement build 'DELETE'"}</Paragraph>
+          <Text variant="bodyMedium">{body ? body : "Develpement build 'DELETE'"}</Text>
         </Dialog.Content>
         <Dialog.Actions>
           <Button onPress={cancelAction}>{cancelText ? cancelText : t("cancel")}</Button>

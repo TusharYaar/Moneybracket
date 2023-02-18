@@ -32,8 +32,6 @@ const AVALIBLE_FONTS: FontObject[] = [
     font: montserrat,
     isPaid: true,
   },
-  // TODO: ADD mono code
-  // TODO: ADD serif
 ];
 
 export const ALL_FONTS: FontObject[] = [

@@ -250,7 +250,6 @@ const DateFilterModal = ({ visible, onDismiss, updateDateFilter, filter }: Props
 export default DateFilterModal;
 const styles = StyleSheet.create({
   modalContainerStyle: {
-    backgroundColor: "white",
     marginHorizontal: 20,
   },
   btnContainer: {

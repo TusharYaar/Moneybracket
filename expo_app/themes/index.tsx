@@ -83,7 +83,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
           icon: (props) => <Ionicons size={props.size} name={props.name as any} color={props.color} />,
         }}
       >
-        <NavigationContainer>
+        <NavigationContainer theme={themeObject}>
           <StatusBar />
           {children}
           <Snackbar visible={snackbar.visible} onDismiss={dismissSnackbar}>

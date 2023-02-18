@@ -1,16 +1,20 @@
-import { FlatList, StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import React from "react";
 import AVALIBLE_THEMES from "../../themes/themes";
 import ThemeObject from "../../components/ThemeObject";
 import { useSettings } from "../../providers/SettingsProvider";
 import { useCustomTheme } from "../../themes";
+import { FlashList } from "@shopify/flash-list";
+
+const window = Dimensions.get("window");
 
 const ThemeSetting = () => {
   const { theme } = useSettings();
   const { changeTheme } = useCustomTheme();
 
   return (
-    <FlatList
+    <FlashList
+      horizontal={true}
       data={AVALIBLE_THEMES}
       renderItem={({ item }) => (
         <ThemeObject
@@ -18,10 +22,16 @@ const ThemeSetting = () => {
           theme={item}
           selected={theme === item.id}
           onSelect={() => changeTheme(item.id)}
-          style={styles.item}
+          imageSize={{
+            height: window.height - 84,
+            width: window.width - window.width / 8 - 16,
+          }}
+          style={{ ...styles.item, height: window.height - 70, width: window.width - window.width / 8 }}
         />
       )}
-      contentContainerStyle={styles.screen}
+      showsHorizontalScrollIndicator={false}
+      estimatedItemSize={window.width - window.width / 8}
+      extraData={theme}
     />
   );
 };
@@ -29,13 +39,7 @@ const ThemeSetting = () => {
 export default ThemeSetting;
 
 const styles = StyleSheet.create({
-  screen: {
-    padding: 16,
-    paddingTop: 8,
-  },
   item: {
-    marginVertical: 8,
-    padding: 8,
-    borderRadius: 4,
+    margin: 8,
   },
 });

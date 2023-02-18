@@ -1,11 +1,11 @@
-import {StyleSheet, View, ViewStyle, TextStyle} from "react-native";
-import React, {useCallback, useMemo} from "react";
-import {Category} from "../realm/Category";
-import {Text, TouchableRipple} from "react-native-paper";
+import { StyleSheet, View, ViewStyle, TextStyle } from "react-native";
+import React, { useCallback, useMemo } from "react";
+import { Category } from "../realm/Category";
+import { Text, TouchableRipple } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/Ionicons";
-import {chooseBetterContrast} from "../utils/colors";
-import {useCustomTheme} from "../themes";
+import { chooseBetterContrast } from "../utils/colors";
+import { useCustomTheme } from "../themes";
 
 type Props = {
   category: Category;
@@ -16,14 +16,8 @@ type Props = {
   titleStyle?: TextStyle;
 };
 
-const CategoryChip = ({
-  category,
-  onPress,
-  selected,
-  style,
-  containerStyle,
-}: Props) => {
-  const {theme} = useCustomTheme();
+const CategoryChip = ({ category, onPress, selected, style, containerStyle }: Props) => {
+  const { theme } = useCustomTheme();
 
   const handlePress = useCallback(() => {
     onPress(category);
@@ -37,29 +31,19 @@ const CategoryChip = ({
     <View
       style={[
         styles.overflowContainer,
-        {borderColor: category.color, borderRadius: theme.roundness * 4},
+        {
+          borderColor: category.color,
+          backgroundColor: selected ? category.color : "transparent",
+          borderRadius: theme.roundness * 4,
+          padding: 2,
+        },
         style,
       ]}
     >
-      <TouchableRipple
-        onPress={handlePress}
-        style={{
-          backgroundColor: selected ? category.color : "transparent",
-          borderRadius: theme.roundness * 4,
-        }}
-      >
+      <TouchableRipple onPress={handlePress}>
         <View style={[styles.innerContainer, containerStyle]}>
-          <Icon
-            name={category.icon}
-            color={selected ? textColor : category.color}
-            size={20}
-          />
-          <Text
-            style={[
-              {color: selected ? textColor : theme.colors.onBackground},
-              styles.title,
-            ]}
-          >
+          <Icon name={category.icon} color={selected ? textColor : category.color} size={20} />
+          <Text style={[{ color: selected ? textColor : theme.colors.onBackground }, styles.title]}>
             {category.title}
           </Text>
         </View>

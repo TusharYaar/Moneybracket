@@ -1,27 +1,25 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import React, { useCallback, useMemo, useState } from "react";
 import { useData } from "../../providers/DataProvider";
-import { ContributionGraph } from "react-native-chart-kit";
-
-import { Dimensions } from "react-native";
 import { List } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/Ionicons";
 
 import CategoryChip from "../../components/CategoryChip";
 import { Category } from "../../realm/Category";
-// import {useTranslation} from "react-i18next";
 import CategoryChartsItem from "../../components/CategoryChartsItem";
-import { groupTransactionByDate } from "../../utils/transaction";
-import { endOfMonth, startOfMonth } from "date-fns";
-import {} from "date-fns/esm";
 import Pie from "../../components/Charts/Pie";
+import { useCustomTheme } from "../../themes";
+import { transactionWithinDates } from "../../utils/transaction";
+import { useTranslation } from "react-i18next";
 
 const Charts = () => {
-  const { transaction, category } = useData();
+  const { transaction, category, dateFilter } = useData();
   const [selected, setSelected] = useState(category.map((cat) => cat._id.toHexString()));
-
-  // const {t} = useTranslation();
+  const {
+    theme: { roundness, colors },
+  } = useCustomTheme();
+  const { t } = useTranslation();
 
   const updateSelectedCategory = useCallback((cat: Category) => {
     let id = cat._id.toHexString();
@@ -41,10 +39,11 @@ const Charts = () => {
     });
 
     transaction.forEach((trans) => {
-      obj[trans.category._id.toHexString()] += trans.amount;
+      if (dateFilter.type === "all" || transactionWithinDates(trans.date, dateFilter.startDate, dateFilter.endDate))
+        obj[trans.category._id.toHexString()] += trans.amount;
     });
     return obj;
-  }, [transaction, category]);
+  }, [transaction, category, dateFilter]);
 
   const pieData = useMemo(() => {
     return category
@@ -60,23 +59,15 @@ const Charts = () => {
       }));
   }, [transaction, category, selected, aggregatedValues]);
 
-  const contributionData = useMemo(() => {
-    const date = new Date();
-    const grouped = groupTransactionByDate(transaction, startOfMonth(date), endOfMonth(date), "yyyy-MM-dd");
-
-    return grouped.map((cat) => ({
-      date: cat.date,
-      count: cat.transactions.length,
-    }));
-  }, []);
-
   return (
     <>
       <List.Section style={{ padding: 0, margin: 0 }}>
         <List.Accordion
-          title={"screens.tracker.charts.categorySelected"}
+          title={t("screens.tracker.charts.categorySelected", { count: selected.length })}
           style={{ padding: 0, margin: 0 }}
-          right={({ isExpanded }) => <Icon name={isExpanded ? "chevron-up" : "chevron-down"} size={20} />}
+          right={({ isExpanded }) => (
+            <Icon name={isExpanded ? "chevron-up" : "chevron-down"} size={20} color={colors.text} />
+          )}
         >
           <View style={styles.chipContainer}>
             {category.map((cat) => (
@@ -94,35 +85,20 @@ const Charts = () => {
       <ScrollView contentContainerStyle={styles.scrollview}>
         <Pie
           data={pieData.filter((cat) => cat.type === "expense").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
-          title="Expenses Pie Chart"
+          title={t("screens.tracker.charts.expensePieChart")}
         />
         <Pie
           data={pieData.filter((cat) => cat.type === "income").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
-          title="Income Pie Chart"
+          title={t("screens.tracker.charts.incomePieChart")}
         />
         <Pie
           data={pieData.filter((cat) => cat.type === "transfer").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
-          title="Transfer Pie Chart"
+          title={t("screens.tracker.charts.transferPieChart")}
         />
 
         {pieData.map((cat) => (
-          <CategoryChartsItem key={cat._id} {...cat} style={styles.category} />
+          <CategoryChartsItem key={cat._id} {...cat} style={[styles.category, { borderRadius: roundness * 4 }]} />
         ))}
-        {/* <ContributionGraph
-          values={contributionData}
-          endDate={endOfMonth(new Date())}
-          numDays={30}
-          horizontal={false}
-          showMonthLabels={false}
-          width={Dimensions.get("window").width - 20}
-          style={{padding: 0, margin: 0}}
-          squareSize={(Dimensions.get("window").width - 120) / 7}
-          height={250}
-          chartConfig={{
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          }}
-          tooltipDataAttrs={value => null as any}
-        /> */}
       </ScrollView>
     </>
   );
@@ -136,13 +112,12 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   chip: {
-    margin: 3,
+    margin: 4,
   },
   scrollview: {
-    padding: 10,
+    padding: 8,
   },
   category: {
-    marginVertical: 5,
-    paddingHorizontal: 5,
+    marginVertical: 4,
   },
 });

@@ -34,7 +34,12 @@ const Pie = ({ data, style, title }: Props) => {
       <View style={styles.legend}>
         {title && <Text style={styles.title}>{title}</Text>}
         {data.map((cat) => (
-          <LegendItem key={cat.title} title={cat.title} amount={(cat.amount * 100) / total} color={cat.color} />
+          <LegendItem
+            key={cat.title}
+            title={cat.title}
+            amount={total > 0 ? (cat.amount * 100) / total : 0}
+            color={cat.color}
+          />
         ))}
       </View>
     </Surface>
@@ -46,10 +51,11 @@ export default Pie;
 const styles = StyleSheet.create({
   surface: {
     elevation: 3,
-    marginVertical: 5,
+    marginVertical: 4,
   },
   legend: {
-    marginHorizontal: 5,
+    marginHorizontal: 4,
+    marginBottom: 8,
   },
   title: {
     textAlign: "center",

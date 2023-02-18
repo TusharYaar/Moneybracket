@@ -1,16 +1,16 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import React, { useEffect } from "react";
 import { useExchangeRate } from "../../providers/ExchangeRatesProvider";
 import RateItem from "../../components/RateItem";
 import { FlashList } from "@shopify/flash-list";
 import { useSettings } from "../../providers/SettingsProvider";
-import { IconButton, TextInput } from "react-native-paper";
+import { IconButton, TextInput, Text } from "react-native-paper";
 import { useCustomTheme } from "../../themes";
 import CurrencyModal from "../../components/CurrencyModal";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../navigators/StackNavigators";
 import { useDebounce } from "use-debounce";
-import { format, formatISO } from "date-fns";
+import { format } from "date-fns";
 
 type Props = NativeStackScreenProps<StackParamList, "ExchangeRateScreen">;
 

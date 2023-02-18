@@ -36,7 +36,7 @@ const SettingContext = createContext<Props>(SETTING);
 export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const [settings, setSettings] = useState({ ...SETTING, font: "sanserif" });
+  const [settings, setSettings] = useState(SETTING);
 
   const updateLanguage = (lang: string) => {
     setSettings((prev) => ({ ...prev, language: lang }));
