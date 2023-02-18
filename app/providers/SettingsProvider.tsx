@@ -8,7 +8,7 @@ import * as FileSystem from "expo-file-system";
 type Props = {
   language: string;
   currency: Currency;
-  appLock: string;
+  appLock: "ENABLE" | "DISABLE";
   theme: string;
   font: string;
   dateFormat: string;
@@ -18,6 +18,7 @@ type Props = {
   updateCurrency: (curr: string) => void;
   updateLanguage: (lang: string) => void;
   updateDateFormat: (format: string) => void;
+  updateLock: (enable: boolean) => void;
 };
 
 const SETTING: Props = {
@@ -26,13 +27,14 @@ const SETTING: Props = {
   currency: CURRENCIES[getFromStorageOrDefault(SETTING_KEYS.currency, "INR", true)],
   theme: getFromStorageOrDefault(SETTING_KEYS.theme, "defaultLight", true),
   font: getFromStorageOrDefault(SETTING_KEYS.font, "sanserif", true),
-  appLock: getFromStorageOrDefault(SETTING_KEYS.appLock, "DISABLE", true),
+  appLock: getFromStorageOrDefault(SETTING_KEYS.appLock, "DISABLE", true) as Props["appLock"],
   dateFormat: getFromStorageOrDefault(SETTING_KEYS.dateFormat, "dd MMM, yyyy", true),
   updateFont: () => {},
   updateTheme: () => {},
   updateCurrency: () => {},
   updateLanguage: () => {},
   updateDateFormat: () => {},
+  updateLock: () => {},
 };
 
 const SettingContext = createContext<Props>(SETTING);
@@ -65,6 +67,11 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
     setStorage(SETTING_KEYS.dateFormat, format);
   };
 
+  const updateLock = (enable: boolean) => {
+    setStorage(SETTING_KEYS.appLock, enable ? "ENABLE" : "DISABLE");
+    setSettings((prev) => ({ ...prev, appLock: enable ? "ENABLE" : "DISABLE" }));
+  };
+
   // Font Manager
   const getLocalFonts = useCallback(async () => {
     const { exists } = await FileSystem.getInfoAsync(FONTS_DIRECTORY);
@@ -85,7 +92,16 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
 
   return (
     <SettingContext.Provider
-      value={{ ...settings, updateFont, updateTheme, updateCurrency, updateLanguage, updateDateFormat, localFonts }}
+      value={{
+        ...settings,
+        updateFont,
+        updateTheme,
+        updateCurrency,
+        updateLanguage,
+        updateDateFormat,
+        localFonts,
+        updateLock,
+      }}
     >
       {children}
     </SettingContext.Provider>

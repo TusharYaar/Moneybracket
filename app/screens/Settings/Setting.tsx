@@ -2,11 +2,14 @@ import { ScrollView, StyleSheet } from "react-native";
 import React, { useCallback, useState } from "react";
 import { useSettings } from "../../providers/SettingsProvider";
 import { useTranslation } from "react-i18next";
+
+import { isEnrolledAsync, authenticateAsync } from "expo-local-authentication";
+
 import SettingItem from "../../components/SettingItem";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../navigators/StackNavigators";
-import { Text } from "react-native-paper";
+import { Switch, Text } from "react-native-paper";
 import { useRealm } from "../../realm";
 import { Category } from "../../realm/Category";
 import { Dcategories } from "../../data/dummy";
@@ -26,8 +29,18 @@ import DateFormatModal from "../../components/DateFormatModal";
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 
 const Setting = ({ navigation }: Props) => {
-  const { currency, language, theme, appLock, font, dateFormat, updateCurrency, updateLanguage, updateDateFormat } =
-    useSettings();
+  const {
+    currency,
+    language,
+    theme,
+    appLock,
+    font,
+    dateFormat,
+    updateCurrency,
+    updateLanguage,
+    updateDateFormat,
+    updateLock,
+  } = useSettings();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -94,6 +107,16 @@ const Setting = ({ navigation }: Props) => {
     setDateModal(false);
   }, []);
 
+  const handleToggleLock = useCallback(async (value: boolean) => {
+    if (value) {
+      const result = await isEnrolledAsync();
+      if (result) {
+        const valid = await authenticateAsync();
+        if (valid.success) updateLock(true);
+      }
+    } else updateLock(false);
+  }, []);
+
   return (
     <ScrollView contentContainerStyle={styles.screen}>
       <SettingItem label={t("font")} leftIcon="text" onPress={() => navigation.navigate("FontSetting")}>
@@ -104,6 +127,10 @@ const Setting = ({ navigation }: Props) => {
       </SettingItem>
       <SettingItem label={t("currency")} leftIcon="text" onPress={() => setCurrencyModal(true)}>
         <Text>{currency.name}</Text>
+      </SettingItem>
+
+      <SettingItem label={t("lock")} leftIcon="lock-open-outline">
+        <Switch value={appLock === "ENABLE"} onValueChange={handleToggleLock} />
       </SettingItem>
       <SettingItem label={t("language")} leftIcon="language" onPress={() => setLanguageModal(true)}>
         <Text>{wt(`languages.${language}`)}</Text>
