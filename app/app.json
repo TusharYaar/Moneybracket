@@ -1,4 +1,37 @@
 {
-  "name": "app",
-  "displayName": "Money-bracket"
+  "expo": {
+    "name": "Money Bracket",
+    "slug": "moneybracket",
+    "version": "0.5.2",
+    "jsEngine": "hermes",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#f2f2f2"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.tusharyaar.moneybracket"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7f819d50-7144-4e92-9f26-a4e970e6325d"
+      }
+    }
+  }
 }

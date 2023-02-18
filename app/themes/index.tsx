@@ -1,19 +1,14 @@
-import React, {
-  useContext,
-  createContext,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
-import {NavigationContainer} from "@react-navigation/native";
-import {Provider as PaperProvider, Snackbar} from "react-native-paper";
+import React, { useContext, createContext, useState, useMemo, useCallback } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { Provider as PaperProvider, Snackbar } from "react-native-paper";
 
-import Ionicons from "react-native-vector-icons/Ionicons";
-import {CustomTheme} from "../types";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { CustomTheme } from "../types";
 import AVALIBLE_THEMES from "./themes";
-import {useSettings} from "../providers/SettingsProvider";
+import { useSettings } from "../providers/SettingsProvider";
 import AVALIBLE_FONTS from "./fonts/index";
-import {MD3Typescale} from "react-native-paper/lib/typescript/types";
+import { MD3Typescale } from "react-native-paper/lib/typescript/types";
+import { StatusBar } from "expo-status-bar";
 
 type Props = {
   current?: string;
@@ -35,18 +30,14 @@ const ThemeContext = createContext<Props>({
 
 export const useCustomTheme = () => useContext(ThemeContext);
 
-const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
+const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const SETTINGS = useSettings();
   const [theme, setTheme] = useState(
-    AVALIBLE_THEMES.find(theme => theme.id === SETTINGS.theme) ||
-      AVALIBLE_THEMES[0],
+    AVALIBLE_THEMES.find((theme) => theme.id === SETTINGS.theme) || AVALIBLE_THEMES[0]
   );
-  const [font, setFont] = useState(
-    AVALIBLE_FONTS.find(f => f.id === SETTINGS.font)?.name,
-  );
+  const [font, setFont] = useState(AVALIBLE_FONTS.find((f) => f.id === SETTINGS.font)?.name);
   const themeObject = useMemo(() => {
-    theme.fonts = AVALIBLE_FONTS.find(f => f.id === SETTINGS.font)
-      ?.font as MD3Typescale;
+    theme.fonts = AVALIBLE_FONTS.find((f) => f.id === SETTINGS.font)?.font as MD3Typescale;
     return theme;
   }, [theme, font]);
 
@@ -57,25 +48,23 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
   });
 
   const handleThemeChange = (theme: string) => {
-    setTheme(AVALIBLE_THEMES.find(_t => _t.id === theme) || AVALIBLE_THEMES[0]);
+    setTheme(AVALIBLE_THEMES.find((_t) => _t.id === theme) || AVALIBLE_THEMES[0]);
     SETTINGS.updateTheme(theme);
   };
 
   const handleFontChange = (font: string) => {
-    setFont(
-      AVALIBLE_FONTS.find(_f => _f.id === font)?.name || AVALIBLE_FONTS[0].name,
-    );
+    setFont(AVALIBLE_FONTS.find((_f) => _f.id === font)?.name || AVALIBLE_FONTS[0].name);
     SETTINGS.updateFont(font);
   };
   const showSuccessSnackbar = useCallback((message: string) => {
-    setSnackbar({message, visible: true, type: "success"});
+    setSnackbar({ message, visible: true, type: "success" });
   }, []);
   const showErrorSnackbar = useCallback((message: string) => {
-    setSnackbar({message, visible: true, type: "error"});
+    setSnackbar({ message, visible: true, type: "error" });
   }, []);
 
   const dismissSnackbar = useCallback(() => {
-    setSnackbar({message: "", visible: false, type: "error"});
+    setSnackbar({ message: "", visible: false, type: "error" });
   }, []);
 
   return (
@@ -91,10 +80,11 @@ const ThemeProvider = ({children}: {children: JSX.Element | JSX.Element[]}) => {
       <PaperProvider
         theme={themeObject}
         settings={{
-          icon: props => <Ionicons {...props} />,
+          icon: (props) => <Ionicons size={props.size} name={props.name as any} color={props.color} />,
         }}
       >
-        <NavigationContainer>
+        <NavigationContainer theme={themeObject}>
+          <StatusBar />
           {children}
           <Snackbar visible={snackbar.visible} onDismiss={dismissSnackbar}>
             {snackbar.message}

@@ -1,0 +1,43 @@
+{
+    "amountValue": "{{amount, number}}",
+    "income": "आमदनी",
+    "expense": "व्यय",
+    "transfer": "हस्तांतरण",
+    "amount": "रकम",
+    "date": "तिथि",
+    "category": "श्रृंखला",
+    "transaction": "लेन-देन",
+    "note": "नोट",
+    "optional": "वैकल्पिक",
+    "tracker": "ट्रैकर",
+    "cancel": "नहीं, रद्द करें",
+    "delete": "हाँ, हटाएं",
+    "components": {
+        "addCategory": {
+            "title": "श्रृंखला जोड़ें",
+            "iconAndTitle": "श्रृंखला आइकन और शीर्षक",
+            "type": "श्रृंखला प्रकार",
+            "color": "श्रृंखला रंग"
+        },
+        "addTransaction": {
+            "title": "लेन-देन जोड़ें",
+            "amount": "रकम",
+            "date": "तिथि",
+            "category": "श्रृंखला",
+            "note": "नोट",
+            "optional": "वैकल्पिक"
+        },
+        "fontView": {
+            "dummyText": "लोरेम इप्सुम दोलोर सित अमेट, कॉन्सेटूर एडिपिस्सिंग एलिट, सेड डो इयस्मोड टेम्पोर इन्सिदिदुंट उत लबोरे एत डोलोरे मग्ना अलिकुआ।",
+            "select": "चयन करें",
+            "selected": "चुना हुआ"
+        }
+    },
+    "screens": {
+        "tracker": {
+            "allTransaction": {
+                "noTransaction": "कोई लेन-देन नहीं. अवधि को बदलें या एक लेन-दे."
+            }
+        }
+    }
+}

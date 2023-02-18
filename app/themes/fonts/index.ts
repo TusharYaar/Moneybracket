@@ -1,4 +1,4 @@
-import {FontObject} from "../../types";
+import { FontObject } from "../../types";
 import montserrat from "./monstserrat";
 import firacode from "./firacode";
 import sanserif from "./sanserif";
@@ -7,17 +7,14 @@ import caveat from "./caveat";
 import notosans from "./notosans";
 import poppins from "./poppins";
 import zillaslab from "./zillaslab";
+import serif from "./serif";
+import monospace from "./monospace";
 
 const AVALIBLE_FONTS: FontObject[] = [
   {
-    id: "montserrat",
-    name: "Montserrat",
-    font: montserrat,
-  },
-  {
-    id: "firacode",
-    name: "Fira Code",
-    font: firacode,
+    id: "serif",
+    name: "Serif",
+    font: serif,
   },
   {
     id: "sanserif",
@@ -25,29 +22,54 @@ const AVALIBLE_FONTS: FontObject[] = [
     font: sanserif,
   },
   {
+    id: "monospace",
+    name: "Monospace",
+    font: monospace,
+  },
+];
+
+export const ALL_FONTS: FontObject[] = [
+  {
+    id: "montserrat",
+    name: "Montserrat",
+    font: montserrat,
+    isPaid: true,
+  },
+  {
+    id: "firacode",
+    name: "Fira Code",
+    font: firacode,
+    isPaid: true,
+  },
+  {
     id: "lexend",
     name: "Lexend",
     font: lexend,
+    isPaid: true,
   },
   {
     id: "caveat",
     name: "Caveat",
     font: caveat,
+    isPaid: true,
   },
   {
     id: "notosans",
     name: "Noto Sans",
     font: notosans,
+    isPaid: true,
   },
   {
     id: "poppins",
     name: "Poppins",
     font: poppins,
+    isPaid: true,
   },
   {
     id: "zillaslab",
     name: "Zilla Slab",
     font: zillaslab,
+    isPaid: true,
   },
 ];
 export default AVALIBLE_FONTS;

@@ -1,32 +1,17 @@
-import {
-  MD3Colors,
-  MD3Theme,
-  Fonts,
-  MD3Typescale,
-} from "react-native-paper/lib/typescript/types";
-import {Transaction} from "./realm/Transaction";
+import { MD3Colors, MD3Theme, MD3Typescale } from "react-native-paper/lib/typescript/types";
+import { Theme } from "@react-navigation/native";
+import { Transaction } from "./realm/Transaction";
 export interface CustomTheme extends MD3Theme {
   id: string;
   name: string;
-  colors: MD3Colors & {
-    //   primary: string;
-    //   background: string;
-    //   surface: string;
-    //   accent: string;
-    //   error: string;
-    //   text: string;
-    //   onSurface: string;
-    //   disabled: string;
-    //   placeholder: string;
-    //   backdrop: string;
-    //   notification: string;
-    //   card: string;
-    //   border: string;
-    income: string;
-    expense: string;
-    transfer: string;
-    cardToneBackground: string;
-  };
+  colors: MD3Colors &
+    Theme["colors"] & {
+      income: string;
+      expense: string;
+      transfer: string;
+      cardToneBackground: string;
+    };
+  image?: string;
 }
 
 export interface FontObject {
@@ -37,7 +22,7 @@ export interface FontObject {
 }
 
 export interface GroupedTransactions {
-  date: string;
+  date: Date;
   transactions: Transaction[];
 }
 

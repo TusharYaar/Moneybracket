@@ -1,11 +1,10 @@
-import {StyleSheet, View, ViewStyle} from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
 
-import {Surface, Text} from "react-native-paper";
-import {useCustomTheme} from "../themes";
+import { Surface, Text } from "react-native-paper";
+import { useCustomTheme } from "../themes";
 
 import Icon from "react-native-vector-icons/Ionicons";
-import {useSettings} from "../providers/SettingsProvider";
 import Amount from "./Amount";
 
 type Props = {
@@ -14,19 +13,12 @@ type Props = {
   amount: number;
   type: "income" | "expense" | "transfer";
   color: string;
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
 };
 
-const CategoryChartsItem = ({
-  title,
-  icon,
-  amount,
-  type,
-  style,
-  color,
-}: Props) => {
+const CategoryChartsItem = ({ title, icon, amount, type, style, color }: Props) => {
   const {
-    theme: {colors},
+    theme: { colors },
   } = useCustomTheme();
   return (
     <Surface style={[styles.surface, style]}>
@@ -36,7 +28,7 @@ const CategoryChartsItem = ({
           <Text variant="labelLarge" ellipsizeMode="tail">
             {title}
           </Text>
-          <Text style={{color: colors[type]}} variant="labelMedium">
+          <Text style={{ color: colors[type] }} variant="labelMedium">
             {type}
           </Text>
         </View>
@@ -56,7 +48,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     flexWrap: "wrap",
-    padding: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
   },
   container: {
     flexDirection: "row",
