@@ -1,6 +1,7 @@
 import { MD3Colors, MD3Theme, MD3Typescale } from "react-native-paper/lib/typescript/types";
 import { Theme } from "@react-navigation/native";
 import { Transaction } from "./realm/Transaction";
+import { Platform } from "react-native";
 export interface CustomTheme extends MD3Theme {
   id: string;
   name: string;
@@ -47,4 +48,35 @@ export type ExchangeRatesServerResponse = {
   rates: {
     [key: string]: number;
   };
+};
+
+export type BackupFile = {
+  createdOn: Date;
+  app: "com.tusharyaar.moneybracket";
+  platform: typeof Platform.OS;
+  version: typeof Platform.Version;
+  includeImages: boolean;
+  settings: {
+    [key: string]: string;
+  };
+  category: {
+    _id: string;
+    title: string;
+    type: string;
+    isFavorite: boolean;
+    createdAt: string;
+    color: string;
+    icon: string;
+  }[];
+  transaction: {
+    _id: string;
+    note: string;
+    date: string;
+    amount: number;
+    currency: string;
+    category: string;
+    createdAt: string;
+    isFavorite: boolean;
+    image: string;
+  }[];
 };
