@@ -19,3 +19,6 @@ buck-out/
 
 # Bundle artifacts
 *.jsbundle
+
+android/
+ios/

@@ -20,6 +20,10 @@ export interface FontObject {
   name: string;
   font: MD3Typescale;
   isPaid?: boolean;
+  files: {
+    name: string;
+    link: string;
+  }[];
 }
 
 export interface GroupedTransactions {

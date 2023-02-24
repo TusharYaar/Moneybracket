@@ -10,7 +10,7 @@ type Props = {};
 
 const LockContext = createContext<Props>({});
 
-export const useTheme = () => useContext(LockContext);
+export const useLock = () => useContext(LockContext);
 
 const lockEnable = getFromStorage(SETTING_KEYS.appLock) === "ENABLE";
 

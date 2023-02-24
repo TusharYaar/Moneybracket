@@ -14,6 +14,8 @@ import i18n from "./localization";
 
 // import {preventAutoHideAsync} from "expo-splash-screen";
 import Purchases from "react-native-purchases";
+import FontProvider from "./providers/FontProvider";
+// import { useFonts, loadAsync } from "expo-font";
 
 // preventAutoHideAsync();
 const App = () => {
@@ -29,12 +31,13 @@ const App = () => {
   //   "Montserrat-Medium": require("./assets/fonts/Montserrat-Medium.ttf"),
   //   "NotoSans-Bold": require("./assets/fonts/NotoSans-Bold.ttf"),
   //   "NotoSans-Medium": require("./assets/fonts/NotoSans-Medium.ttf"),
-  //   "Poppins-Medium": require("./assets/fonts/Poppins-Medium.ttf"),
-  //   "Poppins-Regular": require("./assets/fonts/Poppins-Regular.ttf"),
+  // "Poppins-Regular":
+  //   "https://res.cloudinary.com/tusharyaar/raw/upload/v1676740123/MoneyBracket/Fonts/Poppins-Regular_rteoet.ttf",
+  // "Poppins-Medium":
+  //   "https://res.cloudinary.com/tusharyaar/raw/upload/v1676740121/MoneyBracket/Fonts/Poppins-Medium_qvvmlj.ttf",
   //   "ZillaSlab-Medium": require("./assets/fonts/ZillaSlab-Medium.ttf"),
   //   "ZillaSlab-Regular": require("./assets/fonts/ZillaSlab-Regular.ttf"),
   // });
-
   // useEffect(() => {
   //   Purchases.configure({ apiKey: "" });
   // }, []);
@@ -48,17 +51,19 @@ const App = () => {
   return (
     <RealmProvider>
       <SettingsProvider>
-        <ExchangeRatesProvider>
-          <I18nextProvider i18n={i18n}>
-            <ThemeProvider>
-              <DataProvider>
-                <LockProvider>
-                  <AppDrawer />
-                </LockProvider>
-              </DataProvider>
-            </ThemeProvider>
-          </I18nextProvider>
-        </ExchangeRatesProvider>
+        <FontProvider>
+          <ExchangeRatesProvider>
+            <I18nextProvider i18n={i18n}>
+              <ThemeProvider>
+                <DataProvider>
+                  <LockProvider>
+                    <AppDrawer />
+                  </LockProvider>
+                </DataProvider>
+              </ThemeProvider>
+            </I18nextProvider>
+          </ExchangeRatesProvider>
+        </FontProvider>
       </SettingsProvider>
     </RealmProvider>
   );

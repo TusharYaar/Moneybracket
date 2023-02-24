@@ -11,29 +11,41 @@ type Props = {
   selected: boolean;
   style?: ViewStyle;
   onPress: () => void;
+  isUnlocked: boolean;
+  showDownload: boolean;
+  onPressDownload: () => void;
 };
 
-const FontView = ({ font, selected, onPress, style }: Props) => {
+const FontView = ({ font, selected, onPress, style, isUnlocked, showDownload, onPressDownload }: Props) => {
   const { t } = useTranslation("", { keyPrefix: "components.fontView" });
   const { theme } = useCustomTheme();
   return (
     <Surface style={[style]}>
-      <Text style={font.font.titleLarge}>{font.name}</Text>
-      <Text numberOfLines={1} style={font.font.labelLarge}>
-        {t("dummyText")}
-      </Text>
-      <Text numberOfLines={2} style={font.font.bodyMedium}>
-        {t("dummyText")}
-      </Text>
-      <Button
-        mode={selected ? "contained" : "outlined"}
-        disabled={selected}
-        onPress={onPress}
-        labelStyle={font.font.labelMedium}
-        style={[styles.button, { borderColor: theme.colors.primary }]}
-      >
-        {t(selected ? "selected" : "select")}
-      </Button>
+      <Text style={font.font.titleMedium}>{font.name}</Text>
+      {isUnlocked && !showDownload && (
+        <Button
+          mode={selected ? "contained" : "outlined"}
+          disabled={selected}
+          onPress={onPress}
+          style={[styles.button, { borderColor: theme.colors.primary }]}
+        >
+          {t(selected ? "selected" : "select")}
+        </Button>
+      )}
+      {!isUnlocked && (
+        <Button onPress={() => {}} mode="contained" style={[styles.button, { borderColor: theme.colors.primary }]}>
+          {t("unlock")}
+        </Button>
+      )}
+      {showDownload && isUnlocked && (
+        <Button
+          mode="outlined"
+          onPress={onPressDownload}
+          style={[styles.button, { borderColor: theme.colors.primary }]}
+        >
+          {t("download")}
+        </Button>
+      )}
     </Surface>
   );
 };

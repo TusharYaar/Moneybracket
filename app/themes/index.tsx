@@ -6,7 +6,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { CustomTheme } from "../types";
 import AVALIBLE_THEMES from "./themes";
 import { useSettings } from "../providers/SettingsProvider";
-import AVALIBLE_FONTS from "./fonts/index";
+import ALL_FONTS from "./fonts/index";
 import { MD3Typescale } from "react-native-paper/lib/typescript/types";
 import { StatusBar } from "expo-status-bar";
 
@@ -35,9 +35,9 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
   const [theme, setTheme] = useState(
     AVALIBLE_THEMES.find((theme) => theme.id === SETTINGS.theme) || AVALIBLE_THEMES[0]
   );
-  const [font, setFont] = useState(AVALIBLE_FONTS.find((f) => f.id === SETTINGS.font)?.name);
+  const [font, setFont] = useState(ALL_FONTS.find((f) => f.id === SETTINGS.font)?.name);
   const themeObject = useMemo(() => {
-    theme.fonts = AVALIBLE_FONTS.find((f) => f.id === SETTINGS.font)?.font as MD3Typescale;
+    theme.fonts = ALL_FONTS.find((f) => f.id === SETTINGS.font)?.font as MD3Typescale;
     return theme;
   }, [theme, font]);
 
@@ -53,7 +53,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
   };
 
   const handleFontChange = (font: string) => {
-    setFont(AVALIBLE_FONTS.find((_f) => _f.id === font)?.name || AVALIBLE_FONTS[0].name);
+    setFont(ALL_FONTS.find((_f) => _f.id === font)?.name || ALL_FONTS[0].name);
     SETTINGS.updateFont(font);
   };
   const showSuccessSnackbar = useCallback((message: string) => {
