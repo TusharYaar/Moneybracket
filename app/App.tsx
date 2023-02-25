@@ -15,32 +15,10 @@ import i18n from "./localization";
 // import {preventAutoHideAsync} from "expo-splash-screen";
 import Purchases from "react-native-purchases";
 import FontProvider from "./providers/FontProvider";
-// import { useFonts, loadAsync } from "expo-font";
-
-// preventAutoHideAsync();
 const App = () => {
-  // TODO: use loadAsync to load fonts form Document DIrectory and download them when required
-  // const [fontsLoaded] = useFonts({
-  //   "Caveat-Bold": require("./assets/fonts/Caveat-Bold.ttf"),
-  //   "Caveat-Medium": require("./assets/fonts/Caveat-Medium.ttf"),
-  //   "FiraCode-Medium": require("./assets/fonts/FiraCode-Medium.ttf"),
-  //   "FiraCode-Regular": require("./assets/fonts/FiraCode-Regular.ttf"),
-  //   "Lexend-Regular": require("./assets/fonts/Lexend-Regular.ttf"),
-  //   "Lexend-SemiBold": require("./assets/fonts/Lexend-SemiBold.ttf"),
-  //   "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.ttf"),
-  //   "Montserrat-Medium": require("./assets/fonts/Montserrat-Medium.ttf"),
-  //   "NotoSans-Bold": require("./assets/fonts/NotoSans-Bold.ttf"),
-  //   "NotoSans-Medium": require("./assets/fonts/NotoSans-Medium.ttf"),
-  // "Poppins-Regular":
-  //   "https://res.cloudinary.com/tusharyaar/raw/upload/v1676740123/MoneyBracket/Fonts/Poppins-Regular_rteoet.ttf",
-  // "Poppins-Medium":
-  //   "https://res.cloudinary.com/tusharyaar/raw/upload/v1676740121/MoneyBracket/Fonts/Poppins-Medium_qvvmlj.ttf",
-  //   "ZillaSlab-Medium": require("./assets/fonts/ZillaSlab-Medium.ttf"),
-  //   "ZillaSlab-Regular": require("./assets/fonts/ZillaSlab-Regular.ttf"),
-  // });
-  // useEffect(() => {
-  //   Purchases.configure({ apiKey: "" });
-  // }, []);
+  useEffect(() => {
+    Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
+  }, []);
 
   // useEffect(() => {
   //   const hideSplashScreen = async () => {

@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import Purchases, { PurchasesOfferings } from "react-native-purchases";
+import { Text } from "react-native-paper";
 const StoreScreen = () => {
   const [canMakePayments, setCanMakePayments] = useState(false);
   const [offerings, setOfferings] = useState<PurchasesOfferings>();
@@ -13,22 +14,21 @@ const StoreScreen = () => {
         if (can) {
           const offerings = await Purchases.getOfferings();
           setOfferings(offerings);
+          console.log(JSON.stringify(offerings, null, 4));
+          // console.log(products);
+          console.log(offerings.current.monthly);
         }
-        // const products = Purchases.length;
-        // console.log(offerings.current.monthly);
         // Purchases.purchasePackage(offerings.current.monthly);
       } catch (e) {
-        console.log(JSON.stringify(e));
+        console.log(JSON.stringify(e, null, 4));
       }
     }
     f();
   }, []);
   return (
-    <View>
-      <Text>StoreScreen</Text>
-      <Text>Can Make Payments: {canMakePayments ? "Yes" : "No"}</Text>
+    <ScrollView>
       <Text>{JSON.stringify(offerings)}</Text>
-    </View>
+    </ScrollView>
   );
 };
 
