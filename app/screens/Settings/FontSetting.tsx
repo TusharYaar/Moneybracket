@@ -16,6 +16,7 @@ const FontSettings = () => {
     <FlatList
       contentContainerStyle={styles.screen}
       data={ALL_FONTS}
+      numColumns={2}
       renderItem={({ item }) => (
         <FontView
           font={item}
@@ -35,11 +36,11 @@ export default FontSettings;
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 8,
+    padding: 4,
   },
   item: {
-    padding: 8,
-    marginVertical: 4,
-    borderRadius: 4,
+    flex: 1,
+    margin: 4,
+    padding: 4,
   },
 });

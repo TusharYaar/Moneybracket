@@ -54,7 +54,6 @@ export default FontView;
 
 const styles = StyleSheet.create({
   button: {
-    width: "50%",
     marginTop: 8,
     borderWidth: 2,
   },

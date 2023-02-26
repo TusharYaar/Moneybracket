@@ -1,10 +1,15 @@
 import { ScrollView, StyleSheet, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import Purchases, { PurchasesOfferings } from "react-native-purchases";
-import { Text } from "react-native-paper";
+import React, { useCallback, useEffect, useState } from "react";
+import Purchases, { PurchasesPackage } from "react-native-purchases";
+import { Button, Text } from "react-native-paper";
+import Products from "../components/Products";
+import { useFont } from "../providers/FontProvider";
 const StoreScreen = () => {
+  const { checkFontSubscription } = useFont();
+
   const [canMakePayments, setCanMakePayments] = useState(false);
-  const [offerings, setOfferings] = useState<PurchasesOfferings>();
+  const [offerings, setOfferings] = useState<PurchasesPackage[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function f() {
@@ -13,21 +18,49 @@ const StoreScreen = () => {
         setCanMakePayments(can);
         if (can) {
           const offerings = await Purchases.getOfferings();
-          setOfferings(offerings);
-          console.log(JSON.stringify(offerings, null, 4));
-          // console.log(products);
-          console.log(offerings.current.monthly);
+          setOfferings(offerings.current.availablePackages);
         }
-        // Purchases.purchasePackage(offerings.current.monthly);
       } catch (e) {
-        console.log(JSON.stringify(e, null, 4));
+        console.log(e);
+      } finally {
+        setLoading(false);
       }
     }
     f();
   }, []);
+
+  const handlePurchase = async (product: PurchasesPackage) => {
+    try {
+      await Purchases.purchasePackage(product);
+      checkFontSubscription();
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
+  const handleRestorePurchases = useCallback(async () => {
+    try {
+      const info = await Purchases.restorePurchases();
+      console.log(info);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  if (loading) {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
+
   return (
     <ScrollView>
-      <Text>{JSON.stringify(offerings)}</Text>
+      {offerings.map((product) => (
+        <Products product={product} key={product.identifier} onPress={() => handlePurchase(product)} />
+      ))}
+      <Button onPress={handleRestorePurchases}>Restore Purchases</Button>
     </ScrollView>
   );
 };

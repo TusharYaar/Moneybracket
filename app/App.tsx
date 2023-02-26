@@ -11,21 +11,12 @@ import AppDrawer from "./navigators/DrawerNavigator";
 import { I18nextProvider } from "react-i18next";
 
 import i18n from "./localization";
-
-// import {preventAutoHideAsync} from "expo-splash-screen";
 import Purchases from "react-native-purchases";
 import FontProvider from "./providers/FontProvider";
 const App = () => {
   useEffect(() => {
     Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
   }, []);
-
-  // useEffect(() => {
-  //   const hideSplashScreen = async () => {
-  //     if (fontsLoaded) await SplashScreen.hideAsync();
-  //   };
-  //   hideSplashScreen();
-  // }, [fontsLoaded]);
   return (
     <RealmProvider>
       <SettingsProvider>

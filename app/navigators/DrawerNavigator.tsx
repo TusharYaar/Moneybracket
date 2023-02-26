@@ -37,7 +37,7 @@ const MyDrawer = () => {
       <Drawer.Screen name="CategoryStack" component={CategoryStackNavigator} options={{ title: t("category") }} />
       <Drawer.Screen name="ExchangeStack" component={ExchangeStackNavigator} options={{ title: t("exchange") }} />
       <Drawer.Screen name="SettingStack" component={SettingStack} options={{ title: t("setting") }} />
-      {__DEV__ && <Drawer.Screen name="StoreStack" component={StoreStackNavigator} options={{ title: t("store") }} />}
+      {<Drawer.Screen name="StoreStack" component={StoreStackNavigator} options={{ title: t("store") }} />}
       <Drawer.Screen name="HelpStack" component={HelpStackNavigator} options={{ title: t("help") }} />
       <Drawer.Screen name="AboutStack" component={AboutStackNavigator} options={{ title: t("about") }} />
     </Drawer.Navigator>
