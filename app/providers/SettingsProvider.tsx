@@ -1,9 +1,7 @@
-import { useContext, createContext, useState, useEffect, useCallback } from "react";
-import { CURRENCIES, FONTS_DIRECTORY, SETTING_KEYS } from "../data";
+import { useContext, createContext, useState } from "react";
+import { CURRENCIES, SETTING_KEYS } from "../data";
 import { Currency } from "../types";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
-
-import * as FileSystem from "expo-file-system";
 
 type Props = {
   language: string;
@@ -12,7 +10,6 @@ type Props = {
   theme: string;
   font: string;
   dateFormat: string;
-  localFonts: string[];
   updateFont: (font: string) => void;
   updateTheme: (theme: string) => void;
   updateCurrency: (curr: string) => void;
@@ -22,11 +19,10 @@ type Props = {
 };
 
 const SETTING: Props = {
-  localFonts: ["sanserif", "sarif", "monospace"],
   language: getFromStorageOrDefault(SETTING_KEYS.language, "en", true),
   currency: CURRENCIES[getFromStorageOrDefault(SETTING_KEYS.currency, "INR", true)],
   theme: getFromStorageOrDefault(SETTING_KEYS.theme, "defaultLight", true),
-  font: getFromStorageOrDefault(SETTING_KEYS.font, "sanserif", true),
+  font: getFromStorageOrDefault(SETTING_KEYS.font, "sansserif", true),
   appLock: getFromStorageOrDefault(SETTING_KEYS.appLock, "DISABLE", true) as Props["appLock"],
   dateFormat: getFromStorageOrDefault(SETTING_KEYS.dateFormat, "dd MMM, yyyy", true),
   updateFont: () => {},
@@ -42,7 +38,6 @@ export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const [settings, setSettings] = useState(SETTING);
-  const [localFonts, setLocalFonts] = useState([]);
 
   const updateLanguage = (lang: string) => {
     setSettings((prev) => ({ ...prev, language: lang }));
@@ -72,24 +67,6 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
     setSettings((prev) => ({ ...prev, appLock: enable ? "ENABLE" : "DISABLE" }));
   };
 
-  // Font Manager
-  const getLocalFonts = useCallback(async () => {
-    const { exists } = await FileSystem.getInfoAsync(FONTS_DIRECTORY);
-    if (!exists) {
-      await FileSystem.makeDirectoryAsync(FONTS_DIRECTORY, { intermediates: true });
-    }
-    const files = await FileSystem.readDirectoryAsync(FONTS_DIRECTORY);
-    setLocalFonts(files);
-  }, []);
-
-  const downloadNewFont = useCallback((font: string) => {
-    console.log(font);
-  }, []);
-
-  useEffect(() => {
-    getLocalFonts();
-  }, [getLocalFonts]);
-
   return (
     <SettingContext.Provider
       value={{
@@ -99,7 +76,6 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
         updateCurrency,
         updateLanguage,
         updateDateFormat,
-        localFonts,
         updateLock,
       }}
     >

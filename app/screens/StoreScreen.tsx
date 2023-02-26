@@ -40,27 +40,25 @@ const StoreScreen = () => {
 
   const handleRestorePurchases = useCallback(async () => {
     try {
+      setLoading(true);
       const info = await Purchases.restorePurchases();
       console.log(info);
+      checkFontSubscription();
     } catch (e) {
       console.log(e);
+    } finally {
+      setLoading(false);
     }
   }, []);
-
-  if (loading) {
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
-  }
 
   return (
     <ScrollView>
       {offerings.map((product) => (
         <Products product={product} key={product.identifier} onPress={() => handlePurchase(product)} />
       ))}
-      <Button onPress={handleRestorePurchases}>Restore Purchases</Button>
+      <Button onPress={handleRestorePurchases} disabled={loading}>
+        Restore Purchases
+      </Button>
     </ScrollView>
   );
 };

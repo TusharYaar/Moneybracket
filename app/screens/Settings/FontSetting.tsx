@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import React from "react";
-import { ALL_FONTS } from "../../themes/fonts/index";
+import { ALL_FONTS } from "../../data";
 import { useSettings } from "../../providers/SettingsProvider";
 import { FlatList } from "react-native-gesture-handler";
 import FontView from "../../components/FontView";

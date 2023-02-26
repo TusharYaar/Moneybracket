@@ -2,13 +2,10 @@ import { getInfoAsync, makeDirectoryAsync, readDirectoryAsync, downloadAsync } f
 import { isLoaded, loadAsync } from "expo-font";
 import React, { useContext, createContext, useState, useCallback, useEffect } from "react";
 import Purchases from "react-native-purchases";
-import { FONTS_DIRECTORY } from "../data";
-import ALL_FONTS from "../themes/fonts";
+import { FONTS_DIRECTORY, LOCAL_FONTS } from "../data";
+import { ALL_FONTS } from "../data";
 
 import { useSettings } from "./SettingsProvider";
-
-const LocalFonts = ["sanserif", "serif", "monospace"];
-
 type Props = {
   unlockedFonts: string[];
   offlineFonts: string[];
@@ -18,7 +15,7 @@ type Props = {
 
 const FontContext = createContext<Props>({
   unlockedFonts: [],
-  offlineFonts: LocalFonts,
+  offlineFonts: LOCAL_FONTS,
   downloadFont: () => {},
   checkFontSubscription: () => Promise.resolve(true),
 });
@@ -27,8 +24,8 @@ export const useFont = () => useContext(FontContext);
 
 const FontProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { font, updateFont } = useSettings();
-  const [unlockedFonts, setUnlockedFonts] = useState(LocalFonts);
-  const [offlineFonts, setOfflineFonts] = useState(LocalFonts);
+  const [unlockedFonts, setUnlockedFonts] = useState(LOCAL_FONTS);
+  const [offlineFonts, setOfflineFonts] = useState(LOCAL_FONTS);
 
   const checkSubscription = useCallback(async () => {
     const info = await Purchases.getCustomerInfo();
@@ -36,18 +33,18 @@ const FontProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       setUnlockedFonts(ALL_FONTS.map((font) => font.id));
       return true;
     } else {
-      setUnlockedFonts(LocalFonts);
+      setUnlockedFonts(LOCAL_FONTS);
       return false;
     }
   }, []);
 
   const loadFont = useCallback(async (id: string) => {
     // If Default Font
-    if (LocalFonts.includes(id)) return;
+    if (LOCAL_FONTS.includes(id)) return;
 
     const hasSubs = await checkSubscription();
     if (!hasSubs) {
-      updateFont("sanserif");
+      updateFont(LOCAL_FONTS[0]);
       // TODO: Alert User font have been reset
       return;
     }
@@ -60,10 +57,10 @@ const FontProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       for (const file of font.files) {
         const location = await getInfoAsync(`${FONTS_DIRECTORY}/${file.name}`);
         if (location.exists && !location.isDirectory && !isLoaded(file.name)) await loadAsync(file.name, location.uri);
-        else updateFont("sanserif");
+        else updateFont(LOCAL_FONTS[0]);
       }
     } catch (e) {
-      updateFont("sanserif");
+      updateFont(LOCAL_FONTS[0]);
       console.log("Uncountered an error, Setting font to san serif");
       console.log(e);
     }
@@ -75,9 +72,9 @@ const FontProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       await makeDirectoryAsync(FONTS_DIRECTORY, { intermediates: true });
     }
     const files = await readDirectoryAsync(FONTS_DIRECTORY);
-    const fonts = Array.from(LocalFonts);
+    const fonts = Array.from(LOCAL_FONTS);
     for (const font of ALL_FONTS) {
-      if (!LocalFonts.includes(font.id)) {
+      if (!LOCAL_FONTS.includes(font.id)) {
         if (font?.files && font.files.length && font.files.every((file) => files.includes(file.name)))
           fonts.push(font.id);
       }

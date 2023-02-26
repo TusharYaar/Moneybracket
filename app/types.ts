@@ -18,6 +18,7 @@ export interface CustomTheme extends MD3Theme {
 export interface FontObject {
   id: string;
   name: string;
+  by: string;
   font: MD3Typescale;
   isPaid?: boolean;
   files: {

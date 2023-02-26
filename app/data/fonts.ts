@@ -1,38 +1,33 @@
-import { FontObject } from "../../types";
-import montserrat from "./monstserrat";
-import firacode from "./firacode";
-import sanserif from "./sanserif";
-import lexend from "./lexend";
-import caveat from "./caveat";
-import notosans from "./notosans";
-import poppins from "./poppins";
-import zillaslab from "./zillaslab";
-import serif from "./serif";
-import monospace from "./monospace";
+import { FontObject } from "../types";
+import { makeFontConfig } from "../utils/fonts";
 
 export const ALL_FONTS: FontObject[] = [
   {
-    id: "serif",
-    name: "Serif",
-    font: serif,
+    id: "sansserif",
+    name: "Sans Serif",
+    by: "",
+    font: makeFontConfig("sans-serif", "sans-serif-medium"),
     files: [],
   },
   {
-    id: "sanserif",
-    name: "San Serif",
-    font: sanserif,
+    id: "serif",
+    name: "Serif",
+    by: "",
+    font: makeFontConfig("serif", "serif"),
     files: [],
   },
   {
     id: "monospace",
     name: "Monospace",
-    font: monospace,
+    by: "",
+    font: makeFontConfig("monospace", "monospace"),
     files: [],
   },
   {
     id: "montserrat",
     name: "Montserrat",
-    font: montserrat,
+    font: makeFontConfig("Montserrat-Medium", "Montserrat-Bold"),
+    by: "Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly",
     isPaid: true,
     files: [
       {
@@ -47,8 +42,9 @@ export const ALL_FONTS: FontObject[] = [
   },
   {
     id: "firacode",
+    by: "Nikita Prokopov",
     name: "Fira Code",
-    font: firacode,
+    font: makeFontConfig("FiraCode-Regular", "FiraCode-Medium"),
     isPaid: true,
     files: [
       {
@@ -64,7 +60,8 @@ export const ALL_FONTS: FontObject[] = [
   {
     id: "lexend",
     name: "Lexend",
-    font: lexend,
+    by: "Bonnie Shaver-Troup, Thomas Jockin, Santiago Orozco, Héctor Gómez, Superunion ",
+    font: makeFontConfig("Lexend-Regular", "Lexend-SemiBold", 0.9),
     isPaid: true,
     files: [
       {
@@ -80,7 +77,9 @@ export const ALL_FONTS: FontObject[] = [
   {
     id: "caveat",
     name: "Caveat",
-    font: caveat,
+    by: "Impallari Type",
+    font: makeFontConfig("Caveat-Medium", "Caveat-Bold", 1.3),
+
     isPaid: true,
     files: [
       {
@@ -96,7 +95,9 @@ export const ALL_FONTS: FontObject[] = [
   {
     id: "notosans",
     name: "Noto Sans",
-    font: notosans,
+    by: "Google",
+    font: makeFontConfig("NotoSans-Medium", "NotoSans-Bold"),
+
     isPaid: true,
     files: [
       {
@@ -112,7 +113,8 @@ export const ALL_FONTS: FontObject[] = [
   {
     id: "poppins",
     name: "Poppins",
-    font: poppins,
+    by: "Indian Type Foundry, Jonny Pinhorn",
+    font: makeFontConfig("Poppins-Regular", "Poppins-Medium"),
     isPaid: true,
     files: [
       {
@@ -128,7 +130,8 @@ export const ALL_FONTS: FontObject[] = [
   {
     id: "zillaslab",
     name: "Zilla Slab",
-    font: zillaslab,
+    font: makeFontConfig("ZillaSlab-Regular", "ZillaSlab-Medium"),
+    by: "Typotheque",
     isPaid: true,
     files: [
       {
@@ -138,6 +141,32 @@ export const ALL_FONTS: FontObject[] = [
       {
         name: "ZillaSlab-Regular",
         link: "https://res.cloudinary.com/tusharyaar/raw/upload/v1676740121/MoneyBracket/Fonts/ZillaSlab-Regular_shxvo0.ttf",
+      },
+    ],
+  },
+  {
+    id: "starjedi",
+    name: "Star Jedi",
+    font: makeFontConfig("StarJedi", "StarJedi", 1, 1),
+    by: "Boba Fonts",
+    isPaid: true,
+    files: [
+      {
+        name: "StarJedi",
+        link: "https://res.cloudinary.com/tusharyaar/raw/upload/v1677435347/MoneyBracket/Fonts/StarJedi_kkoqmu.ttf",
+      },
+    ],
+  },
+  {
+    id: "timeburner",
+    name: "Time Burner",
+    font: makeFontConfig("TimeburnerBold", "TimeburnerBold"),
+    by: "NimaType",
+    isPaid: true,
+    files: [
+      {
+        name: "TimeburnerBold",
+        link: "https://res.cloudinary.com/tusharyaar/raw/upload/v1677260841/MoneyBracket/Fonts/TimeburnerBold_woyyhg.ttf",
       },
     ],
   },

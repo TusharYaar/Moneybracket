@@ -19,7 +19,7 @@ import { Transaction } from "../../realm/Transaction";
 import { useData } from "../../providers/DataProvider";
 import { generateDummyTransaction } from "../../utils/dummy";
 
-import AVALIBLE_FONTS from "../../themes/fonts/index";
+import { ALL_FONTS } from "../../data";
 import AVALIBLE_THEMES from "../../themes/themes";
 import DeleteDialog from "../../components/DeleteDialog";
 import CurrencyModal from "../../components/CurrencyModal";
@@ -120,7 +120,7 @@ const Setting = ({ navigation }: Props) => {
   return (
     <ScrollView contentContainerStyle={styles.screen}>
       <SettingItem label={t("font")} leftIcon="text" onPress={() => navigation.navigate("FontSetting")}>
-        <Text>{AVALIBLE_FONTS.find((f) => f.id === font)?.name}</Text>
+        <Text>{ALL_FONTS.find((f) => f.id === font)?.name}</Text>
       </SettingItem>
       <SettingItem label={t("theme")} leftIcon="color-fill-outline" onPress={() => navigation.navigate("ThemeSetting")}>
         <Text>{AVALIBLE_THEMES.find((t) => t.id === theme)?.name}</Text>

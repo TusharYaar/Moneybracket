@@ -1,4 +1,4 @@
-import { StyleSheet, ViewStyle } from "react-native";
+import { StyleSheet, ViewStyle, View } from "react-native";
 import React from "react";
 
 import { Button, Text, Surface } from "react-native-paper";
@@ -21,7 +21,10 @@ const FontView = ({ font, selected, onPress, style, isUnlocked, showDownload, on
   const { theme } = useCustomTheme();
   return (
     <Surface style={[style]}>
-      <Text style={font.font.titleMedium}>{font.name}</Text>
+      <View style={{ flex: 1 }}>
+        <Text variant="titleMedium">{font.name}</Text>
+        {font.by && <Text variant="labelSmall">{font.by}</Text>}
+      </View>
       {isUnlocked && !showDownload && (
         <Button
           mode={selected ? "contained" : "outlined"}

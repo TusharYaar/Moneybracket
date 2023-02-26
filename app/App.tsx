@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ThemeProvider from "./themes";
 import LockProvider from "./providers/LockProvider";
 import RealmProvider from "./realm";
@@ -13,10 +13,8 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "./localization";
 import Purchases from "react-native-purchases";
 import FontProvider from "./providers/FontProvider";
+Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
 const App = () => {
-  useEffect(() => {
-    Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
-  }, []);
   return (
     <RealmProvider>
       <SettingsProvider>

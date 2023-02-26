@@ -1,112 +1,84 @@
-import { MD3Typescale } from "react-native-paper/lib/typescript/types";
-
-const _default: MD3Typescale = {
+const FontConfig = {
   bodyLarge: {
-    fontFamily: "serif",
     fontSize: 16,
-    fontWeight: "400",
     letterSpacing: 0.15,
     lineHeight: 24,
   },
   bodyMedium: {
-    fontFamily: "serif",
     fontSize: 14,
-    fontWeight: "400",
     letterSpacing: 0.25,
     lineHeight: 20,
   },
   bodySmall: {
-    fontFamily: "serif",
     fontSize: 12,
-    fontWeight: "400",
     letterSpacing: 0.4,
     lineHeight: 16,
   },
-  default: { fontFamily: "serif", fontWeight: "400", letterSpacing: 0 },
+  default: {
+    lineHeight: 16,
+    fontSize: 16,
+    letterSpacing: 0,
+  },
   displayLarge: {
-    fontFamily: "serif",
     fontSize: 57,
-    fontWeight: "400",
     letterSpacing: 0,
     lineHeight: 64,
   },
   displayMedium: {
-    fontFamily: "serif",
     fontSize: 45,
-    fontWeight: "400",
     letterSpacing: 0,
     lineHeight: 52,
   },
   displaySmall: {
-    fontFamily: "serif",
     fontSize: 36,
-    fontWeight: "400",
     letterSpacing: 0,
     lineHeight: 44,
   },
   headlineLarge: {
-    fontFamily: "serif",
     fontSize: 32,
-    fontWeight: "400",
     letterSpacing: 0,
     lineHeight: 40,
   },
   headlineMedium: {
-    fontFamily: "serif",
     fontSize: 28,
-    fontWeight: "400",
     letterSpacing: 0,
     lineHeight: 36,
   },
   headlineSmall: {
-    fontFamily: "serif",
     fontSize: 24,
-    fontWeight: "400",
     letterSpacing: 0,
     lineHeight: 32,
   },
   labelLarge: {
-    fontFamily: "serif",
     fontSize: 14,
-    fontWeight: "400",
     letterSpacing: 0.1,
     lineHeight: 20,
   },
   labelMedium: {
-    fontFamily: "serif",
     fontSize: 12,
-    fontWeight: "400",
     letterSpacing: 0.5,
     lineHeight: 16,
   },
   labelSmall: {
-    fontFamily: "serif",
     fontSize: 11,
-    fontWeight: "400",
     letterSpacing: 0.5,
     lineHeight: 16,
   },
   titleLarge: {
-    fontFamily: "serif",
     fontSize: 22,
-    fontWeight: "400",
     letterSpacing: 0,
     lineHeight: 28,
   },
   titleMedium: {
-    fontFamily: "serif",
     fontSize: 16,
-    fontWeight: "400",
     letterSpacing: 0.15,
     lineHeight: 24,
   },
   titleSmall: {
-    fontFamily: "serif",
     fontSize: 14,
-    fontWeight: "400",
     letterSpacing: 0.1,
     lineHeight: 20,
   },
 };
 
-export default _default;
+export default FontConfig;

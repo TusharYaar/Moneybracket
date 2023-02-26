@@ -6,7 +6,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { CustomTheme } from "../types";
 import AVALIBLE_THEMES from "./themes";
 import { useSettings } from "../providers/SettingsProvider";
-import ALL_FONTS from "./fonts/index";
+import { ALL_FONTS } from "../data";
 import { MD3Typescale } from "react-native-paper/lib/typescript/types";
 import { StatusBar } from "expo-status-bar";
 
