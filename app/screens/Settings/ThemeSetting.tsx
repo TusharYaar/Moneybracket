@@ -10,7 +10,7 @@ const window = Dimensions.get("window");
 
 const ThemeSetting = () => {
   const { theme } = useSettings();
-  const { changeTheme } = useCustomTheme();
+  const { changeTheme, unlockedThemes } = useCustomTheme();
 
   return (
     <FlashList
@@ -22,6 +22,7 @@ const ThemeSetting = () => {
           theme={item}
           selected={theme === item.id}
           onSelect={() => changeTheme(item.id)}
+          isUnlocked={unlockedThemes.includes(item.id)}
           imageSize={{
             height: window.height - 84,
             width: window.width - window.width / 8 - 16,

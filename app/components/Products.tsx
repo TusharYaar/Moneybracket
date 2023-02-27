@@ -1,16 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import { PurchasesPackage } from "react-native-purchases";
-import { TouchableRipple } from "react-native-paper";
+import { TouchableRipple, Text } from "react-native-paper";
 
 const Products = ({ product, onPress }: { product: PurchasesPackage; onPress: () => void }) => {
   return (
     <TouchableRipple onPress={onPress}>
       <View style={{ margin: 8 }}>
-        <Text>{product.product.title.replaceAll(/\(.*\)/g, "")}</Text>
-        <Text>{product.product.description}</Text>
-        <Text>{product.product.priceString}</Text>
-        <Text>{product.product.subscriptionPeriod}</Text>
+        <Text variant="bodyLarge">{product.product.title.replaceAll(/\(.*\)/g, "")}</Text>
+        <Text variant="bodyMedium">{product.product.description}</Text>
+        <Text variant="bodyMedium">{product.product.priceString}</Text>
       </View>
     </TouchableRipple>
   );

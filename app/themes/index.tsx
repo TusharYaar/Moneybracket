@@ -1,80 +1,85 @@
-import React, { useContext, createContext, useState, useMemo, useCallback } from "react";
+import React, { useContext, createContext, useState, useMemo, useCallback, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { Provider as PaperProvider, Snackbar } from "react-native-paper";
+import { Provider as PaperProvider } from "react-native-paper";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CustomTheme } from "../types";
-import AVALIBLE_THEMES from "./themes";
+import ALL_THEMES from "./themes";
 import { useSettings } from "../providers/SettingsProvider";
-import { ALL_FONTS } from "../data";
-import { MD3Typescale } from "react-native-paper/lib/typescript/types";
+import { ALL_FONTS, DEFAULT_THEMES } from "../data";
 import { StatusBar } from "expo-status-bar";
+import Purchases from "react-native-purchases";
 
 type Props = {
   current?: string;
   changeTheme: (theme: string) => void;
-  changeFont: (font: string) => void;
   theme: CustomTheme;
-  showErrorSnackbar: (message: string) => void;
-  showSuccessSnackbar: (message: string) => void;
+  unlockedThemes: string[];
+  checkThemeSubscription: () => Promise<boolean>;
 };
 
 const ThemeContext = createContext<Props>({
   current: "DEFAULT",
   changeTheme: () => {},
-  changeFont: () => {},
-  theme: AVALIBLE_THEMES[0],
-  showErrorSnackbar: (message: string) => {},
-  showSuccessSnackbar: (message: string) => {},
+  unlockedThemes: DEFAULT_THEMES,
+  theme: ALL_THEMES[0],
+  checkThemeSubscription: () => Promise.resolve(true),
 });
 
 export const useCustomTheme = () => useContext(ThemeContext);
 
 const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const SETTINGS = useSettings();
-  const [theme, setTheme] = useState(
-    AVALIBLE_THEMES.find((theme) => theme.id === SETTINGS.theme) || AVALIBLE_THEMES[0]
-  );
-  const [font, setFont] = useState(ALL_FONTS.find((f) => f.id === SETTINGS.font)?.name);
+  const { theme, font, updateTheme } = useSettings();
+  const [unlockedThemes, setUnlockThemes] = useState(DEFAULT_THEMES);
   const themeObject = useMemo(() => {
-    theme.fonts = ALL_FONTS.find((f) => f.id === SETTINGS.font)?.font as MD3Typescale;
-    return theme;
+    let obj = ALL_THEMES.find((t) => t.id === theme);
+    obj.fonts = ALL_FONTS.find((f) => f.id === font).font;
+    return obj;
   }, [theme, font]);
 
-  const [snackbar, setSnackbar] = useState({
-    message: "",
-    visible: false,
-    type: "error",
-  });
-
-  const handleThemeChange = (theme: string) => {
-    setTheme(AVALIBLE_THEMES.find((_t) => _t.id === theme) || AVALIBLE_THEMES[0]);
-    SETTINGS.updateTheme(theme);
-  };
-
-  const handleFontChange = (font: string) => {
-    setFont(ALL_FONTS.find((_f) => _f.id === font)?.name || ALL_FONTS[0].name);
-    SETTINGS.updateFont(font);
-  };
-  const showSuccessSnackbar = useCallback((message: string) => {
-    setSnackbar({ message, visible: true, type: "success" });
-  }, []);
-  const showErrorSnackbar = useCallback((message: string) => {
-    setSnackbar({ message, visible: true, type: "error" });
+  const checkSubscription = useCallback(async () => {
+    const info = await Purchases.getCustomerInfo();
+    if (Object.keys(info.entitlements.active).includes("all_themes")) {
+      setUnlockThemes(ALL_THEMES.map((theme) => theme.id));
+      return true;
+    } else {
+      setUnlockThemes(DEFAULT_THEMES);
+      return false;
+    }
   }, []);
 
-  const dismissSnackbar = useCallback(() => {
-    setSnackbar({ message: "", visible: false, type: "error" });
-  }, []);
+  const handleThemeChange = useCallback(
+    async (theme: string) => {
+      const has = await checkSubscription();
+      if (!DEFAULT_THEMES.includes(theme) && !has) {
+        updateTheme(ALL_THEMES[0].id);
+        console.log("Theme Not unlocked");
+        return;
+      }
+      updateTheme(theme);
+    },
+    [checkSubscription]
+  );
+
+  useEffect(() => {
+    const check = async () => {
+      if (DEFAULT_THEMES.includes(theme)) return;
+      const has = await checkSubscription();
+      console.log(has);
+      if (has) return;
+      else updateTheme(DEFAULT_THEMES[0]);
+      console.log("set to to default");
+    };
+    check();
+  }, [checkSubscription, theme]);
 
   return (
     <ThemeContext.Provider
       value={{
         changeTheme: handleThemeChange,
-        changeFont: handleFontChange,
-        theme,
-        showSuccessSnackbar,
-        showErrorSnackbar,
+        theme: themeObject,
+        unlockedThemes,
+        checkThemeSubscription: checkSubscription,
       }}
     >
       <PaperProvider
@@ -86,9 +91,6 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
         <NavigationContainer theme={themeObject}>
           <StatusBar />
           {children}
-          <Snackbar visible={snackbar.visible} onDismiss={dismissSnackbar}>
-            {snackbar.message}
-          </Snackbar>
         </NavigationContainer>
       </PaperProvider>
     </ThemeContext.Provider>

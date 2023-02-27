@@ -13,9 +13,10 @@ type Props = {
     width: number;
   };
   style?: ViewStyle;
+  isUnlocked: boolean;
 };
 
-const ThemeObject = ({ theme, selected, onSelect, style, imageSize }: Props) => {
+const ThemeObject = ({ theme, selected, onSelect, style, imageSize, isUnlocked }: Props) => {
   const {
     theme: { colors, roundness },
   } = useCustomTheme();
@@ -49,9 +50,11 @@ const ThemeObject = ({ theme, selected, onSelect, style, imageSize }: Props) => 
         ]}
       >
         <Text variant="headlineMedium">{theme.name}</Text>
-        <Button disabled={selected} onPress={onSelect} mode={selected ? "contained" : "outlined"}>
-          {selected ? "Selected" : "Select"}
-        </Button>
+        {isUnlocked && (
+          <Button disabled={selected} onPress={onSelect} mode={selected ? "contained" : "outlined"}>
+            {selected ? "Selected" : "Select"}
+          </Button>
+        )}
       </View>
     </View>
   );

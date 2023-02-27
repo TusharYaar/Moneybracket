@@ -89,6 +89,7 @@ const FontProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
         for (const file of font.files) await downloadAsync(file.link, `${FONTS_DIRECTORY}/${file.name}`);
         setOfflineFonts((prev) => [...prev, id]);
         loadFont(font.id);
+        updateFont(font.id);
       }
     } catch (e) {
       console.log(e);
@@ -98,7 +99,6 @@ const FontProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   useEffect(() => {
     loadFont(font);
     readFontsDirectory();
-    checkSubscription();
   }, [font, loadFont, readFontsDirectory]);
 
   return (

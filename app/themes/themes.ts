@@ -1,5 +1,5 @@
-import defaultLight, {defaultDark} from "./default";
+import defaultLight, { defaultDark, blueBliss } from "./default";
 
-const AVALIBLE_THEMES = [defaultLight, defaultDark];
+const ALL_THEMES = [defaultLight, defaultDark, blueBliss];
 
-export default AVALIBLE_THEMES;
+export default ALL_THEMES;

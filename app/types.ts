@@ -13,6 +13,7 @@ export interface CustomTheme extends MD3Theme {
       cardToneBackground: string;
     };
   image?: string;
+  isPaid?: boolean;
 }
 
 export interface FontObject {

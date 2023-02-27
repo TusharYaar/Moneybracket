@@ -9,8 +9,9 @@ import {
   HelpStackNavigator,
   RecurringStackNavigator,
 } from "./StackNavigators";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import Purchases from "react-native-purchases";
 
 export type DrawerParamList = {
   RecurringStack: undefined;
@@ -26,6 +27,17 @@ export type DrawerParamList = {
 const Drawer = createDrawerNavigator<DrawerParamList>();
 const MyDrawer = () => {
   const { t } = useTranslation("", { keyPrefix: "navigator.drawer" });
+  const [canMakePayments, setCanMakePayments] = useState(false);
+
+  useEffect(() => {
+    const check = async () => {
+      const can = await Purchases.canMakePayments();
+      setCanMakePayments(can);
+    };
+
+    check();
+  }, []);
+
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -37,8 +49,10 @@ const MyDrawer = () => {
       <Drawer.Screen name="CategoryStack" component={CategoryStackNavigator} options={{ title: t("category") }} />
       <Drawer.Screen name="ExchangeStack" component={ExchangeStackNavigator} options={{ title: t("exchange") }} />
       <Drawer.Screen name="SettingStack" component={SettingStack} options={{ title: t("setting") }} />
-      {<Drawer.Screen name="StoreStack" component={StoreStackNavigator} options={{ title: t("store") }} />}
-      <Drawer.Screen name="HelpStack" component={HelpStackNavigator} options={{ title: t("help") }} />
+      {canMakePayments && (
+        <Drawer.Screen name="StoreStack" component={StoreStackNavigator} options={{ title: t("store") }} />
+      )}
+      {__DEV__ && <Drawer.Screen name="HelpStack" component={HelpStackNavigator} options={{ title: t("help") }} />}
       <Drawer.Screen name="AboutStack" component={AboutStackNavigator} options={{ title: t("about") }} />
     </Drawer.Navigator>
   );
