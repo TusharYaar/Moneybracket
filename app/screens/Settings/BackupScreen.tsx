@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { BACKUP_DIRECTORY } from "../../data";
 import { useData } from "../../providers/DataProvider";
 import { Button } from "react-native-paper";
@@ -7,7 +7,6 @@ import { Button } from "react-native-paper";
 import * as FileSystem from "expo-file-system";
 import * as DocumentPicker from "expo-document-picker";
 import { useRealm } from "../../realm";
-import { Realm } from "@realm/react";
 import { generateBackupFile, readBackupFile } from "../../utils/backup";
 import { useSettings } from "../../providers/SettingsProvider";
 import { Category } from "../../realm/Category";
@@ -16,17 +15,6 @@ const Backup = () => {
   const realm = useRealm();
   const { category, transaction } = useData();
   const { font } = useSettings();
-
-  const checkDirectory = useCallback(async () => {
-    const { exists } = await FileSystem.getInfoAsync(BACKUP_DIRECTORY);
-    if (!exists) {
-      await FileSystem.makeDirectoryAsync(BACKUP_DIRECTORY, { intermediates: true });
-    }
-  }, []);
-
-  useEffect(() => {
-    checkDirectory();
-  }, []);
 
   const createBackup = useCallback(async () => {
     const location = `${BACKUP_DIRECTORY}/backup_${new Date()}.json`;

@@ -5,7 +5,7 @@ import RateItem from "../../components/RateItem";
 import { FlashList } from "@shopify/flash-list";
 import { useSettings } from "../../providers/SettingsProvider";
 import { IconButton, TextInput, Text } from "react-native-paper";
-import { useCustomTheme } from "../../themes";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 import CurrencyModal from "../../components/CurrencyModal";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../navigators/StackNavigators";

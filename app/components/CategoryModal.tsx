@@ -5,7 +5,8 @@ import { FlashList } from "@shopify/flash-list";
 
 import CategoryItem from "./CategoryItem";
 import { Category } from "../realm/Category";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
+
 import ModalContainer from "./ModalContainer";
 
 type Props = {

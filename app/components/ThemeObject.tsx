@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Button, Text } from "react-native-paper";
 import { CustomTheme } from "../types";
 import { ViewStyle, View, Image, StyleSheet, ImageLoadEventData, NativeSyntheticEvent } from "react-native";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
 
 type Props = {
   theme: CustomTheme;

@@ -10,7 +10,8 @@ import CurrencyModal from "./CurrencyModal";
 import CategoryModal from "./CategoryModal";
 import { useRealm } from "../realm";
 import { useTranslation } from "react-i18next";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
+
 import { useSettings } from "../providers/SettingsProvider";
 import ModalContainer from "./ModalContainer";
 import { useExchangeRate } from "../providers/ExchangeRatesProvider";

@@ -1,7 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import React, { useCallback, useState } from "react";
 import { Button, Caption, IconButton } from "react-native-paper";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
+
 import {
   endOfDay,
   endOfMonth,

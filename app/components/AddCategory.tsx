@@ -9,7 +9,7 @@ import IconModal from "./IconModal";
 
 import { COLORS, ICONS } from "../data";
 import { useTranslation } from "react-i18next";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
 
 import { chooseBetterContrast } from "../utils/colors";
 import ModalContainer from "./ModalContainer";

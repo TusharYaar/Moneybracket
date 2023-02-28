@@ -2,7 +2,7 @@ import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
 
 import { Surface, Text } from "react-native-paper";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import Amount from "./Amount";

@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { PieChart } from "react-native-chart-kit";
 import { Text, Surface } from "react-native-paper";
 import LegendItem from "../LegendItem";
-import { useCustomTheme } from "../../themes";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
 type Props = {
   data: any[];

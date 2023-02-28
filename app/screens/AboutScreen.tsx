@@ -3,7 +3,7 @@ import React from "react";
 import { View, StyleSheet, Image, ScrollView } from "react-native";
 
 import { List, Text } from "react-native-paper";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
 
 import file from "../package.json";
 

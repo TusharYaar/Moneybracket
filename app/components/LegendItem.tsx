@@ -1,8 +1,8 @@
-import {StyleSheet, View} from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 
-import {Text} from "react-native-paper";
-import {useCustomTheme} from "../themes";
+import { Text } from "react-native-paper";
+import { useCustomTheme } from "../providers/ThemeProvider";
 
 type Props = {
   amount: number;
@@ -10,19 +10,14 @@ type Props = {
   color: string;
 };
 
-const LegendItem = ({amount, title, color}: Props) => {
+const LegendItem = ({ amount, title, color }: Props) => {
   const {
-    theme: {roundness},
+    theme: { roundness },
   } = useCustomTheme();
 
   return (
     <View style={styles.container}>
-      <View
-        style={[
-          styles.legend,
-          {backgroundColor: color, borderRadius: roundness},
-        ]}
-      />
+      <View style={[styles.legend, { backgroundColor: color, borderRadius: roundness }]} />
       <Text>{`${title} ${amount.toFixed()}%`}</Text>
     </View>
   );

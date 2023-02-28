@@ -10,7 +10,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "./StackNavigators";
 import { StyleSheet } from "react-native";
 import { useData } from "../providers/DataProvider";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
+
 import DateFilterSelector from "../components/DateFilterSelector";
 import { useTranslation } from "react-i18next";
 

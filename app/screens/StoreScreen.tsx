@@ -3,14 +3,17 @@ import React, { useCallback, useEffect, useState } from "react";
 import Purchases, { PurchasesPackage } from "react-native-purchases";
 import { Button, Text } from "react-native-paper";
 import Products from "../components/Products";
-import { useFont } from "../providers/FontProvider";
-import { useCustomTheme } from "../themes";
+// import { useFont } from "../providers/FontProvider";
+import { useCustomTheme } from "../providers/ThemeProvider";
+
+import { useSettings } from "../providers/SettingsProvider";
 const StoreScreen = () => {
-  const { checkFontSubscription } = useFont();
-  const { checkThemeSubscription } = useCustomTheme();
+  // const { checkFontSubscription } = useFont();
+  // const { checkThemeSubscription } = useCustomTheme();
 
   const [offerings, setOfferings] = useState<PurchasesPackage[]>([]);
   const [loading, setLoading] = useState(false);
+  const { refreshUnlockedItems } = useSettings();
 
   useEffect(() => {
     async function f() {
@@ -32,8 +35,7 @@ const StoreScreen = () => {
     } catch (e) {
       console.log("error", e);
     } finally {
-      checkFontSubscription();
-      checkThemeSubscription();
+      refreshUnlockedItems();
     }
   };
 
@@ -45,8 +47,7 @@ const StoreScreen = () => {
     } catch (e) {
       console.log(e);
     } finally {
-      checkFontSubscription();
-      checkThemeSubscription();
+      refreshUnlockedItems();
       setLoading(false);
     }
   }, []);
