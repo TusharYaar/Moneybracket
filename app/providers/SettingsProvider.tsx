@@ -55,7 +55,7 @@ const SettingContext = createContext<Props>({ ...SETTING, offlineFonts: LOCAL_FO
 export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const { changeTheme, changeCurrentFont, loadFont } = useCustomTheme();
+  const { changeTheme, changeCurrentFont, loadFont, enqueueSnackbar } = useCustomTheme();
 
   const [settings, setSettings] = useState(SETTING);
   const [offlineFonts, setOfflineFonts] = useState(LOCAL_FONTS);
@@ -65,42 +65,43 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
     setStorage(SETTING_KEYS.language, lang);
   };
 
-  const updateFont = async (font: string) => {
+  const updateFont = async (font: string, notify = true) => {
     try {
       let hasPerm = true;
       if (!LOCAL_FONTS.includes(font)) hasPerm = (await checkSubscription()).font;
-      if (!hasPerm) {
-        // TODO: Alert User font cant be set
-        throw "NotUNLOCKED";
-      } else {
-        await loadFont(font);
-      }
+      if (!hasPerm) throw "FONT_NOT_UNLOCKED";
+      else await loadFont(font);
+
       changeCurrentFont(font);
       setSettings((prev) => ({ ...prev, font }));
       setStorage(SETTING_KEYS.font, font);
+      if (notify) enqueueSnackbar("FONT_UPDATE_SUCCESS");
       getOfflineFonts();
     } catch (e) {
-      // font = LOCAL_FONTS[0];
-      // console.log(e);
-      // changeCurrentFont(font);
-      // setSettings((prev) => ({ ...prev, font }));
-      // setStorage(SETTING_KEYS.font, font);
+      if (e === "FONT_NOT_UNLOCKED" && !LOCAL_FONTS.includes(font)) {
+        font = LOCAL_FONTS[0];
+        changeCurrentFont(font);
+        setStorage(SETTING_KEYS.font, font);
+        setSettings((prev) => ({ ...prev, font }));
+        enqueueSnackbar(e);
+      } else enqueueSnackbar(e);
     }
   };
-  const updateTheme = useCallback(async (theme: string) => {
+  const updateTheme = useCallback(async (theme: string, notify = true) => {
     let hasPerm = true;
     if (!DEFAULT_THEMES.includes(theme)) hasPerm = (await checkSubscription()).theme;
     if (!hasPerm) {
-      // TODO: Alert User font cant be set
-      theme = DEFAULT_THEMES[0];
+      throw "THEME_NOT_UNLOCKED";
     }
     setStorage(SETTING_KEYS.theme, theme);
     setSettings((prev) => ({ ...prev, theme }));
     changeTheme(theme);
+    if (notify) enqueueSnackbar("THEME_UPDATE_SUCCESS");
   }, []);
   const updateCurrency = (curr: string) => {
     setSettings((prev) => ({ ...prev, currency: CURRENCIES[curr] }));
     setStorage(SETTING_KEYS.currency, curr);
+    enqueueSnackbar("CURRENCY_UPDATE_SUCCESS");
   };
 
   const updateDateFormat = (format: string) => {
@@ -144,8 +145,8 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
 
   useEffect(() => {
     refreshUnlockedItems();
-    updateTheme(SETTING.theme);
-    updateFont(SETTING.font);
+    updateTheme(SETTING.theme, false);
+    updateFont(SETTING.font, false);
   }, [updateTheme]);
 
   return (

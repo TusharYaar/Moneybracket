@@ -31,21 +31,21 @@ const App = () => {
   }, []);
 
   return (
-    <ThemeProvider>
-      <RealmProvider>
-        <SettingsProvider>
-          <ExchangeRatesProvider>
-            <I18nextProvider i18n={i18n}>
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider>
+        <RealmProvider>
+          <SettingsProvider>
+            <ExchangeRatesProvider>
               <DataProvider>
                 <LockProvider>
                   <AppDrawer />
                 </LockProvider>
               </DataProvider>
-            </I18nextProvider>
-          </ExchangeRatesProvider>
-        </SettingsProvider>
-      </RealmProvider>
-    </ThemeProvider>
+            </ExchangeRatesProvider>
+          </SettingsProvider>
+        </RealmProvider>
+      </ThemeProvider>
+    </I18nextProvider>
   );
 };
 

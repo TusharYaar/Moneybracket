@@ -22,6 +22,7 @@ import DeleteDialog from "../../components/DeleteDialog";
 import CurrencyModal from "../../components/CurrencyModal";
 import LanguageModal from "../../components/LanguageModal";
 import DateFormatModal from "../../components/DateFormatModal";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 
@@ -38,6 +39,10 @@ const Setting = ({ navigation }: Props) => {
     updateDateFormat,
     updateLock,
   } = useSettings();
+  const {
+    enqueueSnackbar,
+    theme: { roundness },
+  } = useCustomTheme();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -109,14 +114,25 @@ const Setting = ({ navigation }: Props) => {
       const result = await isEnrolledAsync();
       if (result) {
         const valid = await authenticateAsync();
-        if (valid.success) updateLock(true);
-      }
-    } else updateLock(false);
+        if (valid.success === true) {
+          enqueueSnackbar("APPLOCK_UPDATE_SUCCESS");
+          return updateLock(true);
+        } else {
+          if (valid.error === "user_cancel") return enqueueSnackbar("APPLOCK_USER_CANCEL");
+        }
+      } else enqueueSnackbar("APPLOCK_DEVICE_NOT_ENROLL");
+    }
+    updateLock(false);
   }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.screen}>
-      <SettingItem label={t("font")} leftIcon="text" onPress={() => navigation.navigate("FontSetting")}>
+      <SettingItem
+        label={t("font")}
+        leftIcon="text"
+        onPress={() => navigation.navigate("FontSetting")}
+        style={{ borderTopLeftRadius: roundness * 4, borderTopRightRadius: roundness * 4 }}
+      >
         <Text>{ALL_FONTS.find((f) => f.id === font)?.name}</Text>
       </SettingItem>
       <SettingItem label={t("theme")} leftIcon="color-fill-outline" onPress={() => navigation.navigate("ThemeSetting")}>
@@ -139,7 +155,12 @@ const Setting = ({ navigation }: Props) => {
       {__DEV__ && category.length > 0 && <SettingItem label={"dummy Trans"} leftIcon="text" onPress={addDummy} />}
       <SettingItem label={t("deleteAllData")} leftIcon="text" onPress={() => setDeleteModal(true)} />
       <SettingItem label={t("export")} leftIcon="albums-outline" onPress={() => navigation.navigate("ExportScreen")} />
-      <SettingItem label={t("backup")} leftIcon="archive-outline" onPress={() => navigation.navigate("BackupScreen")} />
+      <SettingItem
+        label={t("backup")}
+        leftIcon="archive-outline"
+        onPress={() => navigation.navigate("BackupScreen")}
+        style={{ borderBottomLeftRadius: roundness * 4, borderBottomRightRadius: roundness * 4 }}
+      />
       <DeleteDialog
         visible={deleteModal}
         deleteAction={deleteAllData}
