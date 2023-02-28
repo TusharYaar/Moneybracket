@@ -106,5 +106,18 @@
     "languages": {
         "en": "English",
         "hi": "Hindi"
+    },
+    "messages": {
+        "TRANSACTION_ADD_SUCCESS": "Transaction added successfully",
+        "TRANSACTION_ADD_FAIL": "Unable to add transaction, please try again",
+        "CATEGORY_ADD_SUCCESS": "Category created successfully",
+        "CATEGORY_ADD_FAIL": "Unable to create category, please try again",
+        "FONT_UPDATE_SUCCESS": "Font updated successfully",
+        "THEME_UPDATE_SUCCESS": "Theme updated successfully",
+        "LANGUAGE_UPDATE_SUCCESS": "Langauge updated successfully",
+        "APPLOCK_UPDATE_SUCCESS": "App Lock updated successfully",
+        "APPLOCK_USER_CANCEL": "User cancelled the operation",
+        "APPLOCK_DEVICE_NOT_ENROLL": "Device does not have a lock",
+        "CURRENCY_UPDATE_SUCCESS": "Currency updated successfully"
     }
 }

@@ -1,24 +1,20 @@
-import {StyleSheet, View} from "react-native";
-import React, {ReactNode} from "react";
-import {Surface, TouchableRipple, Text} from "react-native-paper";
+import { StyleSheet, View, ViewStyle } from "react-native";
+import React, { ReactNode } from "react";
+import { Surface, TouchableRipple, Text } from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
+
 type Props = {
   label: string;
   leftIcon: string;
   rightIcon?: string;
   onPress?: () => void;
   children?: ReactNode;
+  style?: ViewStyle;
 };
 
-const SettingItem = ({
-  leftIcon,
-  onPress,
-  children,
-  rightIcon,
-  label,
-}: Props) => {
+const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, style }: Props) => {
   return (
-    <Surface style={styles.surface}>
+    <Surface style={[styles.surface, style]}>
       <TouchableRipple onPress={onPress}>
         <View style={styles.innerContainer}>
           <View style={styles.labelContainer}>
@@ -28,9 +24,7 @@ const SettingItem = ({
             </Text>
           </View>
           {children}
-          {rightIcon && (
-            <Icon name={rightIcon} size={16} style={styles.rightIcon} />
-          )}
+          {rightIcon && <Icon name={rightIcon} size={16} style={styles.rightIcon} />}
         </View>
       </TouchableRipple>
     </Surface>
