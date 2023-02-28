@@ -3,14 +3,12 @@ import React from "react";
 import AVALIBLE_THEMES from "../../themes/themes";
 import ThemeObject from "../../components/ThemeObject";
 import { useSettings } from "../../providers/SettingsProvider";
-import { useCustomTheme } from "../../themes";
 import { FlashList } from "@shopify/flash-list";
 
 const window = Dimensions.get("window");
 
 const ThemeSetting = () => {
-  const { theme } = useSettings();
-  const { changeTheme, unlockedThemes } = useCustomTheme();
+  const { theme, updateTheme, unlockedThemes } = useSettings();
 
   return (
     <FlashList
@@ -21,8 +19,8 @@ const ThemeSetting = () => {
           key={item.id}
           theme={item}
           selected={theme === item.id}
-          onSelect={() => changeTheme(item.id)}
-          isUnlocked={unlockedThemes.includes(item.id)}
+          onSelect={() => updateTheme(item.id)}
+          isUnlocked={true || unlockedThemes.includes(item.id)}
           imageSize={{
             height: window.height - 84,
             width: window.width - window.width / 8 - 16,

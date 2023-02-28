@@ -12,20 +12,20 @@ type Props = {
   style?: ViewStyle;
   onPress: () => void;
   isUnlocked: boolean;
-  showDownload: boolean;
-  onPressDownload: () => void;
+  // TODO: Add Require Download tag
 };
 
-const FontView = ({ font, selected, onPress, style, isUnlocked, showDownload, onPressDownload }: Props) => {
+const FontView = ({ font, selected, onPress, style, isUnlocked }: Props) => {
   const { t } = useTranslation("", { keyPrefix: "components.fontView" });
   const { theme } = useCustomTheme();
+
   return (
     <Surface style={[style]}>
       <View style={{ flex: 1 }}>
         <Text variant="titleMedium">{font.name}</Text>
         {font.by && <Text variant="labelSmall">{font.by}</Text>}
       </View>
-      {isUnlocked && !showDownload && (
+      {isUnlocked && (
         <Button
           mode={selected ? "contained" : "outlined"}
           disabled={selected}
@@ -38,15 +38,6 @@ const FontView = ({ font, selected, onPress, style, isUnlocked, showDownload, on
       {!isUnlocked && (
         <Button onPress={() => {}} mode="contained" style={[styles.button, { borderColor: theme.colors.primary }]}>
           {t("unlock")}
-        </Button>
-      )}
-      {showDownload && isUnlocked && (
-        <Button
-          mode="outlined"
-          onPress={onPressDownload}
-          style={[styles.button, { borderColor: theme.colors.primary }]}
-        >
-          {t("download")}
         </Button>
       )}
     </Surface>

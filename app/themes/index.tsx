@@ -1,85 +1,93 @@
-import React, { useContext, createContext, useState, useMemo, useCallback, useEffect } from "react";
+import React, { useContext, createContext, useState, useMemo, useCallback } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider as PaperProvider } from "react-native-paper";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CustomTheme } from "../types";
 import ALL_THEMES from "./themes";
-import { useSettings } from "../providers/SettingsProvider";
-import { ALL_FONTS, DEFAULT_THEMES } from "../data";
+import { ALL_FONTS, DEFAULT_THEMES, FONTS_DIRECTORY, LOCAL_FONTS } from "../data";
 import { StatusBar } from "expo-status-bar";
-import Purchases from "react-native-purchases";
+import { isLoaded, loadAsync } from "expo-font";
+import { downloadAsync, getInfoAsync } from "expo-file-system";
 
 type Props = {
-  current?: string;
   changeTheme: (theme: string) => void;
+  currentFont: string;
+  changeCurrentFont: (font: string) => void;
   theme: CustomTheme;
-  unlockedThemes: string[];
-  checkThemeSubscription: () => Promise<boolean>;
+  loadFont: (id: string) => Promise<void>;
 };
 
 const ThemeContext = createContext<Props>({
-  current: "DEFAULT",
+  currentFont: LOCAL_FONTS[0],
   changeTheme: () => {},
-  unlockedThemes: DEFAULT_THEMES,
+  changeCurrentFont: () => {},
   theme: ALL_THEMES[0],
-  checkThemeSubscription: () => Promise.resolve(true),
+  loadFont: async (id: string) => {},
 });
 
 export const useCustomTheme = () => useContext(ThemeContext);
 
 const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const { theme, font, updateTheme } = useSettings();
-  const [unlockedThemes, setUnlockThemes] = useState(DEFAULT_THEMES);
+  const [theme, setTheme] = useState(DEFAULT_THEMES[0]);
+  const [currentFont, setCurrentFont] = useState(LOCAL_FONTS[0]);
   const themeObject = useMemo(() => {
     let obj = ALL_THEMES.find((t) => t.id === theme);
-    obj.fonts = ALL_FONTS.find((f) => f.id === font).font;
+    obj.fonts = ALL_FONTS.find((f) => f.id === currentFont).font;
     return obj;
-  }, [theme, font]);
+  }, [theme, currentFont]);
 
-  const checkSubscription = useCallback(async () => {
-    const info = await Purchases.getCustomerInfo();
-    if (Object.keys(info.entitlements.active).includes("all_themes")) {
-      setUnlockThemes(ALL_THEMES.map((theme) => theme.id));
-      return true;
-    } else {
-      setUnlockThemes(DEFAULT_THEMES);
-      return false;
+  const changeTheme = useCallback((theme: string) => {
+    setTheme(theme);
+  }, []);
+
+  const changeCurrentFont = useCallback((font: string) => {
+    setCurrentFont(font);
+  }, []);
+
+  const downloadFont = useCallback(async (id: string) => {
+    try {
+      const font = ALL_FONTS.find((f) => f.id === id);
+      if (font) for (const file of font.files) await downloadAsync(file.link, `${FONTS_DIRECTORY}/${file.name}`);
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
   }, []);
 
-  const handleThemeChange = useCallback(
-    async (theme: string) => {
-      const has = await checkSubscription();
-      if (!DEFAULT_THEMES.includes(theme) && !has) {
-        updateTheme(ALL_THEMES[0].id);
-        console.log("Theme Not unlocked");
-        return;
-      }
-      updateTheme(theme);
-    },
-    [checkSubscription]
-  );
+  const loadFont = useCallback(async (id: string) => {
+    // If Default Font
+    if (LOCAL_FONTS.includes(id)) return;
 
-  useEffect(() => {
-    const check = async () => {
-      if (DEFAULT_THEMES.includes(theme)) return;
-      const has = await checkSubscription();
-      console.log(has);
-      if (has) return;
-      else updateTheme(DEFAULT_THEMES[0]);
-      console.log("set to to default");
-    };
-    check();
-  }, [checkSubscription, theme]);
+    try {
+      const font = ALL_FONTS.find((f) => f.id === id);
+      // If Font is Already Loaded
+      if (font.files.every((file) => isLoaded(file.name))) return;
+
+      for (const file of font.files) {
+        const location = await getInfoAsync(`${FONTS_DIRECTORY}/${file.name}`);
+        if (location.exists && !location.isDirectory && !isLoaded(file.name)) await loadAsync(file.name, location.uri);
+        else {
+          console.log("downloading");
+          await downloadFont(id);
+        }
+      }
+    } catch (e) {
+      changeCurrentFont(LOCAL_FONTS[0]);
+      console.log("Uncountered an error, Setting font to san serif");
+      console.log(e);
+      throw e;
+    }
+  }, []);
 
   return (
     <ThemeContext.Provider
       value={{
-        changeTheme: handleThemeChange,
+        changeTheme,
+        currentFont,
+        changeCurrentFont,
         theme: themeObject,
-        unlockedThemes,
-        checkThemeSubscription: checkSubscription,
+        loadFont,
       }}
     >
       <PaperProvider
@@ -89,7 +97,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
         }}
       >
         <NavigationContainer theme={themeObject}>
-          <StatusBar />
+          <StatusBar style={themeObject.dark ? "light" : "dark"} />
           {children}
         </NavigationContainer>
       </PaperProvider>

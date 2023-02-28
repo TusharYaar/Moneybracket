@@ -12,27 +12,27 @@ import { I18nextProvider } from "react-i18next";
 
 import i18n from "./localization";
 import Purchases from "react-native-purchases";
-import FontProvider from "./providers/FontProvider";
+// import FontProvider from "./providers/FontProvider";
 Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
 const App = () => {
   return (
-    <RealmProvider>
-      <SettingsProvider>
-        <FontProvider>
+    <ThemeProvider>
+      {/* <FontProvider> */}
+      <RealmProvider>
+        <SettingsProvider>
           <ExchangeRatesProvider>
             <I18nextProvider i18n={i18n}>
-              <ThemeProvider>
-                <DataProvider>
-                  <LockProvider>
-                    <AppDrawer />
-                  </LockProvider>
-                </DataProvider>
-              </ThemeProvider>
+              <DataProvider>
+                <LockProvider>
+                  <AppDrawer />
+                </LockProvider>
+              </DataProvider>
             </I18nextProvider>
           </ExchangeRatesProvider>
-        </FontProvider>
-      </SettingsProvider>
-    </RealmProvider>
+        </SettingsProvider>
+      </RealmProvider>
+      {/* </FontProvider> */}
+    </ThemeProvider>
   );
 };
 
