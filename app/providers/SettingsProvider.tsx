@@ -1,10 +1,11 @@
 import { useContext, createContext, useState, useCallback, useEffect } from "react";
-import { ALL_FONTS, CURRENCIES, DEFAULT_THEMES, LOCAL_FONTS, SETTING_KEYS } from "../data";
+import { ALL_FONTS, CURRENCIES, DEFAULT_THEMES, FONTS_DIRECTORY, LOCAL_FONTS, SETTING_KEYS } from "../data";
 import { useCustomTheme } from "../themes";
 import { Currency } from "../types";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
 import Purchases from "react-native-purchases";
 import ALL_THEMES from "../themes/themes";
+import { readDirectoryAsync } from "expo-file-system";
 
 type Props = {
   language: string;
@@ -22,9 +23,10 @@ type Props = {
   updateDateFormat: (format: string) => void;
   updateLock: (enable: boolean) => void;
   refreshUnlockedItems: () => void;
+  offlineFonts: string[];
 };
 
-const SETTING: Props = {
+const SETTING: Omit<Props, "offlineFonts"> = {
   language: getFromStorageOrDefault(SETTING_KEYS.language, "en", true),
   currency: CURRENCIES[getFromStorageOrDefault(SETTING_KEYS.currency, "INR", true)],
   theme: getFromStorageOrDefault(SETTING_KEYS.theme, "defaultLight", true),
@@ -50,13 +52,14 @@ const checkSubscription = async () => {
   return subs;
 };
 
-const SettingContext = createContext<Props>(SETTING);
+const SettingContext = createContext<Props>({ ...SETTING, offlineFonts: LOCAL_FONTS });
 export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { changeTheme, changeCurrentFont, loadFont } = useCustomTheme();
 
   const [settings, setSettings] = useState(SETTING);
+  const [offlineFonts, setOfflineFonts] = useState(LOCAL_FONTS);
 
   const updateLanguage = (lang: string) => {
     setSettings((prev) => ({ ...prev, language: lang }));
@@ -76,6 +79,7 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
       changeCurrentFont(font);
       setSettings((prev) => ({ ...prev, font }));
       setStorage(SETTING_KEYS.font, font);
+      getOfflineFonts();
     } catch (e) {
       // font = LOCAL_FONTS[0];
       // console.log(e);
@@ -123,6 +127,22 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
     }
   }, []);
 
+  const getOfflineFonts = useCallback(async () => {
+    const files = await readDirectoryAsync(FONTS_DIRECTORY);
+    const fonts = Array.from(LOCAL_FONTS);
+    for (const font of ALL_FONTS) {
+      if (!LOCAL_FONTS.includes(font.id)) {
+        if (font?.files && font.files.length && font.files.every((file) => files.includes(file.name)))
+          fonts.push(font.id);
+      }
+    }
+    setOfflineFonts(fonts);
+  }, []);
+
+  useEffect(() => {
+    getOfflineFonts();
+  }, []);
+
   useEffect(() => {
     refreshUnlockedItems();
     updateTheme(SETTING.theme);
@@ -133,6 +153,7 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
     <SettingContext.Provider
       value={{
         ...settings,
+        offlineFonts,
         updateFont,
         updateTheme,
         updateCurrency,

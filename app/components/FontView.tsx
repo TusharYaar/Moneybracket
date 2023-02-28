@@ -12,10 +12,10 @@ type Props = {
   style?: ViewStyle;
   onPress: () => void;
   isUnlocked: boolean;
-  // TODO: Add Require Download tag
+  requireDownload: boolean;
 };
 
-const FontView = ({ font, selected, onPress, style, isUnlocked }: Props) => {
+const FontView = ({ font, selected, onPress, style, requireDownload, isUnlocked }: Props) => {
   const { t } = useTranslation("", { keyPrefix: "components.fontView" });
   const { theme } = useCustomTheme();
 
@@ -40,6 +40,7 @@ const FontView = ({ font, selected, onPress, style, isUnlocked }: Props) => {
           {t("unlock")}
         </Button>
       )}
+      {requireDownload && <Text variant="labelSmall">*requires download</Text>}
     </Surface>
   );
 };

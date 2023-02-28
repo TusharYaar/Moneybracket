@@ -4,11 +4,9 @@ import { ALL_FONTS } from "../../data";
 import { useSettings } from "../../providers/SettingsProvider";
 import { FlatList } from "react-native-gesture-handler";
 import FontView from "../../components/FontView";
-import { useCustomTheme } from "../../themes";
 
 const FontSettings = () => {
-  const { font, updateFont, unlockedFonts } = useSettings();
-  const {} = useCustomTheme();
+  const { font, updateFont, unlockedFonts, offlineFonts } = useSettings();
   return (
     <FlatList
       contentContainerStyle={styles.screen}
@@ -21,7 +19,7 @@ const FontSettings = () => {
           onPress={() => updateFont(item.id)}
           style={styles.item}
           isUnlocked={unlockedFonts.includes(item.id)}
-          // requireDownload={!offlineFonts.includes(item.id)}
+          requireDownload={!offlineFonts.includes(item.id)}
         />
       )}
     />

@@ -23,10 +23,6 @@ const Exports = () => {
   const [includeFields, setIncludeFields] = useState(["createdAt", "category", "note", "amount"]);
 
   const getFiles = useCallback(async () => {
-    const { exists } = await FileSystem.getInfoAsync(EXPORTS_DIRECTORY);
-    if (!exists) {
-      await FileSystem.makeDirectoryAsync(EXPORTS_DIRECTORY, { intermediates: true });
-    }
     const files = await FileSystem.readDirectoryAsync(EXPORTS_DIRECTORY);
     setFiles(files);
   }, []);
