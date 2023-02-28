@@ -4,7 +4,8 @@ import Purchases, { PurchasesPackage } from "react-native-purchases";
 import { Button, Text } from "react-native-paper";
 import Products from "../components/Products";
 // import { useFont } from "../providers/FontProvider";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
+
 import { useSettings } from "../providers/SettingsProvider";
 const StoreScreen = () => {
   // const { checkFontSubscription } = useFont();

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ThemeProvider from "./themes";
+import ThemeProvider from "./providers/ThemeProvider";
 import LockProvider from "./providers/LockProvider";
 import RealmProvider from "./realm";
 import DataProvider from "./providers/DataProvider";
@@ -14,7 +14,6 @@ import i18n from "./localization";
 import Purchases from "react-native-purchases";
 import { getInfoAsync, makeDirectoryAsync } from "expo-file-system";
 import { BACKUP_DIRECTORY, EXPORTS_DIRECTORY, FONTS_DIRECTORY, IMAGES_DIRECTORY } from "./data";
-// import FontProvider from "./providers/FontProvider";
 Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
 const App = () => {
   useEffect(() => {
@@ -33,7 +32,6 @@ const App = () => {
 
   return (
     <ThemeProvider>
-      {/* <FontProvider> */}
       <RealmProvider>
         <SettingsProvider>
           <ExchangeRatesProvider>
@@ -47,7 +45,6 @@ const App = () => {
           </ExchangeRatesProvider>
         </SettingsProvider>
       </RealmProvider>
-      {/* </FontProvider> */}
     </ThemeProvider>
   );
 };

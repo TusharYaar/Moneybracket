@@ -8,7 +8,7 @@ import { chooseBetterContrast } from "../utils/colors";
 import Amount from "./Amount";
 
 // import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
 
 type Props = {
   data: Transaction;

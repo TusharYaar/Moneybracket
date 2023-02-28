@@ -4,8 +4,7 @@ import { Provider as PaperProvider } from "react-native-paper";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { CustomTheme } from "../types";
-import ALL_THEMES from "./themes";
-import { ALL_FONTS, DEFAULT_THEMES, FONTS_DIRECTORY, LOCAL_FONTS } from "../data";
+import { ALL_FONTS, DEFAULT_THEMES, FONTS_DIRECTORY, LOCAL_FONTS, ALL_THEMES } from "../data";
 import { StatusBar } from "expo-status-bar";
 import { isLoaded, loadAsync } from "expo-font";
 import { downloadAsync, getInfoAsync } from "expo-file-system";

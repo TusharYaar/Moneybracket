@@ -2,7 +2,8 @@ import { StyleSheet, ViewStyle, View } from "react-native";
 import React from "react";
 
 import { Button, Text, Surface } from "react-native-paper";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
+
 import { FontObject } from "../types";
 import { useTranslation } from "react-i18next";
 

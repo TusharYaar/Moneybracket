@@ -1,10 +1,9 @@
 import { useContext, createContext, useState, useCallback, useEffect } from "react";
-import { ALL_FONTS, CURRENCIES, DEFAULT_THEMES, FONTS_DIRECTORY, LOCAL_FONTS, SETTING_KEYS } from "../data";
-import { useCustomTheme } from "../themes";
+import { ALL_FONTS, ALL_THEMES, CURRENCIES, DEFAULT_THEMES, FONTS_DIRECTORY, LOCAL_FONTS, SETTING_KEYS } from "../data";
+import { useCustomTheme } from "./ThemeProvider";
 import { Currency } from "../types";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
 import Purchases from "react-native-purchases";
-import ALL_THEMES from "../themes/themes";
 import { readDirectoryAsync } from "expo-file-system";
 
 type Props = {

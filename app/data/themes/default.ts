@@ -1,5 +1,5 @@
 import { MD3DarkTheme, MD3LightTheme } from "react-native-paper";
-import { CustomTheme } from "../types";
+import { CustomTheme } from "../../types";
 import { DefaultTheme, DarkTheme } from "@react-navigation/native";
 
 const defaultLight: CustomTheme = {

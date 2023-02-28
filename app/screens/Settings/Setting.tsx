@@ -4,7 +4,6 @@ import { useSettings } from "../../providers/SettingsProvider";
 import { useTranslation } from "react-i18next";
 
 import { isEnrolledAsync, authenticateAsync } from "expo-local-authentication";
-
 import SettingItem from "../../components/SettingItem";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -13,14 +12,12 @@ import { Switch, Text } from "react-native-paper";
 import { useRealm } from "../../realm";
 import { Category } from "../../realm/Category";
 import { Dcategories } from "../../data/dummy";
-import COLORS from "../../data/colors";
-import { ICONS } from "../../data";
 import { Transaction } from "../../realm/Transaction";
 import { useData } from "../../providers/DataProvider";
 import { generateDummyTransaction } from "../../utils/dummy";
 
-import { ALL_FONTS } from "../../data";
-import AVALIBLE_THEMES from "../../themes/themes";
+import { ALL_FONTS, ALL_THEMES, ICONS, COLORS } from "../../data";
+
 import DeleteDialog from "../../components/DeleteDialog";
 import CurrencyModal from "../../components/CurrencyModal";
 import LanguageModal from "../../components/LanguageModal";
@@ -123,7 +120,7 @@ const Setting = ({ navigation }: Props) => {
         <Text>{ALL_FONTS.find((f) => f.id === font)?.name}</Text>
       </SettingItem>
       <SettingItem label={t("theme")} leftIcon="color-fill-outline" onPress={() => navigation.navigate("ThemeSetting")}>
-        <Text>{AVALIBLE_THEMES.find((t) => t.id === theme)?.name}</Text>
+        <Text>{ALL_THEMES.find((t) => t.id === theme)?.name}</Text>
       </SettingItem>
       <SettingItem label={t("currency")} leftIcon="text" onPress={() => setCurrencyModal(true)}>
         <Text>{currency.name}</Text>

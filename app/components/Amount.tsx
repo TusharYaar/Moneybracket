@@ -2,7 +2,8 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import { Text, TextProps } from "react-native-paper";
 import { useSettings } from "../providers/SettingsProvider";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
+
 import { useTranslation } from "react-i18next";
 
 type Props = {

@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 import React from "react";
-import AVALIBLE_THEMES from "../../themes/themes";
+import { ALL_THEMES } from "../../data";
 import ThemeObject from "../../components/ThemeObject";
 import { useSettings } from "../../providers/SettingsProvider";
 import { FlashList } from "@shopify/flash-list";
@@ -13,7 +13,7 @@ const ThemeSetting = () => {
   return (
     <FlashList
       horizontal={true}
-      data={AVALIBLE_THEMES}
+      data={ALL_THEMES}
       renderItem={({ item }) => (
         <ThemeObject
           key={item.id}

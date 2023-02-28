@@ -1,33 +1,17 @@
-import {StyleSheet, View} from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
-import {TouchableRipple} from "react-native-paper";
+import { TouchableRipple } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/Ionicons";
-import {useCustomTheme} from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
 
-const ColorChoice = ({
-  color,
-  onPress,
-  selected,
-}: {
-  color: string;
-  onPress: () => void;
-  selected: boolean;
-}) => {
+const ColorChoice = ({ color, onPress, selected }: { color: string; onPress: () => void; selected: boolean }) => {
   const {
-    theme: {roundness},
+    theme: { roundness },
   } = useCustomTheme();
   return (
-    <TouchableRipple
-      style={[
-        styles.item,
-        {backgroundColor: color, borderRadius: roundness * 4},
-      ]}
-      onPress={onPress}
-    >
-      <View style={styles.view}>
-        {selected && <Icon name="checkmark" size={28} />}
-      </View>
+    <TouchableRipple style={[styles.item, { backgroundColor: color, borderRadius: roundness * 4 }]} onPress={onPress}>
+      <View style={styles.view}>{selected && <Icon name="checkmark" size={28} />}</View>
     </TouchableRipple>
   );
 };

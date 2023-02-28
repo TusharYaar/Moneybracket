@@ -5,7 +5,8 @@ import { CategoryTabNavigator, TrackerTabNavigator } from "./TabNavigators";
 import { IconButton } from "react-native-paper";
 import { DrawerScreenProps } from "@react-navigation/drawer";
 import { DrawerParamList } from "./DrawerNavigator";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
+
 import FontSetting from "../screens/Settings/FontSetting";
 import ThemeSetting from "../screens/Settings/ThemeSetting";
 import Rates from "../screens/Exchange/Rates";

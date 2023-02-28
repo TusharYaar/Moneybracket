@@ -5,7 +5,7 @@ import { Text, TouchableRipple } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import { chooseBetterContrast } from "../utils/colors";
-import { useCustomTheme } from "../themes";
+import { useCustomTheme } from "../providers/ThemeProvider";
 
 type Props = {
   category: Category;

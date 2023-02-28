@@ -9,7 +9,7 @@ import CategoryChip from "../../components/CategoryChip";
 import { Category } from "../../realm/Category";
 import CategoryChartsItem from "../../components/CategoryChartsItem";
 import Pie from "../../components/Charts/Pie";
-import { useCustomTheme } from "../../themes";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 import { transactionWithinDates } from "../../utils/transaction";
 import { useTranslation } from "react-i18next";
 
