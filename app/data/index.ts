@@ -28,6 +28,7 @@ export const SETTING_KEYS = {
   theme: "settings/font",
   font: "settings/appLock",
   dateFormat: "settings/dateFormat",
+  roundness: "settings/roundness",
 };
 
 export { ICONS, COLORS, CURRENCIES, DATE, ALL_FONTS, ALL_THEMES };

@@ -10,7 +10,7 @@ type Props = {
 const LanguageItem = ({ language, onPress }: Props) => {
   return (
     <TouchableRipple onPress={onPress} style={styles.item}>
-      <Text variant="labelLarge">{language}</Text>
+      <Text variant="titleMedium">{language}</Text>
     </TouchableRipple>
   );
 };

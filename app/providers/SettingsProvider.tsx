@@ -11,6 +11,7 @@ type Props = {
   currency: Currency;
   appLock: "ENABLE" | "DISABLE";
   theme: string;
+  roundness: number;
   font: string;
   dateFormat: string;
   unlockedThemes: string[];
@@ -22,6 +23,7 @@ type Props = {
   updateDateFormat: (format: string) => void;
   updateLock: (enable: boolean) => void;
   refreshUnlockedItems: () => void;
+  updateRoundness: (value: number) => void;
   offlineFonts: string[];
 };
 
@@ -29,6 +31,7 @@ const SETTING: Omit<Props, "offlineFonts"> = {
   language: getFromStorageOrDefault(SETTING_KEYS.language, "en", true),
   currency: CURRENCIES[getFromStorageOrDefault(SETTING_KEYS.currency, "INR", true)],
   theme: getFromStorageOrDefault(SETTING_KEYS.theme, "defaultLight", true),
+  roundness: parseInt(getFromStorageOrDefault(SETTING_KEYS.roundness, "0", true)),
   font: getFromStorageOrDefault(SETTING_KEYS.font, "sansserif", true),
   appLock: getFromStorageOrDefault(SETTING_KEYS.appLock, "DISABLE", true) as Props["appLock"],
   dateFormat: getFromStorageOrDefault(SETTING_KEYS.dateFormat, "dd MMM, yyyy", true),
@@ -41,6 +44,7 @@ const SETTING: Omit<Props, "offlineFonts"> = {
   updateDateFormat: () => {},
   updateLock: () => {},
   refreshUnlockedItems: () => {},
+  updateRoundness: () => {},
 };
 
 const checkSubscription = async () => {
@@ -55,17 +59,17 @@ const SettingContext = createContext<Props>({ ...SETTING, offlineFonts: LOCAL_FO
 export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const { changeTheme, changeCurrentFont, loadFont, enqueueSnackbar } = useCustomTheme();
+  const { changeTheme, changeCurrentFont, loadFont, enqueueSnackbar, changeRoundness } = useCustomTheme();
 
   const [settings, setSettings] = useState(SETTING);
   const [offlineFonts, setOfflineFonts] = useState(LOCAL_FONTS);
 
-  const updateLanguage = (lang: string) => {
+  const updateLanguage = useCallback((lang: string) => {
     setSettings((prev) => ({ ...prev, language: lang }));
     setStorage(SETTING_KEYS.language, lang);
-  };
+  }, []);
 
-  const updateFont = async (font: string, notify = true) => {
+  const updateFont = useCallback(async (font: string, notify = true) => {
     try {
       let hasPerm = true;
       if (!LOCAL_FONTS.includes(font)) hasPerm = (await checkSubscription()).font;
@@ -86,33 +90,55 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
         enqueueSnackbar(e);
       } else enqueueSnackbar(e);
     }
-  };
-  const updateTheme = useCallback(async (theme: string, notify = true) => {
-    let hasPerm = true;
-    if (!DEFAULT_THEMES.includes(theme)) hasPerm = (await checkSubscription()).theme;
-    if (!hasPerm) {
-      throw "THEME_NOT_UNLOCKED";
-    }
-    setStorage(SETTING_KEYS.theme, theme);
-    setSettings((prev) => ({ ...prev, theme }));
-    changeTheme(theme);
-    if (notify) enqueueSnackbar("THEME_UPDATE_SUCCESS");
   }, []);
-  const updateCurrency = (curr: string) => {
+  const updateTheme = useCallback(async (theme: string, notify = true) => {
+    try {
+      let hasPerm = true;
+      if (!DEFAULT_THEMES.includes(theme)) hasPerm = (await checkSubscription()).theme;
+      if (!hasPerm) {
+        throw "THEME_NOT_UNLOCKED";
+      }
+      setStorage(SETTING_KEYS.theme, theme);
+      setSettings((prev) => ({ ...prev, theme }));
+      changeTheme(theme);
+      if (notify) enqueueSnackbar("THEME_UPDATE_SUCCESS");
+    } catch (e) {
+      if (notify) enqueueSnackbar(e);
+    }
+  }, []);
+
+  const updateRoundness = useCallback(async (value: number, notify = true) => {
+    try {
+      let hasPerm = (await checkSubscription()).theme;
+      if (!hasPerm) {
+        setSettings((prev) => ({ ...prev, roundness: -1 }));
+        changeRoundness(-1);
+        throw "ROUNDNESS_NOT_UNLOCKED";
+      }
+      setStorage(SETTING_KEYS.roundness, value.toString());
+      setSettings((prev) => ({ ...prev, roundness: value }));
+      changeRoundness(value);
+      if (notify) enqueueSnackbar("ROUNDNESS_UPDATE_SUCCESS");
+    } catch (e) {
+      if (notify) enqueueSnackbar(e);
+    }
+  }, []);
+
+  const updateCurrency = useCallback((curr: string) => {
     setSettings((prev) => ({ ...prev, currency: CURRENCIES[curr] }));
     setStorage(SETTING_KEYS.currency, curr);
     enqueueSnackbar("CURRENCY_UPDATE_SUCCESS");
-  };
+  }, []);
 
-  const updateDateFormat = (format: string) => {
+  const updateDateFormat = useCallback((format: string) => {
     setSettings((prev) => ({ ...prev, dateFormat: format }));
     setStorage(SETTING_KEYS.dateFormat, format);
-  };
+  }, []);
 
-  const updateLock = (enable: boolean) => {
+  const updateLock = useCallback((enable: boolean) => {
     setStorage(SETTING_KEYS.appLock, enable ? "ENABLE" : "DISABLE");
     setSettings((prev) => ({ ...prev, appLock: enable ? "ENABLE" : "DISABLE" }));
-  };
+  }, []);
 
   const refreshUnlockedItems = useCallback(async () => {
     try {
@@ -147,7 +173,8 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
     refreshUnlockedItems();
     updateTheme(SETTING.theme, false);
     updateFont(SETTING.font, false);
-  }, [updateTheme]);
+    updateRoundness(SETTING.roundness, false);
+  }, [updateTheme, updateFont, updateRoundness]);
 
   return (
     <SettingContext.Provider
@@ -159,6 +186,7 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
         updateCurrency,
         updateLanguage,
         updateDateFormat,
+        updateRoundness,
         updateLock,
         refreshUnlockedItems,
       }}

@@ -33,6 +33,12 @@
             "selected": "Selected",
             "unlock": "Unlock",
             "download": "Download"
+        },
+        "languageModal": {
+            "title": "Choose A Language"
+        },
+        "dateFormatModal": {
+            "title": "Choose A Date Format"
         }
     },
     "navigator": {
@@ -114,10 +120,14 @@
         "CATEGORY_ADD_FAIL": "Unable to create category, please try again",
         "FONT_UPDATE_SUCCESS": "Font updated successfully",
         "THEME_UPDATE_SUCCESS": "Theme updated successfully",
+        "ROUNDNESS_UPDATE_SUCCESS": "",
         "LANGUAGE_UPDATE_SUCCESS": "Langauge updated successfully",
         "APPLOCK_UPDATE_SUCCESS": "App Lock updated successfully",
         "APPLOCK_USER_CANCEL": "User cancelled the operation",
         "APPLOCK_DEVICE_NOT_ENROLL": "Device does not have a lock",
-        "CURRENCY_UPDATE_SUCCESS": "Currency updated successfully"
+        "CURRENCY_UPDATE_SUCCESS": "Currency updated successfully",
+        "FONT_NOT_UNLOCKED": "Font not unlocked",
+        "THEME_NOT_UNLOCKED": "Theme not unlocked",
+        "ROUNDNESS_NOT_UNLOCKED": "Roundness feature not unlocked"
     }
 }

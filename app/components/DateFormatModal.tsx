@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import ModalContainer from "./ModalContainer";
-import { FlashList } from "@shopify/flash-list";
 import { DATE } from "../data";
 import DateFormatItem from "./Charts/DateFormatItem";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   visible: boolean;
@@ -12,13 +12,15 @@ type Props = {
 };
 
 const DateFormatModal = ({ visible, onDismiss, onItemSelect }: Props) => {
+  const { t } = useTranslation("", { keyPrefix: "components.dateFormatModal" });
+
   return (
-    <ModalContainer visible={visible} onDismiss={onDismiss} title={"title"} contentContainerStyle={styles.modal}>
-      <FlashList
-        data={DATE}
-        renderItem={({ item, index }) => <DateFormatItem date={item} key={item} onPress={() => onItemSelect(item)} />}
-        estimatedItemSize={44}
-      />
+    <ModalContainer visible={visible} onDismiss={onDismiss} title={t("title")}>
+      <View style={styles.container}>
+        {DATE.map((item) => (
+          <DateFormatItem date={item} key={item} onPress={() => onItemSelect(item)} />
+        ))}
+      </View>
     </ModalContainer>
   );
 };
@@ -26,8 +28,7 @@ const DateFormatModal = ({ visible, onDismiss, onItemSelect }: Props) => {
 export default DateFormatModal;
 
 const styles = StyleSheet.create({
-  modal: {
-    flex: 1,
-    maxHeight: 300,
+  container: {
+    padding: 8,
   },
 });

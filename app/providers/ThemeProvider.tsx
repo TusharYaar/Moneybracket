@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 
 type Props = {
   changeTheme: (theme: string) => void;
+  changeRoundness: (value: number) => void;
   currentFont: string;
   changeCurrentFont: (font: string) => void;
   theme: CustomTheme;
@@ -22,6 +23,7 @@ type Props = {
 const ThemeContext = createContext<Props>({
   currentFont: LOCAL_FONTS[0],
   changeTheme: () => {},
+  changeRoundness: () => {},
   changeCurrentFont: () => {},
   theme: ALL_THEMES[0],
   loadFont: async (id: string) => {},
@@ -35,13 +37,16 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
 
   const [theme, setTheme] = useState(DEFAULT_THEMES[0]);
   const [currentFont, setCurrentFont] = useState(LOCAL_FONTS[0]);
+  const [roundness, setRoundness] = useState(0);
   const [snackbars, setSnackbars] = useState([]);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const themeObject = useMemo(() => {
     let obj = ALL_THEMES.find((t) => t.id === theme);
     obj.fonts = ALL_FONTS.find((f) => f.id === currentFont).font;
-    return obj;
-  }, [theme, currentFont]);
+
+    if (roundness === -1) return obj;
+    return { ...obj, roundness };
+  }, [theme, currentFont, roundness]);
 
   const changeTheme = useCallback((theme: string) => {
     setTheme(theme);
@@ -49,6 +54,10 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
 
   const changeCurrentFont = useCallback((font: string) => {
     setCurrentFont(font);
+  }, []);
+
+  const changeRoundness = useCallback((value: number) => {
+    setRoundness(value);
   }, []);
 
   const downloadFont = useCallback(async (id: string) => {
@@ -121,6 +130,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
         changeTheme,
         currentFont,
         changeCurrentFont,
+        changeRoundness,
         theme: themeObject,
         loadFont,
         enqueueSnackbar,

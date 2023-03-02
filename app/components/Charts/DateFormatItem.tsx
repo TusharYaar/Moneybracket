@@ -7,8 +7,8 @@ const DateFormatItem = ({ date, onPress }: { date: string; onPress: () => void }
   return (
     <TouchableRipple onPress={onPress}>
       <View style={styles.item}>
-        <Text variant="labelLarge">{date}</Text>
-        <Text variant="labelSmall">Eg. {format(new Date(), date)}</Text>
+        <Text variant="titleMedium">{date}</Text>
+        <Text variant="bodyMedium">Eg. {format(new Date(), date)}</Text>
       </View>
     </TouchableRipple>
   );
