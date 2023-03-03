@@ -38,7 +38,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
   const [theme, setTheme] = useState(DEFAULT_THEMES[0]);
   const [currentFont, setCurrentFont] = useState(LOCAL_FONTS[0]);
   const [roundness, setRoundness] = useState(0);
-  const [snackbars, setSnackbars] = useState([]);
+  const [snackbars, setSnackbars] = useState<{ message: string; id: number }[]>([]);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const themeObject = useMemo(() => {
     let obj = ALL_THEMES.find((t) => t.id === theme);
@@ -99,21 +99,22 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     if (message === undefined) return;
 
     setSnackbars((prev) => {
-      if (prev.length > 0) return [...prev, message];
+      const id = Math.random();
+      if (prev.length > 0) return [...prev, { message, id }];
       else {
         setSnackbarVisible(true);
-        return [message];
+        return [{ message, id }];
       }
     });
   }, []);
 
-  const closeSnackbar = useCallback((id: string) => {
+  const closeSnackbar = useCallback((id: number) => {
     setSnackbars((prev) => {
       if (prev.length > 1) {
         setSnackbarVisible(false);
         setTimeout(() => {
           setSnackbarVisible(true);
-          setSnackbars(prev.filter((m) => m !== id));
+          setSnackbars(prev.filter((m) => m.id !== id));
         }, 200);
         return prev;
       } else {
@@ -146,8 +147,12 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
           <StatusBar style={themeObject.dark ? "light" : "dark"} />
           {children}
         </NavigationContainer>
-        <Snackbar visible={snackbarVisible} onDismiss={() => closeSnackbar(snackbars[0])} duration={3000}>
-          {t(snackbars[0])}
+        <Snackbar
+          visible={snackbarVisible && snackbars.length > 0}
+          onDismiss={() => closeSnackbar(snackbars[0].id)}
+          duration={1000}
+        >
+          {t(snackbars[0]?.message)}
         </Snackbar>
       </PaperProvider>
     </ThemeContext.Provider>

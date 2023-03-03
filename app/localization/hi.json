@@ -1,43 +1,133 @@
 {
     "amountValue": "{{amount, number}}",
-    "income": "आमदनी",
+    "income": "आय",
     "expense": "व्यय",
-    "transfer": "हस्तांतरण",
-    "amount": "रकम",
-    "date": "तिथि",
-    "category": "श्रृंखला",
+    "transfer": "अंतरण",
+    "amount": "राशि",
+    "date": "तारीख",
+    "category": "श्रेणी",
     "transaction": "लेन-देन",
-    "note": "नोट",
+    "note": "टिप्पणी",
     "optional": "वैकल्पिक",
     "tracker": "ट्रैकर",
     "cancel": "नहीं, रद्द करें",
     "delete": "हाँ, हटाएं",
     "components": {
         "addCategory": {
-            "title": "श्रृंखला जोड़ें",
-            "iconAndTitle": "श्रृंखला आइकन और शीर्षक",
-            "type": "श्रृंखला प्रकार",
-            "color": "श्रृंखला रंग"
+            "title": "एक श्रेणी जोड़ें",
+            "iconAndTitle": "श्रेणी चिह्न और शीर्षक",
+            "type": "श्रेणी प्रकार",
+            "color": "श्रेणी रंग"
         },
         "addTransaction": {
-            "title": "लेन-देन जोड़ें",
-            "amount": "रकम",
-            "date": "तिथि",
-            "category": "श्रृंखला",
-            "note": "नोट",
+            "title": "एक लेनदेन जोड़ें",
+            "amount": "राशि",
+            "date": "तारीख",
+            "category": "श्रेणी",
+            "note": "टिप्पणी",
             "optional": "वैकल्पिक"
         },
         "fontView": {
-            "dummyText": "लोरेम इप्सुम दोलोर सित अमेट, कॉन्सेटूर एडिपिस्सिंग एलिट, सेड डो इयस्मोड टेम्पोर इन्सिदिदुंट उत लबोरे एत डोलोरे मग्ना अलिकुआ।",
-            "select": "चयन करें",
-            "selected": "चुना हुआ"
+            "dummyText": "लोरेम इप्सम डोलर सिट अमेट, कंसेक्टेटुर एडिपिस्सिंग एलिट, सेड डो एउस्मोड टेम्पोर इनसीडीदूंट उत लाबोरे एत दोलोरे मग्ना अलिक्वा।",
+            "select": "चुनें",
+            "selected": "चयनित",
+            "unlock": "अनलॉक करें",
+            "download": "डाउनलोड करें"
+        },
+        "languageModal": {
+            "title": "भाषा चुनें"
+        },
+        "dateFormatModal": {
+            "title": "तारीख प्रारूप चुनें"
+        }
+    },
+    "navigator": {
+        "drawer": {
+            "tracker": "लेन-देन",
+            "recurring": "आवर्ती लेन-देन",
+            "category": "श्रेणियाँ",
+            "exchange": "विनिमय दरें",
+            "setting": "सेटिंग्स",
+            "about": "एबाउट",
+            "help": "मदद",
+            "store": "स्टोर"
+        },
+        "tab": {
+            "allTransaction": "लेन-देन",
+            "charts": "चार्ट",
+            "category": "श्रेणियाँ"
+        },
+        "stack": {
+            "TrackerTab": "लेन-देन",
+            "CategoryTab": "श्रेणियाँ",
+            "ExchangeRateScreen": "विनिमय दरें",
+            "SettingScreen": "सेटिंग",
+            "FontSetting": "फ़ॉन्ट",
+            "ThemeSetting": "थीम",
+            "ExportScreen": "निर्यात",
+            "BackupScreen": "बैकअप और रिस्टोर",
+            "AboutScreen": "बारे में",
+            "HelpScreen": "मदद",
+            "StoreScreen": "स्टोर"
         }
     },
     "screens": {
         "tracker": {
             "allTransaction": {
-                "noTransaction": "कोई लेन-देन नहीं. अवधि को बदलें या एक लेन-दे."
+                "noTransaction": "कोई लेन-देन नहीं। कोशिश करके अवधि बदलें या एक लेन-देन जोड़ें।"
+            },
+            "charts": {
+                "categorySelected": "{{count}} श्रेणी चयनित",
+                "categorySelected_plural": "{{count}} श्रेणियाँ चयनित"
             }
+        },
+        "settings": {
+            "backup": {},
+            "export": {
+                "export": "निर्यात करें",
+                "exportAs": "के रूप में निर्यात करें",
+                "pdf": "पीडीएफ",
+                "json": "जेएसओएन",
+                "excel": "एक्सेल",
+                "csv": "सीएसवी",
+                "recentExports": "हाल के निर्यात",
+                "noExports": "आपके पास कोई निर्यात नहीं है"
+            },
+            "setting": {
+                "font": "फ़ॉन्ट",
+                "theme": "थीम",
+                "currency": "मुद्रा",
+                "language": "भाषा",
+                "dateFormat": "तारीख का प्रारूप",
+                "deleteAllData": "सभी डेटा हटाएं",
+                "export": "निर्यात",
+                "backup": "बैकअप",
+                "lock": "ऐप लॉक सक्षम करें",
+                "confirmDeleteBody": "क्या आप सभी डेटा को हटाना चाहते हैं। इसमें सभी लेन-देन डेटा और श्रेणियां शामिल हैं।",
+                "confirmDeleteTitle": "सभी डेटा हटाएं?"
+            },
+            "theme": {}
         }
+    },
+    "languages": {
+        "en": "English",
+        "hi": "Hindi"
+    },
+    "messages": {
+        "TRANSACTION_ADD_SUCCESS": "लेनदेन सफलतापूर्वक जोड़ा गया",
+        "TRANSACTION_ADD_FAIL": "लेनदेन जोड़ने में असमर्थ, कृपया पुनः प्रयास करें",
+        "CATEGORY_ADD_SUCCESS": "श्रेणी सफलतापूर्वक बनाई गई",
+        "CATEGORY_ADD_FAIL": "श्रेणी बनाने में असमर्थ, कृपया पुनः प्रयास करें",
+        "FONT_UPDATE_SUCCESS": "फ़ॉन्ट सफलतापूर्वक अपडेट किया गया",
+        "THEME_UPDATE_SUCCESS": "थीम सफलतापूर्वक अपडेट की गई",
+        "ROUNDNESS_UPDATE_SUCCESS": "",
+        "LANGUAGE_UPDATE_SUCCESS": "भाषा सफलतापूर्वक अपडेट की गई",
+        "APPLOCK_UPDATE_SUCCESS": "ऐप लॉक सफलतापूर्वक अपडेट किया गया",
+        "APPLOCK_USER_CANCEL": "उपयोगकर्ता ने संचालन रद्द कर दिया है",
+        "APPLOCK_DEVICE_NOT_ENROLL": "डिवाइस में लॉक नहीं है",
+        "CURRENCY_UPDATE_SUCCESS": "मुद्रा सफलतापूर्वक अपडेट की गई",
+        "FONT_NOT_UNLOCKED": "फ़ॉन्ट अनलॉक नहीं हुआ है",
+        "THEME_NOT_UNLOCKED": "थीम अनलॉक नहीं हुई है",
+        "ROUNDNESS_NOT_UNLOCKED": "गोलाई विशेषता अनलॉक नहीं हुई है"
     }
 }
