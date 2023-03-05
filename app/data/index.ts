@@ -18,15 +18,16 @@ export const BACKUP_DIRECTORY = `${documentDirectory}Backups`;
 export const IMAGES_DIRECTORY = `${documentDirectory}Images`;
 export const FONTS_DIRECTORY = `${documentDirectory}Fonts`;
 
-export const LOCAL_FONTS = ["sansserif", "serif", "monospace"];
+export const LOCAL_FONTS = __DEV__ ? ALL_FONTS.map((f) => f.id) : ["sansserif", "serif", "monospace"];
 export const DEFAULT_THEMES = ["defaultLight", "defaultDark"];
 
 export const SETTING_KEYS = {
   language: "settings/language",
   currency: "settings/currency",
-  appLock: "settings/theme",
-  theme: "settings/font",
-  font: "settings/appLock",
+  appLock: "settings/applock",
+  theme: "settings/theme",
+  themeVariant: "settings/themeVariant",
+  font: "settings/font",
   dateFormat: "settings/dateFormat",
   roundness: "settings/roundness",
 };
