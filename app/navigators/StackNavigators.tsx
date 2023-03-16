@@ -18,11 +18,13 @@ import AboutScreen from "../screens/AboutScreen";
 import StoreScreen from "../screens/StoreScreen";
 import AllRecurring from "../screens/Recurring/AllRecurring";
 import SearchScreen from "../screens/Tracker/SearchScreen";
+import ShortcutScreen from "../screens/ShortcutScreen";
 
 export type StackParamList = {
   TrackerTab: undefined;
   SearchScreen: undefined;
 
+  ShortcutScreen: undefined;
   RecurringScreen: undefined;
 
   CategoryTab: undefined;
@@ -275,6 +277,33 @@ export const StoreStackNavigator = () => {
           ),
           headerTitleStyle: fonts.titleMedium,
           title: t("StoreScreen"),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const ShortcutStackNavigator = () => {
+  const {
+    theme: { fonts, roundness },
+  } = useCustomTheme();
+  const { t } = useTranslation("", { keyPrefix: "navigator.stack" });
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ShortcutScreen"
+        component={ShortcutScreen}
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <IconButton
+              icon="menu"
+              onPress={() => navigation.openDrawer()}
+              style={{ borderRadius: roundness * 4, marginLeft: 0 }}
+            />
+          ),
+          headerTitleStyle: fonts.titleMedium,
+          title: t("ShortcutScreen"),
         })}
       />
     </Stack.Navigator>

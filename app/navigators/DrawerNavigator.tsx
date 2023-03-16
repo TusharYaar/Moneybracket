@@ -8,14 +8,17 @@ import {
   AboutStackNavigator,
   HelpStackNavigator,
   RecurringStackNavigator,
+  ShortcutStackNavigator,
 } from "./StackNavigators";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Purchases from "react-native-purchases";
+import ShortcutScreen from "../screens/ShortcutScreen";
 
 export type DrawerParamList = {
   RecurringStack: undefined;
   TrackerStack: undefined;
+  ShortcutStack: undefined;
   ExchangeStack: undefined;
   SettingStack: undefined;
   CategoryStack: undefined;
@@ -47,6 +50,7 @@ const MyDrawer = () => {
       <Drawer.Screen name="TrackerStack" component={TrackerStackNavigator} options={{ title: t("tracker") }} />
       <Drawer.Screen name="RecurringStack" component={RecurringStackNavigator} options={{ title: t("recurring") }} />
       <Drawer.Screen name="CategoryStack" component={CategoryStackNavigator} options={{ title: t("category") }} />
+      <Drawer.Screen name="ShortcutStack" component={ShortcutStackNavigator} options={{ title: t("shortcut") }} />
       <Drawer.Screen name="ExchangeStack" component={ExchangeStackNavigator} options={{ title: t("exchange") }} />
       <Drawer.Screen name="SettingStack" component={SettingStack} options={{ title: t("setting") }} />
       {canMakePayments && (
