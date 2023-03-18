@@ -1,23 +1,26 @@
 import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
-import { Transaction } from "../realm/Transaction";
 import { Text, TouchableRipple } from "react-native-paper";
 import Icon from "@expo/vector-icons/Ionicons";
 import { chooseBetterContrast } from "../utils/colors";
 
 import Amount from "./Amount";
+
 import { useCustomTheme } from "../providers/ThemeProvider";
+import { Shortcut } from "../realm/Shortcut";
 
 type Props = {
-  data: Transaction;
+  data: Shortcut;
   onPress: () => void;
   style?: ViewStyle;
 };
 
-const TransactionItem = ({ data, onPress, style }: Props) => {
+const ShortcutItem = ({ data, onPress, style }: Props) => {
   const {
     theme: { roundness },
   } = useCustomTheme();
+
+  if (!data) return;
 
   return (
     <TouchableRipple onPress={onPress}>
@@ -48,7 +51,7 @@ const TransactionItem = ({ data, onPress, style }: Props) => {
   );
 };
 
-export default TransactionItem;
+export default ShortcutItem;
 
 const styles = StyleSheet.create({
   innerContainer: {

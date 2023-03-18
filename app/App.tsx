@@ -14,6 +14,7 @@ import i18n from "./localization";
 import Purchases from "react-native-purchases";
 import { getInfoAsync, makeDirectoryAsync } from "expo-file-system";
 import { BACKUP_DIRECTORY, EXPORTS_DIRECTORY, FONTS_DIRECTORY, IMAGES_DIRECTORY } from "./data";
+import SchortcutProvider from "./providers/ShortcutProvider";
 Purchases.configure({ apiKey: "goog_wIRwIfvMBTyFmwKDVlzuKXFyKCU" });
 const App = () => {
   useEffect(() => {
@@ -37,9 +38,11 @@ const App = () => {
           <SettingsProvider>
             <ExchangeRatesProvider>
               <DataProvider>
-                <LockProvider>
-                  <AppDrawer />
-                </LockProvider>
+                <SchortcutProvider>
+                  <LockProvider>
+                    <AppDrawer />
+                  </LockProvider>
+                </SchortcutProvider>
               </DataProvider>
             </ExchangeRatesProvider>
           </SettingsProvider>

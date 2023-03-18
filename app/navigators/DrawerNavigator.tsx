@@ -13,7 +13,6 @@ import {
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Purchases from "react-native-purchases";
-import ShortcutScreen from "../screens/ShortcutScreen";
 
 export type DrawerParamList = {
   RecurringStack: undefined;
