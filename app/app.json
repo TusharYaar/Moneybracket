@@ -2,7 +2,7 @@
   "expo": {
     "name": "Money Bracket",
     "slug": "moneybracket",
-    "version": "0.6.5",
+    "version": "0.6.7",
     "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,7 @@
       "supportsTablet": false
     },
     "android": {
-      "versionCode": 5010,
+      "versionCode": 5012,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -33,6 +33,7 @@
       "eas": {
         "projectId": "7f819d50-7144-4e92-9f26-a4e970e6325d"
       }
-    }
-  }
+      }
+  },
+  "plugins": ["@config-plugins/react-native-quick-actions"]
 }
