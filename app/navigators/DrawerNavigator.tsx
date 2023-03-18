@@ -47,7 +47,7 @@ const MyDrawer = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="TrackerStack" component={TrackerStackNavigator} />
-      <Drawer.Screen name="RecurringStack" component={RecurringStackNavigator} />
+      {__DEV__ && <Drawer.Screen name="RecurringStack" component={RecurringStackNavigator} />}
       <Drawer.Screen name="CategoryStack" component={CategoryStackNavigator} />
       <Drawer.Screen name="ShortcutStack" component={ShortcutStackNavigator} />
       <Drawer.Screen name="ExchangeStack" component={ExchangeStackNavigator} />
