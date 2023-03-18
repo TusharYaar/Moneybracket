@@ -13,6 +13,7 @@ import { calcuateTotal, groupTransactionByDate } from "../../utils/transaction";
 import Amount from "../../components/Amount";
 import { StackParamList } from "../../navigators/StackNavigators";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import NoDataSVG from "../../components/NoDataSVG";
 
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen"> & {
   stackNavigation: NativeStackNavigationProp<StackParamList, "TrackerTab", undefined>;
@@ -44,13 +45,7 @@ const AllTransaction = ({ stackNavigation }: Props) => {
 
   const values = useMemo(() => calcuateTotal(transaction), [transaction]);
 
-  if (transaction.length === 0) {
-    return (
-      <View style={styles.screen}>
-        <Text>{t("noTransaction")}</Text>
-      </View>
-    );
-  }
+  if (transaction.length === 0) return <NoDataSVG message={t("noTransaction")} />;
 
   return (
     <>

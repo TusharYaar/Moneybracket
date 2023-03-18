@@ -2,7 +2,7 @@
   "expo": {
     "name": "Money Bracket",
     "slug": "moneybracket",
-    "version": "0.6.6",
+    "version": "0.6.7",
     "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,7 @@
       "supportsTablet": false
     },
     "android": {
-      "versionCode": 5011,
+      "versionCode": 5012,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

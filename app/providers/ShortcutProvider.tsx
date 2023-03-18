@@ -47,10 +47,10 @@ const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[]
     QuickActions.clearShortcutItems();
     if (_shortcut.length > 0) {
       QuickActions.setShortcutItems(
-        _shortcut.map((action) => ({
+        _shortcut.map((action, index) => ({
           type: "transaction",
           title: `${action.currency}${action.amount} for ${action.category.title}`,
-          icon: "./1.png", // Icons instructions below
+          icon: `${index + 1}.png`, // Icons instructions below
           userInfo: {
             url: JSON.stringify(action._id),
           },

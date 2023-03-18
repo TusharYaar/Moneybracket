@@ -7,6 +7,7 @@ import CategoryItem from "../../components/CategoryItem";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { FlashList } from "@shopify/flash-list";
+import NoDataSVG from "../../components/NoDataSVG";
 
 type Props = MaterialTopTabScreenProps<TabParamList, "AllCategoryScreen">;
 
@@ -14,13 +15,7 @@ const AllCategory = ({}: Props) => {
   const { showAddCategoryModal } = useData();
   const { category } = useData();
 
-  if (category.length === 0) {
-    return (
-      <View style={styles.screen}>
-        <Text>No Category Added</Text>
-      </View>
-    );
-  }
+  if (category.length === 0) return <NoDataSVG message="No Category Added" />;
 
   return (
     <FlashList
