@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, View } from "react-native";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useData } from "../../providers/DataProvider";
 import { List } from "react-native-paper";
 
@@ -12,14 +12,19 @@ import Pie from "../../components/Charts/Pie";
 import { useCustomTheme } from "../../providers/ThemeProvider";
 import { transactionWithinDates } from "../../utils/transaction";
 import { useTranslation } from "react-i18next";
+import NoChartSVG from "../../components/NoChartSVG";
 
 const Charts = () => {
   const { transaction, category, dateFilter } = useData();
-  const [selected, setSelected] = useState(category.map((cat) => cat._id.toHexString()));
+  const [selected, setSelected] = useState([]);
   const {
     theme: { roundness, colors },
   } = useCustomTheme();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    setSelected(category.map((cat) => cat._id.toHexString()));
+  }, [category]);
 
   const updateSelectedCategory = useCallback((cat: Category) => {
     let id = cat._id.toHexString();
@@ -46,6 +51,8 @@ const Charts = () => {
   }, [transaction, category, dateFilter]);
 
   const pieData = useMemo(() => {
+    if (transaction.length === 0 || category.length === 0 || selected.length === 0) return [];
+
     return category
       .filter((cat) => selected.includes(cat._id.toHexString()))
       .map((cat) => ({
@@ -58,7 +65,6 @@ const Charts = () => {
         amount: aggregatedValues[cat._id.toHexString()],
       }));
   }, [transaction, category, selected, aggregatedValues]);
-
   return (
     <>
       <List.Section style={{ padding: 0, margin: 0 }}>
@@ -83,10 +89,15 @@ const Charts = () => {
         </List.Accordion>
       </List.Section>
       <ScrollView contentContainerStyle={styles.scrollview}>
-        <Pie
-          data={pieData.filter((cat) => cat.type === "expense").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
-          title={t("screens.tracker.charts.expensePieChart")}
-        />
+        {(selected.length === 0 || category.length === 0 || transaction.length === 0) && (
+          <NoChartSVG message="No data to display" />
+        )}
+        {
+          <Pie
+            data={pieData.filter((cat) => cat.type === "expense").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
+            title={t("screens.tracker.charts.expensePieChart")}
+          />
+        }
         <Pie
           data={pieData.filter((cat) => cat.type === "income").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
           title={t("screens.tracker.charts.incomePieChart")}
