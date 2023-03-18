@@ -9,16 +9,17 @@ type Props = {
   visible: boolean;
   onDismiss: () => void;
   onItemSelect: (code: string) => void;
+  current: string;
 };
 
-const DateFormatModal = ({ visible, onDismiss, onItemSelect }: Props) => {
+const DateFormatModal = ({ visible, onDismiss, onItemSelect, current }: Props) => {
   const { t } = useTranslation("", { keyPrefix: "components.dateFormatModal" });
 
   return (
     <ModalContainer visible={visible} onDismiss={onDismiss} title={t("title")}>
       <View style={styles.container}>
         {DATE.map((item) => (
-          <DateFormatItem date={item} key={item} onPress={() => onItemSelect(item)} />
+          <DateFormatItem date={item} key={item} onPress={() => onItemSelect(item)} focused={current === item} />
         ))}
       </View>
     </ModalContainer>

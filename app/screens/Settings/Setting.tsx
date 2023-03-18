@@ -177,11 +177,13 @@ const Setting = ({ navigation }: Props) => {
         visible={languageModal}
         onDismiss={() => setLanguageModal(false)}
         onItemSelect={handleUpdateLanguage}
+        current={language}
       />
       <DateFormatModal
         visible={dateModal}
         onDismiss={() => setDateModal(false)}
         onItemSelect={handleUpdateDateFormat}
+        current={dateFormat}
       />
     </ScrollView>
   );

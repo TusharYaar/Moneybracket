@@ -142,70 +142,70 @@ const DateFilterModal = ({ visible, onDismiss, updateDateFilter, filter }: Props
       >
         <View style={styles.btnContainer}>
           <Button
-            mode={filter.type === "today" ? "contained" : "text"}
+            mode={filter.type === "today" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("today")}
           >
             Today
           </Button>
           <Button
-            mode={filter.type === "yesterday" ? "contained" : "text"}
+            mode={filter.type === "yesterday" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("yesterday")}
           >
             Yesterday
           </Button>
           <Button
-            mode={filter.type === "thisWeek" ? "contained" : "text"}
+            mode={filter.type === "thisWeek" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("thisWeek")}
           >
             This Week
           </Button>
           <Button
-            mode={filter.type === "lastWeek" ? "contained" : "text"}
+            mode={filter.type === "lastWeek" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("lastWeek")}
           >
             Last Week
           </Button>
           <Button
-            mode={filter.type === "thisMonth" ? "contained" : "text"}
+            mode={filter.type === "thisMonth" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("thisMonth")}
           >
             This Month
           </Button>
           <Button
-            mode={filter.type === "lastMonth" ? "contained" : "text"}
+            mode={filter.type === "lastMonth" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("lastMonth")}
           >
             Last Month
           </Button>
           <Button
-            mode={filter.type === "thisYear" ? "contained" : "text"}
+            mode={filter.type === "thisYear" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("thisYear")}
           >
             This Year
           </Button>
           <Button
-            mode={filter.type === "last3Months" ? "contained" : "text"}
+            mode={filter.type === "last3Months" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("last3Months")}
           >
             Last 3 Months
           </Button>
           <Button
-            mode={filter.type === "last6Months" ? "contained" : "text"}
+            mode={filter.type === "last6Months" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("last6Months")}
           >
             Last 6 Months
           </Button>
           <Button
-            mode={filter.type === "all" ? "contained" : "text"}
+            mode={filter.type === "all" ? "contained-tonal" : "text"}
             style={styles.btn}
             onPress={() => handleChangeFilter("all")}
           >

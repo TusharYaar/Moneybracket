@@ -1,17 +1,18 @@
 import { StyleSheet } from "react-native";
 import React from "react";
-import { TouchableRipple, Text } from "react-native-paper";
+import { Text, Button } from "react-native-paper";
 
 type Props = {
   language: string;
   onPress: () => void;
+  focused: boolean;
 };
 
-const LanguageItem = ({ language, onPress }: Props) => {
+const LanguageItem = ({ language, onPress, focused }: Props) => {
   return (
-    <TouchableRipple onPress={onPress} style={styles.item}>
+    <Button onPress={onPress} style={styles.item} mode={focused ? "contained-tonal" : "text"}>
       <Text variant="titleMedium">{language}</Text>
-    </TouchableRipple>
+    </Button>
   );
 };
 
@@ -19,7 +20,6 @@ export default LanguageItem;
 
 const styles = StyleSheet.create({
   item: {
-    paddingVertical: 4,
-    paddingHorizontal: 8,
+    marginVertical: 4,
   },
 });

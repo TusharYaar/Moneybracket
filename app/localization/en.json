@@ -51,15 +51,15 @@
     },
     "navigator": {
         "drawer": {
-            "tracker": "Transactions",
-            "recurring": "Recurring Transactions",
-            "category": "Categories",
-            "exchange": "Exchange Rates",
-            "setting": "Settings",
-            "about": "About",
-            "help": "Help",
-            "store": "Store",
-            "shortcut": "Shortcuts"
+            "TrackerStack": "Transactions",
+            "RecurringStack": "Recurring Transactions",
+            "CategoryStack": "Categories",
+            "ExchangeStack": "Exchange Rates",
+            "SettingStack": "Settings",
+            "AboutStack": "About",
+            "HelpStack": "Help",
+            "StoreStack": "Store",
+            "ShortcutStack": "Shortcuts"
         },
         "tab": {
             "allTransaction": "Transactions",
