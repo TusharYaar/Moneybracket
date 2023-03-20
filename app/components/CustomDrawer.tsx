@@ -4,7 +4,6 @@ import { Image } from "react-native";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { useCustomTheme } from "../providers/ThemeProvider";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   const { theme } = useCustomTheme();
@@ -21,6 +20,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
       </View>
       {props.state.routes.map((route, index) => (
         <DrawerItem
+          key={route.key}
           label={t(route.name)}
           onPress={() => props.navigation.navigate(route.name)}
           labelStyle={theme.fonts.titleSmall}

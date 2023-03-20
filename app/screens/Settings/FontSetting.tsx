@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { ALL_FONTS } from "../../data";
 import { useSettings } from "../../providers/SettingsProvider";
 import { FlatList } from "react-native-gesture-handler";
@@ -7,6 +7,11 @@ import FontView from "../../components/FontView";
 
 const FontSettings = () => {
   const { font, updateFont, unlockedFonts, offlineFonts } = useSettings();
+
+  // useEffect(() => {
+  //   getOfflineFonts();
+  // }, []);
+
   return (
     <FlatList
       contentContainerStyle={styles.screen}

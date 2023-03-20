@@ -23,7 +23,6 @@ const App = () => {
       if (!exists) {
         await makeDirectoryAsync(dir, { intermediates: true });
       }
-      // return;
     };
 
     [EXPORTS_DIRECTORY, FONTS_DIRECTORY, BACKUP_DIRECTORY, IMAGES_DIRECTORY].every((dir) =>

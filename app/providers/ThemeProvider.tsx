@@ -69,32 +69,6 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
       throw e;
     }
   }, []);
-
-  const loadFont = useCallback(async (id: string) => {
-    // If Default Font
-    if (LOCAL_FONTS.includes(id)) return;
-
-    try {
-      const font = ALL_FONTS.find((f) => f.id === id);
-      // If Font is Already Loaded
-      if (font.files.every((file) => isLoaded(file.name))) return;
-
-      for (const file of font.files) {
-        const location = await getInfoAsync(`${FONTS_DIRECTORY}/${file.name}`);
-        if (location.exists && !location.isDirectory && !isLoaded(file.name)) await loadAsync(file.name, location.uri);
-        else {
-          console.log("downloading");
-          await downloadFont(id);
-        }
-      }
-    } catch (e) {
-      changeCurrentFont(LOCAL_FONTS[0]);
-      console.log("Uncountered an error, Setting font to san serif");
-      console.log(e);
-      throw e;
-    }
-  }, []);
-
   const enqueueSnackbar = useCallback((message: string) => {
     if (message === undefined) return;
 
@@ -106,6 +80,32 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
         return [{ message, id }];
       }
     });
+  }, []);
+
+  const loadFont = useCallback(async (id: string) => {
+    // If Default Font
+    if (LOCAL_FONTS.includes(id)) return;
+    try {
+      const font = ALL_FONTS.find((f) => f.id === id);
+      // If Font is Already Loaded
+      if (font.files.every((file) => isLoaded(file.name))) return;
+
+      for (const file of font.files) {
+        let location = await getInfoAsync(`${FONTS_DIRECTORY}/${file.name}`);
+        if (location.exists && !location.isDirectory && !isLoaded(file.name)) await loadAsync(file.name, location.uri);
+        else {
+          await downloadFont(id);
+          enqueueSnackbar("DOWNLOADING_FONT");
+          location = await getInfoAsync(`${FONTS_DIRECTORY}/${file.name}`);
+          await loadAsync(file.name, location.uri);
+        }
+      }
+    } catch (e) {
+      changeCurrentFont(LOCAL_FONTS[0]);
+      console.log("Uncountered an error, Setting font to san serif");
+      console.log(e);
+      throw e;
+    }
   }, []);
 
   const closeSnackbar = useCallback((id: number) => {
