@@ -42,10 +42,11 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const themeObject = useMemo(() => {
     let obj = ALL_THEMES.find((t) => t.id === theme);
+
     obj.fonts = ALL_FONTS.find((f) => f.id === currentFont).font;
 
     if (roundness === -1) return obj;
-    return { ...obj, roundness };
+    return { ...obj, roundness } as CustomTheme;
   }, [theme, currentFont, roundness]);
 
   const changeTheme = useCallback((theme: string) => {

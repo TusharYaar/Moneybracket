@@ -1,7 +1,8 @@
-import { MD3Colors, MD3Theme, MD3Typescale } from "react-native-paper/lib/typescript/types";
+import type { MD3Theme, MD3Colors, MD3Typescale } from "react-native-paper/lib/typescript/src/types";
 import { Theme } from "@react-navigation/native";
 import { Transaction } from "./realm/Transaction";
 import { Platform } from "react-native";
+
 export interface CustomTheme extends MD3Theme {
   id: string;
   name: string;

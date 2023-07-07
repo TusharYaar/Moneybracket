@@ -1,4 +1,5 @@
-import { MD3Typescale } from "react-native-paper/lib/typescript/types";
+import type { MD3Typescale } from "react-native-paper/lib/typescript/src/types";
+
 import DefaultConfig from "../data/defaultFontConfig";
 
 const mediumVariants = ["labelLarge", "labelMedium", "labelSmall", "titleMedium", "titleSmall"];
