@@ -13,21 +13,21 @@ import { getFromStorageOrDefault, setStorage } from "../utils/storage";
 import type { CustomTheme } from "../types";
 
 type Props = {
-  currentFont: string;
+  font: string;
   theme: CustomTheme;
   changeTheme: (theme: string) => void;
   changeRoundness: (value: number) => void;
-  changeCurrentFont: (font: string) => void;
+  changeFont: (font: string) => void;
   loadFont: (id: string) => Promise<void>;
   enqueueSnackbar: (message: string) => void;
 };
 
 const ThemeContext = createContext<Props>({
-  currentFont: getFromStorageOrDefault(SETTING_KEYS.font, "sansserif", true),
+  font: getFromStorageOrDefault(SETTING_KEYS.font, "sansserif", true),
   theme: ALL_THEMES.find((theme) => theme.id === getFromStorageOrDefault(SETTING_KEYS.theme, "defaultLight", true)),
   changeTheme: () => {},
   changeRoundness: () => {},
-  changeCurrentFont: () => {},
+  changeFont: () => {},
   loadFont: async (id: string) => {},
   enqueueSnackbar: () => {},
 });
@@ -38,18 +38,18 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
   // const { t } = useTranslation("", { keyPrefix: "messages" });
 
   const [_theme, setTheme] = useState(DEFAULT_THEMES[0]);
-  const [currentFont, setCurrentFont] = useState(LOCAL_FONTS[0]);
+  const [font, setFont] = useState(LOCAL_FONTS[0]);
   const [roundness, setRoundness] = useState(parseInt(getFromStorageOrDefault(SETTING_KEYS.roundness, "-1", true)));
   const [snackbars, setSnackbars] = useState<{ message: string; id: number }[]>([]);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const themeObject = useMemo(() => {
     let obj = ALL_THEMES.find((t) => t.id === _theme);
 
-    obj.fonts = ALL_FONTS.find((f) => f.id === currentFont).font;
+    obj.fonts = ALL_FONTS.find((f) => f.id === font).font;
 
     if (roundness === -1) return obj;
     else return { ...obj, roundness } as CustomTheme;
-  }, [_theme, currentFont, roundness]);
+  }, [_theme, font, roundness]);
 
   const changeTheme = useCallback((theme: string) => {
     try {
@@ -66,13 +66,13 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     setTheme(theme);
   }, []);
 
-  const changeCurrentFont = useCallback(async (font: string) => {
+  const changeFont = useCallback(async (font: string) => {
     try {
       // let hasPerm = true;
       // if (!LOCAL_FONTS.includes(font)) hasPerm = (await checkSubscription()).font;
       // if (!hasPerm) throw "FONT_NOT_UNLOCKED";
       await loadFont(font);
-      setCurrentFont(font);
+      setFont(font);
       setStorage(SETTING_KEYS.font, font);
       // if (notify) enqueueSnackbar("FONT_UPDATE_SUCCESS");
       // getOfflineFonts();
@@ -87,8 +87,6 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
       //   enqueueSnackbar(e);
       // } else enqueueSnackbar(e);
     }
-
-    setCurrentFont(font);
   }, []);
 
   const changeRoundness = useCallback((value: number) => {
@@ -139,7 +137,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
         }
       }
     } catch (e) {
-      changeCurrentFont(LOCAL_FONTS[0]);
+      changeFont(LOCAL_FONTS[0]);
       console.log("Uncountered an error, Setting font to san serif");
       console.log(e);
       throw e;
@@ -168,8 +166,8 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     <ThemeContext.Provider
       value={{
         changeTheme,
-        currentFont,
-        changeCurrentFont,
+        font,
+        changeFont,
         changeRoundness,
         theme: themeObject,
         loadFont,

@@ -29,7 +29,7 @@ type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 const Setting = ({ navigation }: Props) => {
   const { currency, language, appLock, dateFormat, updateCurrency, updateLanguage, updateDateFormat, updateLock } =
     useSettings();
-  const { enqueueSnackbar, theme, currentFont } = useCustomTheme();
+  const { enqueueSnackbar, theme, font } = useCustomTheme();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -120,7 +120,7 @@ const Setting = ({ navigation }: Props) => {
         onPress={() => navigation.navigate("FontSetting")}
         style={{ borderTopLeftRadius: theme.roundness * 4, borderTopRightRadius: theme.roundness * 4 }}
       >
-        <Text>{ALL_FONTS.find((f) => f.id === currentFont)?.name}</Text>
+        <Text>{ALL_FONTS.find((f) => f.id === font)?.name}</Text>
       </SettingItem>
       <SettingItem label={t("theme")} leftIcon="color-fill-outline" onPress={() => navigation.navigate("ThemeSetting")}>
         <Text>{theme.name}</Text>

@@ -1,13 +1,12 @@
 import { StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { ALL_FONTS, DEFAULT_FONTS } from "../../data";
-import { useSettings } from "../../providers/SettingsProvider";
 import { FlatList } from "react-native-gesture-handler";
 import FontView from "../../components/FontView";
 import { useCustomTheme } from "../../providers/ThemeProvider";
 
 const FontSettings = () => {
-  const { currentFont, changeCurrentFont } = useCustomTheme();
+  const { font, changeFont } = useCustomTheme();
 
   // const { unlockedFonts, offlineFonts } = useSettings();
 
@@ -23,8 +22,8 @@ const FontSettings = () => {
       renderItem={({ item }) => (
         <FontView
           font={item}
-          selected={item.id === currentFont}
-          onPress={() => changeCurrentFont(item.id)}
+          selected={item.id === font}
+          onPress={() => changeFont(item.id)}
           style={styles.item}
           // isUnlocked={unlockedFonts.includes(item.id)}
           // requireDownload={!offlineFonts.includes(item.id)}
