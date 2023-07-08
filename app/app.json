@@ -22,7 +22,7 @@
       "supportsTablet": false
     },
     "android": {
-      "versionCode": 5013,
+      "versionCode": 5015,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -33,7 +33,7 @@
       "eas": {
         "projectId": "7f819d50-7144-4e92-9f26-a4e970e6325d"
       }
-      }
-  },
-  "plugins": ["@config-plugins/react-native-quick-actions"]
+    },
+      "plugins": ["@config-plugins/react-native-quick-actions", ["./withDrawableAssets.js", "./assets/shortcuts"]]
+  }
 }

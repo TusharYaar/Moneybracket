@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import React from "react";
-import { Text, TextProps } from "react-native-paper";
+import { Text } from "react-native-paper";
+import type { VariantProp } from "react-native-paper/lib/typescript/src/components/Typography/types";
 import { useSettings } from "../providers/SettingsProvider";
 import { useCustomTheme } from "../providers/ThemeProvider";
 
@@ -8,7 +9,7 @@ import { useTranslation } from "react-i18next";
 
 type Props = {
   amount: number;
-  variant?: TextProps["variant"];
+  variant?: VariantProp<Text>;
   component?: "caption" | "title" | "paragraph";
   type?: "income" | "expense" | "transfer";
   sign?: boolean;
