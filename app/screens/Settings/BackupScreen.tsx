@@ -14,11 +14,11 @@ import { Category } from "../../realm/Category";
 const Backup = () => {
   const realm = useRealm();
   const { category, transaction } = useData();
-  const { font } = useSettings();
+  // const { font } = useSettings();
 
   const createBackup = useCallback(async () => {
     const location = `${BACKUP_DIRECTORY}/backup_${new Date()}.json`;
-    const content = generateBackupFile(category, transaction, { font });
+    const content = generateBackupFile(category, transaction, {});
     await FileSystem.writeAsStringAsync(location, JSON.stringify(content, null, 4), {
       encoding: "utf8",
     });
@@ -37,10 +37,10 @@ const Backup = () => {
             const cat = realm.create("Category", element);
             allCategory.push(cat as Category);
           });
-          data.transactions.forEach((element) => {
-            const cat = allCategory.find((c) => c._id.equals(element.category));
-            realm.create("Transaction", { ...element, category: cat });
-          });
+          // data.transactions.forEach((element) => {
+          //   const cat = allCategory.find((c) => c._id.equals(element.category));
+          //   realm.create("Transaction", { ...element, category: cat });
+          // });
         });
       }
     } catch (e) {

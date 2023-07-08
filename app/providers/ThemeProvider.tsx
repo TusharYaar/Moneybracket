@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState, useMemo, useCallback } from "react";
+import React, { useContext, createContext, useState, useMemo, useCallback, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider as PaperProvider } from "react-native-paper";
 
@@ -6,7 +6,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { ALL_FONTS, DEFAULT_THEMES, FONTS_DIRECTORY, LOCAL_FONTS, ALL_THEMES, SETTING_KEYS } from "../data";
 import { StatusBar } from "expo-status-bar";
 import { isLoaded, loadAsync } from "expo-font";
-import { downloadAsync, getInfoAsync } from "expo-file-system";
+import { downloadAsync, getInfoAsync, makeDirectoryAsync, readDirectoryAsync } from "expo-file-system";
 // import { useTranslation } from "react-i18next";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
 
@@ -91,6 +91,26 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
 
   const changeRoundness = useCallback((value: number) => {
     setRoundness(value);
+  }, []);
+
+  const getOfflineFonts = useCallback(async () => {
+    const { exists } = await getInfoAsync(FONTS_DIRECTORY);
+    if (!exists) await makeDirectoryAsync(FONTS_DIRECTORY, { intermediates: true });
+
+    const files = await readDirectoryAsync(FONTS_DIRECTORY);
+    console.log(files);
+
+    const fonts = Array.from(LOCAL_FONTS);
+    for (const font of ALL_FONTS) {
+      if (!LOCAL_FONTS.includes(font.id)) {
+        if (font?.files && font.files.length && font.files.every((file) => files.includes(file.name)))
+          fonts.push(font.id);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    getOfflineFonts();
   }, []);
 
   const downloadFont = useCallback(async (id: string) => {
