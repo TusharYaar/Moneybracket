@@ -2,7 +2,7 @@ import React, { useContext, createContext, useMemo, useState, useCallback, useEf
 import { Category } from "../realm/Category";
 import { Transaction } from "../realm/Transaction";
 
-import { useQuery } from "../realm/index";
+import { useQuery, useRealm } from "../realm/index";
 import AddCategory from "../components/Modals/AddCategory";
 import AddTransaction from "../components/Modals/AddTransaction";
 import DateFilterModal from "../components/Modals/DateFilterModal";
@@ -21,6 +21,7 @@ type Props = {
   showDateFilterModal: () => void;
   showCategoryFilterModal: () => void;
   updateDateFilter: (type: string, start: Date, end: Date) => void;
+  deleteAllData: () => void;
 };
 
 const DataContext = createContext<Props>({
@@ -37,6 +38,7 @@ const DataContext = createContext<Props>({
   showDateFilterModal: () => {},
   showCategoryFilterModal: () => {},
   updateDateFilter: () => {},
+  deleteAllData: () => {},
 });
 
 export const useData = () => useContext(DataContext);
@@ -49,6 +51,8 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   });
 
   const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const realm = useRealm();
 
   const _category = useQuery(Category);
   const category = useMemo(() => _category.sorted("title"), [_category]);
@@ -121,6 +125,12 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     });
   }, []);
 
+  const deleteAllData = useCallback(() => {
+    realm.write(() => {
+      realm.deleteAll();
+    });
+  }, []);
+
   return (
     <DataContext.Provider
       value={{
@@ -133,6 +143,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
         showDateFilterModal,
         showCategoryFilterModal,
         updateDateFilter,
+        deleteAllData,
       }}
     >
       <AddCategory item={addCategory.item} visible={addCategory.visible} onDismiss={dismissAddCategoryModal} />

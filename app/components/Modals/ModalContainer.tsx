@@ -9,10 +9,8 @@ type Props = {
   title: string;
   visible: boolean;
   showRightActionButton?: boolean;
-  // showDelete?: boolean;
   rightActionIcon?: string;
   rightActionOnPress?: () => void;
-  // onDelete?: () => void;
 
   barColor?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -25,9 +23,7 @@ const ModalContainer = ({
   onDismiss,
   barColor,
   showRightActionButton,
-  // deleteIcon = "trash-outline",
   rightActionIcon = "trash-outline",
-  // onDelete,
   rightActionOnPress,
   contentContainerStyle,
 }: Props) => {

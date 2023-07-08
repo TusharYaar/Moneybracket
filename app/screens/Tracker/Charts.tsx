@@ -1,12 +1,7 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
+import React, { useMemo } from "react";
 import { useData } from "../../providers/DataProvider";
-import { List } from "react-native-paper";
 
-import Icon from "react-native-vector-icons/Ionicons";
-
-import CategoryChip from "../../components/CategoryChip";
-import { Category } from "../../realm/Category";
 import CategoryChartsItem from "../../components/CategoryChartsItem";
 import Pie from "../../components/Charts/Pie";
 import { useCustomTheme } from "../../providers/ThemeProvider";

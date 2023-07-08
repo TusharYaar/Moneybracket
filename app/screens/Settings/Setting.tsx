@@ -30,6 +30,7 @@ const Setting = ({ navigation }: Props) => {
   const { currency, language, appLock, dateFormat, updateCurrency, updateLanguage, updateDateFormat, updateLock } =
     useSettings();
   const { enqueueSnackbar, theme, font } = useCustomTheme();
+  const { category, deleteAllData } = useData();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -38,8 +39,6 @@ const Setting = ({ navigation }: Props) => {
   const [dateModal, setDateModal] = useState(false);
 
   const realm = useRealm();
-
-  const { category } = useData();
 
   const addDummyCategories = useCallback(() => {
     realm.write(() => {
@@ -79,11 +78,9 @@ const Setting = ({ navigation }: Props) => {
     setDeleteModal(false);
   }, []);
 
-  const deleteAllData = useCallback(() => {
-    realm.write(() => {
-      realm.deleteAll();
-      dismissModal();
-    });
+  const handleDeleteAllData = useCallback(() => {
+    deleteAllData();
+    dismissModal();
   }, []);
 
   const handleUpdateLanguage = useCallback((lang: string) => {
@@ -141,16 +138,24 @@ const Setting = ({ navigation }: Props) => {
       {__DEV__ && <SettingItem label={"dummy Categories"} leftIcon="text" onPress={addDummyCategories} />}
       {__DEV__ && category.length > 0 && <SettingItem label={"dummy Trans"} leftIcon="text" onPress={addDummy} />}
       <SettingItem label={t("deleteAllData")} leftIcon="text" onPress={() => setDeleteModal(true)} />
-      <SettingItem label={t("export")} leftIcon="albums-outline" onPress={() => navigation.navigate("ExportScreen")} />
-      <SettingItem
-        label={t("backup")}
-        leftIcon="archive-outline"
-        onPress={() => navigation.navigate("BackupScreen")}
-        style={{ borderBottomLeftRadius: theme.roundness * 4, borderBottomRightRadius: theme.roundness * 4 }}
-      />
+      {__DEV__ && (
+        <SettingItem
+          label={t("export")}
+          leftIcon="albums-outline"
+          onPress={() => navigation.navigate("ExportScreen")}
+        />
+      )}
+      {__DEV__ && (
+        <SettingItem
+          label={t("backup")}
+          leftIcon="archive-outline"
+          onPress={() => navigation.navigate("BackupScreen")}
+          style={{ borderBottomLeftRadius: theme.roundness * 4, borderBottomRightRadius: theme.roundness * 4 }}
+        />
+      )}
       <DeleteDialog
         visible={deleteModal}
-        deleteAction={deleteAllData}
+        deleteAction={handleDeleteAllData}
         cancelAction={dismissModal}
         body={t("confirmDeleteBody")}
         title={t("confirmDeleteTitle")}

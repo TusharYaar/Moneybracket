@@ -21,13 +21,14 @@ type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen"> & {
 
 const AllTransaction = ({ stackNavigation }: Props) => {
   useEffect(() => {
-    stackNavigation.setOptions({
-      headerRight: () => (
-        <View>
-          <IconButton icon="search" onPress={() => stackNavigation.navigate("SearchScreen")} />
-        </View>
-      ),
-    });
+    if (__DEV__)
+      stackNavigation.setOptions({
+        headerRight: () => (
+          <View>
+            <IconButton icon="search" onPress={() => stackNavigation.navigate("SearchScreen")} />
+          </View>
+        ),
+      });
   }, []);
   const { transaction, showAddTransactionModal, dateFilter, selectedCategories } = useData();
   const { t } = useTranslation("", {

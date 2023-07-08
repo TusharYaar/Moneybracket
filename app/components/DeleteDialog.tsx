@@ -14,6 +14,7 @@ type Props = {
 
 const DeleteDialog = ({ visible, cancelAction, deleteAction, cancelText, deleteText, title, body }: Props) => {
   const { t } = useTranslation();
+
   return (
     <Portal>
       <Dialog visible={visible} dismissable={false}>

@@ -55,7 +55,7 @@ const SettingContext = createContext<Props>({ ...SETTING, offlineFonts: LOCAL_FO
 export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const { changeTheme, changeCurrentFont, loadFont, enqueueSnackbar, changeRoundness } = useCustomTheme();
+  const { enqueueSnackbar, changeRoundness } = useCustomTheme();
 
   const [settings, setSettings] = useState(SETTING);
   const [offlineFonts, setOfflineFonts] = useState(LOCAL_FONTS);
@@ -65,23 +65,23 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
     setStorage(SETTING_KEYS.language, lang);
   }, []);
 
-  const updateFont = useCallback(async (font: string, notify = true) => {}, []);
-  const updateRoundness = useCallback(async (value: number, notify = true) => {
-    try {
-      let hasPerm = (await checkSubscription()).theme;
-      if (!hasPerm) {
-        setSettings((prev) => ({ ...prev, roundness: -1 }));
-        changeRoundness(-1);
-        throw "ROUNDNESS_NOT_UNLOCKED";
-      }
-      setStorage(SETTING_KEYS.roundness, value.toString());
-      setSettings((prev) => ({ ...prev, roundness: value }));
-      changeRoundness(value);
-      if (notify) enqueueSnackbar("ROUNDNESS_UPDATE_SUCCESS");
-    } catch (e) {
-      if (notify) enqueueSnackbar(e);
-    }
-  }, []);
+  // const updateFont = useCallback(async (font: string, notify = true) => {}, []);
+  // const updateRoundness = useCallback(async (value: number, notify = true) => {
+  //   try {
+  //     let hasPerm = (await checkSubscription()).theme;
+  //     if (!hasPerm) {
+  //       setSettings((prev) => ({ ...prev, roundness: -1 }));
+  //       changeRoundness(-1);
+  //       throw "ROUNDNESS_NOT_UNLOCKED";
+  //     }
+  //     setStorage(SETTING_KEYS.roundness, value.toString());
+  //     setSettings((prev) => ({ ...prev, roundness: value }));
+  //     changeRoundness(value);
+  //     if (notify) enqueueSnackbar("ROUNDNESS_UPDATE_SUCCESS");
+  //   } catch (e) {
+  //     if (notify) enqueueSnackbar(e);
+  //   }
+  // }, []);
 
   const updateCurrency = useCallback((curr: string) => {
     setSettings((prev) => ({ ...prev, currency: CURRENCIES[curr] }));
@@ -112,25 +112,21 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
     }
   }, []);
 
-  const getOfflineFonts = useCallback(async () => {
-    const files = await readDirectoryAsync(FONTS_DIRECTORY);
-    const fonts = Array.from(LOCAL_FONTS);
-    for (const font of ALL_FONTS) {
-      if (!LOCAL_FONTS.includes(font.id)) {
-        if (font?.files && font.files.length && font.files.every((file) => files.includes(file.name)))
-          fonts.push(font.id);
-      }
-    }
-    setOfflineFonts(fonts);
-  }, []);
+  // const getOfflineFonts = useCallback(async () => {
+  //   const files = await readDirectoryAsync(FONTS_DIRECTORY);
+  //   const fonts = Array.from(LOCAL_FONTS);
+  //   for (const font of ALL_FONTS) {
+  //     if (!LOCAL_FONTS.includes(font.id)) {
+  //       if (font?.files && font.files.length && font.files.every((file) => files.includes(file.name)))
+  //         fonts.push(font.id);
+  //     }
+  //   }
+  //   setOfflineFonts(fonts);
+  // }, []);
 
-  useEffect(() => {
-    getOfflineFonts();
-  }, []);
-
-  useEffect(() => {
-    refreshUnlockedItems();
-  }, [updateFont, updateRoundness]);
+  // useEffect(() => {
+  //   getOfflineFonts();
+  // }, []);
 
   return (
     <SettingContext.Provider
