@@ -12,7 +12,7 @@ import Pie from "../../components/Charts/Pie";
 import { useCustomTheme } from "../../providers/ThemeProvider";
 import { transactionWithinDates } from "../../utils/transaction";
 import { useTranslation } from "react-i18next";
-import NoChartSVG from "../../components/NoChartSVG";
+import NoChartSVG from "../../components/SVGs/NoChartSVG";
 
 const Charts = () => {
   const { transaction, category, dateFilter } = useData();

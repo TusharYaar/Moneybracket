@@ -3,10 +3,10 @@ import { StyleSheet, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { IconButton, Text, TextInput } from "react-native-paper";
 
-import { ICONS } from "../data";
-import { useCustomTheme } from "../providers/ThemeProvider";
+import { ICONS } from "../../data";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
-import { chooseBetterContrast } from "../utils/colors";
+import { chooseBetterContrast } from "../../utils/colors";
 import ModalContainer from "./ModalContainer";
 import { useDebounce } from "use-debounce";
 

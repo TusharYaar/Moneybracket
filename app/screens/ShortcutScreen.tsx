@@ -4,7 +4,7 @@ import { FAB } from "react-native-paper";
 import { useSchortcut } from "../providers/ShortcutProvider";
 import { FlashList } from "@shopify/flash-list";
 import ShortcutItem from "../components/ShortcutItem";
-import NoDataSVG from "../components/NoDataSVG";
+import NoDataSVG from "../components/SVGs/NoDataSVG";
 
 const ShortcutScreen = () => {
   const { shortcut, showAddShortcutModal } = useSchortcut();

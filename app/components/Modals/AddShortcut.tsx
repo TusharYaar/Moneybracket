@@ -2,21 +2,21 @@ import { StyleSheet, View } from "react-native";
 import React, { useState, useCallback, useEffect } from "react";
 import { TextInput, IconButton, Text } from "react-native-paper";
 
-import CategoryItem from "./CategoryItem";
-import { Category } from "../realm/Category";
+import CategoryItem from "../CategoryItem";
+import { Category } from "../../realm/Category";
 
 import CurrencyModal from "./CurrencyModal";
 import CategoryModal from "./CategoryModal";
-import { useRealm } from "../realm";
+import { useRealm } from "../../realm";
 import { useTranslation } from "react-i18next";
-import { useCustomTheme } from "../providers/ThemeProvider";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
-import { useSettings } from "../providers/SettingsProvider";
+import { useSettings } from "../../providers/SettingsProvider";
 import ModalContainer from "./ModalContainer";
-import { useExchangeRate } from "../providers/ExchangeRatesProvider";
-import Amount from "./Amount";
-import DeleteDialog from "./DeleteDialog";
-import { Shortcut } from "../realm/Shortcut";
+import { useExchangeRate } from "../../providers/ExchangeRatesProvider";
+import Amount from "../Amount";
+import DeleteDialog from "../DeleteDialog";
+import { Shortcut } from "../../realm/Shortcut";
 
 type Props = {
   visible: boolean;

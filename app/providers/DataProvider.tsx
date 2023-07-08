@@ -3,9 +3,9 @@ import { Category } from "../realm/Category";
 import { Transaction } from "../realm/Transaction";
 
 import { useQuery } from "../realm/index";
-import AddCategory from "../components/AddCategory";
-import AddTransaction from "../components/AddTransaction";
-import DateFilterModal from "../components/DateFilterModal";
+import AddCategory from "../components/Modals/AddCategory";
+import AddTransaction from "../components/Modals/AddTransaction";
+import DateFilterModal from "../components/Modals/DateFilterModal";
 type Props = {
   dateFilter: {
     type: string;

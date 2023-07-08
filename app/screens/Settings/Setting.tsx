@@ -19,9 +19,9 @@ import { generateDummyTransaction } from "../../utils/dummy";
 import { ALL_FONTS, ICONS, COLORS } from "../../data";
 
 import DeleteDialog from "../../components/DeleteDialog";
-import CurrencyModal from "../../components/CurrencyModal";
-import LanguageModal from "../../components/LanguageModal";
-import DateFormatModal from "../../components/DateFormatModal";
+import CurrencyModal from "../../components/Modals/CurrencyModal";
+import LanguageModal from "../../components/Modals/LanguageModal";
+import DateFormatModal from "../../components/Modals/DateFormatModal";
 import { useCustomTheme } from "../../providers/ThemeProvider";
 
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;

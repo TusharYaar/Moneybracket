@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { SvgXml } from "react-native-svg";
-import { useCustomTheme } from "../providers/ThemeProvider";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
 const NoChartSVG = ({ message }: { message: string }) => {
   const {

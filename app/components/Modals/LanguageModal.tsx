@@ -2,9 +2,9 @@ import { View } from "react-native";
 import React from "react";
 import ModalContainer from "./ModalContainer";
 
-import { resources as LANGUAGES } from "../localization";
+import { resources as LANGUAGES } from "../../localization";
 import { useTranslation } from "react-i18next";
-import LanguageItem from "./LanguageItem";
+import LanguageItem from "../LanguageItem";
 
 type Props = {
   visible: boolean;

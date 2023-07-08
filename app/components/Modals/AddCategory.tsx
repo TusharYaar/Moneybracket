@@ -2,16 +2,16 @@ import { View, StyleSheet, FlatList } from "react-native";
 import React, { useState, useCallback, useEffect } from "react";
 import { Text, TextInput, IconButton, SegmentedButtons } from "react-native-paper";
 
-import { useRealm } from "../realm";
-import { Category } from "../realm/Category";
-import ColorChoice from "./ColorChoice";
+import { useRealm } from "../../realm";
+import { Category } from "../../realm/Category";
+import ColorChoice from "../ColorChoice";
 import IconModal from "./IconModal";
 
-import { COLORS, ICONS } from "../data";
+import { COLORS, ICONS } from "../../data";
 import { useTranslation } from "react-i18next";
-import { useCustomTheme } from "../providers/ThemeProvider";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
-import { chooseBetterContrast } from "../utils/colors";
+import { chooseBetterContrast } from "../../utils/colors";
 import ModalContainer from "./ModalContainer";
 import { useDebounce } from "use-debounce";
 

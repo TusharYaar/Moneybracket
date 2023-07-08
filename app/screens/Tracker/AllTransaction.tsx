@@ -13,7 +13,7 @@ import { calcuateTotal, groupTransactionByDate } from "../../utils/transaction";
 import Amount from "../../components/Amount";
 import { StackParamList } from "../../navigators/StackNavigators";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import NoDataSVG from "../../components/NoDataSVG";
+import NoDataSVG from "../../components/SVGs/NoDataSVG";
 
 type Props = MaterialTopTabScreenProps<TabParamList, "AllTransactionScreen"> & {
   stackNavigation: NativeStackNavigationProp<StackParamList, "TrackerTab", undefined>;

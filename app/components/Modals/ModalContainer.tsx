@@ -1,7 +1,7 @@
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import React, { ReactNode } from "react";
 import { IconButton, Modal, Portal, Text } from "react-native-paper";
-import { useCustomTheme } from "../providers/ThemeProvider";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
 type Props = {
   children: ReactNode;

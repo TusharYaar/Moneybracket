@@ -1,8 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
 import ModalContainer from "./ModalContainer";
-import { DATE } from "../data";
-import DateFormatItem from "./Charts/DateFormatItem";
+import { DATE } from "../../data";
+import DateFormatItem from "../Charts/DateFormatItem";
 import { useTranslation } from "react-i18next";
 
 type Props = {

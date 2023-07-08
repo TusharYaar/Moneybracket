@@ -3,9 +3,9 @@ import React from "react";
 
 import { FlashList } from "@shopify/flash-list";
 
-import CategoryItem from "./CategoryItem";
-import { Category } from "../realm/Category";
-import { useCustomTheme } from "../providers/ThemeProvider";
+import CategoryItem from "../CategoryItem";
+import { Category } from "../../realm/Category";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
 import ModalContainer from "./ModalContainer";
 

@@ -7,7 +7,7 @@ import CategoryItem from "../../components/CategoryItem";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { FlashList } from "@shopify/flash-list";
-import NoDataSVG from "../../components/NoDataSVG";
+import NoDataSVG from "../../components/SVGs/NoDataSVG";
 
 type Props = MaterialTopTabScreenProps<TabParamList, "AllCategoryScreen">;
 

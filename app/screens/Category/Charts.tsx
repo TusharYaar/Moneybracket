@@ -2,7 +2,7 @@ import { View } from "react-native";
 import React from "react";
 import { Text } from "react-native-paper";
 import { useData } from "../../providers/DataProvider";
-import NoChartSVG from "../../components/NoChartSVG";
+import NoChartSVG from "../../components/SVGs/NoChartSVG";
 
 const Charts = () => {
   const { category } = useData();

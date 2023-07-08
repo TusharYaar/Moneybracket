@@ -5,7 +5,7 @@ import QuickActions from "react-native-quick-actions";
 import { useQuery, useRealm } from "../realm/index";
 
 import { Shortcut } from "../realm/Shortcut";
-import AddShortcut from "../components/AddShortcut";
+import AddShortcut from "../components/Modals/AddShortcut";
 import { useData } from "./DataProvider";
 import { DeviceEventEmitter } from "react-native";
 type Props = {

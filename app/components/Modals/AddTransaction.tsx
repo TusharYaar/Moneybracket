@@ -1,25 +1,25 @@
 import { Image, StyleSheet, View } from "react-native";
 import React, { useState, useCallback, useEffect } from "react";
 import { TextInput, IconButton, Button, Text, TouchableRipple, Dialog } from "react-native-paper";
-import { Transaction } from "../realm/Transaction";
-import CategoryItem from "./CategoryItem";
-import { Category } from "../realm/Category";
+import { Transaction } from "../../realm/Transaction";
+import CategoryItem from "../CategoryItem";
+import { Category } from "../../realm/Category";
 
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import CurrencyModal from "./CurrencyModal";
 import CategoryModal from "./CategoryModal";
-import { useRealm } from "../realm";
+import { useRealm } from "../../realm";
 import { useTranslation } from "react-i18next";
-import { useCustomTheme } from "../providers/ThemeProvider";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
-import { useSettings } from "../providers/SettingsProvider";
+import { useSettings } from "../../providers/SettingsProvider";
 import ModalContainer from "./ModalContainer";
-import { useExchangeRate } from "../providers/ExchangeRatesProvider";
-import Amount from "./Amount";
-import DeleteDialog from "./DeleteDialog";
+import { useExchangeRate } from "../../providers/ExchangeRatesProvider";
+import Amount from "../Amount";
+import DeleteDialog from "../DeleteDialog";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
-import { IMAGES_DIRECTORY } from "../data";
+import { IMAGES_DIRECTORY } from "../../data";
 import { format } from "date-fns";
 
 type Props = {

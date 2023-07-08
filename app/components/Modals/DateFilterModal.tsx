@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import React, { useCallback, useState } from "react";
 import { Button, Caption, IconButton } from "react-native-paper";
-import { useCustomTheme } from "../providers/ThemeProvider";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
 import {
   endOfDay,
@@ -22,7 +22,7 @@ import {
 } from "date-fns/esm";
 
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import { useSettings } from "../providers/SettingsProvider";
+import { useSettings } from "../../providers/SettingsProvider";
 import ModalContainer from "./ModalContainer";
 
 type Props = {

@@ -6,7 +6,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useSettings } from "../../providers/SettingsProvider";
 import { IconButton, TextInput, Text } from "react-native-paper";
 import { useCustomTheme } from "../../providers/ThemeProvider";
-import CurrencyModal from "../../components/CurrencyModal";
+import CurrencyModal from "../../components/Modals/CurrencyModal";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../navigators/StackNavigators";
 import { useDebounce } from "use-debounce";
