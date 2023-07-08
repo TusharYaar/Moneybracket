@@ -16,7 +16,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
           source={require("../assets/icon.png")}
           style={{ width: 80, height: 80, borderRadius: 4 * theme.roundness, marginBottom: 8 }}
         />
-        <Text variant="labelSmall">Made by TusharYaar</Text>
+        <Text variant="labelSmall">Money Bracket</Text>
       </View>
       {props.state.routes.map((route, index) => (
         <DrawerItem

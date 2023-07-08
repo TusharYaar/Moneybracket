@@ -16,7 +16,7 @@ import { Transaction } from "../../realm/Transaction";
 import { useData } from "../../providers/DataProvider";
 import { generateDummyTransaction } from "../../utils/dummy";
 
-import { ALL_FONTS, ALL_THEMES, ICONS, COLORS } from "../../data";
+import { ALL_FONTS, ICONS, COLORS } from "../../data";
 
 import DeleteDialog from "../../components/DeleteDialog";
 import CurrencyModal from "../../components/CurrencyModal";
@@ -27,22 +27,9 @@ import { useCustomTheme } from "../../providers/ThemeProvider";
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 
 const Setting = ({ navigation }: Props) => {
-  const {
-    currency,
-    language,
-    theme,
-    appLock,
-    font,
-    dateFormat,
-    updateCurrency,
-    updateLanguage,
-    updateDateFormat,
-    updateLock,
-  } = useSettings();
-  const {
-    enqueueSnackbar,
-    theme: { roundness },
-  } = useCustomTheme();
+  const { currency, language, appLock, dateFormat, updateCurrency, updateLanguage, updateDateFormat, updateLock } =
+    useSettings();
+  const { enqueueSnackbar, theme, currentFont } = useCustomTheme();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -131,12 +118,12 @@ const Setting = ({ navigation }: Props) => {
         label={t("font")}
         leftIcon="text"
         onPress={() => navigation.navigate("FontSetting")}
-        style={{ borderTopLeftRadius: roundness * 4, borderTopRightRadius: roundness * 4 }}
+        style={{ borderTopLeftRadius: theme.roundness * 4, borderTopRightRadius: theme.roundness * 4 }}
       >
-        <Text>{ALL_FONTS.find((f) => f.id === font)?.name}</Text>
+        <Text>{ALL_FONTS.find((f) => f.id === currentFont)?.name}</Text>
       </SettingItem>
       <SettingItem label={t("theme")} leftIcon="color-fill-outline" onPress={() => navigation.navigate("ThemeSetting")}>
-        <Text>{ALL_THEMES.find((t) => t.id === theme)?.name}</Text>
+        <Text>{theme.name}</Text>
       </SettingItem>
       <SettingItem label={t("currency")} leftIcon="text" onPress={() => setCurrencyModal(true)}>
         <Text>{currency.name}</Text>
@@ -159,7 +146,7 @@ const Setting = ({ navigation }: Props) => {
         label={t("backup")}
         leftIcon="archive-outline"
         onPress={() => navigation.navigate("BackupScreen")}
-        style={{ borderBottomLeftRadius: roundness * 4, borderBottomRightRadius: roundness * 4 }}
+        style={{ borderBottomLeftRadius: theme.roundness * 4, borderBottomRightRadius: theme.roundness * 4 }}
       />
       <DeleteDialog
         visible={deleteModal}

@@ -19,6 +19,7 @@ export const IMAGES_DIRECTORY = `${documentDirectory}Images`;
 export const FONTS_DIRECTORY = `${documentDirectory}Fonts`;
 
 export const LOCAL_FONTS = ["sansserif", "serif", "monospace"];
+export const DEFAULT_FONTS = _ALL_FONTS.filter((font) => !font.isPaid);
 export const DEFAULT_THEMES = ["defaultLight", "defaultDark"];
 
 export const SETTING_KEYS = {

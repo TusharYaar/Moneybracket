@@ -1,12 +1,15 @@
 import { StyleSheet } from "react-native";
 import React, { useEffect } from "react";
-import { ALL_FONTS } from "../../data";
+import { ALL_FONTS, DEFAULT_FONTS } from "../../data";
 import { useSettings } from "../../providers/SettingsProvider";
 import { FlatList } from "react-native-gesture-handler";
 import FontView from "../../components/FontView";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
 const FontSettings = () => {
-  const { font, updateFont, unlockedFonts, offlineFonts } = useSettings();
+  const { currentFont, changeCurrentFont } = useCustomTheme();
+
+  // const { unlockedFonts, offlineFonts } = useSettings();
 
   // useEffect(() => {
   //   getOfflineFonts();
@@ -15,16 +18,18 @@ const FontSettings = () => {
   return (
     <FlatList
       contentContainerStyle={styles.screen}
-      data={ALL_FONTS}
+      data={DEFAULT_FONTS}
       numColumns={2}
       renderItem={({ item }) => (
         <FontView
           font={item}
-          selected={item.id === font}
-          onPress={() => updateFont(item.id)}
+          selected={item.id === currentFont}
+          onPress={() => changeCurrentFont(item.id)}
           style={styles.item}
-          isUnlocked={unlockedFonts.includes(item.id)}
-          requireDownload={!offlineFonts.includes(item.id)}
+          // isUnlocked={unlockedFonts.includes(item.id)}
+          // requireDownload={!offlineFonts.includes(item.id)}
+          isUnlocked={true}
+          requireDownload={false}
         />
       )}
     />

@@ -5,6 +5,7 @@ export const ALL_FONTS: FontObject[] = [
   {
     id: "sansserif",
     name: "Sans Serif",
+    isPaid: false,
     by: "",
     font: makeFontConfig("sans-serif", "sans-serif-medium"),
     files: [],
@@ -12,6 +13,7 @@ export const ALL_FONTS: FontObject[] = [
   {
     id: "serif",
     name: "Serif",
+    isPaid: false,
     by: "",
     font: makeFontConfig("serif", "serif"),
     files: [],
@@ -19,6 +21,7 @@ export const ALL_FONTS: FontObject[] = [
   {
     id: "monospace",
     name: "Monospace",
+    isPaid: false,
     by: "",
     font: makeFontConfig("monospace", "monospace"),
     files: [],

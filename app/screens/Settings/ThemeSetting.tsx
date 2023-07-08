@@ -1,59 +1,59 @@
 import { StyleSheet, Dimensions, View } from "react-native";
 import React from "react";
-import { ALL_THEMES } from "../../data";
+import { ALL_THEMES, DEFAULT_THEMES } from "../../data";
 import ThemeObject from "../../components/ThemeObject";
-import { useSettings } from "../../providers/SettingsProvider";
 import { FlashList } from "@shopify/flash-list";
 import { SegmentedButtons, Text } from "react-native-paper";
+import { useCustomTheme } from "../../providers/ThemeProvider";
 
 const window = Dimensions.get("window");
 
 const ThemeSetting = () => {
-  const { theme, updateTheme, unlockedThemes, roundness, updateRoundness } = useSettings();
-
+  const { changeTheme, theme, changeRoundness } = useCustomTheme();
   return (
     <View style={{ flex: 1 }}>
       <View style={{ padding: 8 }}>
         <Text>Roundness</Text>
         <SegmentedButtons
-          value={roundness.toString()}
-          onValueChange={(v: string) => updateRoundness(parseInt(v))}
+          value={theme.roundness.toString()}
+          onValueChange={(v: string) => changeRoundness(parseInt(v))}
           density="small"
           buttons={[
             {
               value: "0",
-              disabled: roundness === -1,
+              disabled: theme.roundness === -1,
               label: "0",
             },
             {
               value: "2",
               label: "1",
-              disabled: roundness === -1,
+              disabled: theme.roundness === -1,
             },
 
             {
               value: "4",
               label: "2",
-              disabled: roundness === -1,
+              disabled: theme.roundness === -1,
             },
             {
               value: "6",
               label: "3",
-              disabled: roundness === -1,
+              disabled: theme.roundness === -1,
             },
           ]}
         />
       </View>
       <FlashList
         horizontal={true}
-        data={ALL_THEMES}
+        data={ALL_THEMES.filter((theme) => DEFAULT_THEMES.includes(theme.id))}
         renderItem={({ item }) => (
           <ThemeObject
             key={item.id}
             theme={item}
-            selected={theme === item.id}
-            onSelect={() => updateTheme(item.id)}
-            isUnlocked={unlockedThemes.includes(item.id)}
+            selected={item.id === theme.id}
+            onSelect={() => changeTheme(item.id)}
+            // isUnlocked={unlockedThemes.includes(item.id)}
+            isUnlocked={true}
             imageSize={{
               height: window.height - 190,
               width: window.width - window.width / 8 - 16,
