@@ -139,9 +139,10 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
     <ModalContainer
       title={t("title")}
       visible={visible}
-      showDelete={Boolean(item)}
       onDismiss={onDismiss}
-      onDelete={() => deleteCategory(item)}
+      showRightActionButton={Boolean(item)}
+      rightActionIcon="trash-outline"
+      rightActionOnPress={() => deleteCategory(item)}
       barColor={theme.colors.cardToneBackground}
     >
       <View style={[{ backgroundColor: theme.colors.cardToneBackground, padding: 8 }]}>

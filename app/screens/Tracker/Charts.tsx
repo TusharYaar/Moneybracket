@@ -15,24 +15,11 @@ import { useTranslation } from "react-i18next";
 import NoChartSVG from "../../components/SVGs/NoChartSVG";
 
 const Charts = () => {
-  const { transaction, category, dateFilter } = useData();
-  const [selected, setSelected] = useState([]);
+  const { transaction, category, dateFilter, selectedCategories } = useData();
   const {
     theme: { roundness, colors },
   } = useCustomTheme();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setSelected(category.map((cat) => cat._id.toHexString()));
-  }, [category]);
-
-  const updateSelectedCategory = useCallback((cat: Category) => {
-    let id = cat._id.toHexString();
-    setSelected((prev) => {
-      if (prev.includes(id)) return prev.filter((_cat) => _cat !== id);
-      else return [...prev, id];
-    });
-  }, []);
 
   const aggregatedValues = useMemo(() => {
     let obj: {
@@ -51,10 +38,10 @@ const Charts = () => {
   }, [transaction, category, dateFilter]);
 
   const pieData = useMemo(() => {
-    if (transaction.length === 0 || category.length === 0 || selected.length === 0) return [];
+    if (transaction.length === 0 || category.length === 0 || selectedCategories.length === 0) return [];
 
     return category
-      .filter((cat) => selected.includes(cat._id.toHexString()))
+      .filter((cat) => selectedCategories.includes(cat._id.toHexString()))
       .map((cat) => ({
         _id: cat._id.toHexString(),
         name: cat.title,
@@ -64,54 +51,31 @@ const Charts = () => {
         color: cat.color,
         amount: aggregatedValues[cat._id.toHexString()],
       }));
-  }, [transaction, category, selected, aggregatedValues]);
+  }, [transaction, category, selectedCategories, aggregatedValues]);
   return (
-    <>
-      <List.Section style={{ padding: 0, margin: 0 }}>
-        <List.Accordion
-          title={t("screens.tracker.charts.categorySelected", { count: selected.length })}
-          style={{ padding: 0, margin: 0 }}
-          right={({ isExpanded }) => (
-            <Icon name={isExpanded ? "chevron-up" : "chevron-down"} size={20} color={colors.text} />
-          )}
-        >
-          <View style={styles.chipContainer}>
-            {category.map((cat) => (
-              <CategoryChip
-                category={cat}
-                key={cat._id.toHexString()}
-                onPress={updateSelectedCategory}
-                selected={selected.includes(cat._id.toHexString())}
-                style={styles.chip}
-              />
-            ))}
-          </View>
-        </List.Accordion>
-      </List.Section>
-      <ScrollView contentContainerStyle={styles.scrollview}>
-        {(selected.length === 0 || category.length === 0 || transaction.length === 0) && (
-          <NoChartSVG message="No data to display" />
-        )}
-        {
-          <Pie
-            data={pieData.filter((cat) => cat.type === "expense").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
-            title={t("screens.tracker.charts.expensePieChart")}
-          />
-        }
+    <ScrollView contentContainerStyle={styles.scrollview}>
+      {(selectedCategories.length === 0 || category.length === 0 || transaction.length === 0) && (
+        <NoChartSVG message="No data to display" />
+      )}
+      {
         <Pie
-          data={pieData.filter((cat) => cat.type === "income").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
-          title={t("screens.tracker.charts.incomePieChart")}
+          data={pieData.filter((cat) => cat.type === "expense").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
+          title={t("screens.tracker.charts.expensePieChart")}
         />
-        <Pie
-          data={pieData.filter((cat) => cat.type === "transfer").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
-          title={t("screens.tracker.charts.transferPieChart")}
-        />
+      }
+      <Pie
+        data={pieData.filter((cat) => cat.type === "income").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
+        title={t("screens.tracker.charts.incomePieChart")}
+      />
+      <Pie
+        data={pieData.filter((cat) => cat.type === "transfer").sort((a, b) => (a.amount > b.amount ? -1 : 1))}
+        title={t("screens.tracker.charts.transferPieChart")}
+      />
 
-        {pieData.map((cat) => (
-          <CategoryChartsItem key={cat._id} {...cat} style={[styles.category, { borderRadius: roundness * 4 }]} />
-        ))}
-      </ScrollView>
-    </>
+      {pieData.map((cat) => (
+        <CategoryChartsItem key={cat._id} {...cat} style={[styles.category, { borderRadius: roundness * 4 }]} />
+      ))}
+    </ScrollView>
   );
 };
 

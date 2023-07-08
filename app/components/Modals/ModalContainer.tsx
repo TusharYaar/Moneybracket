@@ -8,20 +8,27 @@ type Props = {
   onDismiss: () => void;
   title: string;
   visible: boolean;
-  showDelete?: boolean;
-  onDelete?: () => void;
+  showRightActionButton?: boolean;
+  // showDelete?: boolean;
+  rightActionIcon?: string;
+  rightActionOnPress?: () => void;
+  // onDelete?: () => void;
+
   barColor?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
 };
 
 const ModalContainer = ({
   children,
-  showDelete,
   title,
   visible,
   onDismiss,
-  onDelete,
   barColor,
+  showRightActionButton,
+  // deleteIcon = "trash-outline",
+  rightActionIcon = "trash-outline",
+  // onDelete,
+  rightActionOnPress,
   contentContainerStyle,
 }: Props) => {
   const { theme } = useCustomTheme();
@@ -58,11 +65,11 @@ const ModalContainer = ({
           <Text variant="titleMedium" style={{ color: theme.colors.onSurface }}>
             {title}
           </Text>
-          {showDelete && (
+          {showRightActionButton && (
             <IconButton
-              icon="trash-outline"
+              icon={rightActionIcon}
               style={[styles.trashBtn, { borderRadius: theme.roundness * 4 }]}
-              onPress={onDelete}
+              onPress={rightActionOnPress}
             />
           )}
         </View>

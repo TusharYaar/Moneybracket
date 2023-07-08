@@ -135,8 +135,9 @@ const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
       <ModalContainer
         visible={visible}
         title={t("title")}
-        onDelete={() => setShowDelete(true)}
-        showDelete={Boolean(item)}
+        showRightActionButton={Boolean(item)}
+        rightActionIcon="trash-outline"
+        rightActionOnPress={() => setShowDelete(true)}
         barColor={theme.colors.cardToneBackground}
         onDismiss={onDismiss}
       >

@@ -235,8 +235,9 @@ const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
       <ModalContainer
         visible={visible}
         title={t("title")}
-        onDelete={() => setShowDelete(true)}
-        showDelete={Boolean(item)}
+        rightActionOnPress={() => setShowDelete(true)}
+        rightActionIcon="trash-outline"
+        showRightActionButton={Boolean(item)}
         barColor={theme.colors.cardToneBackground}
         onDismiss={onDismiss}
       >

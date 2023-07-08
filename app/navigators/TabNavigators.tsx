@@ -1,14 +1,14 @@
 import React from "react";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { createMaterialTopTabNavigator, MaterialTopTabBar } from "@react-navigation/material-top-tabs";
 import AllTransaction from "../screens/Tracker/AllTransaction";
 import TrackerCharts from "../screens/Tracker/Charts";
 import CategoryCharts from "../screens/Category/Charts";
 import AllCategory from "../screens/Category/AllCategory";
-import { FAB } from "react-native-paper";
+import { FAB, IconButton } from "react-native-paper";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { StackParamList } from "./StackNavigators";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useData } from "../providers/DataProvider";
 import { useCustomTheme } from "../providers/ThemeProvider";
 
@@ -22,13 +22,15 @@ export type TabParamList = {
   CategoryChartScreen: undefined;
   AllAccountScreen: undefined;
   AccountChartScreen: undefined;
+  FilterBtn: undefined;
 };
 const Tab = createMaterialTopTabNavigator<TabParamList>();
 
 type TrackerTabProps = NativeStackScreenProps<StackParamList, "TrackerTab">;
 
 export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
-  const { showAddTransactionModal, showDateFilterModal } = useData();
+  const { showAddTransactionModal, showDateFilterModal, showCategoryFilterModal, selectedCategories, category } =
+    useData();
   const { theme } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.tab" });
   return (
@@ -38,6 +40,18 @@ export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
         screenOptions={{
           tabBarLabelStyle: theme.fonts.titleSmall,
         }}
+        tabBar={(props) => (
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "90%" }}>
+              <MaterialTopTabBar {...props} />
+            </View>
+            <IconButton
+              icon={category.length === selectedCategories.length ? "funnel-outline" : "funnel"}
+              onPress={showCategoryFilterModal}
+              style={{ borderRadius: theme.roundness * 4 }}
+            />
+          </View>
+        )}
       >
         <Tab.Screen name="AllTransactionScreen" options={{ title: t("allTransaction") }}>
           {(props) => (

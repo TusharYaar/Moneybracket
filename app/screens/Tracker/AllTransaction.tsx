@@ -29,21 +29,29 @@ const AllTransaction = ({ stackNavigation }: Props) => {
       ),
     });
   }, []);
-  const { transaction, showAddTransactionModal, dateFilter } = useData();
+  const { transaction, showAddTransactionModal, dateFilter, selectedCategories } = useData();
   const { t } = useTranslation("", {
     keyPrefix: "screens.tracker.allTransaction",
   });
 
+  const _transaction = useMemo(
+    () => transaction.filter((tran) => selectedCategories.includes(tran.category._id.toHexString())),
+    [transaction, selectedCategories]
+  );
+
   const grouped = useMemo(() => {
-    if (dateFilter.type !== "all") return groupTransactionByDate(transaction, dateFilter.startDate, dateFilter.endDate);
-    return groupTransactionByDate(transaction);
-  }, [transaction, dateFilter]);
+    if (dateFilter.type !== "all")
+      return groupTransactionByDate(_transaction, dateFilter.startDate, dateFilter.endDate);
+    return groupTransactionByDate(_transaction);
+  }, [_transaction, dateFilter, selectedCategories]);
 
   const handlePressTransaction = (transaction: Transaction) => {
     showAddTransactionModal(transaction);
   };
 
-  const values = useMemo(() => calcuateTotal(transaction), [transaction]);
+  const values = useMemo(() => {
+    return calcuateTotal(_transaction);
+  }, [_transaction]);
 
   if (transaction.length === 0) return <NoDataSVG message={t("noTransaction")} />;
 

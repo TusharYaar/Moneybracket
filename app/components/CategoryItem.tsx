@@ -10,18 +10,21 @@ type Props = {
   item: Category;
   onPress: (item: Category) => void;
   style?: ViewStyle;
+  itemColor?: string;
 };
 
-const CategoryItem = ({ item, onPress, style }: Props) => {
+const CategoryItem = ({ item, onPress, style, itemColor }: Props) => {
   const {
     theme: { roundness },
   } = useCustomTheme();
 
+  const categoryColor = itemColor ? itemColor : item.color;
+
   return (
-    <View style={[styles.overflowContainer, { borderColor: item.color, borderRadius: roundness * 4 }, style]}>
+    <View style={[styles.overflowContainer, { borderColor: categoryColor, borderRadius: roundness * 4 }, style]}>
       <TouchableRipple style={styles.container} onPress={() => onPress(item)}>
         <View style={styles.innerContainer}>
-          <View style={[styles.iconContainer, { backgroundColor: item.color }]}>
+          <View style={[styles.iconContainer, { backgroundColor: categoryColor }]}>
             <Icon name={item.icon} size={40} />
           </View>
           <View style={[styles.content]}>

@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useMemo, useState, useCallback } from "react";
+import React, { useContext, createContext, useMemo, useState, useCallback, useEffect } from "react";
 import { Category } from "../realm/Category";
 import { Transaction } from "../realm/Transaction";
 
@@ -6,17 +6,20 @@ import { useQuery } from "../realm/index";
 import AddCategory from "../components/Modals/AddCategory";
 import AddTransaction from "../components/Modals/AddTransaction";
 import DateFilterModal from "../components/Modals/DateFilterModal";
+import CategoryFilterModal from "../components/Modals/CategoryFilterModal";
 type Props = {
   dateFilter: {
     type: string;
     startDate: Date;
     endDate: Date;
   };
+  selectedCategories: string[];
   category: Realm.Results<Category & Realm.Object<unknown>>;
   transaction: Realm.Results<Transaction>;
   showAddCategoryModal: (item?: Category) => void;
   showAddTransactionModal: (item?: Transaction) => void;
   showDateFilterModal: () => void;
+  showCategoryFilterModal: () => void;
   updateDateFilter: (type: string, start: Date, end: Date) => void;
 };
 
@@ -26,11 +29,13 @@ const DataContext = createContext<Props>({
     startDate: new Date(),
     endDate: new Date(),
   },
+  selectedCategories: [],
   category: [] as unknown as Realm.Results<Category>,
   transaction: [] as unknown as Realm.Results<Transaction>,
   showAddCategoryModal: () => {},
   showAddTransactionModal: () => {},
   showDateFilterModal: () => {},
+  showCategoryFilterModal: () => {},
   updateDateFilter: () => {},
 });
 
@@ -43,8 +48,14 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     endDate: new Date(),
   });
 
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const _category = useQuery(Category);
   const category = useMemo(() => _category.sorted("title"), [_category]);
+
+  useEffect(() => {
+    setSelectedCategories(category.map((cat) => cat._id.toHexString()));
+  }, [category]);
 
   const _transaction = useQuery(Transaction);
   const transaction = useMemo(() => {
@@ -68,6 +79,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   });
 
   const [dateModalVisible, setDateModalVisible] = useState(false);
+  const [categoryFilterModalVisible, setCategoryFilterModalVisible] = useState(false);
 
   const showAddCategoryModal = useCallback((item?: Category) => {
     if (item) setAddCategory({ item, visible: true });
@@ -94,6 +106,13 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     setDateModalVisible(false);
   }, []);
 
+  const showCategoryFilterModal = useCallback(() => {
+    setCategoryFilterModalVisible(true);
+  }, []);
+  const dismissCategoryFilterModal = useCallback(() => {
+    setCategoryFilterModalVisible(false);
+  }, []);
+
   const updateDateFilter = useCallback((type: string, start: Date, end: Date) => {
     setDateFilter({
       type,
@@ -107,10 +126,12 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       value={{
         dateFilter,
         category,
+        selectedCategories,
         transaction,
         showAddCategoryModal,
         showAddTransactionModal,
         showDateFilterModal,
+        showCategoryFilterModal,
         updateDateFilter,
       }}
     >
@@ -126,6 +147,13 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
         onDismiss={dismissDateFilterModal}
         updateDateFilter={updateDateFilter}
         filter={dateFilter}
+      />
+      <CategoryFilterModal
+        visible={categoryFilterModalVisible}
+        onDismiss={dismissCategoryFilterModal}
+        selectedCategory={selectedCategories}
+        onSelectedCategoryUpdate={(items) => setSelectedCategories(items)}
+        category={category}
       />
       {children}
     </DataContext.Provider>

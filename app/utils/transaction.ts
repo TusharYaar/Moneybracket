@@ -10,7 +10,7 @@ export const transactionWithinDates = (date: Date, start: Date, end: Date) => {
 };
 
 export const groupTransactionByDate = (
-  transactions: Results<Transaction>,
+  transactions: Transaction[],
   start?: Date,
   end?: Date
 ): GroupedTransactions[] => {
@@ -43,7 +43,7 @@ export const groupTransactionByDate = (
   }, [] as GroupedTransactions[]);
 };
 
-export const calcuateTotal = (transactions: Results<Transaction>) => {
+export const calcuateTotal = (transactions: Transaction[]) => {
   let calculated = {
     allTime: {
       income: 0,
