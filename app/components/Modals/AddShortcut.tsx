@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import React, { useState, useCallback, useEffect } from "react";
 import { TextInput, IconButton, Text } from "react-native-paper";
 
@@ -17,6 +17,7 @@ import { useExchangeRate } from "../../providers/ExchangeRatesProvider";
 import Amount from "../Amount";
 import DeleteDialog from "../DeleteDialog";
 import { Shortcut } from "../../realm/Shortcut";
+import { FlatList } from "react-native";
 
 type Props = {
   visible: boolean;
@@ -31,6 +32,15 @@ type ValueProps = {
   note: string;
   currency: string;
 };
+
+const IMAGES = [
+  { src: require("../../assets/shortcuts/yellow.png"), value: "yellow" },
+  { src: require("../../assets/shortcuts/black.png"), value: "black" },
+  { src: require("../../assets/shortcuts/red.png"), value: "red" },
+  { src: require("../../assets/shortcuts/green.png"), value: "green" },
+  { src: require("../../assets/shortcuts/blue.png"), value: "blue" },
+];
+
 const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
   const { t } = useTranslation("", { keyPrefix: "components.addShortcut" });
   const { currency: defaultCurrency } = useSettings();
@@ -191,6 +201,16 @@ const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
           {!values.category && <Text>Please Add A category</Text>}
           {values.category && <CategoryItem item={values.category} onPress={() => setViewModal("category")} />}
         </View>
+
+        <FlatList
+          horizontal={true}
+          data={IMAGES}
+          renderItem={({ item }) => {
+            return <Image source={item.src} key={item.value} style={styles.image} />;
+          }}
+          contentContainerStyle={styles.colors}
+        />
+
         <View style={{ padding: 8 }}>
           <Text variant="labelLarge" style={{ marginBottom: 0 }}>
             {`${t("note")} (${t("optional")})`}
@@ -228,5 +248,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     top: 0,
+  },
+  colors: {
+    paddingBottom: 8,
+    paddingHorizontal: 5,
+  },
+  image: {
+    width: 40,
+    height: 40,
+    marginHorizontal: 5,
   },
 });

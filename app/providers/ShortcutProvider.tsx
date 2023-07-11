@@ -45,6 +45,36 @@ const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[]
 
   useEffect(() => {
     QuickActions.clearShortcutItems();
+    if (__DEV__) {
+      QuickActions.setShortcutItems([
+        {
+          type: "transaction",
+          title: `Testing`,
+          icon: `yellow`, // Icons instructions below
+          userInfo: {
+            url: "TEst",
+          },
+        },
+        {
+          type: "transaction",
+          title: `Testing`,
+          icon: `trophy`, // Icons instructions below
+          userInfo: {
+            url: "TEst",
+          },
+        },
+        {
+          type: "transaction",
+          title: `Testing`,
+          icon: `one`, // Icons instructions below
+          userInfo: {
+            url: "TEst",
+          },
+        },
+      ]);
+      console.log("done");
+    }
+
     if (_shortcut.length > 0) {
       QuickActions.setShortcutItems(
         _shortcut.map((action, index) => ({

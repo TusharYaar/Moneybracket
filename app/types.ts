@@ -67,16 +67,14 @@ export type BackupFile = {
     [key: string]: string;
   };
   category: {
-    _id: string;
     title: string;
-    type: string;
+    type: "income" | "expense" | "transfer";
     isFavorite: boolean;
     createdAt: string;
     color: string;
     icon: string;
   }[];
   transaction: {
-    _id: string;
     note: string;
     date: string;
     amount: number;

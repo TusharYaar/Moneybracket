@@ -12,6 +12,7 @@
     "tracker": "tracker",
     "cancel": "No, Cancel",
     "delete": "Yes, Delete",
+    "loading": "Loading",
     "components": {
         "addCategory": {
             "title": "Add A Category",
@@ -92,7 +93,15 @@
             }
         },
         "settings": {
-            "backup": {},
+            "backup": {
+                "backup": "Backup",
+                "restore": "Restore",
+                "loading": "Loading",
+                "restoring_backup": "Restoring items from selected file",
+                "backup_text": "You can backup your data to a file and restore it later. Backup only backs up your category and transactions. Images are not included",
+                "restore_text": "You can restore categories and transcations from a backup file.",
+                "text_1": "You can create backup to safeguard your data, or transfer to/from another device."
+            },
             "export": {
                 "export": "Export",
                 "exportAs": "Export As",
@@ -111,7 +120,7 @@
                 "dateFormat": "Date Format",
                 "deleteAllData": "Delete All Data",
                 "export": "Export",
-                "backup": "Backup",
+                "backup": "Backup & Restore",
                 "lock": "Enable App Lock",
                 "confirmDeleteBody": "Are you sure you want to delete all data. This includes all Transction data and Categories.",
                 "confirmDeleteTitle": "Delete All Data?"

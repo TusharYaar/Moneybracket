@@ -7,13 +7,19 @@ import AddCategory from "../components/Modals/AddCategory";
 import AddTransaction from "../components/Modals/AddTransaction";
 import DateFilterModal from "../components/Modals/DateFilterModal";
 import CategoryFilterModal from "../components/Modals/CategoryFilterModal";
+import { BackupFile } from "../types";
+
+type AddNewCategory_function =
+  | Pick<Category, "title" | "type" | "color" | "icon" | "createdAt" | "isFavorite">
+  | Required<Pick<Category, "title" | "type" | "color" | "icon">>;
+
 type Props = {
   dateFilter: {
     type: string;
     startDate: Date;
     endDate: Date;
   };
-  selectedCategories: string[];
+  selectedCategory: string[];
   category: Realm.Results<Category & Realm.Object<unknown>>;
   transaction: Realm.Results<Transaction>;
   showAddCategoryModal: (item?: Category) => void;
@@ -30,7 +36,7 @@ const DataContext = createContext<Props>({
     startDate: new Date(),
     endDate: new Date(),
   },
-  selectedCategories: [],
+  selectedCategory: [],
   category: [] as unknown as Realm.Results<Category>,
   transaction: [] as unknown as Realm.Results<Transaction>,
   showAddCategoryModal: () => {},
@@ -50,7 +56,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     endDate: new Date(),
   });
 
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
 
   const realm = useRealm();
 
@@ -58,8 +64,8 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   const category = useMemo(() => _category.sorted("title"), [_category]);
 
   useEffect(() => {
-    setSelectedCategories(category.map((cat) => cat._id.toHexString()));
-  }, [category]);
+    setSelectedCategory(_category.map((cat) => cat._id.toHexString()));
+  }, [_category]);
 
   const _transaction = useQuery(Transaction);
   const transaction = useMemo(() => {
@@ -117,6 +123,11 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     setCategoryFilterModalVisible(false);
   }, []);
 
+  const updateCategoryFilter = useCallback((items: string[]) => {
+    dismissCategoryFilterModal();
+    setSelectedCategory(items);
+  }, []);
+
   const updateDateFilter = useCallback((type: string, start: Date, end: Date) => {
     setDateFilter({
       type,
@@ -136,7 +147,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       value={{
         dateFilter,
         category,
-        selectedCategories,
+        selectedCategory,
         transaction,
         showAddCategoryModal,
         showAddTransactionModal,
@@ -162,8 +173,8 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       <CategoryFilterModal
         visible={categoryFilterModalVisible}
         onDismiss={dismissCategoryFilterModal}
-        selectedCategory={selectedCategories}
-        onSelectedCategoryUpdate={(items) => setSelectedCategories(items)}
+        selectedCategory={selectedCategory}
+        onSelectedCategoryUpdate={(items) => updateCategoryFilter(items)}
         category={category}
       />
       {children}

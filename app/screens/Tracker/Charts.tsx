@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import NoChartSVG from "../../components/SVGs/NoChartSVG";
 
 const Charts = () => {
-  const { transaction, category, dateFilter, selectedCategories } = useData();
+  const { transaction, category, dateFilter, selectedCategory } = useData();
   const {
     theme: { roundness, colors },
   } = useCustomTheme();
@@ -33,10 +33,10 @@ const Charts = () => {
   }, [transaction, category, dateFilter]);
 
   const pieData = useMemo(() => {
-    if (transaction.length === 0 || category.length === 0 || selectedCategories.length === 0) return [];
+    if (transaction.length === 0 || category.length === 0 || selectedCategory.length === 0) return [];
 
     return category
-      .filter((cat) => selectedCategories.includes(cat._id.toHexString()))
+      .filter((cat) => selectedCategory.includes(cat._id.toHexString()))
       .map((cat) => ({
         _id: cat._id.toHexString(),
         name: cat.title,
@@ -46,10 +46,10 @@ const Charts = () => {
         color: cat.color,
         amount: aggregatedValues[cat._id.toHexString()],
       }));
-  }, [transaction, category, selectedCategories, aggregatedValues]);
+  }, [transaction, category, selectedCategory, aggregatedValues]);
   return (
     <ScrollView contentContainerStyle={styles.scrollview}>
-      {(selectedCategories.length === 0 || category.length === 0 || transaction.length === 0) && (
+      {(selectedCategory.length === 0 || category.length === 0 || transaction.length === 0) && (
         <NoChartSVG message="No data to display" />
       )}
       {

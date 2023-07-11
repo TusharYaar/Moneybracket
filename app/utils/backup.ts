@@ -9,11 +9,21 @@ export const generateBackupFile = (
   transaction: Realm.Results<Transaction>,
   settings: any
 ) => {
-  const bcategory = category.map((cat) => cat.toJSON()) as BackupFile["category"];
+  const bcategory = category.map((cat) => ({
+    title: cat.title,
+    type: cat.type,
+    color: cat.color,
+    icon: cat.icon,
+  })) as BackupFile["category"];
   //   TODO: ADD SUPPORT FOR IMAGE
   const btrans = transaction.map((tran) => ({
-    ...tran.toJSON(),
-    category: JSON.stringify(tran.category._id) as string,
+    amount: tran.amount,
+    currency: tran.currency,
+    date: tran.date.toUTCString(),
+    createdAt: tran.createdAt.toString(),
+    note: tran.note,
+    category: tran.category.title,
+    isFavorite: tran.isFavorite,
     image: "",
   }));
 
@@ -33,13 +43,75 @@ export const generateBackupFile = (
 export const readBackupFile = async (file: string) => {
   const data = JSON.parse(file) as BackupFile;
   if (data && data?.app === "com.tusharyaar.moneybracket") {
-    const categories = data.category.map((cat) => ({ ...cat, _id: new Realm.BSON.ObjectId(cat._id) }));
-    const transactions = data.transaction.map((tran) => {
-      return { ...tran, _id: new Realm.BSON.ObjectId(tran._id) };
-    });
-    return {
-      categories,
-      transactions,
-    };
-  } else throw new Error("Wrong Backup File");
+    const categories = data.category;
+    const transactions = data.transaction;
+
+    if (Array.isArray(categories) && Array.isArray(transactions)) {
+      let validCategories: BackupFile["category"] = [];
+      let invalidCategories = [];
+
+      let validTransactions: BackupFile["transaction"] = [];
+      let invalidTransactions = [];
+
+      categories.forEach((category) => {
+        const isValid = validateCategory(category);
+        if (isValid) {
+          const _category = category as BackupFile["category"][0];
+          validCategories.push(_category);
+        } else invalidCategories.push(category);
+      });
+
+      const titles = validCategories.map((cat) => cat.title);
+
+      transactions.forEach((trans) => {
+        const isValid = validateTransactions(trans, titles);
+
+        if (isValid) {
+          const _trans = trans as BackupFile["transaction"][0];
+          validTransactions.push(_trans);
+        } else invalidTransactions.push(trans);
+      });
+
+      return {
+        validCategories,
+        invalidCategories: invalidCategories.length,
+        validTransactions,
+        invalidTransactions: invalidTransactions.length,
+      };
+    }
+  }
+  throw new Error("Wrong Backup File");
+};
+
+const validateCategory = (category: any) => {
+  const requiredProperties: (keyof BackupFile["category"][0])[] = [
+    "title",
+    "color",
+    "icon",
+    "type",
+    "isFavorite",
+    "createdAt",
+  ];
+
+  requiredProperties.forEach((property) => {
+    if (category[property] === undefined || category[property] === null) return false;
+  });
+  return true;
+};
+
+const validateTransactions = (transaction: any, categoryTitles: string[]) => {
+  const requiredProperties: (keyof BackupFile["transaction"][0])[] = [
+    "category",
+    "amount",
+    "currency",
+    "date",
+    "note",
+    "isFavorite",
+    "createdAt",
+    "image",
+  ];
+  requiredProperties.forEach((property) => {
+    if (transaction[property] === undefined || transaction[property] === null) return false;
+  });
+  if (categoryTitles.includes(transaction?.category)) return true;
 };

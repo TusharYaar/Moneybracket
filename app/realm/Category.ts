@@ -1,4 +1,4 @@
-import {Realm} from "@realm/react";
+import { Realm } from "@realm/react";
 export class Category extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   title!: string;
@@ -6,14 +6,23 @@ export class Category extends Realm.Object {
   createdAt!: string;
   color!: string;
   icon!: string;
-  static generate(title: string, type: string, color: string, icon: string) {
+  isFavorite!: boolean;
+  static generate(
+    title: string,
+    type: string,
+    color: string,
+    icon: string,
+    isFavorite = false,
+    createdAt = new Date().toUTCString()
+  ) {
     return {
       _id: new Realm.BSON.ObjectId(),
       title,
-      createdAt: new Date().toUTCString(),
+      createdAt,
       type,
       color,
       icon,
+      isFavorite,
     };
   }
 
@@ -25,7 +34,7 @@ export class Category extends Realm.Object {
       _id: "objectId",
       title: "string",
       type: "string",
-      isFavorite: {type: "bool", default: false},
+      isFavorite: { type: "bool", default: false },
       createdAt: "string",
       color: "string",
       icon: "string",

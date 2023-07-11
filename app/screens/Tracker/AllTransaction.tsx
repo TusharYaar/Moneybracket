@@ -30,21 +30,21 @@ const AllTransaction = ({ stackNavigation }: Props) => {
         ),
       });
   }, []);
-  const { transaction, showAddTransactionModal, dateFilter, selectedCategories } = useData();
+  const { transaction, showAddTransactionModal, dateFilter, selectedCategory } = useData();
   const { t } = useTranslation("", {
     keyPrefix: "screens.tracker.allTransaction",
   });
 
   const _transaction = useMemo(
-    () => transaction.filter((tran) => selectedCategories.includes(tran.category._id.toHexString())),
-    [transaction, selectedCategories]
+    () => transaction.filter((tran) => selectedCategory.includes(tran.category._id.toHexString())),
+    [transaction, selectedCategory]
   );
 
   const grouped = useMemo(() => {
     if (dateFilter.type !== "all")
       return groupTransactionByDate(_transaction, dateFilter.startDate, dateFilter.endDate);
     return groupTransactionByDate(_transaction);
-  }, [_transaction, dateFilter, selectedCategories]);
+  }, [_transaction, dateFilter]);
 
   const handlePressTransaction = (transaction: Transaction) => {
     showAddTransactionModal(transaction);

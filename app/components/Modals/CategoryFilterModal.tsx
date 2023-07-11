@@ -1,5 +1,5 @@
 import { StyleSheet, ScrollView } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import CategoryItem from "../CategoryItem";
 import { Category } from "../../realm/Category";
@@ -8,6 +8,7 @@ import { useCustomTheme } from "../../providers/ThemeProvider";
 import ModalContainer from "./ModalContainer";
 
 type Props = {
+  title?: string;
   visible: boolean;
   onDismiss: () => void;
   selectedCategory: string[];
@@ -15,9 +16,20 @@ type Props = {
   category: Realm.Results<Category>;
 };
 
-const CategoryFilterModal = ({ visible, onDismiss, category, selectedCategory, onSelectedCategoryUpdate }: Props) => {
-  const [selected, setSelected] = useState(selectedCategory);
+const CategoryFilterModal = ({
+  title = "Choose Category",
+  visible,
+  onDismiss,
+  category,
+  selectedCategory,
+  onSelectedCategoryUpdate,
+}: Props) => {
+  const [selected, setSelected] = useState([]);
   const { theme } = useCustomTheme();
+
+  useEffect(() => {
+    setSelected(selectedCategory);
+  }, [selectedCategory]);
 
   const updateSelected = useCallback((id: string) => {
     setSelected((prev) => (prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]));
@@ -26,15 +38,12 @@ const CategoryFilterModal = ({ visible, onDismiss, category, selectedCategory, o
   return (
     <ModalContainer
       visible={visible}
-      title="Choose Category"
+      title={title}
       onDismiss={onDismiss}
       contentContainerStyle={{ flex: 1, height: 500 }}
       showRightActionButton={true}
       rightActionIcon="checkmark"
-      rightActionOnPress={() => {
-        onSelectedCategoryUpdate(selected);
-        onDismiss();
-      }}
+      rightActionOnPress={() => onSelectedCategoryUpdate(selected)}
     >
       <ScrollView>
         {category.map((item) => (

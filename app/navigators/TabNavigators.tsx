@@ -29,7 +29,7 @@ const Tab = createMaterialTopTabNavigator<TabParamList>();
 type TrackerTabProps = NativeStackScreenProps<StackParamList, "TrackerTab">;
 
 export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
-  const { showAddTransactionModal, showDateFilterModal, showCategoryFilterModal, selectedCategories, category } =
+  const { showAddTransactionModal, showDateFilterModal, showCategoryFilterModal, selectedCategory, category } =
     useData();
   const { theme } = useCustomTheme();
   const { t } = useTranslation("", { keyPrefix: "navigator.tab" });
@@ -46,7 +46,7 @@ export const TrackerTabNavigator = ({ navigation }: TrackerTabProps) => {
               <MaterialTopTabBar {...props} />
             </View>
             <IconButton
-              icon={category.length === selectedCategories.length ? "funnel-outline" : "funnel"}
+              icon={category.length === selectedCategory.length ? "funnel-outline" : "funnel"}
               onPress={showCategoryFilterModal}
               style={{ borderRadius: theme.roundness * 4 }}
             />

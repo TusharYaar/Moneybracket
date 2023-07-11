@@ -18,14 +18,15 @@ export class Transaction extends Realm.Object {
     note: string,
     category: Category,
     isFavorite = false,
-    image = ""
+    image = "",
+    createdAt = new Date().toUTCString()
   ) {
     return {
       _id: new Realm.BSON.ObjectId(),
       note,
       amount,
       date: date,
-      createdAt: new Date().toUTCString(),
+      createdAt,
       category,
       currency,
       image,

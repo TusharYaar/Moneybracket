@@ -24,6 +24,11 @@
       "ios": {
         "resourceClass": "m1-medium"
       }
+    },
+    "productionAPK": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
     }
   },
   "submit": {
