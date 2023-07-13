@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useState, useCallback, useEffect } from "react";
 import { TextInput, IconButton, Text } from "react-native-paper";
 
@@ -17,7 +17,6 @@ import { useExchangeRate } from "../../providers/ExchangeRatesProvider";
 import Amount from "../Amount";
 import DeleteDialog from "../DeleteDialog";
 import { Shortcut } from "../../realm/Shortcut";
-import { FlatList } from "react-native";
 
 type Props = {
   visible: boolean;
@@ -27,25 +26,19 @@ type Props = {
 };
 
 type ValueProps = {
+  title: string;
   category: Category | null;
   amount: string;
   note: string;
   currency: string;
 };
 
-const IMAGES = [
-  { src: require("../../assets/shortcuts/yellow.png"), value: "yellow" },
-  { src: require("../../assets/shortcuts/black.png"), value: "black" },
-  { src: require("../../assets/shortcuts/red.png"), value: "red" },
-  { src: require("../../assets/shortcuts/green.png"), value: "green" },
-  { src: require("../../assets/shortcuts/blue.png"), value: "blue" },
-];
-
 const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
   const { t } = useTranslation("", { keyPrefix: "components.addShortcut" });
   const { currency: defaultCurrency } = useSettings();
   const { theme } = useCustomTheme();
   const [values, setValues] = useState<ValueProps>({
+    title: "",
     category: null,
     amount: "0",
     note: "",
@@ -59,10 +52,11 @@ const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
   const realm = useRealm();
 
   const addNewShortcut = useCallback(
-    async ({ amount, note, category }: ValueProps) => {
+    async ({ amount, note, category, title }: ValueProps) => {
       realm.write(() => {
         if (category) {
-          realm.create("Shortcut", Shortcut.generate(parseFloat(amount), "INR", note, category));
+          const icon = `color_${category.color.slice(1).toLowerCase()}`;
+          realm.create("Shortcut", Shortcut.generate(title, parseFloat(amount), "INR", note, category, icon));
         }
         onDismiss();
       });
@@ -76,6 +70,7 @@ const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
         if (cut.amount !== parseFloat(values.amount)) cut.amount = parseFloat(values.amount);
         if (cut.category !== values.category && values.category) cut.category = values.category;
         if (cut.note !== values.note) cut.note = values.note;
+        if (cut.title !== values.title) cut.title = values.title;
         onDismiss();
       });
     },
@@ -85,8 +80,9 @@ const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
   useEffect(() => {
     setViewModal("shortcut");
     if (item) {
-      const { amount, category, note } = item;
+      const { amount, category, note, title } = item;
       setValues({
+        title,
         amount: `${amount}`,
         category: category,
         note: note,
@@ -95,6 +91,7 @@ const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
     } else {
       setValues({
         amount: "100",
+        title: `100${category.length > 0 ? " for " + category[0].title : ""}`,
         category: category.length > 0 ? category[0] : null,
         note: "",
         currency: defaultCurrency.code,
@@ -155,9 +152,21 @@ const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
           style={{
             backgroundColor: theme.colors.cardToneBackground,
             padding: 8,
+            paddingTop: 0,
           }}
         >
-          <Text variant="labelLarge">{t("amount")}</Text>
+          <Text variant="labelLarge" style={[styles.inputLabel, { marginTop: 0 }]}>
+            {t("title")}
+          </Text>
+          <TextInput
+            value={values.title}
+            onChangeText={(text) => setValues((prev) => ({ ...prev, title: text }))}
+            mode="outlined"
+            style={[theme.fonts.bodyLarge, styles.input]}
+          />
+          <Text variant="labelLarge" style={styles.inputLabel}>
+            {t("amount")}
+          </Text>
           <TextInput
             right={<TextInput.Icon onPress={() => setViewModal("currency")} icon="repeat" />}
             left={<TextInput.Affix text={values.currency} />}
@@ -165,7 +174,7 @@ const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
             onChangeText={(text) => setValues((prev) => ({ ...prev, amount: text }))}
             mode="outlined"
             keyboardType="decimal-pad"
-            style={theme.fonts.titleLarge}
+            style={[theme.fonts.titleLarge, styles.input]}
           />
           {values.currency !== defaultCurrency.code ? (
             <Amount
@@ -195,28 +204,20 @@ const AddShortcut = ({ visible, item, onDismiss, category }: Props) => {
             paddingHorizontal: 8,
           }}
         >
-          <Text variant="labelLarge" style={{ marginBottom: 4 }}>
+          <Text variant="labelLarge" style={[styles.inputLabel, { marginTop: 0 }]}>
             {t("category")}
           </Text>
           {!values.category && <Text>Please Add A category</Text>}
           {values.category && <CategoryItem item={values.category} onPress={() => setViewModal("category")} />}
         </View>
 
-        <FlatList
-          horizontal={true}
-          data={IMAGES}
-          renderItem={({ item }) => {
-            return <Image source={item.src} key={item.value} style={styles.image} />;
-          }}
-          contentContainerStyle={styles.colors}
-        />
-
         <View style={{ padding: 8 }}>
-          <Text variant="labelLarge" style={{ marginBottom: 0 }}>
+          <Text variant="labelLarge" style={styles.inputLabel}>
             {`${t("note")} (${t("optional")})`}
           </Text>
           <TextInput
             multiline
+            style={[theme.fonts.bodyLarge, styles.input]}
             mode="outlined"
             value={values.note}
             onChangeText={(text) => setValues((prev) => ({ ...prev, note: text }))}
@@ -257,5 +258,12 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     marginHorizontal: 5,
+  },
+  input: {
+    marginTop: -4,
+  },
+  inputLabel: {
+    marginTop: 8,
+    marginBottom: 4,
   },
 });

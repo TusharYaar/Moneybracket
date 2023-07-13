@@ -7,15 +7,19 @@ export class Shortcut extends Realm.Object {
   note!: string;
   createdAt!: string;
   currency!: string;
+  icon!: string;
+  title!: string;
 
-  static generate(amount: number, currency: string, note: string, category: Category) {
+  static generate(title: string, amount: number, currency: string, note: string, category: Category, icon: string) {
     return {
       _id: new Realm.BSON.ObjectId(),
-      createdAt: new Date().toUTCString(),
-      category,
       amount,
+      category,
+      createdAt: new Date().toUTCString(),
       currency,
+      icon,
       note,
+      title,
     };
   }
 
@@ -30,6 +34,8 @@ export class Shortcut extends Realm.Object {
       amount: "int",
       createdAt: "string",
       currency: "string",
+      icon: "string",
+      title: "string",
     },
   };
 }

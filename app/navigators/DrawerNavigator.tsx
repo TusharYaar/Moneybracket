@@ -49,7 +49,7 @@ const MyDrawer = () => {
       <Drawer.Screen name="TrackerStack" component={TrackerStackNavigator} />
       {__DEV__ && <Drawer.Screen name="RecurringStack" component={RecurringStackNavigator} />}
       <Drawer.Screen name="CategoryStack" component={CategoryStackNavigator} />
-      {__DEV__ && <Drawer.Screen name="ShortcutStack" component={ShortcutStackNavigator} />}
+      <Drawer.Screen name="ShortcutStack" component={ShortcutStackNavigator} />
       <Drawer.Screen name="ExchangeStack" component={ExchangeStackNavigator} />
       <Drawer.Screen name="SettingStack" component={SettingStack} />
       {__DEV__ && <Drawer.Screen name="StoreStack" component={StoreStackNavigator} />}

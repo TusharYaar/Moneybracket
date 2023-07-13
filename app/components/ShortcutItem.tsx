@@ -37,7 +37,8 @@ const ShortcutItem = ({ data, onPress, style }: Props) => {
         />
         <View style={styles.text}>
           <View>
-            <Text variant="bodyLarge">{data.category.title}</Text>
+            <Text variant="titleMedium">{data.title}</Text>
+            <Text variant="labelSmall">{data.category.title}</Text>
             {data.note.length > 0 && <Text variant="bodySmall">{data.note}</Text>}
           </View>
           <Amount
