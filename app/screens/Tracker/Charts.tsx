@@ -12,9 +12,11 @@ import NoChartSVG from "../../components/SVGs/NoChartSVG";
 const Charts = () => {
   const { transaction, category, dateFilter, selectedCategory } = useData();
   const {
-    theme: { roundness, colors },
+    theme: { roundness },
   } = useCustomTheme();
-  const { t } = useTranslation();
+  const { t } = useTranslation("", {
+    keyPrefix: "screens.tracker.charts",
+  });
 
   const aggregatedValues = useMemo(() => {
     let obj: {
@@ -39,7 +41,6 @@ const Charts = () => {
       .filter((cat) => selectedCategory.includes(cat._id.toHexString()))
       .map((cat) => ({
         _id: cat._id.toHexString(),
-        name: cat.title,
         title: cat.title,
         icon: cat.icon,
         type: cat.type as "income" | "expense" | "transfer",
@@ -50,7 +51,7 @@ const Charts = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollview}>
       {(selectedCategory.length === 0 || category.length === 0 || transaction.length === 0) && (
-        <NoChartSVG message="No data to display" />
+        <NoChartSVG message={t("noCharts")} />
       )}
       {
         <Pie

@@ -88,6 +88,7 @@
                 "noTransaction": "No Transactions. Try Changing the period or add a transaction."
             },
             "charts": {
+                "noCharts": "No Charts to display. Try Changing the period or filter or add a new transaction.",
                 "categorySelected": "{{count}} category selected",
                 "categorySelected_plural": "{{count}} categories selected"
             }

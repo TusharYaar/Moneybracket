@@ -54,7 +54,7 @@ const AllTransaction = ({ stackNavigation }: Props) => {
     return calcuateTotal(_transaction);
   }, [_transaction]);
 
-  if (transaction.length === 0) return <NoDataSVG message={t("noTransaction")} />;
+  if (_transaction.length === 0) return <NoDataSVG message={t("noTransaction")} />;
 
   return (
     <>
