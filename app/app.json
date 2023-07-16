@@ -25,7 +25,8 @@
       "versionCode": 5017,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "monochromeImage": "./assets/monochorme-icon.png",
+        "backgroundColor": "#f2f2f2"
       },
       "package": "com.tusharyaar.moneybracket"
     },

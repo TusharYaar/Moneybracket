@@ -9,8 +9,9 @@ import { isLoaded, loadAsync } from "expo-font";
 import { downloadAsync, getInfoAsync, makeDirectoryAsync, readDirectoryAsync } from "expo-file-system";
 // import { useTranslation } from "react-i18next";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
-
+import { useMaterial3Theme } from "@pchmn/expo-material3-theme";
 import type { CustomTheme } from "../types";
+import { Platform } from "react-native";
 
 type Props = {
   font: string;
@@ -22,9 +23,11 @@ type Props = {
   enqueueSnackbar: (message: string) => void;
 };
 
+const defaultTheme = Platform.OS === "android" && Platform.Version >= 31 ? "deviceLight" : "defaultLight";
+
 const ThemeContext = createContext<Props>({
   font: getFromStorageOrDefault(SETTING_KEYS.font, "sansserif", true),
-  theme: ALL_THEMES.find((theme) => theme.id === getFromStorageOrDefault(SETTING_KEYS.theme, "defaultLight", true)),
+  theme: ALL_THEMES.find((theme) => theme.id === getFromStorageOrDefault(SETTING_KEYS.theme, defaultTheme, true)),
   changeTheme: () => {},
   changeRoundness: () => {},
   changeFont: () => {},
@@ -36,25 +39,27 @@ export const useCustomTheme = () => useContext(ThemeContext);
 
 const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   // const { t } = useTranslation("", { keyPrefix: "messages" });
-
-  const [_theme, setTheme] = useState(DEFAULT_THEMES[0]);
+  const { theme: deviceTheme } = useMaterial3Theme();
+  const [_theme, setTheme] = useState<(typeof ALL_THEMES)[number]["id"]>(DEFAULT_THEMES[0]);
   const [font, setFont] = useState(LOCAL_FONTS[0]);
   const [roundness, setRoundness] = useState(parseInt(getFromStorageOrDefault(SETTING_KEYS.roundness, "-1", true)));
   const [snackbars, setSnackbars] = useState<{ message: string; id: number }[]>([]);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const themeObject = useMemo(() => {
     let obj = ALL_THEMES.find((t) => t.id === _theme);
-
     obj.fonts = ALL_FONTS.find((f) => f.id === font).font;
 
-    if (roundness === -1) return obj;
-    else return { ...obj, roundness } as CustomTheme;
-  }, [_theme, font, roundness]);
+    if (_theme === "deviceLight") obj = { ...obj, colors: { ...obj.colors, ...deviceTheme.light } };
+    else if (_theme === "deviceDark") obj = { ...obj, colors: { ...obj.colors, ...deviceTheme.dark } };
 
-  const changeTheme = useCallback((theme: string) => {
+    if (roundness >= 0) obj.roundness = roundness;
+
+    return obj as CustomTheme;
+  }, [_theme, font, roundness, deviceTheme]);
+
+  const changeTheme = useCallback((theme: (typeof ALL_THEMES)[number]["id"]) => {
     try {
       let hasPerm = true;
-      // if (!DEFAULT_THEMES.includes(theme)) hasPerm = (await checkSubscription()).theme;
       if (!hasPerm) {
         console.log("No Permission");
       }
