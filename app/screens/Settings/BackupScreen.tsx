@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { BACKUP_DIRECTORY } from "../../data";
 import { useData } from "../../providers/DataProvider";
@@ -13,14 +13,6 @@ import { BackupFile } from "../../types";
 import { Transaction } from "../../realm/Transaction";
 import Loading from "../../components/Modals/Loading";
 import { useTranslation } from "react-i18next";
-
-// type RestoreValues = {
-//   invalidCategories: number;
-//   invalidTransactions: number;
-//   validCategories: Category[];
-//   validTransactions: BackupFile["transaction"];
-//   viewModal: "category" | "transaction" | null;
-// };
 
 const Backup = () => {
   const realm = useRealm();
@@ -88,11 +80,31 @@ const Backup = () => {
 
   const createBackup = useCallback(async () => {
     try {
+      if (Platform.OS === "android" && Platform.Version >= 30) {
+        const res = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+        if (res.granted) {
+          const location = await FileSystem.StorageAccessFramework.createFileAsync(
+            res.directoryUri,
+            `mbbackup_${new Date()}.json`,
+            "application/json"
+          );
+          const content = generateBackupFile(category, transaction, {});
+          await FileSystem.StorageAccessFramework.writeAsStringAsync(location, JSON.stringify(content, null, 4), {
+            encoding: "utf8",
+          });
+          console.log("Done");
+        } else {
+          console.log("Operation Cancelled");
+        }
+        return;
+      }
+
       const location = `${BACKUP_DIRECTORY}/backup_${new Date()}.json`;
       const content = generateBackupFile(category, transaction, {});
       await FileSystem.writeAsStringAsync(location, JSON.stringify(content, null, 4), {
         encoding: "utf8",
       });
+      console.log(location);
       // TODO: Add a way to share the backup file
       console.log("Done");
     } catch (e) {
@@ -105,8 +117,8 @@ const Backup = () => {
       const file = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: true });
       setLoading(true);
 
-      if (file.type === "success") {
-        let content = await FileSystem.readAsStringAsync(file.uri);
+      if (!file.canceled && file.assets.length > 0) {
+        let content = await FileSystem.readAsStringAsync(file.assets[0].uri);
         const data = await readBackupFile(content);
         const categories = addNewCategories(data.validCategories);
 
