@@ -1,13 +1,13 @@
 import React, { useContext, createContext, useMemo, useState, useCallback, useEffect } from "react";
 import { Transaction } from "../realm/Transaction";
-import QuickActions from "react-native-quick-actions";
+// import * as QuickActions from "expo-quick-actions";
 
 import { useQuery, useRealm } from "../realm/index";
 
 import { Shortcut } from "../realm/Shortcut";
 import AddShortcut from "../components/Modals/AddShortcut";
 import { useData } from "./DataProvider";
-import { DeviceEventEmitter } from "react-native";
+// import { DeviceEventEmitter } from "react-native";
 import { Category } from "../realm/Category";
 type Props = {
   shortcut: Realm.Results<Shortcut>;
@@ -45,19 +45,19 @@ const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[]
   }, []);
 
   useEffect(() => {
-    QuickActions.clearShortcutItems();
-    if (_shortcut.length > 0) {
-      QuickActions.setShortcutItems(
-        _shortcut.map((action, index) => ({
-          type: "transaction",
-          title: action.title ? action.title : "Shortcut",
-          icon: action.icon, // Icons instructions below
-          userInfo: {
-            url: action._id.toHexString(),
-          },
-        }))
-      );
-    }
+    // QuickActions.clearShortcutItems();
+    // if (_shortcut.length > 0) {
+    //   QuickActions.setShortcutItems(
+    //     _shortcut.map((action, index) => ({
+    //       type: "transaction",
+    //       title: action.title ? action.title : "Shortcut",
+    //       icon: action.icon, // Icons instructions below
+    //       userInfo: {
+    //         url: action._id.toHexString(),
+    //       },
+    //     }))
+    //   );
+    // }
   }, [_shortcut]);
 
   const addNewTransaction = useCallback(
@@ -72,19 +72,19 @@ const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[]
     [realm]
   );
 
-  const handleQuickAction = useCallback((data: QuickActions.ShortcutItem) => {
-    if (data) {
-      console.log(data);
-      if (data.type === "transaction") {
-        const action = shortcut.find((sc) => sc._id.toHexString() === data.userInfo.url);
-        if (action) addNewTransaction(action.amount, action.currency, new Date(), action.note, action.category);
-      }
-    }
-  }, []);
+  // const handleQuickAction = useCallback((data: QuickActions.ShortcutItem) => {
+  //   if (data) {
+  //     console.log(data);
+  //     if (data.type === "transaction") {
+  //       const action = shortcut.find((sc) => sc._id.toHexString() === data.userInfo.url);
+  //       if (action) addNewTransaction(action.amount, action.currency, new Date(), action.note, action.category);
+  //     }
+  //   }
+  // }, []);
 
   useEffect(() => {
-    DeviceEventEmitter.addListener("quickActionShortcut", handleQuickAction);
-    return DeviceEventEmitter.removeAllListeners;
+    // DeviceEventEmitter.addListener("quickActionShortcut", handleQuickAction);
+    // return DeviceEventEmitter.removeAllListeners;
   }, []);
 
   return (
