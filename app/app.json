@@ -35,6 +35,6 @@
         "projectId": "7f819d50-7144-4e92-9f26-a4e970e6325d"
       }
     },
-      "plugins": [["./withDrawableAssets.js", "./assets/shortcuts"],"@config-plugins/react-native-quick-actions"]
+      "plugins": [["./withDrawableAssets.js", "./assets/shortcuts"]]
   }
 }

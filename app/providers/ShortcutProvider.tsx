@@ -2,7 +2,7 @@ import React, { useContext, createContext, useMemo, useState, useCallback, useEf
 import { Transaction } from "../realm/Transaction";
 // import * as QuickActions from "expo-quick-actions";
 
-import { useQuery, useRealm } from "../realm/index";
+import { useQuery} from "@realm/react";
 
 import { Shortcut } from "../realm/Shortcut";
 import AddShortcut from "../components/Modals/AddShortcut";
@@ -23,7 +23,7 @@ export const useSchortcut = () => useContext(SchortcutContext);
 
 const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { category } = useData();
-  const realm = useRealm();
+  // const realm = useRealm();
   const _shortcut = useQuery(Shortcut);
   const shortcut = useMemo(() => _shortcut.sorted("amount"), [_shortcut]);
 
@@ -63,13 +63,13 @@ const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[]
   const addNewTransaction = useCallback(
     async (amount: number, currency: string, date: Date, note: string, category: Category) => {
       const img = "";
-      realm.write(() => {
-        if (category) {
-          realm.create("Transaction", Transaction.generate(amount, currency, date, note, category, false, img));
-        }
-      });
+      // realm.write(() => {
+      //   if (category) {
+      //     realm.create("Transaction", Transaction.generate(amount, currency, date, note, category, false, img));
+      //   }
+      // });
     },
-    [realm]
+    []
   );
 
   // const handleQuickAction = useCallback((data: QuickActions.ShortcutItem) => {

@@ -8,7 +8,7 @@ import { Category } from "../../realm/Category";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import CurrencyModal from "./CurrencyModal";
 import CategoryModal from "./CategoryModal";
-import { useRealm } from "../../realm";
+// import { useRealm } from "../../realm";
 import { useTranslation } from "react-i18next";
 import { useCustomTheme } from "../../providers/ThemeProvider";
 
@@ -72,7 +72,7 @@ const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
     // if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) requestImagePermission();
   }, [cameraPermission, requestCameraPermission, imagePermission, requestImagePermission]);
 
-  const realm = useRealm();
+  // const realm = useRealm();
 
   const moveImage = useCallback(async (image: string) => {
     const name = image.split("/");
@@ -86,34 +86,34 @@ const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
   const addNewTransaction = useCallback(
     async ({ amount, date, note, category, image }: ValueProps) => {
       const img = image.length > 0 ? await moveImage(image) : "";
-      console.log(img);
-      realm.write(() => {
-        if (category) {
-          realm.create(
-            "Transaction",
-            Transaction.generate(parseFloat(amount), "INR", date, note, category, false, img)
-          );
-        }
-        onDismiss();
-      });
+      // console.log(img);
+      // realm.write(() => {
+      //   if (category) {
+      //     realm.create(
+      //       "Transaction",
+      //       Transaction.generate(parseFloat(amount), "INR", date, note, category, false, img)
+      //     );
+      //   }
+      //   onDismiss();
+      // });
     },
-    [realm, onDismiss]
+    [ onDismiss]
   );
 
   const updateTransaction = useCallback(
     async (trans: Transaction, values: ValueProps) => {
       const img = values.image.length > 0 ? await moveImage(values.image) : "";
 
-      realm.write(() => {
-        if (trans.date !== values.date) trans.date = values.date;
-        if (trans.amount !== parseFloat(values.amount)) trans.amount = parseFloat(values.amount);
-        if (trans.category !== values.category && values.category) trans.category = values.category;
-        if (trans.note !== values.note) trans.note = values.note;
-        if (trans.image !== values.image) trans.image = img;
-        onDismiss();
-      });
+      // realm.write(() => {
+      //   if (trans.date !== values.date) trans.date = values.date;
+      //   if (trans.amount !== parseFloat(values.amount)) trans.amount = parseFloat(values.amount);
+      //   if (trans.category !== values.category && values.category) trans.category = values.category;
+      //   if (trans.note !== values.note) trans.note = values.note;
+      //   if (trans.image !== values.image) trans.image = img;
+      //   onDismiss();
+      // });
     },
-    [onDismiss, realm, moveImage]
+    [onDismiss, moveImage]
   );
 
   useEffect(() => {
@@ -172,13 +172,13 @@ const AddTransaction = ({ visible, item, onDismiss, category }: Props) => {
   const deleteTransaction = useCallback(
     (transaction: Transaction | undefined) => {
       setShowDelete(false);
-      realm.write(() => {
-        if (!transaction) return;
-        realm.delete(transaction);
-        onDismiss();
-      });
+      // realm.write(() => {
+      //   if (!transaction) return;
+      //   realm.delete(transaction);
+      //   onDismiss();
+      // });
     },
-    [realm, onDismiss]
+    [onDismiss]
   );
 
   const handleCamera = useCallback(async () => {

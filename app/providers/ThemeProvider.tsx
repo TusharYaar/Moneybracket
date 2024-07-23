@@ -9,7 +9,7 @@ import { isLoaded, loadAsync } from "expo-font";
 import { downloadAsync, getInfoAsync, makeDirectoryAsync, readDirectoryAsync } from "expo-file-system";
 // import { useTranslation } from "react-i18next";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
-import { useMaterial3Theme } from "@pchmn/expo-material3-theme";
+// import { useMaterial3Theme } from "@pchmn/expo-material3-theme";
 import type { CustomTheme } from "../types";
 import { Platform } from "react-native";
 
@@ -39,7 +39,7 @@ export const useCustomTheme = () => useContext(ThemeContext);
 
 const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   // const { t } = useTranslation("", { keyPrefix: "messages" });
-  const { theme: deviceTheme } = useMaterial3Theme();
+  // const { theme: deviceTheme } = useMaterial3Theme();
   const [_theme, setTheme] = useState<(typeof ALL_THEMES)[number]["id"]>(DEFAULT_THEMES[0]);
   const [font, setFont] = useState(LOCAL_FONTS[0]);
   const [roundness, setRoundness] = useState(parseInt(getFromStorageOrDefault(SETTING_KEYS.roundness, "-1", true)));
@@ -49,13 +49,13 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     let obj = ALL_THEMES.find((t) => t.id === _theme);
     obj.fonts = ALL_FONTS.find((f) => f.id === font).font;
 
-    if (_theme === "deviceLight") obj = { ...obj, colors: { ...obj.colors, ...deviceTheme.light } };
-    else if (_theme === "deviceDark") obj = { ...obj, colors: { ...obj.colors, ...deviceTheme.dark } };
+    if (_theme === "deviceLight") obj = { ...obj, colors: { ...obj.colors} };
+    // else if (_theme === "deviceDark") obj = { ...obj, colors: { ...obj.colors} };
 
     if (roundness >= 0) obj.roundness = roundness;
 
     return obj as CustomTheme;
-  }, [_theme, font, roundness, deviceTheme]);
+  }, [_theme, font, roundness]);
 
   const changeTheme = useCallback((theme: (typeof ALL_THEMES)[number]["id"]) => {
     try {
@@ -200,10 +200,10 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
       }}
     >
       <PaperProvider
-        theme={themeObject}
-        settings={{
-          icon: (props) => <Ionicons size={props.size} name={props.name as any} color={props.color} />,
-        }}
+        // theme={themeObject}
+        // settings={{
+        //   icon: (props) => <Ionicons size={props.size} name={props.name as any} color={props.color} />,
+        // }}
       >
         <NavigationContainer theme={themeObject}>
           <StatusBar style={themeObject.dark ? "light" : "dark"} />

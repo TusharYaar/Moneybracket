@@ -78,7 +78,7 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
       });
     }
   }, [item]);
-  const realm = useRealm();
+  // const realm = useRealm();
 
   const changeType = useCallback((type: ValueProps["type"]) => {
     setValues((prev) => ({ ...prev, type }));
@@ -86,24 +86,24 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
 
   const addNewCategory = useCallback(
     ({ title, type, color, icon }: ValueProps) => {
-      realm.write(() => {
-        realm.create("Category", Category.generate(title, type, color, icon));
-        onDismiss();
-      });
+      // realm.write(() => {
+      //   realm.create("Category", Category.generate(title, type, color, icon));
+      //   onDismiss();
+      // });
     },
-    [realm, onDismiss]
+    [ onDismiss]
   );
   const updateCategory = useCallback(
     (category: Category, { title, type, color, icon }: ValueProps) => {
-      realm.write(() => {
-        if (category.title !== title) category.title = title;
-        if (category.color !== color) category.color = color;
-        if (category.type !== type) category.type = type;
-        if (category.icon !== icon) category.icon = icon;
-        onDismiss();
-      });
+      // realm.write(() => {
+      //   if (category.title !== title) category.title = title;
+      //   if (category.color !== color) category.color = color;
+      //   if (category.type !== type) category.type = type;
+      //   if (category.icon !== icon) category.icon = icon;
+      //   onDismiss();
+      // });
     },
-    [realm, onDismiss]
+    [ onDismiss]
   );
 
   const changeIcon = useCallback((icon: string) => {
@@ -118,13 +118,13 @@ const AddCategory = ({ visible, item, onDismiss }: Props) => {
 
   const deleteCategory = useCallback(
     (category: Category | undefined) => {
-      realm.write(() => {
-        if (!category) return;
-        realm.delete(category);
-        onDismiss();
-      });
+      // realm.write(() => {
+      //   if (!category) return;
+      //   realm.delete(category);
+      //   onDismiss();
+      // });
     },
-    [realm, onDismiss]
+    [onDismiss]
   );
 
   const dismissIconModal = useCallback(() => {

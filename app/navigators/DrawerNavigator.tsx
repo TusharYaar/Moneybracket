@@ -8,11 +8,12 @@ import {
   AboutStackNavigator,
   HelpStackNavigator,
   RecurringStackNavigator,
-  ShortcutStackNavigator,
+  // ShortcutStackNavigator,
 } from "./StackNavigators";
 import React, { useState, useEffect } from "react";
-import Purchases from "react-native-purchases";
+// import Purchases from "react-native-purchases";
 import CustomDrawerContent from "../components/CustomDrawer";
+import { Text } from "react-native";
 
 export type DrawerParamList = {
   RecurringStack: undefined;
@@ -30,14 +31,17 @@ const Drawer = createDrawerNavigator<DrawerParamList>();
 const MyDrawer = () => {
   const [canMakePayments, setCanMakePayments] = useState(false);
 
-  useEffect(() => {
-    const check = async () => {
-      const can = await Purchases.canMakePayments();
-      setCanMakePayments(can);
-    };
+  // useEffect(() => {
+  //   const check = async () => {
+  //     const can = await Purchases.canMakePayments();
+  //     setCanMakePayments(can);
+  //   };
 
-    check();
-  }, []);
+  //   check();
+  // }, []);
+
+
+  // return <Text>Hello </Text>
 
   return (
     <Drawer.Navigator
@@ -49,7 +53,7 @@ const MyDrawer = () => {
       <Drawer.Screen name="TrackerStack" component={TrackerStackNavigator} />
       {__DEV__ && <Drawer.Screen name="RecurringStack" component={RecurringStackNavigator} />}
       <Drawer.Screen name="CategoryStack" component={CategoryStackNavigator} />
-      <Drawer.Screen name="ShortcutStack" component={ShortcutStackNavigator} />
+      {/* <Drawer.Screen name="ShortcutStack" component={ShortcutStackNavigator} /> */}
       <Drawer.Screen name="ExchangeStack" component={ExchangeStackNavigator} />
       <Drawer.Screen name="SettingStack" component={SettingStack} />
       {__DEV__ && <Drawer.Screen name="StoreStack" component={StoreStackNavigator} />}

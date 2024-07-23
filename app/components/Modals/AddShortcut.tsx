@@ -7,7 +7,7 @@ import { Category } from "../../realm/Category";
 
 import CurrencyModal from "./CurrencyModal";
 import CategoryModal from "./CategoryModal";
-import { useRealm } from "../../realm";
+import { useRealm } from "@realm/react";
 import { useTranslation } from "react-i18next";
 import { useCustomTheme } from "../../providers/ThemeProvider";
 
@@ -17,6 +17,8 @@ import { useExchangeRate } from "../../providers/ExchangeRatesProvider";
 import Amount from "../Amount";
 import DeleteDialog from "../DeleteDialog";
 import { Shortcut } from "../../realm/Shortcut";
+
+const MAX_SHORTCUTS = 4;
 
 type Props = {
   visible: boolean;

@@ -9,7 +9,7 @@ import SettingItem from "../../components/SettingItem";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../navigators/StackNavigators";
 import { Switch, Text } from "react-native-paper";
-import { useRealm } from "../../realm";
+// import { useRealm } from "../../realm";
 import { Category } from "../../realm/Category";
 import { Dcategories } from "../../data/dummy";
 import { Transaction } from "../../realm/Transaction";
@@ -38,41 +38,40 @@ const Setting = ({ navigation }: Props) => {
   const [languageModal, setLanguageModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
 
-  const realm = useRealm();
 
   const addDummyCategories = useCallback(() => {
-    realm.write(() => {
-      Dcategories.forEach((cat) => {
-        realm.create(
-          "Category",
-          Category.generate(
-            cat.title,
-            cat.type,
-            COLORS[Math.floor(Math.random() * COLORS.length)],
-            ICONS[Math.floor(Math.random() * ICONS.length)]
-          )
-        );
-      });
-    });
-  }, [realm]);
+    // realm.write(() => {
+    //   Dcategories.forEach((cat) => {
+    //     realm.create(
+    //       "Category",
+    //       Category.generate(
+    //         cat.title,
+    //         cat.type,
+    //         COLORS[Math.floor(Math.random() * COLORS.length)],
+    //         ICONS[Math.floor(Math.random() * ICONS.length)]
+    //       )
+    //     );
+    //   });
+    // });
+  }, []);
 
   const addDummy = useCallback(() => {
-    realm.write(() => {
-      const trans = generateDummyTransaction();
-      trans.forEach((element) => {
-        realm.create(
-          "Transaction",
-          Transaction.generate(
-            element.amount,
-            currency.code,
-            element.date,
-            "dummy transaction",
-            category[Math.floor(Math.random() * category.length)]
-          )
-        );
-      });
-    });
-  }, [realm]);
+    // realm.write(() => {
+    //   const trans = generateDummyTransaction();
+    //   trans.forEach((element) => {
+    //     realm.create(
+    //       "Transaction",
+    //       Transaction.generate(
+    //         element.amount,
+    //         currency.code,
+    //         element.date,
+    //         "dummy transaction",
+    //         category[Math.floor(Math.random() * category.length)]
+    //       )
+    //     );
+    //   });
+    // });
+  }, []);
 
   const dismissModal = useCallback(() => {
     setDeleteModal(false);
@@ -138,21 +137,16 @@ const Setting = ({ navigation }: Props) => {
       {__DEV__ && <SettingItem label={"dummy Categories"} leftIcon="text" onPress={addDummyCategories} />}
       {__DEV__ && category.length > 0 && <SettingItem label={"dummy Trans"} leftIcon="text" onPress={addDummy} />}
       <SettingItem label={t("deleteAllData")} leftIcon="text" onPress={() => setDeleteModal(true)} />
-      {__DEV__ && (
-        <SettingItem
-          label={t("export")}
-          leftIcon="albums-outline"
-          onPress={() => navigation.navigate("ExportScreen")}
-        />
-      )}
-      {__DEV__ && (
-        <SettingItem
-          label={t("backup")}
-          leftIcon="archive-outline"
-          onPress={() => navigation.navigate("BackupScreen")}
-          style={{ borderBottomLeftRadius: theme.roundness * 4, borderBottomRightRadius: theme.roundness * 4 }}
-        />
-      )}
+
+      <SettingItem label={t("export")} leftIcon="albums-outline" onPress={() => navigation.navigate("ExportScreen")} />
+
+      <SettingItem
+        label={t("backup")}
+        leftIcon="archive-outline"
+        onPress={() => navigation.navigate("BackupScreen")}
+        style={{ borderBottomLeftRadius: theme.roundness * 4, borderBottomRightRadius: theme.roundness * 4 }}
+      />
+
       <DeleteDialog
         visible={deleteModal}
         deleteAction={handleDeleteAllData}

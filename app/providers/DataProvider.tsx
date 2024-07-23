@@ -2,7 +2,7 @@ import React, { useContext, createContext, useMemo, useState, useCallback, useEf
 import { Category } from "../realm/Category";
 import { Transaction } from "../realm/Transaction";
 
-import { useQuery, useRealm } from "../realm/index";
+import { useQuery, useRealm } from "@realm/react";
 import AddCategory from "../components/Modals/AddCategory";
 import AddTransaction from "../components/Modals/AddTransaction";
 import DateFilterModal from "../components/Modals/DateFilterModal";
@@ -20,7 +20,7 @@ type Props = {
     endDate: Date;
   };
   selectedCategory: string[];
-  category: Realm.Results<Category & Realm.Object<unknown>>;
+  category: Realm.Results<Category>;
   transaction: Realm.Results<Transaction>;
   showAddCategoryModal: (item?: Category) => void;
   showAddTransactionModal: (item?: Transaction) => void;
@@ -37,7 +37,7 @@ const DataContext = createContext<Props>({
     endDate: new Date(),
   },
   selectedCategory: [],
-  category: [] as unknown as Realm.Results<Category>,
+  category: []as unknown as Realm.Results<Category>,
   transaction: [] as unknown as Realm.Results<Transaction>,
   showAddCategoryModal: () => {},
   showAddTransactionModal: () => {},
@@ -58,19 +58,19 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
 
   const [selectedCategory, setSelectedCategory] = useState([]);
 
-  const realm = useRealm();
+  // const realm = useRealm();
 
-  const _category = useQuery(Category);
-  const category = useMemo(() => _category.sorted("title"), [_category]);
+  const category = useQuery(Category, cat => cat.sorted("title"));
+  // const category = useMemo(() => _category.sorted("title"), [_category]);
 
   useEffect(() => {
-    setSelectedCategory(_category.map((cat) => cat._id.toHexString()));
-  }, [_category]);
+    setSelectedCategory(category.map((cat) => cat._id.toHexString()));
+  }, [category]);
 
-  const _transaction = useQuery(Transaction);
-  const transaction = useMemo(() => {
-    return _transaction.sorted("date", true);
-  }, [_transaction]);
+  const transaction = useQuery(Transaction, t => t.sorted("date", true));
+  // const transaction = useMemo(() => {
+    // return _transaction.sorted("date", true);
+  // }, [_transaction]);
 
   const [addCategory, setAddCategory] = useState<{
     visible: boolean;
@@ -137,9 +137,9 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   }, []);
 
   const deleteAllData = useCallback(() => {
-    realm.write(() => {
-      realm.deleteAll();
-    });
+    // realm.write(() => {
+    //   realm.deleteAll();
+    // });
   }, []);
 
   return (
