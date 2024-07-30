@@ -1,28 +1,28 @@
 import { ScrollView, StyleSheet } from "react-native";
 import React, { useCallback, useState } from "react";
-import { useSettings } from "../../providers/SettingsProvider";
+import { useSettings } from "../../../providers/SettingsProvider";
 import { useTranslation } from "react-i18next";
 
 import { isEnrolledAsync, authenticateAsync } from "expo-local-authentication";
-import SettingItem from "../../components/SettingItem";
+import SettingItem from "../../../components/SettingItem";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "../../navigators/StackNavigators";
+import { StackParamList } from "../../../navigators/StackNavigators";
 import { Switch, Text } from "react-native-paper";
-// import { useRealm } from "../../realm";
-import { Category } from "../../realm/Category";
-import { Dcategories } from "../../data/dummy";
-import { Transaction } from "../../realm/Transaction";
-import { useData } from "../../providers/DataProvider";
-import { generateDummyTransaction } from "../../utils/dummy";
+import { useRealm } from "@realm/react";
+import { Category } from "../../../realm/Category";
+import { Dcategories } from "../../../data/dummy";
+import { Transaction } from "../../../realm/Transaction";
+import { useData } from "../../../providers/DataProvider";
+import { generateDummyTransaction } from "../../../utils/dummy";
 
-import { ALL_FONTS, ICONS, COLORS } from "../../data";
+import { ALL_FONTS, ICONS, COLORS } from "../../../data";
 
-import DeleteDialog from "../../components/DeleteDialog";
-import CurrencyModal from "../../components/Modals/CurrencyModal";
-import LanguageModal from "../../components/Modals/LanguageModal";
-import DateFormatModal from "../../components/Modals/DateFormatModal";
-import { useCustomTheme } from "../../providers/ThemeProvider";
+import DeleteDialog from "../../../components/DeleteDialog";
+import CurrencyModal from "../../../components/Modals/CurrencyModal";
+import LanguageModal from "../../../components/Modals/LanguageModal";
+import DateFormatModal from "../../../components/Modals/DateFormatModal";
+import { useCustomTheme } from "../../../providers/ThemeProvider";
 
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 
@@ -37,40 +37,40 @@ const Setting = ({ navigation }: Props) => {
   const [currencyModal, setCurrencyModal] = useState(false);
   const [languageModal, setLanguageModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
-
+  const realm = useRealm();
 
   const addDummyCategories = useCallback(() => {
-    // realm.write(() => {
-    //   Dcategories.forEach((cat) => {
-    //     realm.create(
-    //       "Category",
-    //       Category.generate(
-    //         cat.title,
-    //         cat.type,
-    //         COLORS[Math.floor(Math.random() * COLORS.length)],
-    //         ICONS[Math.floor(Math.random() * ICONS.length)]
-    //       )
-    //     );
-    //   });
-    // });
+    realm.write(() => {
+      Dcategories.forEach((cat) => {
+        realm.create(
+          "Category",
+          Category.generate(
+            cat.title,
+            cat.type,
+            COLORS[Math.floor(Math.random() * COLORS.length)],
+            ICONS[Math.floor(Math.random() * ICONS.length)]
+          )
+        );
+      });
+    });
   }, []);
 
   const addDummy = useCallback(() => {
-    // realm.write(() => {
-    //   const trans = generateDummyTransaction();
-    //   trans.forEach((element) => {
-    //     realm.create(
-    //       "Transaction",
-    //       Transaction.generate(
-    //         element.amount,
-    //         currency.code,
-    //         element.date,
-    //         "dummy transaction",
-    //         category[Math.floor(Math.random() * category.length)]
-    //       )
-    //     );
-    //   });
-    // });
+    realm.write(() => {
+      const trans = generateDummyTransaction();
+      trans.forEach((element) => {
+        realm.create(
+          "Transaction",
+          Transaction.generate(
+            element.amount,
+            currency.code,
+            element.date,
+            "dummy transaction",
+            category[Math.floor(Math.random() * category.length)]
+          )
+        );
+      });
+    });
   }, []);
 
   const dismissModal = useCallback(() => {
@@ -103,8 +103,8 @@ const Setting = ({ navigation }: Props) => {
         } else {
           // if (valid.error === "user_cancel") return enqueueSnackbar("APPLOCK_USER_CANCEL");
         }
-      } 
-      // else enqueueSnackbar("APPLOCK_DEVICE_NOT_ENROLL");
+      }
+      //  else enqueueSnackbar("APPLOCK_DEVICE_NOT_ENROLL");
     }
     updateLock(false);
   }, []);
@@ -137,10 +137,14 @@ const Setting = ({ navigation }: Props) => {
       </SettingItem>
       {__DEV__ && <SettingItem label={"dummy Categories"} leftIcon="text" onPress={addDummyCategories} />}
       {__DEV__ && category.length > 0 && <SettingItem label={"dummy Trans"} leftIcon="text" onPress={addDummy} />}
-      <SettingItem label={t("deleteAllData")} leftIcon="text" onPress={() => setDeleteModal(true)} />
-
-      <SettingItem label={t("export")} leftIcon="albums-outline" onPress={() => navigation.navigate("ExportScreen")} />
-
+      {__DEV__ && <SettingItem label={t("deleteAllData")} leftIcon="text" onPress={() => setDeleteModal(true)} />}
+      {__DEV__ && (
+        <SettingItem
+          label={t("export")}
+          leftIcon="albums-outline"
+          onPress={() => navigation.navigate("ExportScreen")}
+        />
+      )}
       <SettingItem
         label={t("backup")}
         leftIcon="archive-outline"

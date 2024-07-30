@@ -2,7 +2,8 @@
   "expo": {
     "name": "Money Bracket",
     "slug": "moneybracket",
-    "version": "0.6.7",
+    "scheme": "com.tusharyaar.mb",
+    "version": "0.7.0",
     "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -35,6 +36,12 @@
         "projectId": "7f819d50-7144-4e92-9f26-a4e970e6325d"
       }
     },
-      "plugins": [["./withDrawableAssets.js", "./assets/shortcuts"]]
+    "plugins": [
+      [
+        "./withDrawableAssets.js",
+        "./assets/shortcuts"
+      ],
+      "expo-router"
+    ]
   }
 }

@@ -19,8 +19,6 @@ const TransactionItem = ({ data, onPress, style }: Props) => {
     theme: { roundness },
   } = useCustomTheme();
 
-  console.log(style);
-
   return (
     <TouchableRipple onPress={onPress} style={style}>
       <View style={styles.innerContainer}>

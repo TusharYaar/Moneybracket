@@ -27,8 +27,6 @@ export let DEFAULT_THEMES =
     ? (["deviceLight", "deviceDark", "defaultLight", "defaultDark"] as const)
     : (["defaultLight", "defaultDark"] as const);
 
-console.log(DEFAULT_THEMES);
-
 export const SETTING_KEYS = {
   language: "settings/language",
   currency: "settings/currency",

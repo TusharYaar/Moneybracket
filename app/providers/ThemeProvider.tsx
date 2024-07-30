@@ -1,5 +1,4 @@
 import React, { useContext, createContext, useState, useMemo, useCallback, useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { Provider as PaperProvider } from "react-native-paper";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -20,7 +19,7 @@ type Props = {
   changeRoundness: (value: number) => void;
   changeFont: (font: string) => void;
   loadFont: (id: string) => Promise<void>;
-  enqueueSnackbar: (message: string) => void;
+  // enqueueSnackbar: (message: string) => void;
 };
 
 const defaultTheme = Platform.OS === "android" && Platform.Version >= 31 ? "deviceLight" : "defaultLight";
@@ -32,7 +31,7 @@ const ThemeContext = createContext<Props>({
   changeRoundness: () => {},
   changeFont: () => {},
   loadFont: async (id: string) => {},
-  enqueueSnackbar: () => {},
+  // enqueueSnackbar: () => {},
 });
 
 export const useCustomTheme = () => useContext(ThemeContext);
@@ -49,7 +48,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     let obj = ALL_THEMES.find((t) => t.id === _theme);
     obj.fonts = ALL_FONTS.find((f) => f.id === font).font;
 
-    if (_theme === "deviceLight") obj = { ...obj, colors: { ...obj.colors} };
+    if (_theme === "deviceLight") obj = { ...obj, colors: { ...obj.colors } };
     // else if (_theme === "deviceDark") obj = { ...obj, colors: { ...obj.colors} };
 
     if (roundness >= 0) obj.roundness = roundness;
@@ -73,24 +72,11 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
 
   const changeFont = useCallback(async (font: string) => {
     try {
-      // let hasPerm = true;
-      // if (!LOCAL_FONTS.includes(font)) hasPerm = (await checkSubscription()).font;
-      // if (!hasPerm) throw "FONT_NOT_UNLOCKED";
       await loadFont(font);
       setFont(font);
       setStorage(SETTING_KEYS.font, font);
-      // if (notify) enqueueSnackbar("FONT_UPDATE_SUCCESS");
-      // getOfflineFonts();
     } catch (e) {
       console.log(e);
-      // changeCurrentFont(font);
-      // if (e === "FONT_NOT_UNLOCKED" && !LOCAL_FONTS.includes(font)) {
-      //   font = LOCAL_FONTS[0];
-      //   changeCurrentFont(font);
-      //   setStorage(SETTING_KEYS.font, font);
-      //   setSettings((prev) => ({ ...prev, font }));
-      //   enqueueSnackbar(e);
-      // } else enqueueSnackbar(e);
     }
   }, []);
 
@@ -103,7 +89,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     if (!exists) await makeDirectoryAsync(FONTS_DIRECTORY, { intermediates: true });
 
     const files = await readDirectoryAsync(FONTS_DIRECTORY);
-    console.log(files);
+    // console.log({files});
 
     const fonts = Array.from(LOCAL_FONTS);
     for (const font of ALL_FONTS) {
@@ -127,22 +113,6 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
       throw e;
     }
   }, []);
-  const enqueueSnackbar = useCallback((message: string) => {
-    return;
-
-    if (message === undefined) return;
-
-    setSnackbars((prev) => {
-      const id = Math.random();
-      console.log(id);
-      if (prev.length > 0) return [...prev, { message, id }];
-      else {
-        setSnackbarVisible(true);
-        return [{ message, id }];
-      }
-    });
-  }, []);
-
   const loadFont = useCallback(async (id: string) => {
     // If Default Font
     if (LOCAL_FONTS.includes(id)) return;
@@ -156,7 +126,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
         if (location.exists && !location.isDirectory && !isLoaded(file.name)) await loadAsync(file.name, location.uri);
         else {
           await downloadFont(id);
-          enqueueSnackbar("DOWNLOADING_FONT");
+          // enqueueSnackbar("DOWNLOADING_FONT");
           location = await getInfoAsync(`${FONTS_DIRECTORY}/${file.name}`);
           await loadAsync(file.name, location.uri);
         }
@@ -169,24 +139,6 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     }
   }, []);
 
-  const closeSnackbar = useCallback((id: number) => {
-    return;
-    setSnackbars((prev) => {
-      if (prev.length > 1) {
-        setSnackbarVisible(false);
-        setTimeout(() => {
-          setSnackbarVisible(true);
-          setSnackbars(prev.filter((m) => m.id !== id));
-        }, 200);
-        return prev;
-      } else {
-        setSnackbarVisible(false);
-        setTimeout(() => setSnackbars([]), 100);
-        return prev;
-      }
-    });
-  }, []);
-
   return (
     <ThemeContext.Provider
       value={{
@@ -196,26 +148,16 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
         changeRoundness,
         theme: themeObject,
         loadFont,
-        enqueueSnackbar,
       }}
     >
       <PaperProvider
-        // theme={themeObject}
-        // settings={{
-        //   icon: (props) => <Ionicons size={props.size} name={props.name as any} color={props.color} />,
-        // }}
+        theme={themeObject}
+        settings={{
+          icon: (props) => <Ionicons size={props.size} name={props.name as any} color={props.color} />,
+        }}
       >
-        <NavigationContainer theme={themeObject}>
-          <StatusBar style={themeObject.dark ? "light" : "dark"} />
-          {children}
-        </NavigationContainer>
-        {/* <Snackbar
-          visible={snackbarVisible && snackbars.length > 0}
-          onDismiss={() => closeSnackbar(snackbars[0].id)}
-          duration={1000}
-        >
-          {t(snackbars[0]?.message)}
-        </Snackbar> */}
+        <StatusBar style={themeObject.dark ? "light" : "dark"} />
+        {children}
       </PaperProvider>
     </ThemeContext.Provider>
   );

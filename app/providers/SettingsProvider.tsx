@@ -4,7 +4,6 @@ import { useCustomTheme } from "./ThemeProvider";
 import { Currency } from "../types";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
 import Purchases from "react-native-purchases";
-import { readDirectoryAsync } from "expo-file-system";
 
 type Props = {
   language: string;
@@ -43,19 +42,19 @@ const SETTING: Omit<Props, "offlineFonts"> = {
   // updateRoundness: () => {},
 };
 
-const checkSubscription = async () => {
-  const info = await Purchases.getCustomerInfo();
-  let subs = { font: false, theme: false };
-  if (Object.keys(info.entitlements.active).includes("all_themes")) subs.theme = true;
-  if (Object.keys(info.entitlements.active).includes("all_fonts")) subs.font = true;
-  return subs;
-};
+// const checkSubscription = async () => {
+//   const info = await Purchases.getCustomerInfo();
+//   let subs = { font: false, theme: false };
+//   if (Object.keys(info.entitlements.active).includes("all_themes")) subs.theme = true;
+//   if (Object.keys(info.entitlements.active).includes("all_fonts")) subs.font = true;
+//   return subs;
+// };
 
 const SettingContext = createContext<Props>({ ...SETTING, offlineFonts: LOCAL_FONTS });
 export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const { enqueueSnackbar, changeRoundness } = useCustomTheme();
+  const { changeRoundness } = useCustomTheme();
 
   const [settings, setSettings] = useState(SETTING);
   const [offlineFonts, setOfflineFonts] = useState(LOCAL_FONTS);
@@ -86,7 +85,7 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
   const updateCurrency = useCallback((curr: string) => {
     setSettings((prev) => ({ ...prev, currency: CURRENCIES[curr] }));
     setStorage(SETTING_KEYS.currency, curr);
-    enqueueSnackbar("CURRENCY_UPDATE_SUCCESS");
+    // enqueueSnackbar("CURRENCY_UPDATE_SUCCESS");
   }, []);
 
   const updateDateFormat = useCallback((format: string) => {
@@ -101,12 +100,12 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
 
   const refreshUnlockedItems = useCallback(async () => {
     try {
-      let hasPerm = await checkSubscription();
-      setSettings((prev) => ({
-        ...prev,
-        unlockedFonts: hasPerm.font ? ALL_FONTS.map((font) => font.id) : LOCAL_FONTS,
-        unlockedThemes: hasPerm.theme ? ALL_THEMES.map((theme) => theme.id) : DEFAULT_THEMES,
-      }));
+      // let hasPerm = await checkSubscription();
+      // setSettings((prev) => ({
+      //   ...prev,
+      //   unlockedFonts: hasPerm.font ? ALL_FONTS.map((font) => font.id) : LOCAL_FONTS,
+      //   unlockedThemes: hasPerm.theme ? ALL_THEMES.map((theme) => theme.id) : DEFAULT_THEMES,
+      // }));
     } catch (e) {
       console.log(e);
     }

@@ -31,8 +31,9 @@ const GroupTransactions = ({ data, onPressItem }: Props) => {
   );
 
   const visibleTrans = useMemo(() => {
-    if (viewAll || data.transactions.length <= MAX_PER_DAY) return data.transactions;
-    else return data.transactions.slice(0, MAX_PER_DAY);
+    return data.transactions;
+    // if (viewAll || data.transactions.length <= MAX_PER_DAY) return data.transactions;
+    // else return data.transactions.slice(0, MAX_PER_DAY);
   }, [viewAll, data]);
 
   return (

@@ -1,14 +1,14 @@
 import { View } from "react-native";
 import React, { useEffect } from "react";
-import { useExchangeRate } from "../../providers/ExchangeRatesProvider";
-import RateItem from "../../components/RateItem";
+import { useExchangeRate } from "../../../providers/ExchangeRatesProvider";
+import RateItem from "../../../components/RateItem";
 import { FlashList } from "@shopify/flash-list";
-import { useSettings } from "../../providers/SettingsProvider";
+import { useSettings } from "../../../providers/SettingsProvider";
 import { IconButton, TextInput, Text } from "react-native-paper";
-import { useCustomTheme } from "../../providers/ThemeProvider";
-import CurrencyModal from "../../components/Modals/CurrencyModal";
+import { useCustomTheme } from "../../../providers/ThemeProvider";
+import CurrencyModal from "../../../components/Modals/CurrencyModal";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "../../navigators/StackNavigators";
+import { StackParamList } from "../../../navigators/StackNavigators";
 import { useDebounce } from "use-debounce";
 import { format } from "date-fns";
 
@@ -22,17 +22,17 @@ const Rates = ({ navigation }: Props) => {
   } = useCustomTheme();
   const [showSearchInput, setShowSearchInput] = React.useState(false);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: (props) => (
-        <IconButton
-          icon="search"
-          style={{ borderRadius: roundness * 4 }}
-          onPress={() => setShowSearchInput((prev) => !prev)}
-        />
-      ),
-    });
-  }, [navigation]);
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: (props) => (
+  //       <IconButton
+  //         icon="search"
+  //         style={{ borderRadius: roundness * 4 }}
+  //         onPress={() => setShowSearchInput((prev) => !prev)}
+  //       />
+  //     ),
+  //   });
+  // }, [navigation]);
 
   const [values, setValues] = React.useState({
     amount: "1000",

@@ -5,6 +5,7 @@ import { Transaction } from "../realm/Transaction";
 import { GroupedTransactions } from "../types";
 
 export const transactionWithinDates = (date: Date, start: Date, end: Date) => {
+  console.log(end, date, start);
   if (compareAsc(date, start) !== -1 && compareAsc(end, date) !== -1) return true;
   return false;
 };

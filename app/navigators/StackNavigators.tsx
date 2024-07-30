@@ -9,7 +9,7 @@ import { useCustomTheme } from "../providers/ThemeProvider";
 
 import FontSetting from "../screens/Settings/FontSetting";
 import ThemeSetting from "../screens/Settings/ThemeSetting";
-import Rates from "../screens/Exchange/Rates";
+import Rates from "../app/(stack)/(tabs)/exchange";
 import ExportScreen from "../screens/Settings/ExportScreen";
 import BackupScreen from "../screens/Settings/BackupScreen";
 import { useTranslation } from "react-i18next";
