@@ -10,6 +10,7 @@
   "main": "expo-router/entry",
   "dependencies": {
     "@expo/prebuild-config": "~7.0.0",
+    "@gorhom/bottom-sheet": "^4.6.4",
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/drawer": "^6.6.3",
@@ -19,9 +20,10 @@
     "@realm/react": "^0.9.0",
     "@shopify/flash-list": "1.6.4",
     "date-fns": "^2.29.3",
-    "expo": "^51.0.20",
+    "expo": "~51.0.24",
     "expo-constants": "~16.0.2",
-    "expo-dev-client": "~4.0.20",
+    "expo-crypto": "~13.0.2",
+    "expo-dev-client": "~4.0.21",
     "expo-document-picker": "~12.0.2",
     "expo-file-system": "~17.0.1",
     "expo-font": "~12.0.8",
@@ -32,7 +34,7 @@
     "expo-local-authentication": "~14.0.1",
     "expo-print": "~13.0.1",
     "expo-quick-actions": "^2.0.0",
-    "expo-router": "~3.5.18",
+    "expo-router": "~3.5.20",
     "expo-sharing": "~12.0.1",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
@@ -41,6 +43,7 @@
     "react-i18next": "^13.0.2",
     "react-native": "0.74.3",
     "react-native-chart-kit": "^6.12.0",
+    "react-native-date-picker": "^5.0.4",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-get-random-values": "~1.11.0",
     "react-native-mmkv": "^2.10.1",
@@ -56,8 +59,8 @@
     "use-debounce": "^9.0.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@types/react": "~18.2.14"
+    "@babel/core": "^7.24.0",
+    "@types/react": "~18.2.79"
   },
   "private": true
 }

@@ -1,7 +1,10 @@
 import { Realm } from "@realm/react";
 import { Category } from "./Category";
+import {randomUUID} from "expo-crypto";
+
+
 export class Transaction extends Realm.Object {
-  _id!: Realm.BSON.ObjectId;
+  _id!: string;
   amount!: number;
   date!: Date;
   createdAt!: string;
@@ -22,7 +25,7 @@ export class Transaction extends Realm.Object {
     createdAt = new Date().toUTCString()
   ) {
     return {
-      _id: new Realm.BSON.ObjectId(),
+      _id: randomUUID(),
       note,
       amount,
       date: date,
@@ -39,7 +42,7 @@ export class Transaction extends Realm.Object {
     name: "Transaction",
     primaryKey: "_id",
     properties: {
-      _id: "objectId",
+      _id: "string",
       note: "string",
       date: "date?",
       amount: "int",

@@ -6,6 +6,10 @@
   "build": {
     "development": {
       "distribution": "internal",
+      "developmentClient": true,
+      "env": {
+        "ENVIRONMENT": "development"
+      },
       "android": {
         "gradleCommand": ":app:assembleDebug"
       },
@@ -22,12 +26,16 @@
     },
     "production": {
       "ios": {
-        "resourceClass": "m1-medium"
+        "resourceClass": "m1-medium",
+        "image": "latest"
+      },
+      "android": {
+        "image": "latest"
       }
     },
     "productionAPK": {
       "android": {
-        "gradleCommand": ":app:assembleRelease"
+        "buildType": "apk"
       }
     }
   },

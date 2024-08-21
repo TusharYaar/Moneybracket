@@ -21,7 +21,7 @@ export default function Layout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <I18nextProvider i18n={i18n}>
         <ThemeProvider>
-          <RealmProvider schema={[Category, Shortcut, Transaction]}>
+          <RealmProvider schema={[Category, Shortcut, Transaction]} closeOnUnmount={false}>
             {/* <ExchangeRatesProvider> */}
               <DataProvider>
                 <SafeAreaProvider>

@@ -99,7 +99,6 @@ const AllTransaction = () => {
         renderItem={({ item }) => <TransactionItem data={item} onPress={() => {}}/>}
         style={{flex: 1}}
        />
-      <FAB icon="add" style={styles.fab} onPress={() => router.push("(stack)/addTransaction")} />
     </>
   );
 };

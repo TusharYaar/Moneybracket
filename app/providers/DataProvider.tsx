@@ -20,10 +20,8 @@ type Props = {
   //   endDate: Date;
   // };
   selectedCategory: string[];
-  category: Realm.Results<Category>;
+  category: Category[];
   // transaction: Realm.Results<Transaction>;
-  showAddCategoryModal: (item?: Category) => void;
-  showAddTransactionModal: (item?: Transaction) => void;
   // showDateFilterModal: () => void;
   showCategoryFilterModal: () => void;
   // updateDateFilter: (type: string, start: Date, end: Date) => void;
@@ -37,10 +35,8 @@ const DataContext = createContext<Props>({
   //   endDate: new Date(),
   // },
   selectedCategory: [],
-  category: []as unknown as Realm.Results<Category>,
+  category: [] as Category[],
   // transaction: [] as unknown as Realm.Results<Transaction>,
-  showAddCategoryModal: () => {},
-  showAddTransactionModal: () => {},
   // showDateFilterModal: () => {},
   showCategoryFilterModal: () => {},
   // updateDateFilter: () => {},
@@ -57,10 +53,34 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   // });
 
   const [selectedCategory, setSelectedCategory] = useState([]);
+  const [category, setCategory] = useState<Category[]>([]);
 
   const realm = useRealm();
 
-  const category = useQuery(Category);
+  const handleUpdateData = useCallback(() => {
+    const _category = realm.objects(Category);
+    setCategory(_category.flatMap((item) => item));
+  }, [realm]);
+
+
+  useEffect(() => {
+    handleUpdateData();
+  },[]);
+
+  useEffect(() => {
+    const addListener = async () => {
+      try {
+        realm.addListener("change", handleUpdateData);
+      } catch (error) {
+        console.log("Unable to add Listener, restart app");
+      }
+    };
+    addListener();
+
+    return () => realm.removeAllListeners();
+  }, [realm, handleUpdateData]);
+
+
 
   // const category = useQuery(Category, cat => cat.sorted("title"));
   // const category = useMemo(() => _category.sorted("title"), [_category]);
@@ -71,7 +91,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
 
   // const transaction = useQuery(Transaction);
   // const transaction = useMemo(() => {
-    // return _transaction.sorted("date", true);
+  // return _transaction.sorted("date", true);
   // }, [_transaction]);
 
   const [addCategory, setAddCategory] = useState<{
@@ -151,8 +171,6 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
         category,
         selectedCategory,
         // transaction,
-        showAddCategoryModal,
-        showAddTransactionModal,
         // showDateFilterModal,
         showCategoryFilterModal,
         // updateDateFilter,
