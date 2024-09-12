@@ -6,7 +6,6 @@ export default function Layout() {
     <SafeAreaView style={{ flex: 1 }}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen  name="(tabs)"/>
-        <Stack.Screen  name="settings"/>
         <Stack.Screen  name="addTransaction"/>
         <Stack.Screen  name="addCategory"/>
         </Stack>

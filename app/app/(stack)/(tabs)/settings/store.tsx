@@ -2,11 +2,11 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import Purchases, { PurchasesPackage } from "react-native-purchases";
 import { Button, Text } from "react-native-paper";
-import Products from "../../../components/Products";
+import Products from "../../../../components/Products";
 // import { useFont } from "../providers/FontProvider";
-import { useCustomTheme } from "../../../providers/ThemeProvider";
+import { useCustomTheme } from "../../../../providers/ThemeProvider";
 
-import { useSettings } from "../../../providers/SettingsProvider";
+import { useSettings } from "../../../../providers/SettingsProvider";
 const StoreScreen = () => {
   // const { checkFontSubscription } = useFont();
   // const { checkThemeSubscription } = useCustomTheme();

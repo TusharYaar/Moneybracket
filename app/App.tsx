@@ -5,9 +5,9 @@ import {RealmProvider} from '@realm/react';
 import DataProvider from "./providers/DataProvider";
 import ExchangeRatesProvider from "./providers/ExchangeRatesProvider";
 
-import { Category } from "./realm/Category";
-import { Shortcut } from "./realm/Shortcut";
-import { Transaction } from "./realm/Transaction";
+import  Category from "./realm/Category";
+import  Shortcut from "./realm/Shortcut";
+import  Transaction  from "./realm/Transaction";
 
 import SettingsProvider from "./providers/SettingsProvider";
 

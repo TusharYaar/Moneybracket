@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
 import React, { useEffect } from "react";
-import { ALL_FONTS, DEFAULT_FONTS } from "../../../data";
+import { ALL_FONTS, DEFAULT_FONTS } from "../../../../data";
 import { FlatList } from "react-native-gesture-handler";
-import FontView from "../../../components/FontView";
-import { useCustomTheme } from "../../../providers/ThemeProvider";
+import FontView from "../../../../components/FontView";
+import { useCustomTheme } from "../../../../providers/ThemeProvider";
 
 const FontSettings = () => {
   const { font, changeFont } = useCustomTheme();

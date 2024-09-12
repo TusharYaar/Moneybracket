@@ -6,18 +6,18 @@ import * as Print from "expo-print";
 import { startActivityAsync } from "expo-intent-launcher";
 import { shareAsync } from "expo-sharing";
 
-import { createCSV, createHTML, createJSON, getType } from "../../../utils/exports";
-import { useData } from "../../../providers/DataProvider";
+import { createCSV, createHTML, createJSON, getType } from "../../../../utils/exports";
+import { useData } from "../../../../providers/DataProvider";
 import { Button, Surface, Text } from "react-native-paper";
 
-import { EXPORTS_DIRECTORY } from "../../../data";
+import { EXPORTS_DIRECTORY } from "../../../../data";
 import { FlashList } from "@shopify/flash-list";
-import ExportItem from "../../../components/ExportItem";
+import ExportItem from "../../../../components/ExportItem";
 import { useTranslation } from "react-i18next";
 
 const Exports = () => {
   const { t } = useTranslation("", { keyPrefix: "screens.settings.export" });
-  const { transaction } = useData();
+  // const { transaction } = useData();
   const [files, setFiles] = useState([]);
   // TODO: Define Types for include Fields
   const [includeFields, setIncludeFields] = useState(["createdAt", "category", "note", "amount"]);
@@ -35,46 +35,46 @@ const Exports = () => {
     getFiles();
   }, []);
 
-  const exportPDF = useCallback(async () => {
-    const html = createHTML(transaction);
-    const { uri } = await Print.printToFileAsync({ html });
-    const location = `${EXPORTS_DIRECTORY}/${new Date().toTimeString()}-export.pdf`;
-    await FileSystem.moveAsync({
-      from: uri,
-      to: location,
-    });
+  // const exportPDF = useCallback(async () => {
+  //   const html = createHTML(transaction);
+  //   const { uri } = await Print.printToFileAsync({ html });
+  //   const location = `${EXPORTS_DIRECTORY}/${new Date().toTimeString()}-export.pdf`;
+  //   await FileSystem.moveAsync({
+  //     from: uri,
+  //     to: location,
+  //   });
 
-    setFiles((prev) => [location, ...prev]);
-    const curi = await FileSystem.getContentUriAsync(location);
-    try {
-      startActivityAsync("android.intent.action.VIEW", {
-        data: curi,
-        flags: 1,
-        type: "application/pdf",
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }, [transaction]);
+  //   setFiles((prev) => [location, ...prev]);
+  //   const curi = await FileSystem.getContentUriAsync(location);
+  //   try {
+  //     startActivityAsync("android.intent.action.VIEW", {
+  //       data: curi,
+  //       flags: 1,
+  //       type: "application/pdf",
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }, [transaction]);
 
-  const exportCSV = useCallback(async () => {
-    const data = createCSV(transaction);
-    const location = `${EXPORTS_DIRECTORY}/${new Date()}_csv-export.csv`;
-    FileSystem.writeAsStringAsync(location, data, {
-      encoding: "utf8",
-    });
+  // const exportCSV = useCallback(async () => {
+  //   const data = createCSV(transaction);
+  //   const location = `${EXPORTS_DIRECTORY}/${new Date()}_csv-export.csv`;
+  //   FileSystem.writeAsStringAsync(location, data, {
+  //     encoding: "utf8",
+  //   });
 
-    setFiles((prev) => [location, ...prev]);
-  }, [transaction]);
+  //   setFiles((prev) => [location, ...prev]);
+  // }, [transaction]);
 
-  const exportJSON = useCallback(() => {
-    const data = createJSON(transaction);
-    const location = `${EXPORTS_DIRECTORY}/${new Date()}_json-export.json`;
-    FileSystem.writeAsStringAsync(location, JSON.stringify(data, null, 4), {
-      encoding: "utf8",
-    });
-    setFiles((prev) => [location, ...prev]);
-  }, [transaction]);
+  // const exportJSON = useCallback(() => {
+  //   const data = createJSON(transaction);
+  //   const location = `${EXPORTS_DIRECTORY}/${new Date()}_json-export.json`;
+  //   FileSystem.writeAsStringAsync(location, JSON.stringify(data, null, 4), {
+  //     encoding: "utf8",
+  //   });
+  //   setFiles((prev) => [location, ...prev]);
+  // }, [transaction]);
 
   const openFile = useCallback(async (file: string) => {
     try {
@@ -99,7 +99,7 @@ const Exports = () => {
       <Surface>
         <Text>{t("exportAs")}</Text>
         <View style={styles.btnContainer}>
-          <Button onPress={exportPDF} style={styles.btn}>
+          {/* <Button onPress={exportPDF} style={styles.btn}>
             {t("pdf")}
           </Button>
           <Button onPress={exportCSV} style={styles.btn}>
@@ -110,7 +110,7 @@ const Exports = () => {
           </Button>
           <Button onPress={exportJSON} style={styles.btn} disabled={true}>
             {t("excel")}
-          </Button>
+          </Button> */}
         </View>
       </Surface>
       <Text>{t("recentExports")}</Text>

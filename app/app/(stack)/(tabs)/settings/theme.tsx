@@ -1,10 +1,10 @@
 import { StyleSheet, Dimensions, View } from "react-native";
 import React from "react";
-import { ALL_THEMES, DEFAULT_THEMES } from "../../../data";
-import ThemeObject from "../../../components/ThemeObject";
+import { ALL_THEMES, DEFAULT_THEMES } from "../../../../data";
+import ThemeObject from "../../../../components/ThemeObject";
 import { FlashList } from "@shopify/flash-list";
 import { SegmentedButtons, Text } from "react-native-paper";
-import { useCustomTheme } from "../../../providers/ThemeProvider";
+import { useCustomTheme } from "../../../../providers/ThemeProvider";
 
 const window = Dimensions.get("window");
 

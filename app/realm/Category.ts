@@ -1,5 +1,5 @@
 import { Realm } from "@realm/react";
-import { ObjectSchema } from "realm";
+import  ObjectSchema  from "realm";
 import {randomUUID} from "expo-crypto";
 export class Category extends Realm.Object {
   _id!: string;
@@ -29,7 +29,7 @@ export class Category extends Realm.Object {
   }
 
   // To use a class as a Realm object type, define the object schema on the static property "schema".
-  static schema: ObjectSchema = {
+  static schema = {
     name: "Category",
     primaryKey: "_id",
     properties: {

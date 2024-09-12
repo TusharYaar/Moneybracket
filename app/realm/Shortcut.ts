@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react";
 import { Category } from "./Category";
-export class Shortcut extends Realm.Object {
+class Shortcut extends Realm.Object {
   _id!: Realm.BSON.ObjectId;
   category!: Category;
   amount!: number;
@@ -39,3 +39,5 @@ export class Shortcut extends Realm.Object {
     },
   };
 }
+
+export default Shortcut;

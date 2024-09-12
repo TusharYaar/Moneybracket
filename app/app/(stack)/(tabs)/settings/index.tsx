@@ -1,28 +1,28 @@
 import { ScrollView, StyleSheet } from "react-native";
 import React, { useCallback, useState } from "react";
-import { useSettings } from "../../providers/SettingsProvider";
+import { useSettings } from "../../../../providers/SettingsProvider";
 import { useTranslation } from "react-i18next";
 
 import { isEnrolledAsync, authenticateAsync } from "expo-local-authentication";
-import SettingItem from "../../components/SettingItem";
+import SettingItem from "../../../../components/SettingItem";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "../../navigators/StackNavigators";
+import { StackParamList } from "../../../../navigators/StackNavigators";
 import { Switch, Text } from "react-native-paper";
 import { useRealm } from "@realm/react";
-import { Category } from "../../realm/Category";
-import { Dcategories } from "../../data/dummy";
-import { Transaction } from "../../realm/Transaction";
-import { useData } from "../../providers/DataProvider";
-import { generateDummyTransaction } from "../../utils/dummy";
+import { Category } from "../../../../realm/Category";
+import { Dcategories } from "../../../../data/dummy";
+import { Transaction } from "../../../../realm/Transaction";
+import { useData } from "../../../../providers/DataProvider";
+import { generateDummyTransaction } from "../../../../utils/dummy";
 
-import { ALL_FONTS, ICONS, COLORS } from "../../data";
+import { ALL_FONTS, ICONS, COLORS } from "../../../../data";
 
-import DeleteDialog from "../../components/DeleteDialog";
-import CurrencyModal from "../../components/Modals/CurrencyModal";
-import LanguageModal from "../../components/Modals/LanguageModal";
-import DateFormatModal from "../../components/Modals/DateFormatModal";
-import { useCustomTheme } from "../../providers/ThemeProvider";
+import DeleteDialog from "../../../../components/DeleteDialog";
+import CurrencyModal from "../../../../components/Modals/CurrencyModal";
+import LanguageModal from "../../../../components/Modals/LanguageModal";
+import DateFormatModal from "../../../../components/Modals/DateFormatModal";
+import { useCustomTheme } from "../../../../providers/ThemeProvider";
 
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 

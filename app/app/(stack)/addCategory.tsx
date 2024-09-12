@@ -1,8 +1,11 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
-import React, { useState } from "react";
+import { Text, View, TextInput, Pressable, useWindowDimensions } from "react-native";
+import React, { useCallback, useRef, useState } from "react";
 import { COLORS } from "../../data";
-import SwipeButton from "../../components/SwipeButton";
+import SwipeButton from "@components/SwipeButton";
 import { useRouter } from "expo-router";
+import PrimaryInput from "@components/AmountInput";
+import { Category } from "../../realm/Category";
+import { useRealm } from "@realm/react";
 
 const CATEGORY_TYPES = [
   {
@@ -22,7 +25,7 @@ const CATEGORY_TYPES = [
   },
 ];
 
-type CategoryStateType = {
+type ValueProps = {
   title: string;
   type: "income" | "expense" | "transfer";
   color: string;
@@ -31,25 +34,35 @@ type CategoryStateType = {
 
 const AddCategoryScreen = () => {
   const router = useRouter();
-
-  const [values, setValues] = useState<CategoryStateType>({
+  const inputRef = useRef<TextInput>();
+  const [values, setValues] = useState<ValueProps>({
     title: "",
     type: "income",
     color: COLORS[(Math.random() * COLORS.length).toFixed()],
     icon: "add",
   });
 
+  const realm = useRealm();
+  const { height, width } = useWindowDimensions();
   const handleSubmit = () => {
-    router.back();
+    addNewCategory(values);
+    if (router.canGoBack) router.back();
+    else router.replace("(tabs)/category");
   };
 
+  const addNewCategory = useCallback(
+    ({ title, type, color, icon }: ValueProps) => {
+      realm.write(() => {
+        realm.create("Category", Category.generate(title, type, color, icon));
+      });
+    },
+    []
+  );
+
   return (
-    <View style={{ flex: 1, padding: 16 }}>
+    <View style={{ padding: 16, height }}>
       <View style={{ flex: 1}}>
-        <TextInput placeholder="useless placeholder" />
-        <Pressable>
-          <Text>Color</Text>
-        </Pressable>
+        <PrimaryInput onPress={() => {}} ref={inputRef} backgroundColor={values.color} onChangeText={(title) => setValues(prev => ({...prev, title}))}/>
 
         <Pressable>
           <Text>Icon</Text>

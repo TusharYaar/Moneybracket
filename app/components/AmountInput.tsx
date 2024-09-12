@@ -1,4 +1,5 @@
-import { GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View, useWindowDimensions } from "react-native";
+import { GestureResponderEvent, Pressable, StyleSheet, TextInput, useWindowDimensions } from "react-native";
+import type {KeyboardTypeOptions  } from "react-native";
 import React, { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 
@@ -9,11 +10,13 @@ type Props = {
   value?: string;
   onChangeText?: (text: string) => void;
   prefix?: string;
+  type?: "amount" | "string";
+  keyboardType?:KeyboardTypeOptions;
 };
 
 const MIN_CHAR = 4;
 
-const AmountInput = forwardRef<TextInput, Props>(function AmountInput(props, ref) {
+const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(props, ref) {
   const { width } = useWindowDimensions();
   const [amount, setAmount] = useState<string>(props.prefix ? props.prefix : "");
 
@@ -35,15 +38,15 @@ const AmountInput = forwardRef<TextInput, Props>(function AmountInput(props, ref
 
   const handleChangeText = useCallback((_text: string) => {
     let text = _text;
-    let prefixLength = props.prefix ? props.prefix.length : 0;
+    let prefixLength = props.prefix && props.type === "amount" ? props.prefix.length : 0;
 
-    if (props.prefix) {
+    if (prefixLength > 0) {
       text = _text.substring(0,prefixLength) === props.prefix ? _text : props.prefix + text; 
     }
 
     if (props.onChangeText) props.onChangeText(text.substring(prefixLength));
     setAmount(text);
-  }, [props.onChangeText, props.prefix]);
+  }, [props.onChangeText, props.prefix, props.type]);
 
   return (
     <Animated.View style={[styles.container, { backgroundColor }]}>
@@ -55,7 +58,7 @@ const AmountInput = forwardRef<TextInput, Props>(function AmountInput(props, ref
           onChangeText={handleChangeText}
           value={amount}
           style={[styles.textbox, { fontSize, height: maxFontHeight }]}
-          keyboardType="decimal-pad"
+          keyboardType={props.keyboardType}
         />
         {/* <View style={styles.actionBtnContainer}>
           {__DEV__ && (
@@ -68,7 +71,7 @@ const AmountInput = forwardRef<TextInput, Props>(function AmountInput(props, ref
     </Animated.View>
   );
 });
-export default AmountInput;
+export default PrimaryInput;
 
 const styles = StyleSheet.create({
   container: {

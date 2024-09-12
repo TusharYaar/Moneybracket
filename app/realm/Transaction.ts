@@ -3,7 +3,7 @@ import { Category } from "./Category";
 import {randomUUID} from "expo-crypto";
 
 
-export class Transaction extends Realm.Object {
+class Transaction extends Realm.Object {
   _id!: string;
   amount!: number;
   date!: Date;
@@ -14,28 +14,28 @@ export class Transaction extends Realm.Object {
   image!: string;
   category!: Category;
 
-  static generate(
-    amount: number,
-    currency: string,
-    date: Date,
-    note: string,
-    category: Category,
-    isFavorite = false,
-    image = "",
-    createdAt = new Date().toUTCString()
-  ) {
-    return {
-      _id: randomUUID(),
-      note,
-      amount,
-      date: date,
-      createdAt,
-      category,
-      currency,
-      image,
-      isFavorite,
-    };
-  }
+  // static generate(
+  //   amount: number,
+  //   currency: string,
+  //   date: Date,
+  //   note: string,
+  //   category: Category,
+  //   isFavorite = false,
+  //   image = "",
+  //   createdAt = new Date().toUTCString()
+  // ) {
+  //   return {
+  //     _id: randomUUID(),
+  //     note,
+  //     amount,
+  //     date: date,
+  //     createdAt,
+  //     category,
+  //     currency,
+  //     image,
+  //     isFavorite,
+  //   };
+  // }
 
   // To use a class as a Realm object type, define the object schema on the static property "schema".
   static schema = {
@@ -54,3 +54,5 @@ export class Transaction extends Realm.Object {
     },
   };
 }
+
+export default Transaction;

@@ -26,12 +26,12 @@ import { useSettings } from "../../providers/SettingsProvider";
 import { useRealm } from "@realm/react";
 import { useRouter } from "expo-router";
 import { useData } from "../../providers/DataProvider";
-import SwipeButton from "../../components/SwipeButton";
-import CategoryItem from "../../components/CategoryItem";
-import AmountInput from "../../components/AmountInput";
+import SwipeButton from "@components/SwipeButton";
+import CategoryItem from "@components/CategoryItem";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { format } from "date-fns";
+import PrimaryInput from "@components/AmountInput";
 
 type Props = {
   visible: boolean;
@@ -269,12 +269,13 @@ const AddTransaction = () => {
     <View style={{ height }}>
       <ScrollView contentContainerStyle={{ padding: 16, flex: 1 }}>
         <View style={{ flexDirection: "column", rowGap: 16, flexGrow: 1 }}>
-          <AmountInput
+          <PrimaryInput
             onPress={handleTextBoxPress}
             onChangeText={(text) => setValues(prev => ({...prev, amount: text}))}
             backgroundColor={values.category ? values.category.color : undefined}
             ref={amtInputRef}
             prefix={defaultCurrency.symbol_native}
+            keyboardType="decimal-pad"
           />
           {values.category && (
             <CategoryItem

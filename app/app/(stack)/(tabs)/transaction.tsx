@@ -1,18 +1,18 @@
 import React, { useMemo, useEffect } from "react";
-import { View, StyleSheet, ScrollView, FlatList } from "react-native";
+import { View, StyleSheet, } from "react-native";
 // import { TabParamList } from "../../navigators/TabNavigators";
 import { useData } from "../../../providers/DataProvider";
-import { Text, Surface, IconButton, FAB } from "react-native-paper";
 import { Transaction } from "../../../realm/Transaction";
 import GroupTransactions from "../../../components/GroupTransactions";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { calcuateTotal, groupTransactionByDate } from "../../../utils/transaction";
-import Amount from "../../../components/Amount";
-import NoDataSVG from "../../../components/SVGs/NoDataSVG";
+// import Amount from "../../../components/Amount";
+// import NoDataSVG from "../../../components/SVGs/NoDataSVG";
 import { useRouter } from "expo-router";
 import TransactionItem from "../../../components/TransactionItem";
 import { useQuery } from "@realm/react";
+import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
 
 const AllTransaction = () => {
   //   useEffect(() => {
@@ -26,12 +26,11 @@ const AllTransaction = () => {
   //       });
   //   }, []);
   const router = useRouter();
-  const { showAddTransactionModal, selectedCategory } = useData();
+  const { selectedCategory } = useData();
   const { t } = useTranslation("", {
     keyPrefix: "screens.tracker.allTransaction",
   });
 
-  const transaction = useQuery(Transaction);
   const _transaction = useMemo(
     () => [],[]
     // [transaction, selectedCategory
@@ -95,7 +94,9 @@ const AllTransaction = () => {
         estimatedItemSize={200}
       />
        */}
-       <FlatList data={transaction}
+       <CollapsibleHeaderFlatList
+       title="transactions"
+        data={transaction}
         renderItem={({ item }) => <TransactionItem data={item} onPress={() => {}}/>}
         style={{flex: 1}}
        />
