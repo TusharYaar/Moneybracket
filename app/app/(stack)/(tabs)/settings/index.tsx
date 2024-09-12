@@ -9,10 +9,10 @@ import SettingItem from "../../../../components/SettingItem";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../../../navigators/StackNavigators";
 import { Switch, Text } from "react-native-paper";
-import { useRealm } from "@realm/react";
-import { Category } from "../../../../realm/Category";
+// import { useRealm } from "@realm/react";
+// import { Category } from "../../../../realm/Category";
 import { Dcategories } from "../../../../data/dummy";
-import { Transaction } from "../../../../realm/Transaction";
+// import { Transaction } from "../../../../realm/Transaction";
 import { useData } from "../../../../providers/DataProvider";
 import { generateDummyTransaction } from "../../../../utils/dummy";
 
@@ -30,49 +30,48 @@ const Setting = ({ navigation }: Props) => {
   const { currency, language, appLock, dateFormat, updateCurrency, updateLanguage, updateDateFormat, updateLock } =
     useSettings();
   const { theme, font } = useCustomTheme();
-  const { category, deleteAllData } = useData();
+  const { category } = useData();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
   const [deleteModal, setDeleteModal] = useState(false);
   const [currencyModal, setCurrencyModal] = useState(false);
   const [languageModal, setLanguageModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
-  const realm = useRealm();
 
   const addDummyCategories = useCallback(() => {
-    realm.write(() => {
-      Dcategories.forEach((cat) => {
-        realm.create(
-          "Category",
-          Category.generate(
-            cat.title,
-            cat.type,
-            COLORS[Math.floor(Math.random() * COLORS.length)],
-            ICONS[Math.floor(Math.random() * ICONS.length)]
-          )
-        );
-      });
-    });
+    // realm.write(() => {
+    //   Dcategories.forEach((cat) => {
+    //     realm.create(
+    //       "Category",
+    //       Category.generate(
+    //         cat.title,
+    //         cat.type,
+    //         COLORS[Math.floor(Math.random() * COLORS.length)],
+    //         ICONS[Math.floor(Math.random() * ICONS.length)]
+    //       )
+    //     );
+    //   });
+    // });
   }, []);
 
   const addDummy = useCallback(() => {
-    realm.write(() => {
-      const trans = generateDummyTransaction();
-      trans.forEach((element) => {
-        realm.create(
-          "Transaction",
-          Transaction.generate(
-            // element.amount,
-            13,
-            currency.code,
-            new Date(),
-            // element.date,
-            "dummy transaction",
-            category[Math.floor(Math.random() * category.length)]
-          )
-        );
-      });
-    });
+    // realm.write(() => {
+    //   const trans = generateDummyTransaction();
+    //   trans.forEach((element) => {
+    //     realm.create(
+    //       "Transaction",
+    //       Transaction.generate(
+    //         // element.amount,
+    //         13,
+    //         currency.code,
+    //         new Date(),
+    //         // element.date,
+    //         "dummy transaction",
+    //         category[Math.floor(Math.random() * category.length)]
+    //       )
+    //     );
+    //   });
+    // });
   }, []);
 
   const dismissModal = useCallback(() => {
@@ -80,7 +79,7 @@ const Setting = ({ navigation }: Props) => {
   }, []);
 
   const handleDeleteAllData = useCallback(() => {
-    deleteAllData();
+    // deleteAllData();
     dismissModal();
   }, []);
 

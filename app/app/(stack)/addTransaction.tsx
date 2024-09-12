@@ -1,9 +1,9 @@
 import { StyleSheet, View, TextInput, Pressable, Keyboard, ScrollView, useWindowDimensions, Text } from "react-native";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 // import { TextInput, IconButton, Button, Text, TouchableRipple, Dialog } from "react-native-paper";
-import { Transaction } from "../../realm/Transaction";
+// import { Transaction } from "../../realm/Transaction";
 // import CategoryItem from "../CategoryItem";
-import { Category } from "../../realm/Category";
+// import { Category } from "../../realm/Category";
 import DatePicker from "react-native-date-picker";
 // import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 // import CurrencyModal from "../CurrencyModal";
@@ -23,21 +23,21 @@ import { useSettings } from "../../providers/SettingsProvider";
 // import { format } from "date-fns";
 // import Amount from "../../components/Amount";
 // import CategoryItem from "../../components/CategoryItem";
-import { useRealm } from "@realm/react";
 import { useRouter } from "expo-router";
 import { useData } from "../../providers/DataProvider";
 import SwipeButton from "@components/SwipeButton";
 import CategoryItem from "@components/CategoryItem";
-import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { format } from "date-fns";
 import PrimaryInput from "@components/AmountInput";
+import { Category, Transaction } from "types";
 
 type Props = {
   visible: boolean;
   item?: Transaction;
   onDismiss: () => void;
-  category: Realm.Results<Category>;
+  category:Category;
 };
 
 type ValueProps = {
@@ -111,7 +111,6 @@ const AddTransaction = () => {
   //     // if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) requestImagePermission();
   //   }, [cameraPermission, requestCameraPermission, imagePermission, requestImagePermission]);
 
-  const realm = useRealm();
 
   // const moveImage = useCallback(async (image: string) => {
   //   const name = image.split("/");
@@ -124,14 +123,14 @@ const AddTransaction = () => {
 
   const addNewTransaction = async () => {
     // const img = values.image.length > 0 ? await moveImage(values.image) : "";
-    realm.write(() => {
-      if (values.category) {
-        realm.create(
-          "Transaction",
-          Transaction.generate(parseFloat(values.amount), "INR", values.date, values.note, values.category, false)
-        );
-      }
-    });
+    // realm.write(() => {
+    //   if (values.category) {
+    //     realm.create(
+    //       "Transaction",
+    //       // Transaction.generate(parseFloat(values.amount), "INR", values.date, values.note, values.category, false)
+    //     );
+    //   }
+    // });
   };
 
   const updateTransaction = useCallback(async (trans: Transaction, values: ValueProps) => {

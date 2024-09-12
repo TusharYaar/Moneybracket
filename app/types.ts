@@ -1,8 +1,38 @@
 import type { MD3Theme, MD3Colors, MD3Typescale } from "react-native-paper/lib/typescript/src/types";
 import { Theme } from "@react-navigation/native";
-import { Transaction } from "./realm/Transaction";
 import { Platform } from "react-native";
 
+export type Transaction = {
+  _id: string;
+  note: string;
+  date: Date;
+  amount: number;
+  currency: string;
+  category: string;
+  createdAt: string;
+  isFavorite: boolean;
+  image: string;
+};
+
+export type Category = {
+  _id: string;
+  title: string;
+  type: string;
+  isFavorite: boolean;
+  createdAt: string;
+  color: string;
+  icon: string;
+};
+export type Shortcut = {
+  _id: string,
+  category: string,
+  note: string,
+  amount: number,
+  createdAt: string,
+  currency: string,
+  icon: string,
+  title: string,
+}
 export interface CustomTheme extends MD3Theme {
   id: string;
   name: string;

@@ -24,7 +24,7 @@ interface Props<T> extends FlatListProps<T> {
     onPress: () => void;
     icon: string;
     label: string;
-
+    disabled?: boolean;
   }[];
 }
 const APPBAR_HEIGHT = 64;

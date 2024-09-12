@@ -2,7 +2,7 @@ import React, { useMemo, useEffect } from "react";
 import { View, StyleSheet, } from "react-native";
 // import { TabParamList } from "../../navigators/TabNavigators";
 import { useData } from "../../../providers/DataProvider";
-import { Transaction } from "../../../realm/Transaction";
+// import { Transaction } from "../../../realm/Transaction";
 import GroupTransactions from "../../../components/GroupTransactions";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
@@ -11,8 +11,9 @@ import { calcuateTotal, groupTransactionByDate } from "../../../utils/transactio
 // import NoDataSVG from "../../../components/SVGs/NoDataSVG";
 import { useRouter } from "expo-router";
 import TransactionItem from "../../../components/TransactionItem";
-import { useQuery } from "@realm/react";
+// import { useQuery } from "@realm/react";
 import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
+import { Transaction } from "types";
 
 const AllTransaction = () => {
   //   useEffect(() => {
@@ -44,7 +45,7 @@ const AllTransaction = () => {
   // }, [_transaction]);
 
   const handlePressTransaction = (transaction: Transaction) => {
-    showAddTransactionModal(transaction);
+    // showAddTransactionModal(transaction);
   };
 
   const values = useMemo(() => {
@@ -96,7 +97,7 @@ const AllTransaction = () => {
        */}
        <CollapsibleHeaderFlatList
        title="transactions"
-        data={transaction}
+        data={_transaction}
         renderItem={({ item }) => <TransactionItem data={item} onPress={() => {}}/>}
         style={{flex: 1}}
        />

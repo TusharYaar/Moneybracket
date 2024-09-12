@@ -10,6 +10,7 @@ type Props = {
     onPress: () => void;
     icon: string;
     label: string;
+    disabled?: boolean;
   }[];
 };
 
@@ -30,8 +31,8 @@ const Header = ({ title, showBackButton = true, headerBtns = [] }: Props) => {
       <View style={{ flexDirection: "row" }}>
         {headerBtns.map((btn) => (
           <View style={styles.headerActionBtn} key={btn.label}>
-            <Pressable onPress={btn.onPress}>
-              <Octicons name={btn.icon as undefined} size={24} color="#e63946" />
+            <Pressable onPress={btn.onPress} disabled={btn.disabled === true}>
+              <Octicons name={btn.icon as undefined} size={24} color={btn.disabled === true ? "#8a909c" : "#e63946"} />
             </Pressable>
           </View>
         ))}

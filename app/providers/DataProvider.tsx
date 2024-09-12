@@ -1,31 +1,19 @@
 import React, { useContext, createContext, useMemo, useState, useCallback, useEffect } from "react";
-import { Category } from "../realm/Category";
-import { Transaction } from "../realm/Transaction";
-
-import { useQuery, useRealm } from "@realm/react";
 import AddCategory from "../components/Modals/AddCategory";
 import AddTransaction from "../components/Modals/AddTransaction";
 // import DateFilterModal from "../components/Modals/DateFilterModal";
 import CategoryFilterModal from "../components/Modals/CategoryFilterModal";
-import { BackupFile } from "../types";
+import { BackupFile, Category } from "../types";
 
-type AddNewCategory_function =
-  | Pick<Category, "title" | "type" | "color" | "icon" | "createdAt" | "isFavorite">
-  | Required<Pick<Category, "title" | "type" | "color" | "icon">>;
+// type AddNewCategory_function =
+//   | Pick<Category, "title" | "type" | "color" | "icon" | "createdAt" | "isFavorite">
+//   | Required<Pick<Category, "title" | "type" | "color" | "icon">>;
 
 type Props = {
-  // dateFilter: {
-  //   type: string;
-  //   startDate: Date;
-  //   endDate: Date;
-  // };
   selectedCategory: string[];
   category: Category[];
   // transaction: Realm.Results<Transaction>;
-  // showDateFilterModal: () => void;
-  showCategoryFilterModal: () => void;
-  // updateDateFilter: (type: string, start: Date, end: Date) => void;
-  deleteAllData: () => void;
+  // deleteAllData: () => void;
 };
 
 const DataContext = createContext<Props>({
@@ -37,10 +25,7 @@ const DataContext = createContext<Props>({
   selectedCategory: [],
   category: [] as Category[],
   // transaction: [] as unknown as Realm.Results<Transaction>,
-  // showDateFilterModal: () => {},
-  showCategoryFilterModal: () => {},
-  // updateDateFilter: () => {},
-  deleteAllData: () => {},
+  // deleteAllData: () => {},
 });
 
 export const useData = () => useContext(DataContext);
@@ -55,33 +40,6 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [category, setCategory] = useState<Category[]>([]);
 
-  const realm = useRealm();
-
-  const handleUpdateData = useCallback(() => {
-    const _category = realm.objects(Category);
-    setCategory(_category.flatMap((item) => item));
-  }, [realm]);
-
-
-  useEffect(() => {
-    handleUpdateData();
-  },[]);
-
-  useEffect(() => {
-    const addListener = async () => {
-      try {
-        realm.addListener("change", handleUpdateData);
-      } catch (error) {
-        console.log("Unable to add Listener, restart app");
-      }
-    };
-    addListener();
-
-    return () => realm.removeAllListeners();
-  }, [realm, handleUpdateData]);
-
-
-
   // const category = useQuery(Category, cat => cat.sorted("title"));
   // const category = useMemo(() => _category.sorted("title"), [_category]);
 
@@ -94,42 +52,15 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   // return _transaction.sorted("date", true);
   // }, [_transaction]);
 
-  const [addCategory, setAddCategory] = useState<{
-    visible: boolean;
-    item: Category | undefined;
-  }>({
-    visible: false,
-    item: undefined,
-  });
-
-  const [addTransaction, setAddTransaction] = useState<{
-    visible: boolean;
-    item: Transaction | undefined;
-  }>({
-    visible: false,
-    item: undefined,
-  });
+  // const [addTransaction, setAddTransaction] = useState<{
+  //   visible: boolean;
+  //   item: Transaction | undefined;
+  // }>({
+  //   visible: false,
+  //   item: undefined,
+  // });
 
   // const [dateModalVisible, setDateModalVisible] = useState(false);
-  const [categoryFilterModalVisible, setCategoryFilterModalVisible] = useState(false);
-
-  const showAddCategoryModal = useCallback((item?: Category) => {
-    if (item) setAddCategory({ item, visible: true });
-    else setAddCategory({ item: undefined, visible: true });
-  }, []);
-
-  const dismissAddCategoryModal = useCallback(() => {
-    setAddCategory((prev) => ({ ...prev, visible: false }));
-  }, []);
-
-  const showAddTransactionModal = useCallback((item?: Transaction) => {
-    if (item) setAddTransaction({ item, visible: true });
-    else setAddTransaction({ item: undefined, visible: true });
-  }, []);
-
-  const dismissAddTransactionModal = useCallback(() => {
-    setAddTransaction((prev) => ({ ...prev, visible: false }));
-  }, []);
 
   // const showDateFilterModal = useCallback(() => {
   //   setDateModalVisible(true);
@@ -137,18 +68,6 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   // const dismissDateFilterModal = useCallback(() => {
   //   setDateModalVisible(false);
   // }, []);
-
-  const showCategoryFilterModal = useCallback(() => {
-    setCategoryFilterModalVisible(true);
-  }, []);
-  const dismissCategoryFilterModal = useCallback(() => {
-    setCategoryFilterModalVisible(false);
-  }, []);
-
-  const updateCategoryFilter = useCallback((items: string[]) => {
-    dismissCategoryFilterModal();
-    setSelectedCategory(items);
-  }, []);
 
   // const updateDateFilter = useCallback((type: string, start: Date, end: Date) => {
   //   setDateFilter({
@@ -158,45 +77,13 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   //   });
   // }, []);
 
-  const deleteAllData = useCallback(() => {
-    realm.write(() => {
-      realm.deleteAll();
-    });
-  }, []);
-
   return (
     <DataContext.Provider
       value={{
-        // dateFilter,
         category,
         selectedCategory,
-        // transaction,
-        // showDateFilterModal,
-        showCategoryFilterModal,
-        // updateDateFilter,
-        deleteAllData,
       }}
     >
-      {/* <AddCategory item={addCategory.item} visible={addCategory.visible} onDismiss={dismissAddCategoryModal} />
-      <AddTransaction
-        category={category}
-        item={addTransaction.item}
-        visible={addTransaction.visible}
-        onDismiss={dismissAddTransactionModal}
-      />
-      <DateFilterModal
-        visible={dateModalVisible}
-        onDismiss={dismissDateFilterModal}
-        updateDateFilter={updateDateFilter}
-        filter={dateFilter}
-      />
-      <CategoryFilterModal
-        visible={categoryFilterModalVisible}
-        onDismiss={dismissCategoryFilterModal}
-        selectedCategory={selectedCategory}
-        onSelectedCategoryUpdate={(items) => updateCategoryFilter(items)}
-        category={category}
-      /> */}
       {children}
     </DataContext.Provider>
   );

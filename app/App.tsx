@@ -1,13 +1,13 @@
 import React from "react";
 import ThemeProvider from "./providers/ThemeProvider";
 import LockProvider from "./providers/LockProvider";
-import {RealmProvider} from '@realm/react';
+// import {RealmProvider} from '@realm/react';
 import DataProvider from "./providers/DataProvider";
 import ExchangeRatesProvider from "./providers/ExchangeRatesProvider";
 
-import  Category from "./realm/Category";
-import  Shortcut from "./realm/Shortcut";
-import  Transaction  from "./realm/Transaction";
+// import  Category from "./realm/Category";
+// import  Shortcut from "./realm/Shortcut";
+// import  Transaction  from "./realm/Transaction";
 
 import SettingsProvider from "./providers/SettingsProvider";
 
@@ -23,7 +23,7 @@ const App = () => {
   return (
     <I18nextProvider i18n={i18n}>
       <ThemeProvider>
-        <RealmProvider schema={[Category, Shortcut, Transaction]}>
+        {/* <RealmProvider schema={[Category, Shortcut, Transaction]}> */}
           <SettingsProvider>
             <ExchangeRatesProvider>
               <DataProvider>
@@ -35,7 +35,7 @@ const App = () => {
               </DataProvider>
             </ExchangeRatesProvider>
           </SettingsProvider>
-        </RealmProvider>
+        {/* </RealmProvider> */}
       </ThemeProvider>
     </I18nextProvider>
   );

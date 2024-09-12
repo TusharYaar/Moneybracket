@@ -4,8 +4,8 @@ import { COLORS } from "../../data";
 import SwipeButton from "@components/SwipeButton";
 import { useRouter } from "expo-router";
 import PrimaryInput from "@components/AmountInput";
-import { Category } from "../../realm/Category";
-import { useRealm } from "@realm/react";
+import { Category } from "types";
+// import { useRealm } from "@realm/react";
 
 const CATEGORY_TYPES = [
   {
@@ -42,19 +42,18 @@ const AddCategoryScreen = () => {
     icon: "add",
   });
 
-  const realm = useRealm();
   const { height, width } = useWindowDimensions();
   const handleSubmit = () => {
-    addNewCategory(values);
+    // addNewCategory(values);
     if (router.canGoBack) router.back();
     else router.replace("(tabs)/category");
   };
 
   const addNewCategory = useCallback(
     ({ title, type, color, icon }: ValueProps) => {
-      realm.write(() => {
-        realm.create("Category", Category.generate(title, type, color, icon));
-      });
+      // realm.write(() => {
+      //   realm.create("Category", Category.generate(title, type, color, icon));
+      // });
     },
     []
   );
