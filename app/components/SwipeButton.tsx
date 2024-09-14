@@ -43,7 +43,7 @@ const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style}: Props) => {
       <GestureDetector gesture={pan}>
         <Animated.View
           style={{
-            backgroundColor: "brown",
+            backgroundColor: "#e63946",
             height: pillSize,
             width: pillSize,
             borderRadius: 8,

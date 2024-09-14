@@ -10,12 +10,11 @@ import * as DocumentPicker from "expo-document-picker";
 import { generateBackupFile, readBackupFile } from "../../../../utils/backup";
 import { Category } from "../../../../realm/Category";
 import { BackupFile } from "../../../../types";
-import { Transaction } from "../../../../realm/Transaction";
 import Loading from "../../../../components/Modals/Loading";
 import { useTranslation } from "react-i18next";
 
 const Backup = () => {
-  const { category, transaction } = useData();
+  const { category } = useData();
   const { t } = useTranslation("", { keyPrefix: "screens.settings.backup" });
   const [loading, setLoading] = useState(false);
 
@@ -87,7 +86,7 @@ const Backup = () => {
             `mbbackup_${new Date()}.json`,
             "application/json"
           );
-          const content = generateBackupFile(category, transaction, {});
+          const content = generateBackupFile(category, [], {});
           await FileSystem.StorageAccessFramework.writeAsStringAsync(location, JSON.stringify(content, null, 4), {
             encoding: "utf8",
           });
@@ -99,7 +98,7 @@ const Backup = () => {
       }
 
       const location = `${BACKUP_DIRECTORY}/backup_${new Date()}.json`;
-      const content = generateBackupFile(category, transaction, {});
+      const content = generateBackupFile(category, [], {});
       await FileSystem.writeAsStringAsync(location, JSON.stringify(content, null, 4), {
         encoding: "utf8",
       });
@@ -109,7 +108,7 @@ const Backup = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [category, transaction]);
+  }, [category]);
 
   const chooseRestoreFile = useCallback(async () => {
     try {
@@ -123,7 +122,7 @@ const Backup = () => {
 
         const categoryMap = {};
 
-        categories.forEach((cat) => (categoryMap[cat.title] = cat));
+        // categories.forEach((cat) => (categoryMap[cat.title] = cat));
 
         const transactions = data.validTransactions.map((trans) => ({
           ...trans,

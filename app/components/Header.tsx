@@ -1,10 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
 import Octicons from "@expo/vector-icons/Octicons";
+import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 
-type Props = {
-  title: string;
+interface Props {
+  title?: string;
   showBackButton?: boolean;
   headerBtns?: {
     onPress: () => void;
@@ -12,31 +13,38 @@ type Props = {
     label: string;
     disabled?: boolean;
   }[];
+  style?: StyleProp<ViewStyle>;
 };
 
-const Header = ({ title, showBackButton = true, headerBtns = [] }: Props) => {
+const Header = ({ title="", showBackButton = true, headerBtns = [], style }: Props) => {
   const router = useRouter();
   return (
-    <View style={[styles.headerContainer, headerBtns.length > 0 ? { columnGap: 16 } : {}]}>
+    <View style={[styles.headerContainer, { columnGap: 16 }, style]}>
       {router.canGoBack && showBackButton ? (
-        <View style={styles.headerActionBtn}>
-          <Pressable onPress={router.back}>
-            <Octicons name="chevron-left" size={24} color="#e63946" style={{ padding: 16 }} />
-          </Pressable>
-        </View>
+        <Pressable onPress={router.back}>
+          <View style={styles.headerActionBtn}>
+            <Octicons name="chevron-left" size={24} color="#e63946" />
+          </View>
+        </Pressable>
       ) : null}
       <View style={styles.titleContianer}>
         <Text style={{ color: "#a8dadc", fontSize: 32 }}>{title}</Text>
       </View>
-      <View style={{ flexDirection: "row" }}>
-        {headerBtns.map((btn) => (
-          <View style={styles.headerActionBtn} key={btn.label}>
-            <Pressable onPress={btn.onPress} disabled={btn.disabled === true}>
-              <Octicons name={btn.icon as undefined} size={24} color={btn.disabled === true ? "#8a909c" : "#e63946"} />
+      {headerBtns.length > 0 && (
+        <View style={{ flexDirection: "row", columnGap: 8 }}>
+          {headerBtns.map((btn) => (
+            <Pressable onPress={btn.onPress} disabled={btn.disabled === true} key={btn.label}>
+              <View style={styles.headerActionBtn}>
+                <Octicons
+                  name={btn.icon as undefined}
+                  size={24}
+                  color={btn.disabled === true ? "#8a909c" : "#e63946"}
+                />
+              </View>
             </Pressable>
-          </View>
-        ))}
-      </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -45,7 +53,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   headerContainer: {
-    paddingHorizontal: 16,
+    // paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
     flexWrap: "nowrap",

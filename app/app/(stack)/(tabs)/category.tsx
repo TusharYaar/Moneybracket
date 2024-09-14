@@ -14,10 +14,12 @@ const AllCategory = () => {
     <CollapsibleHeaderFlatList
       title="Category"
       paddingTop={8}
-      contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 112 }}
+      contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 112 }}
       data={category}
-      renderItem={({ item }) => <CategoryItem item={item} onPress={() => console.log(item)} style={styles.category} />}
-      headerBtns={[{ icon: "plus", onPress: () => router.push("addCategory") , label: "add_category" }]}
+      renderItem={({ item }) => (
+        <CategoryItem item={item} onPress={() => router.push(`addCategory?_id=${item._id}&title=${item.title}&color=${item.color.replace("#", "")}&type=${item.type}`)} style={styles.category} />
+      )}
+      headerBtns={[{ icon: "plus", onPress: () => router.push("addCategory"), label: "add_category" }]}
       // estimatedItemSize={76}
     />
   );
@@ -32,6 +34,6 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   category: {
-    margin: 8,
+    marginVertical: 8,
   },
 });

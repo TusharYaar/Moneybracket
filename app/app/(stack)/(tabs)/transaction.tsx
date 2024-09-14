@@ -1,10 +1,9 @@
 import React, { useMemo, useEffect } from "react";
-import { View, StyleSheet, } from "react-native";
+import { View, StyleSheet } from "react-native";
 // import { TabParamList } from "../../navigators/TabNavigators";
 import { useData } from "../../../providers/DataProvider";
 // import { Transaction } from "../../../realm/Transaction";
-import GroupTransactions from "../../../components/GroupTransactions";
-import { FlashList } from "@shopify/flash-list";
+// import GroupTransactions from "../../../components/GroupTransactions";
 import { useTranslation } from "react-i18next";
 import { calcuateTotal, groupTransactionByDate } from "../../../utils/transaction";
 // import Amount from "../../../components/Amount";
@@ -33,7 +32,8 @@ const AllTransaction = () => {
   });
 
   const _transaction = useMemo(
-    () => [],[]
+    () => [],
+    []
     // [transaction, selectedCategory
   );
   // transaction.filter((tran) => selectedCategory.includes(tran.category._id.toHexString())),
@@ -62,7 +62,7 @@ const AllTransaction = () => {
 
   return (
     <>
-        {/* <ScrollView horizontal={true} contentContainerStyle={styles.briefContainer}>
+      {/* <ScrollView horizontal={true} contentContainerStyle={styles.briefContainer}>
           <Surface style={styles.brief}>
             <Text variant="labelLarge">Income</Text>
             <Amount variant="titleLarge" amount={values.allTime.income} type={"income"} />
@@ -95,12 +95,15 @@ const AllTransaction = () => {
         estimatedItemSize={200}
       />
        */}
-       <CollapsibleHeaderFlatList
-       title="transactions"
+      <CollapsibleHeaderFlatList
+        title="transactions"
         data={_transaction}
-        renderItem={({ item }) => <TransactionItem data={item} onPress={() => {}}/>}
-        style={{flex: 1}}
-       />
+        renderItem={({ item }) => <TransactionItem data={item} onPress={() => {}} />}
+        headerBtns={[
+          { icon: "search", onPress: () => console.log("search"), label: "search", disabled: true, },
+          { icon: "filter", onPress: () => console.log("filter"), label: "filter", disabled: true, },
+        ]}
+      />
     </>
   );
 };

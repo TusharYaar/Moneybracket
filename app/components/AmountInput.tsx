@@ -6,8 +6,8 @@ import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 type Props = {
   onPress: (event: GestureResponderEvent) => void;
   placeholder?: string;
-  backgroundColor?: string;
-  value?: string;
+  backgroundColor: string;
+  initialValue?: string;
   onChangeText?: (text: string) => void;
   prefix?: string;
   type?: "amount" | "string";
@@ -16,16 +16,17 @@ type Props = {
 
 const MIN_CHAR = 4;
 
-const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(props, ref) {
+const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput( { prefix="", initialValue="", backgroundColor,...props}, ref) {
   const { width } = useWindowDimensions();
-  const [amount, setAmount] = useState<string>(props.prefix ? props.prefix : "");
+  const [amount, setAmount] = useState<string>(prefix + initialValue);
 
-  const backgroundColor = useSharedValue(props.backgroundColor ? props.backgroundColor : "orange");
+  const animatedBGColor = useSharedValue(backgroundColor ? backgroundColor : "orange");
 
   useEffect(() => {
-    backgroundColor.value = withTiming(props.backgroundColor);
-  }, [props.backgroundColor]);
+    animatedBGColor.value = withTiming(backgroundColor);
+  }, [backgroundColor]);
 
+  // TODO: Improve Logic for MaxFontHeight
   const maxFontHeight = useMemo(() => {
     const height = width / MIN_CHAR;
     return height > 300 ? 300 : height;
@@ -38,18 +39,18 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(props, re
 
   const handleChangeText = useCallback((_text: string) => {
     let text = _text;
-    let prefixLength = props.prefix && props.type === "amount" ? props.prefix.length : 0;
+    let prefixLength = prefix && props.type === "amount" ? prefix.length : 0;
 
     if (prefixLength > 0) {
-      text = _text.substring(0,prefixLength) === props.prefix ? _text : props.prefix + text; 
+      text = _text.substring(0,prefixLength) === prefix ? _text : prefix + text; 
     }
 
     if (props.onChangeText) props.onChangeText(text.substring(prefixLength));
     setAmount(text);
-  }, [props.onChangeText, props.prefix, props.type]);
+  }, [props.onChangeText, prefix, props.type]);
 
   return (
-    <Animated.View style={[styles.container, { backgroundColor }]}>
+    <Animated.View style={[styles.container, { backgroundColor: backgroundColor }]}>
       <Pressable onPress={props.onPress} style={styles.pressable}>
         <TextInput
           autoFocus

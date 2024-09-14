@@ -3,7 +3,7 @@ import React from "react";
 import { Category } from "types";
 import { Text, TouchableRipple } from "react-native-paper";
 
-import Icon from "react-native-vector-icons/Ionicons";
+import Octicons from "@expo/vector-icons/Octicons";
 import { useCustomTheme } from "../providers/ThemeProvider";
 
 type Props = {
@@ -25,7 +25,7 @@ const CategoryItem = ({ item, onPress, style, itemColor }: Props) => {
       <TouchableRipple style={styles.container} onPress={() => onPress(item)}>
         <View style={styles.innerContainer}>
           <View style={[styles.iconContainer, { backgroundColor: categoryColor }]}>
-            <Icon name={item.icon} size={40} />
+            <Octicons name={item.icon as undefined} size={40} />
           </View>
           <View style={[styles.content]}>
             <Text variant="titleMedium">{item.title}</Text>

@@ -10,6 +10,7 @@ export type Transaction = {
   currency: string;
   category: string;
   createdAt: string;
+  updatedAt: string;
   isFavorite: boolean;
   image: string;
 };
@@ -20,18 +21,20 @@ export type Category = {
   type: string;
   isFavorite: boolean;
   createdAt: string;
+  updatedAt: string;
   color: string;
   icon: string;
 };
 export type Shortcut = {
-  _id: string,
-  category: string,
-  note: string,
-  amount: number,
-  createdAt: string,
-  currency: string,
-  icon: string,
-  title: string,
+  _id: string;
+  category: string;
+  note: string;
+  amount: number;
+  createdAt: string;
+  updatedAt: string;
+  currency: string;
+  icon: string;
+  title: string;
 }
 export interface CustomTheme extends MD3Theme {
   id: string;

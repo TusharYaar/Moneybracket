@@ -1,4 +1,3 @@
-import { ScrollView, StyleSheet } from "react-native";
 import React, { useCallback, useState } from "react";
 import { useSettings } from "../../../../providers/SettingsProvider";
 import { useTranslation } from "react-i18next";
@@ -23,10 +22,12 @@ import CurrencyModal from "../../../../components/Modals/CurrencyModal";
 import LanguageModal from "../../../../components/Modals/LanguageModal";
 import DateFormatModal from "../../../../components/Modals/DateFormatModal";
 import { useCustomTheme } from "../../../../providers/ThemeProvider";
+import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
+import { useRouter } from "expo-router";
 
 type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 
-const Setting = ({ navigation }: Props) => {
+const Setting = () => {
   const { currency, language, appLock, dateFormat, updateCurrency, updateLanguage, updateDateFormat, updateLock } =
     useSettings();
   const { theme, font } = useCustomTheme();
@@ -37,6 +38,9 @@ const Setting = ({ navigation }: Props) => {
   const [currencyModal, setCurrencyModal] = useState(false);
   const [languageModal, setLanguageModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
+
+
+  const router = useRouter();
 
   const addDummyCategories = useCallback(() => {
     // realm.write(() => {
@@ -111,16 +115,20 @@ const Setting = ({ navigation }: Props) => {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.screen}>
+    <CollapsibleHeaderScrollView
+      contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 112 }}
+      title="Settings"
+      paddingTop={16}
+    >
       <SettingItem
         label={t("font")}
         leftIcon="text"
-        onPress={() => navigation.navigate("FontSetting")}
+        onPress={() => router.push("font")}
         style={{ borderTopLeftRadius: theme.roundness * 4, borderTopRightRadius: theme.roundness * 4 }}
       >
         <Text>{ALL_FONTS.find((f) => f.id === font)?.name}</Text>
       </SettingItem>
-      <SettingItem label={t("theme")} leftIcon="color-fill-outline" onPress={() => navigation.navigate("ThemeSetting")}>
+      <SettingItem label={t("theme")} leftIcon="color-fill-outline" onPress={() => router.push("ThemeSetting")}>
         <Text>{theme.name}</Text>
       </SettingItem>
       <SettingItem label={t("currency")} leftIcon="text" onPress={() => setCurrencyModal(true)}>
@@ -143,13 +151,13 @@ const Setting = ({ navigation }: Props) => {
         <SettingItem
           label={t("export")}
           leftIcon="albums-outline"
-          onPress={() => navigation.navigate("ExportScreen")}
+          onPress={() => router.push("ExportScreen")}
         />
       )}
       <SettingItem
         label={t("backup")}
         leftIcon="archive-outline"
-        onPress={() => navigation.navigate("BackupScreen")}
+        onPress={() => router.push("BackupScreen")}
         style={{ borderBottomLeftRadius: theme.roundness * 4, borderBottomRightRadius: theme.roundness * 4 }}
       />
 
@@ -177,15 +185,8 @@ const Setting = ({ navigation }: Props) => {
         onItemSelect={handleUpdateDateFormat}
         current={dateFormat}
       />
-    </ScrollView>
+    </CollapsibleHeaderScrollView>
   );
 };
 
 export default Setting;
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    padding: 8,
-  },
-});

@@ -1,4 +1,4 @@
-import { StyleSheet, FlatListProps, View } from "react-native";
+import { StyleSheet, ScrollViewProps, View } from "react-native";
 import React from "react";
 
 import Animated, {
@@ -10,7 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 import Header from "./Header";
 
-interface Props<T> extends FlatListProps<T> {
+interface Props<T> extends ScrollViewProps {
   showHeader?: boolean;
   title?: string;
 
@@ -27,7 +27,7 @@ interface Props<T> extends FlatListProps<T> {
 }
 const APPBAR_HEIGHT = 64;
 
-function CollapsibleHeaderFlatList<T>({
+function CollapsibleHeaderScrollView<T>({
   onScroll = undefined,
   showHeader = true,
   title = "",
@@ -36,7 +36,6 @@ function CollapsibleHeaderFlatList<T>({
   paddingTop = 0,
   headerBtns = [],
   ...props
-
 }: Props<T>) {
   const lastContentOffset = useSharedValue(0);
   const height = useSharedValue(APPBAR_HEIGHT);
@@ -74,12 +73,15 @@ function CollapsibleHeaderFlatList<T>({
 
   return (
     <>
-      <Animated.View style={[styles.headerContainer, aStyle]} onLayout={(event) => console.log(event.nativeEvent.layout)}>
-      <View style={{paddingHorizontal: 16}}>
-        <Header title={title} showBackButton={false} headerBtns={headerBtns}  />
+      <Animated.View
+        style={[styles.headerContainer, aStyle]}
+        onLayout={(event) => console.log(event.nativeEvent.layout)}
+      >
+        <View style={{ paddingHorizontal: 16 }}>
+          <Header title={title} showBackButton={false} headerBtns={headerBtns} />
         </View>
       </Animated.View>
-      <Animated.FlatList
+      <Animated.ScrollView
         {...props}
         onScroll={handleOnScroll}
         showsVerticalScrollIndicator={false}
@@ -89,7 +91,7 @@ function CollapsibleHeaderFlatList<T>({
   );
 }
 
-export default CollapsibleHeaderFlatList;
+export default CollapsibleHeaderScrollView;
 
 const styles = StyleSheet.create({
   headerContainer: {

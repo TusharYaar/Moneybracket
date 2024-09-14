@@ -1,12 +1,12 @@
 import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
-import { Transaction } from "../realm/Transaction";
 import { Text, TouchableRipple } from "react-native-paper";
 import Icon from "@expo/vector-icons/Ionicons";
 import { chooseBetterContrast } from "../utils/colors";
 
 import Amount from "./Amount";
 import { useCustomTheme } from "../providers/ThemeProvider";
+import { Transaction } from "types";
 
 type Props = {
   data: Transaction;

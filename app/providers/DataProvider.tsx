@@ -2,9 +2,12 @@ import React, { useContext, createContext, useMemo, useState, useCallback, useEf
 import AddCategory from "../components/Modals/AddCategory";
 import AddTransaction from "../components/Modals/AddTransaction";
 // import DateFilterModal from "../components/Modals/DateFilterModal";
-import CategoryFilterModal from "../components/Modals/CategoryFilterModal";
 import { BackupFile, Category } from "../types";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { randomUUID } from "expo-crypto";
+const ASYNC_STORAGE = {
+  CATEGORY_KEY: "CATEGORY",
+};
 // type AddNewCategory_function =
 //   | Pick<Category, "title" | "type" | "color" | "icon" | "createdAt" | "isFavorite">
 //   | Required<Pick<Category, "title" | "type" | "color" | "icon">>;
@@ -12,6 +15,9 @@ import { BackupFile, Category } from "../types";
 type Props = {
   selectedCategory: string[];
   category: Category[];
+  addCategory: (value: Omit<Category, "_id">) => void;
+  updateCategory: (_id: string, value: Omit<Category, "_id">) => void;
+
   // transaction: Realm.Results<Transaction>;
   // deleteAllData: () => void;
 };
@@ -24,6 +30,8 @@ const DataContext = createContext<Props>({
   // },
   selectedCategory: [],
   category: [] as Category[],
+  addCategory: (value: Omit<Category, "_id">) => {},
+  updateCategory: (_id: string, value: Omit<Category, "_id">) => {}
   // transaction: [] as unknown as Realm.Results<Transaction>,
   // deleteAllData: () => {},
 });
@@ -39,6 +47,55 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
 
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [category, setCategory] = useState<Category[]>([]);
+
+  const getAllCategory = useCallback(async () => {
+    try {
+      const value = await AsyncStorage.getItem(ASYNC_STORAGE.CATEGORY_KEY);
+      if (value !== null) {
+        return JSON.parse(value) as Category[];
+      } else return [];
+    } catch (e) {
+      console.log(e);
+      // TODO: ADD SENETRY LOGGING
+      // error reading value
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      const data = await getAllCategory();
+      setCategory(data);
+    };
+
+    fetchCategory();
+  }, [getAllCategory, setCategory]);
+
+  const addCategory = useCallback(async (value: Omit<Category, "_id">) => {
+    const _id = randomUUID();
+    setCategory((prev) => prev.concat({ ...value, _id }));
+    try {
+      const categories = await getAllCategory();
+      categories.push({ ...value, _id });
+
+      await AsyncStorage.setItem(ASYNC_STORAGE.CATEGORY_KEY, JSON.stringify(categories));
+    } catch (e) {
+      // saving error
+      setCategory((prev) => prev.filter((cat) => cat._id !== _id));
+    }
+  }, []);
+
+  const updateCategory = useCallback(async (_id: string, value: Omit<Category, "_id">) => {
+    setCategory((prev) => prev.map( cat => cat._id === _id ?  { ...value, _id }: cat));
+    try {
+      const categories = await getAllCategory();
+      const updatedCategories = categories.map( cat => cat._id === _id ?  { ...value, _id }: cat);
+
+      await AsyncStorage.setItem(ASYNC_STORAGE.CATEGORY_KEY, JSON.stringify(updatedCategories));
+    } catch (e) {
+      // saving error
+      setCategory((prev) => prev.filter((cat) => cat._id !== _id));
+    }
+  }, []);
 
   // const category = useQuery(Category, cat => cat.sorted("title"));
   // const category = useMemo(() => _category.sorted("title"), [_category]);
@@ -81,6 +138,8 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     <DataContext.Provider
       value={{
         category,
+        addCategory,
+        updateCategory,
         selectedCategory,
       }}
     >
