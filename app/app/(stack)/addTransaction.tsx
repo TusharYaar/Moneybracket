@@ -1,67 +1,43 @@
 import { StyleSheet, View, TextInput, Pressable, Keyboard, ScrollView, useWindowDimensions, Text } from "react-native";
 import React, { useState, useCallback, useEffect, useRef } from "react";
-// import { TextInput, IconButton, Button, Text, TouchableRipple, Dialog } from "react-native-paper";
-// import { Transaction } from "../../realm/Transaction";
-// import CategoryItem from "../CategoryItem";
-// import { Category } from "../../realm/Category";
 import DatePicker from "react-native-date-picker";
-// import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-// import CurrencyModal from "../CurrencyModal";
-// import CategoryModal from "./CategoryModal";
-// import { useRealm } from "../../realm";
-// import { useTranslation } from "react-i18next";
-// import { useCustomTheme } from "../../providers/ThemeProvider";
-
 import { useSettings } from "../../providers/SettingsProvider";
-// import ModalContainer from "./ModalContainer";
-// import { useExchangeRate } from "../../providers/ExchangeRatesProvider";
-// import Amount from "../Amount";
-// import DeleteDialog from "../DeleteDialog";
-// import * as ImagePicker from "expo-image-picker";
-// import * as FileSystem from "expo-file-system";
-// import { IMAGES_DIRECTORY } from "../../data";
-// import { format } from "date-fns";
-// import Amount from "../../components/Amount";
-// import CategoryItem from "../../components/CategoryItem";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useData } from "../../providers/DataProvider";
 import SwipeButton from "@components/SwipeButton";
 import CategoryItem from "@components/CategoryItem";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import PrimaryInput from "@components/AmountInput";
-import { Category, Transaction } from "types";
+import { Category, Transaction, TransactionWithCategory } from "types";
+import Header from "@components/Header";
 
-type Props = {
-  visible: boolean;
-  item?: Transaction;
-  onDismiss: () => void;
-  category:Category;
-};
-
-type ValueProps = {
-  category: Category | null;
+type SearchParams = {
+  _id: string;
+  date: string;
   amount: string;
-  date: Date;
-  note: string;
-  currency: string;
-  image: string;
+  category: string;
 };
 const AddTransaction = () => {
+  const {
+    _id,
+    amount = "0",
+    date = new Date().toISOString(),
+    category: category2,
+  } = useLocalSearchParams<SearchParams>();
   const { height, width } = useWindowDimensions();
   // const { t } = useTranslation("", { keyPrefix: "components.addTransaction" });
   const { currency: defaultCurrency, dateFormat } = useSettings();
-  const { category } = useData();
+  const { category, addTransaction, updateTransaction, deleteTransaction } = useData();
   const amtInputRef = useRef<TextInput>();
   const categorySheetRef = useRef<BottomSheet>();
   const [sheetView, setSheetView] = useState("category");
 
-  // const { theme } = useCustomTheme();
-  const [values, setValues] = useState<ValueProps>({
+  const [values, setValues] = useState<Omit<TransactionWithCategory, "_id" | "createdAt" | "updatedAt">>({
     category: category.length > 0 ? category[0] : null,
-    amount: "0",
-    date: new Date(),
+    amount: parseFloat(amount),
+    date: parseISO(date),
     note: "",
     currency: defaultCurrency.code,
     image: "",
@@ -104,13 +80,16 @@ const AddTransaction = () => {
   }, [amtInputRef, categorySheetRef]);
 
   useEffect(() => {
-    setValues((prev) => ({ ...prev, category: category[0] }));
-  }, []);
+    if (category2) {
+      setValues((prev) => ({ ...prev, category: category.find((c) => c._id === category2) }));
+    } else {
+      setValues((prev) => ({ ...prev, category: category[0] }));
+    }
+  }, [category, category2]);
 
   //   useEffect(() => {
   //     // if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) requestImagePermission();
   //   }, [cameraPermission, requestCameraPermission, imagePermission, requestImagePermission]);
-
 
   // const moveImage = useCallback(async (image: string) => {
   //   const name = image.split("/");
@@ -120,30 +99,6 @@ const AddTransaction = () => {
   //   });
   //   return `${IMAGES_DIRECTORY}/${name[name.length - 1]}`;
   // }, []);
-
-  const addNewTransaction = async () => {
-    // const img = values.image.length > 0 ? await moveImage(values.image) : "";
-    // realm.write(() => {
-    //   if (values.category) {
-    //     realm.create(
-    //       "Transaction",
-    //       // Transaction.generate(parseFloat(values.amount), "INR", values.date, values.note, values.category, false)
-    //     );
-    //   }
-    // });
-  };
-
-  const updateTransaction = useCallback(async (trans: Transaction, values: ValueProps) => {
-    // const img = values.image.length > 0 ? await moveImage(values.image) : "";
-    // realm.write(() => {
-    //   if (trans.date !== values.date) trans.date = values.date;
-    //   if (trans.amount !== parseFloat(values.amount)) trans.amount = parseFloat(values.amount);
-    //   if (trans.category !== values.category && values.category) trans.category = values.category;
-    //   if (trans.note !== values.note) trans.note = values.note;
-    //   if (trans.image !== values.image) trans.image = img;
-    //   onDismiss();
-    // });
-  }, []);
 
   // useEffect(() => {
   //   setViewModal("transaction");
@@ -179,37 +134,25 @@ const AddTransaction = () => {
   //   }
   // }, []);
 
-  //   const updateCurrency = useCallback((code: string) => {
-  //     setValues((prev) => ({ ...prev, currency: code.toUpperCase() }));
-  //     setViewModal("transaction");
-  //   }, []);
+  const handleSubmit = () => {
+    const updatedAt = new Date().toISOString();
 
-  //   const updateCategory = useCallback((category: Category) => {
-  //     setValues((prev) => ({ ...prev, category }));
-  //     setViewModal("transaction");
-  //   }, []);
+    if (_id) {
+      updateTransaction(_id, { ...values, category: values.category._id, updatedAt, createdAt: updatedAt });
+    } else {
+      addTransaction({ ...values, category: values.category._id, updatedAt, createdAt: updatedAt });
+    }
 
-  //   const dismissDataModal = useCallback(() => {
-  //     setViewModal("transaction");
-  //   }, []);
-
-  const handleSubmit = (values: ValueProps) => {
-
-    addNewTransaction();
     if (router.canGoBack) router.back();
     else router.replace("(tabs)/transaction");
     // if (item) updateTransaction(item, values);
     // else addNewTransaction(values);
   };
 
-  const deleteTransaction = useCallback((transaction: Transaction | undefined) => {
-    // setShowDelete(false);
-    // realm.write(() => {
-    //   if (!transaction) return;
-    //   realm.delete(transaction);
-    //   onDismiss();
-    // });
-  }, []);
+  const handlePressDelete = useCallback(() => {
+    deleteTransaction(_id);
+    router.back();
+  }, [_id]);
 
   // const handleCamera = useCallback(async () => {
   //   if (cameraPermission && !cameraPermission.granted && cameraPermission.canAskAgain) await requestCameraPermission();
@@ -265,14 +208,20 @@ const AddTransaction = () => {
     setValues((prev) => ({ ...prev, category }));
   }, []);
   return (
-    <View style={{ height }}>
-      <ScrollView contentContainerStyle={{ padding: 16, flex: 1 }}>
+    <View style={{ paddingHorizontal: 16, paddingBottom: 16, height }}>
+      <Header
+        title={_id ? "Transaction" : "Add Transaction"}
+        headerBtns={_id ? [{ icon: "trash", onPress: handlePressDelete, label: "delete_transaction" }] : []}
+      />
+      <ScrollView contentContainerStyle={{ flex: 1, paddingTop: 8 }}>
         <View style={{ flexDirection: "column", rowGap: 16, flexGrow: 1 }}>
           <PrimaryInput
+            type="amount"
             onPress={handleTextBoxPress}
-            onChangeText={(text) => setValues(prev => ({...prev, amount: text}))}
+            onChangeText={(text) => setValues((prev) => ({ ...prev, amount: parseFloat(text) }))}
             backgroundColor={values.category ? values.category.color : undefined}
             ref={amtInputRef}
+            initialValue={values.amount > 0 ? values.amount.toString() : undefined}
             prefix={defaultCurrency.symbol_native}
             keyboardType="decimal-pad"
           />
@@ -297,11 +246,10 @@ const AddTransaction = () => {
               <Text>{format(values.date, dateFormat)}</Text>
             </Pressable>
           </Animated.View>
-          {/* <View style={{ height: 64, backgroundColor: "red" }}></View> */}
         </View>
         <SwipeButton
           style={{ marginTop: 16 }}
-          onSwipeComplete={() => handleSubmit(values)}
+          onSwipeComplete={handleSubmit}
           bgColor={values.category ? values.category.color : undefined}
         />
       </ScrollView>
@@ -310,10 +258,6 @@ const AddTransaction = () => {
         snapPoints={[264, "69%"]}
         enablePanDownToClose
         index={-1}
-        // backdropComponent={(props) => {
-        //   return <BottomSheetBackdrop {...props} />
-        // }}
-        // footerComponent={() => <Text>Hel;</Text>}
         onAnimate={(index) => setSheetView((prev) => (index > -1 ? (index === 1 ? "date" : "category") : prev))}
       >
         {sheetView === "category" && (

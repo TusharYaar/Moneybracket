@@ -11,7 +11,7 @@ type Props = {
   amount: number;
   variant?: VariantProp<Text>;
   component?: "caption" | "title" | "paragraph";
-  type?: "income" | "expense" | "transfer";
+  type?: string;
   sign?: boolean;
 };
 

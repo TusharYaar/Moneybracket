@@ -1,10 +1,9 @@
 import { Text, View, TextInput, Pressable, useWindowDimensions, ScrollView } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { COLORS } from "../../data";
 import SwipeButton from "@components/SwipeButton";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import PrimaryInput from "@components/AmountInput";
-// import { Category } from "types";
 import { useData } from "providers/DataProvider";
 import Octicons from "@expo/vector-icons/Octicons";
 import GroupButton from "@components/GroupButton";
@@ -42,7 +41,7 @@ type SearchParams = {
   title: string;
 };
 const AddCategoryScreen = () => {
-  const { addCategory, updateCategory } = useData();
+  const { addCategory, updateCategory, deleteCategory } = useData();
   const { _id, color, title = "", type = "income" } = useLocalSearchParams<SearchParams>();
   const router = useRouter();
   const inputRef = useRef<TextInput>();
@@ -53,7 +52,7 @@ const AddCategoryScreen = () => {
     icon: "feed-tag",
   });
 
-  const { height } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
   const handleSubmit = () => {
     const date = new Date().toISOString();
     // TODO: ADD Check
@@ -64,10 +63,17 @@ const AddCategoryScreen = () => {
     if (router.canGoBack) router.back();
     else router.replace("(tabs)/category");
   };
+  const handlePressDelete = useCallback(() => {
+    deleteCategory(_id);
+    router.back();
+  }, [_id]);
 
   return (
     <View style={{ paddingHorizontal: 16, paddingBottom: 16, height }}>
-      <Header title= { _id ? "Update Category" : "Add Category"} />
+      <Header
+        title={_id ? "Category" : "Category"}
+        headerBtns={_id ? [{ icon: "trash", onPress: handlePressDelete, label: "delete_category" }] : []}
+      />
       <View style={{ flex: 1, marginTop: 16 }}>
         <PrimaryInput
           onPress={() => {}}
@@ -100,6 +106,7 @@ const AddCategoryScreen = () => {
               contentContainerStyle={{ flexDirection: "row", columnGap: 8 }}
               horizontal
               showsHorizontalScrollIndicator={false}
+              style={{ width: width - 64 - 16 - 16 }}
             >
               {COLORS.map((color) => (
                 <Pressable key={color} onPress={() => setValues((prev) => ({ ...prev, color }))}>
@@ -110,7 +117,7 @@ const AddCategoryScreen = () => {
           </View>
         </View>
         <View style={{ marginTop: 32 }}>
-          <Text>Colors</Text>
+          <Text>Type</Text>
           <GroupButton
             buttons={CATEGORY_TYPES.map((cat) => ({
               ...cat,

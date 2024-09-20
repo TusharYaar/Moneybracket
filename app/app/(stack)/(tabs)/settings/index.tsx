@@ -31,7 +31,7 @@ const Setting = () => {
   const { currency, language, appLock, dateFormat, updateCurrency, updateLanguage, updateDateFormat, updateLock } =
     useSettings();
   const { theme, font } = useCustomTheme();
-  const { category } = useData();
+  const { category, addCategory } = useData();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -39,22 +39,24 @@ const Setting = () => {
   const [languageModal, setLanguageModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
 
-
   const router = useRouter();
 
   const addDummyCategories = useCallback(() => {
     // realm.write(() => {
-    //   Dcategories.forEach((cat) => {
-    //     realm.create(
-    //       "Category",
-    //       Category.generate(
-    //         cat.title,
-    //         cat.type,
-    //         COLORS[Math.floor(Math.random() * COLORS.length)],
-    //         ICONS[Math.floor(Math.random() * ICONS.length)]
-    //       )
-    //     );
-    //   });
+
+    Dcategories.forEach((cat, index) => {
+      const date = new Date().toISOString();
+      setTimeout(() => {
+        addCategory({
+          ...cat,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          createdAt: date,
+          updatedAt: date,
+          isFavorite: false,
+          icon: "feed-tag",
+        });
+      }, index * 200);
+    });
     // });
   }, []);
 
@@ -148,11 +150,7 @@ const Setting = () => {
       {__DEV__ && category.length > 0 && <SettingItem label={"dummy Trans"} leftIcon="text" onPress={addDummy} />}
       {__DEV__ && <SettingItem label={t("deleteAllData")} leftIcon="text" onPress={() => setDeleteModal(true)} />}
       {__DEV__ && (
-        <SettingItem
-          label={t("export")}
-          leftIcon="albums-outline"
-          onPress={() => router.push("ExportScreen")}
-        />
+        <SettingItem label={t("export")} leftIcon="albums-outline" onPress={() => router.push("ExportScreen")} />
       )}
       <SettingItem
         label={t("backup")}

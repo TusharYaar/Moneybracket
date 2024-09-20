@@ -11,9 +11,12 @@ export type Transaction = {
   category: string;
   createdAt: string;
   updatedAt: string;
-  isFavorite: boolean;
+  // isFavorite: boolean;
   image: string;
 };
+export interface TransactionWithCategory extends Omit<Transaction, "category"> {
+ category: Category;
+}
 
 export type Category = {
   _id: string;

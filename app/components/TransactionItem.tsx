@@ -1,15 +1,16 @@
 import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
 import { Text, TouchableRipple } from "react-native-paper";
-import Icon from "@expo/vector-icons/Ionicons";
+
+import Octicons from "@expo/vector-icons/Octicons";
 import { chooseBetterContrast } from "../utils/colors";
 
 import Amount from "./Amount";
 import { useCustomTheme } from "../providers/ThemeProvider";
-import { Transaction } from "types";
+import { TransactionWithCategory } from "types";
 
 type Props = {
-  data: Transaction;
+  data: TransactionWithCategory;
   onPress: () => void;
   style?: ViewStyle;
 };
@@ -22,7 +23,7 @@ const TransactionItem = ({ data, onPress, style }: Props) => {
   return (
     <TouchableRipple onPress={onPress} style={style}>
       <View style={styles.innerContainer}>
-        <Icon
+        <Octicons
           name={data.category.icon as any}
           size={36}
           style={{

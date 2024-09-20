@@ -36,7 +36,6 @@ function CollapsibleHeaderFlatList<T>({
   paddingTop = 0,
   headerBtns = [],
   ...props
-
 }: Props<T>) {
   const lastContentOffset = useSharedValue(0);
   const height = useSharedValue(APPBAR_HEIGHT);
@@ -60,23 +59,17 @@ function CollapsibleHeaderFlatList<T>({
           translateY: interpolate(height.value, [0, APPBAR_HEIGHT], [-APPBAR_HEIGHT, 0]),
         },
       ],
-      //   opacity: interpolate(
-      //     animatedValue !== undefined ? animatedValue?.value : maxAnimationValue,
-      //     [0, maxAnimationValue],
-      //     [0, 1],
-      //     {
-      //       extrapolateLeft: Extrapolate.CLAMP,
-      //       extrapolateRight: Extrapolate.CLAMP,
-      //     }
-      //   ),
     };
   });
 
   return (
     <>
-      <Animated.View style={[styles.headerContainer, aStyle]} onLayout={(event) => console.log(event.nativeEvent.layout)}>
-      <View style={{paddingHorizontal: 16}}>
-        <Header title={title} showBackButton={false} headerBtns={headerBtns}  />
+      <Animated.View
+        style={[styles.headerContainer, aStyle]}
+        onLayout={(event) => console.log(event.nativeEvent.layout)}
+      >
+        <View style={{ paddingHorizontal: 16 }}>
+          <Header title={title} showBackButton={false} headerBtns={headerBtns} />
         </View>
       </Animated.View>
       <Animated.FlatList

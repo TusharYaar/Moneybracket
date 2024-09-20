@@ -2,7 +2,6 @@ import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from "react-n
 import React from "react";
 import { useRouter } from "expo-router";
 import Octicons from "@expo/vector-icons/Octicons";
-import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 
 interface Props {
   title?: string;
@@ -14,9 +13,9 @@ interface Props {
     disabled?: boolean;
   }[];
   style?: StyleProp<ViewStyle>;
-};
+}
 
-const Header = ({ title="", showBackButton = true, headerBtns = [], style }: Props) => {
+const Header = ({ title = "", showBackButton = true, headerBtns = [], style }: Props) => {
   const router = useRouter();
   return (
     <View style={[styles.headerContainer, { columnGap: 16 }, style]}>

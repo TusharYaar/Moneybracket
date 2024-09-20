@@ -19,7 +19,7 @@ export const generateBackupFile = (
   const btrans = transaction.map((tran) => ({
     amount: tran.amount,
     currency: tran.currency,
-    date: tran.date.toUTCString(),
+    date: tran.date,
     createdAt: tran.createdAt.toString(),
     note: tran.note,
     category: tran.category.title,
