@@ -14,6 +14,7 @@ const AllCategory = () => {
     <CollapsibleHeaderFlatList
       title="Category"
       paddingTop={8}
+      hideBackButton={true}
       contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 112 }}
       data={category}
       renderItem={({ item }) => (

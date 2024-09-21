@@ -12,6 +12,7 @@ import { format, parseISO } from "date-fns";
 import PrimaryInput from "@components/AmountInput";
 import { Category, Transaction, TransactionWithCategory } from "types";
 import Header from "@components/Header";
+import { useTheme } from "providers/ThemeProvider";
 
 type SearchParams = {
   _id: string;
@@ -33,7 +34,7 @@ const AddTransaction = () => {
   const amtInputRef = useRef<TextInput>();
   const categorySheetRef = useRef<BottomSheet>();
   const [sheetView, setSheetView] = useState("category");
-
+  const {textStyle} = useTheme();
   const [values, setValues] = useState<Omit<TransactionWithCategory, "_id" | "createdAt" | "updatedAt">>({
     category: category.length > 0 ? category[0] : null,
     amount: parseFloat(amount),
@@ -243,7 +244,7 @@ const AddTransaction = () => {
                 setSheetView("date");
               }}
             >
-              <Text>{format(values.date, dateFormat)}</Text>
+              <Text style={textStyle.title}>{format(values.date, dateFormat)}</Text>
             </Pressable>
           </Animated.View>
         </View>
@@ -377,7 +378,7 @@ export default AddTransaction;
 
 const styles = StyleSheet.create({
   outlineButton: {
-    borderRadius: 4,
+    borderRadius: 8,
     borderWidth: 2,
   },
   button: {

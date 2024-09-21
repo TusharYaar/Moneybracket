@@ -1,13 +1,11 @@
-import { StyleSheet, View, ViewStyle } from "react-native";
+import { StyleSheet, View, ViewStyle, Text, Pressable } from "react-native";
 import React from "react";
-import { Text, TouchableRipple } from "react-native-paper";
-
 import Octicons from "@expo/vector-icons/Octicons";
 import { chooseBetterContrast } from "../utils/colors";
 
-import Amount from "./Amount";
-import { useCustomTheme } from "../providers/ThemeProvider";
 import { TransactionWithCategory } from "types";
+import { useTheme } from "providers/ThemeProvider";
+import { useSettings } from "providers/SettingsProvider";
 
 type Props = {
   data: TransactionWithCategory;
@@ -16,12 +14,11 @@ type Props = {
 };
 
 const TransactionItem = ({ data, onPress, style }: Props) => {
-  const {
-    theme: { roundness },
-  } = useCustomTheme();
+  const { textStyle, colors } = useTheme();
+  const { currency } = useSettings();
 
   return (
-    <TouchableRipple onPress={onPress} style={style}>
+    <Pressable onPress={onPress} style={style}>
       <View style={styles.innerContainer}>
         <Octicons
           name={data.category.icon as any}
@@ -30,22 +27,27 @@ const TransactionItem = ({ data, onPress, style }: Props) => {
             color: chooseBetterContrast(data.category.color),
             backgroundColor: data.category.color,
             padding: 8,
-            borderRadius: roundness * 4,
+            borderRadius: 8,
           }}
         />
         <View style={styles.text}>
           <View>
-            <Text variant="titleMedium">{data.category.title}</Text>
-            {data.note.length > 0 && <Text variant="bodySmall">{data.note}</Text>}
+            <Text style={textStyle.title}>{data.category.title}</Text>
+            {/* {data.note.length > 0 && <Text>{data.note}</Text>} */}
           </View>
-          <Amount
-            variant="titleMedium"
+          <Text style={[ {color: colors[data.category.type] } ,textStyle.amount]}>
+            {`${currency.symbol_native} ${data.amount}`}
+            </Text>
+      {/* {`${sign && amount !== 0 ? (amount > 0 ? "+ " : "- ") : ""}${currency.symbol_native}${t("amountValue", {
+        amount,
+      })}`} */}
+          {/* <Amount
             amount={data.category.type === "income" ? data.amount : data.amount * -1}
             type={data.category.type}
-          />
+          /> */}
         </View>
       </View>
-    </TouchableRipple>
+    </Pressable>
   );
 };
 

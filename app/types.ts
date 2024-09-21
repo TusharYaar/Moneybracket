@@ -1,6 +1,6 @@
 import type { MD3Theme, MD3Colors, MD3Typescale } from "react-native-paper/lib/typescript/src/types";
 import { Theme } from "@react-navigation/native";
-import { Platform } from "react-native";
+import { Platform, StyleProp, TextStyle } from "react-native";
 
 export type Transaction = {
   _id: string;
@@ -15,7 +15,7 @@ export type Transaction = {
   image: string;
 };
 export interface TransactionWithCategory extends Omit<Transaction, "category"> {
- category: Category;
+  category: Category;
 }
 
 export type Category = {
@@ -38,7 +38,7 @@ export type Shortcut = {
   currency: string;
   icon: string;
   title: string;
-}
+};
 export interface CustomTheme extends MD3Theme {
   id: string;
   name: string;
@@ -120,4 +120,35 @@ export type BackupFile = {
     isFavorite: boolean;
     image: string;
   }[];
+};
+
+export type Theme_Color = {
+  screen: string;
+  statusbar: string;
+  headerBackground: string;
+  headerText: string;
+  headerIconActive: string;
+  headerIconDisabled: string;
+
+  sectionBackground: string;
+  
+  tabbarBackground: string;
+  tabbarIcon: string;
+  tabbarIconActive: string;
+  tabbarIconDisabled: string;
+  tabbarBackgroundSecondary: string;
+  tabbarIconActiveSecondary: string;
+
+  income: string;
+  expense: string;
+  transfer: string;
+};
+
+export type Theme_TextStyle = {
+  body: StyleProp<TextStyle>;
+  amount: StyleProp<TextStyle>;
+  amountInput: StyleProp<TextStyle>;
+  header: StyleProp<TextStyle>;
+  title: StyleProp<TextStyle>;
+  caption: StyleProp<TextStyle>;
 };

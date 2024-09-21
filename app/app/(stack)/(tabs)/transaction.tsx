@@ -36,6 +36,7 @@ const AllTransaction = () => {
       <CollapsibleHeaderFlatList
         title="transactions"
         data={transaction}
+        hideBackButton={true}
         renderItem={({ item }) => (
           <TransactionItem
             data={item}

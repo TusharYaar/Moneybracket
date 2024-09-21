@@ -3,10 +3,11 @@ import React, { useEffect } from "react";
 import { ALL_FONTS, DEFAULT_FONTS } from "../../../../data";
 import { FlatList } from "react-native-gesture-handler";
 import FontView from "@components/FontView";
-import { useCustomTheme } from "../../../../providers/ThemeProvider";
+import { useTheme } from "../../../../providers/ThemeProvider";
 
+const font = "";
 const FontSettings = () => {
-  const { font, changeFont } = useCustomTheme();
+  const {  changeFont } = useTheme();
 
   // const { unlockedFonts, offlineFonts } = useSettings();
 

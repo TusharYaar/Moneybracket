@@ -1,20 +1,67 @@
 import React, { useContext, createContext, useState, useMemo, useCallback, useEffect } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
-
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { ALL_FONTS, DEFAULT_THEMES, FONTS_DIRECTORY, LOCAL_FONTS, ALL_THEMES, SETTING_KEYS } from "../data";
 import { StatusBar } from "expo-status-bar";
-import { isLoaded, loadAsync } from "expo-font";
+import { isLoaded, loadAsync, useFonts } from "expo-font";
 import { downloadAsync, getInfoAsync, makeDirectoryAsync, readDirectoryAsync } from "expo-file-system";
-// import { useTranslation } from "react-i18next";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
-// import { useMaterial3Theme } from "@pchmn/expo-material3-theme";
-import type { CustomTheme } from "../types";
+import type { CustomTheme, Theme_Color, Theme_TextStyle } from "../types";
 import { Platform } from "react-native";
 
+const colors: Theme_Color = {
+  headerBackground: "#010a19",
+  headerIconActive: "#e63946",
+  headerIconDisabled: "#8a909c",
+  headerText: "#a8dadc",
+  screen: "#f2f2f2",
+  statusbar: "#f2f2f2",
+
+  sectionBackground: "#d9f6fc",
+
+  tabbarBackground: "#010a19",
+  tabbarIcon: "#a8dadc",
+  tabbarIconActive: "#e63946",
+  tabbarIconDisabled: "#8a909c",
+  tabbarBackgroundSecondary: "#a8dadc",
+  tabbarIconActiveSecondary: "#e63946",
+
+  income: "#3c6134",
+  expense: "#fe5a5a",
+  transfer: "#3f6dbb",
+};
+
+const textStyle: Theme_TextStyle = {
+  body: {
+    fontSize: 16,
+    fontFamily: "Lexend-Regular",
+  },
+  amountInput: {
+    fontSize: 32,
+    fontFamily: "Lexend-Regular",
+  },
+  header: {
+    fontSize: 32,
+    fontFamily: "Lexend-Regular",
+  },
+  title: {
+    fontSize: 18,
+    fontFamily: "Lexend-Regular",
+  },
+  caption: {
+    fontSize: 32,
+    fontFamily: "Lexend-Regular",
+  },
+  amount: {
+    fontSize: 24,
+    fontFamily: "Lexend-Regular",
+  },
+};
+
 type Props = {
+  colors: Theme_Color;
+  textStyle: Theme_TextStyle;
   font: string;
-  theme: CustomTheme;
+  theme: string;
   changeTheme: (theme: string) => void;
   changeRoundness: (value: number) => void;
   changeFont: (font: string) => void;
@@ -25,28 +72,45 @@ type Props = {
 const defaultTheme = Platform.OS === "android" && Platform.Version >= 31 ? "deviceLight" : "defaultLight";
 
 const ThemeContext = createContext<Props>({
-  font: getFromStorageOrDefault(SETTING_KEYS.font, "sansserif", true),
-  theme: ALL_THEMES.find((theme) => theme.id === getFromStorageOrDefault(SETTING_KEYS.theme, defaultTheme, true)),
+  // font: getFromStorageOrDefault(SETTING_KEYS.font, "sansserif", true),
+  // theme: ALL_THEMES.find((theme) => theme.id === getFromStorageOrDefault(SETTING_KEYS.theme, "default", true)),
+  theme: "default",
+  font: "lexend",
   changeTheme: () => {},
   changeRoundness: () => {},
   changeFont: () => {},
   loadFont: async (id: string) => {},
-  // enqueueSnackbar: () => {},
+  colors,
+  textStyle,
 });
 
-export const useCustomTheme = () => useContext(ThemeContext);
+export const useTheme = () => useContext(ThemeContext);
 
 const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  // const { t } = useTranslation("", { keyPrefix: "messages" });
-  // const { theme: deviceTheme } = useMaterial3Theme();
+  // const [loaded, error] = useFonts({
+  //   Raleway_100: require("../assets/Raleway_100.ttf"),
+  //   Raleway_200: require("../assets/Raleway_200.ttf"),
+  //   Raleway_300: require("../assets/Raleway_300.ttf"),
+  //   Raleway_400: require("../assets/Raleway_400.ttf"),
+  //   Raleway_500: require("../assets/Raleway_500.ttf"),
+  //   Raleway_600: require("../assets/Raleway_600.ttf"),
+  //   Raleway_700: require("../assets/Raleway_700.ttf"),
+  //   Raleway_800: require("../assets/Raleway_800.ttf"),
+  //   Raleway_900: require("../assets/Raleway_900.ttf"),
+
+  //   Lexend_400: require("../assets/Lexend_400.ttf"),
+  //   Lexend_500: require("../assets/Lexend_500.ttf"),
+  //   Lexend_600: require("../assets/Lexend_600.ttf"),
+  //   Lexend_700: require("../assets/Lexend_700.ttf"),
+  //   Lexend_800: require("../assets/Lexend_800.ttf"),
+  //   Lexend_900: require("../assets/Lexend_900.ttf"),
+  // });
   const [_theme, setTheme] = useState<(typeof ALL_THEMES)[number]["id"]>(DEFAULT_THEMES[0]);
-  const [font, setFont] = useState(LOCAL_FONTS[0]);
+  // const [font, setFont] = useState(LOCAL_FONTS[0]);
   const [roundness, setRoundness] = useState(parseInt(getFromStorageOrDefault(SETTING_KEYS.roundness, "-1", true)));
-  const [snackbars, setSnackbars] = useState<{ message: string; id: number }[]>([]);
-  const [snackbarVisible, setSnackbarVisible] = useState(false);
   const themeObject = useMemo(() => {
     let obj = ALL_THEMES.find((t) => t.id === _theme);
-    obj.fonts = ALL_FONTS.find((f) => f.id === font).font;
+    // obj.fonts = ALL_FONTS.find((f) => f.id === font).font;
 
     if (_theme === "deviceLight") obj = { ...obj, colors: { ...obj.colors } };
     // else if (_theme === "deviceDark") obj = { ...obj, colors: { ...obj.colors} };
@@ -54,7 +118,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     if (roundness >= 0) obj.roundness = roundness;
 
     return obj as CustomTheme;
-  }, [_theme, font, roundness]);
+  }, [_theme, roundness]);
 
   const changeTheme = useCallback((theme: (typeof ALL_THEMES)[number]["id"]) => {
     try {
@@ -73,7 +137,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
   const changeFont = useCallback(async (font: string) => {
     try {
       await loadFont(font);
-      setFont(font);
+      // setFont(font);
       setStorage(SETTING_KEYS.font, font);
     } catch (e) {
       console.log(e);
@@ -143,18 +207,21 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     <ThemeContext.Provider
       value={{
         changeTheme,
-        font,
+        // font,
         changeFont,
         changeRoundness,
-        theme: themeObject,
+        theme: "default",
         loadFont,
+        colors,
+        textStyle,
+        font: "lexend",
       }}
     >
       <PaperProvider
         theme={themeObject}
-        settings={{
-          icon: (props) => <Ionicons size={props.size} name={props.name as any} color={props.color} />,
-        }}
+        // settings={{
+        //   icon: (props) => <Ionicons size={props.size} name={props.name as any} color={props.color} />,
+        // }}
       >
         <StatusBar style={themeObject.dark ? "light" : "dark"} />
         {children}

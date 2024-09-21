@@ -13,7 +13,7 @@ import Header from "./Header";
 interface Props<T> extends ScrollViewProps {
   showHeader?: boolean;
   title?: string;
-
+  hideBackButton?: boolean;
   //   If Pading top is required with Header
   paddingTop?: number;
   handleClickBack?: () => {};
@@ -31,6 +31,7 @@ function CollapsibleHeaderScrollView<T>({
   onScroll = undefined,
   showHeader = true,
   title = "",
+  hideBackButton=false,
   handleClickBack = null,
   contentContainerStyle = {},
   paddingTop = 0,
@@ -78,7 +79,7 @@ function CollapsibleHeaderScrollView<T>({
         onLayout={(event) => console.log(event.nativeEvent.layout)}
       >
         <View style={{ paddingHorizontal: 16 }}>
-          <Header title={title} showBackButton={false} headerBtns={headerBtns} />
+          <Header title={title} hideBackButton={hideBackButton} headerBtns={headerBtns} />
         </View>
       </Animated.View>
       <Animated.ScrollView

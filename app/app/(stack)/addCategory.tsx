@@ -8,6 +8,7 @@ import { useData } from "providers/DataProvider";
 import Octicons from "@expo/vector-icons/Octicons";
 import GroupButton from "@components/GroupButton";
 import Header from "@components/Header";
+import { useTheme } from "providers/ThemeProvider";
 
 const CATEGORY_TYPES = [
   {
@@ -45,6 +46,7 @@ const AddCategoryScreen = () => {
   const { _id, color, title = "", type = "income" } = useLocalSearchParams<SearchParams>();
   const router = useRouter();
   const inputRef = useRef<TextInput>();
+  const {textStyle} = useTheme();
   const [values, setValues] = useState<ValueProps>({
     title,
     type,
@@ -84,7 +86,7 @@ const AddCategoryScreen = () => {
         />
         <View style={{ flexDirection: "row", justifyContent: "space-between", columnGap: 16, marginTop: 32 }}>
           <View>
-            <Text>Icon</Text>
+            <Text style={textStyle.body}>Icon</Text>
             <Pressable>
               <View
                 style={{
@@ -101,9 +103,9 @@ const AddCategoryScreen = () => {
             </Pressable>
           </View>
           <View>
-            <Text>Colors</Text>
+            <Text style={textStyle.body}>Colors</Text>
             <ScrollView
-              contentContainerStyle={{ flexDirection: "row", columnGap: 8 }}
+              contentContainerStyle={{ flexDirection: "row", columnGap: 8, paddingRight: 16 }}
               horizontal
               showsHorizontalScrollIndicator={false}
               style={{ width: width - 64 - 16 - 16 }}
@@ -117,7 +119,7 @@ const AddCategoryScreen = () => {
           </View>
         </View>
         <View style={{ marginTop: 32 }}>
-          <Text>Type</Text>
+          <Text  style={textStyle.body}>Type</Text>
           <GroupButton
             buttons={CATEGORY_TYPES.map((cat) => ({
               ...cat,

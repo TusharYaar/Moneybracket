@@ -1,7 +1,7 @@
-import { StyleSheet, View, ViewStyle } from "react-native";
+import { Pressable, StyleSheet, View, ViewStyle, Text } from "react-native";
 import React, { ReactNode } from "react";
-import { Surface, TouchableRipple, Text } from "react-native-paper";
-import Icon from "react-native-vector-icons/Ionicons";
+// import Icon from "react-native-vector-icons/Ionicons";
+import Octicons from "@expo/vector-icons/Octicons";
 
 type Props = {
   label: string;
@@ -14,20 +14,18 @@ type Props = {
 
 const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, style }: Props) => {
   return (
-    <Surface style={[styles.surface, style]}>
-      <TouchableRipple onPress={onPress}>
+      <Pressable onPress={onPress}>
         <View style={styles.innerContainer}>
           <View style={styles.labelContainer}>
-            <Icon name={leftIcon} size={26} />
-            <Text style={[styles.itemLabel]} variant="bodyMedium">
+            <Octicons name={leftIcon as undefined} size={26} />
+            <Text style={[styles.itemLabel]}>
               {label}
             </Text>
           </View>
           {children}
-          {rightIcon && <Icon name={rightIcon} size={16} style={styles.rightIcon} />}
+          {rightIcon && <Octicons name={rightIcon as undefined} size={16} style={styles.rightIcon} />}
         </View>
-      </TouchableRipple>
-    </Surface>
+      </Pressable>
   );
 };
 

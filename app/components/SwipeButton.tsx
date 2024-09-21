@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, ViewStyle, useWindowDimensions } from "react-na
 import React, { useMemo } from "react";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { runOnJS, useSharedValue, withTiming } from "react-native-reanimated";
+import { useTheme } from "providers/ThemeProvider";
 
 type Props = {
   onSwipeComplete: () => void;
@@ -16,6 +17,7 @@ const trackPadding = 8;
 const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style}: Props) => {
   const { width } = useWindowDimensions();
   const gestureEndPoint = useMemo(() => width - screenPadding * 2 - pillSize - trackPadding, [width]);
+  const { textStyle } = useTheme();
 
   const onLeft = useSharedValue(trackPadding);
   const pan = Gesture.Pan()
@@ -52,7 +54,7 @@ const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style}: Props) => {
           }}
         ></Animated.View>
       </GestureDetector>
-      <Text style={{ alignSelf: "center" }}>Swipe to Add</Text>
+      <Text style={[{ alignSelf: "center" }, textStyle.title]}>Swipe to Add</Text>
     </View>
   );
 };

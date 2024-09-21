@@ -2,10 +2,11 @@ import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from "react-n
 import React from "react";
 import { useRouter } from "expo-router";
 import Octicons from "@expo/vector-icons/Octicons";
+import { useTheme } from "providers/ThemeProvider";
 
 interface Props {
   title?: string;
-  showBackButton?: boolean;
+  hideBackButton?: boolean;
   headerBtns?: {
     onPress: () => void;
     icon: string;
@@ -15,29 +16,30 @@ interface Props {
   style?: StyleProp<ViewStyle>;
 }
 
-const Header = ({ title = "", showBackButton = true, headerBtns = [], style }: Props) => {
+const Header = ({ title = "", hideBackButton = false, headerBtns = [], style }: Props) => {
   const router = useRouter();
-  return (
-    <View style={[styles.headerContainer, { columnGap: 16 }, style]}>
-      {router.canGoBack && showBackButton ? (
+  const {colors ,textStyle: {header}} = useTheme();
+    return (
+    <View style={[styles.headerContainer, { columnGap: 16}, style]}>
+      {router.canGoBack && !hideBackButton ? (
         <Pressable onPress={router.back}>
-          <View style={styles.headerActionBtn}>
-            <Octicons name="chevron-left" size={24} color="#e63946" />
+          <View style={[styles.headerActionBtn, {backgroundColor: colors.headerBackground }]}>
+            <Octicons name="chevron-left" size={24} color={colors.headerIconActive} />
           </View>
         </Pressable>
       ) : null}
-      <View style={styles.titleContianer}>
-        <Text style={{ color: "#a8dadc", fontSize: 32 }}>{title}</Text>
+      <View style={[styles.titleContianer,{backgroundColor: colors.headerBackground }]}>
+        <Text style={[header, { color: colors.headerText }]}>{title}</Text>
       </View>
       {headerBtns.length > 0 && (
         <View style={{ flexDirection: "row", columnGap: 8 }}>
           {headerBtns.map((btn) => (
             <Pressable onPress={btn.onPress} disabled={btn.disabled === true} key={btn.label}>
-              <View style={styles.headerActionBtn}>
+              <View style={[styles.headerActionBtn,{backgroundColor: colors.headerBackground }]}>
                 <Octicons
                   name={btn.icon as undefined}
                   size={24}
-                  color={btn.disabled === true ? "#8a909c" : "#e63946"}
+                  color={btn.disabled === true ? colors.headerIconDisabled : colors.headerIconActive}
                 />
               </View>
             </Pressable>
@@ -60,7 +62,6 @@ const styles = StyleSheet.create({
   titleContianer: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: "#010a19",
     borderRadius: 8,
     height: 64,
     flexGrow: 1,
@@ -72,6 +73,5 @@ const styles = StyleSheet.create({
     width: 64,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#010a19",
   },
 });

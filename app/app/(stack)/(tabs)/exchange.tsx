@@ -5,7 +5,7 @@ import RateItem from "../../../components/RateItem";
 import { FlashList } from "@shopify/flash-list";
 import { useSettings } from "../../../providers/SettingsProvider";
 import { IconButton, TextInput, Text } from "react-native-paper";
-import { useCustomTheme } from "../../../providers/ThemeProvider";
+import { useTheme } from "../../../providers/ThemeProvider";
 import CurrencyModal from "../../../components/Modals/CurrencyModal";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../../navigators/StackNavigators";
@@ -19,7 +19,7 @@ const Rates = ({ navigation }: Props) => {
   const { currency, dateFormat } = useSettings();
   const {
     theme: { fonts, roundness },
-  } = useCustomTheme();
+  } = useTheme();
   const [showSearchInput, setShowSearchInput] = React.useState(false);
 
   // useEffect(() => {

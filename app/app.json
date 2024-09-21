@@ -3,9 +3,9 @@
     "name": "Money Bracket",
     "slug": "moneybracket",
     "scheme": "com.tusharyaar.mb",
-    "version": "0.7.1",
+    "version": "0.7.11",
     "jsEngine": "hermes",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -45,6 +45,12 @@
           // If you are using a self-hosted instance, update the value of the url property
           // to point towards your self-hosted instance. For example, https://self-hosted.example.com/.
           "url": "https://sentry.io/"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/Lexend-Regular.ttf"]
         }
       ]
     ]

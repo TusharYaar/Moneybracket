@@ -10,7 +10,8 @@ const AllRecurring = () => {
 
   return (
     <CollapsibleHeaderFlatList
-      title="Shortcut"
+      title="Recurring"
+      hideBackButton={true}
       paddingTop={8}
       contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 112 }}
       data={category}
