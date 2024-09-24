@@ -115,13 +115,13 @@ const Exports = () => {
       </Surface>
       <Text>{t("recentExports")}</Text>
       {files.length === 0 && <Text>{t("noExports")}</Text>}
-      {files.length > 0 && (
+      {/* {files.length > 0 && (
         <FlashList
           data={files}
           renderItem={({ item }) => <ExportItem item={item} onPress={() => openFile(item)} />}
           estimatedItemSize={100}
         />
-      )}
+      )} */}
     </View>
   );
 };

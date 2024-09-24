@@ -7,8 +7,8 @@ import PrimaryInput from "@components/AmountInput";
 import { useData } from "providers/DataProvider";
 import Octicons from "@expo/vector-icons/Octicons";
 import GroupButton from "@components/GroupButton";
-import Header from "@components/Header";
 import { useTheme } from "providers/ThemeProvider";
+import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 
 const CATEGORY_TYPES = [
   {
@@ -46,7 +46,7 @@ const AddCategoryScreen = () => {
   const { _id, color, title = "", type = "income" } = useLocalSearchParams<SearchParams>();
   const router = useRouter();
   const inputRef = useRef<TextInput>();
-  const {textStyle} = useTheme();
+  const {textStyle, colors} = useTheme();
   const [values, setValues] = useState<ValueProps>({
     title,
     type,
@@ -71,12 +71,14 @@ const AddCategoryScreen = () => {
   }, [_id]);
 
   return (
-    <View style={{ paddingHorizontal: 16, paddingBottom: 16, height }}>
-      <Header
-        title={_id ? "Category" : "Category"}
-        headerBtns={_id ? [{ icon: "trash", onPress: handlePressDelete, label: "delete_category" }] : []}
-      />
-      <View style={{ flex: 1, marginTop: 16 }}>
+    <CollapsibleHeaderScrollView
+    contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
+    title={_id ? "Category" : "Category"}
+    paddingTop={0}
+    style={{backgroundColor: colors.screen}}
+    headerBtns={_id ? [{ icon: "trash", onPress: handlePressDelete, label: "delete_category" }] : []}
+  >
+        <View style={{ flex: 1, marginTop: 16 }}>
         <PrimaryInput
           onPress={() => {}}
           ref={inputRef}
@@ -131,8 +133,8 @@ const AddCategoryScreen = () => {
         </View>
       </View>
 
-      <SwipeButton bgColor={values.color} onSwipeComplete={handleSubmit} />
-    </View>
+      <SwipeButton bgColor={values.color} onSwipeComplete={handleSubmit} style={{ marginTop: 32 }} />
+    </CollapsibleHeaderScrollView>
   );
 };
 

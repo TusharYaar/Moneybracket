@@ -6,9 +6,11 @@ import { useRouter } from "expo-router";
 import TransactionItem from "../../../components/TransactionItem";
 import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
 import { Transaction } from "types";
+import { useTheme } from "providers/ThemeProvider";
 
 const AllTransaction = () => {
   const router = useRouter();
+  const {colors} = useTheme();
   const { transaction } = useData();
   const { t } = useTranslation("", {
     keyPrefix: "screens.tracker.allTransaction",
@@ -32,8 +34,8 @@ const AllTransaction = () => {
   };
 
   return (
-    <>
       <CollapsibleHeaderFlatList
+        style={{backgroundColor: colors.screen}}
         title="transactions"
         data={transaction}
         hideBackButton={true}
@@ -56,7 +58,6 @@ const AllTransaction = () => {
           { icon: "filter", onPress: () => console.log("filter"), label: "filter", disabled: true },
         ]}
       />
-    </>
   );
 };
 

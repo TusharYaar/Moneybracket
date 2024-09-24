@@ -1,14 +1,16 @@
 import React from "react";
-import { useData } from "../../../providers/DataProvider";
-import CategoryItem from "../../../components/CategoryItem";
+import { useData } from "providers/DataProvider";
+import CategoryItem from "@components/CategoryItem";
 
 import { StyleSheet } from "react-native";
 import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
 import { useRouter } from "expo-router";
+import { useTheme } from "providers/ThemeProvider";
 
 const AllCategory = () => {
   const { category } = useData();
   const router = useRouter();
+  const {colors} = useTheme();
 
   return (
     <CollapsibleHeaderFlatList
@@ -22,6 +24,7 @@ const AllCategory = () => {
       )}
       headerBtns={[{ icon: "plus", onPress: () => router.push("addCategory"), label: "add_category" }]}
       // estimatedItemSize={76}
+      style={{backgroundColor: colors.screen}}
     />
   );
 };

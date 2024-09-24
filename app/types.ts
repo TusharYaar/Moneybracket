@@ -1,6 +1,5 @@
-import type { MD3Theme, MD3Colors, MD3Typescale } from "react-native-paper/lib/typescript/src/types";
-import { Theme } from "@react-navigation/native";
-import { Platform, StyleProp, TextStyle } from "react-native";
+
+import { Platform, TextStyle } from "react-native";
 
 export type Transaction = {
   _id: string;
@@ -39,16 +38,12 @@ export type Shortcut = {
   icon: string;
   title: string;
 };
-export interface CustomTheme extends MD3Theme {
+export interface CustomTheme {
   id: string;
   name: string;
-  colors: MD3Colors &
-    Theme["colors"] & {
-      income: string;
-      expense: string;
-      transfer: string;
-      cardToneBackground: string;
-    };
+  colors: Theme_Color;
+  statusbar?: "dark" | "light" | "inverted"
+  isVisible?: boolean;
   image?: string;
   isPaid?: boolean;
 }
@@ -57,17 +52,18 @@ export interface FontObject {
   id: string;
   name: string;
   by: string;
-  font: MD3Typescale;
+  font: Theme_TextStyle;
   isPaid?: boolean;
-  files: {
+  files?: {
     name: string;
     link: string;
   }[];
+  isVisible?:boolean; 
 }
 
 export interface GroupedTransactions {
   date: Date;
-  transactions: Transaction[];
+  transactions: TransactionWithCategory[];
 }
 
 export type Currency = {
@@ -142,13 +138,15 @@ export type Theme_Color = {
   income: string;
   expense: string;
   transfer: string;
+
+  text: string;
 };
 
 export type Theme_TextStyle = {
-  body: StyleProp<TextStyle>;
-  amount: StyleProp<TextStyle>;
-  amountInput: StyleProp<TextStyle>;
-  header: StyleProp<TextStyle>;
-  title: StyleProp<TextStyle>;
-  caption: StyleProp<TextStyle>;
+  body: TextStyle;
+  amount: TextStyle;
+  amountInput: TextStyle;
+  header: TextStyle;
+  title: TextStyle;
+  caption: TextStyle;
 };

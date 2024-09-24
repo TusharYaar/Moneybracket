@@ -1,10 +1,12 @@
 // import Header from "@components/Header";
 import { Stack } from "expo-router/stack";
+import { useTheme } from "providers/ThemeProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Layout() {
+  const {colors} = useTheme();
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.screen }}>
       <Stack screenOptions={{headerShown: false}}>
         <Stack.Screen  name="(tabs)" />
         <Stack.Screen  name="addTransaction"/>

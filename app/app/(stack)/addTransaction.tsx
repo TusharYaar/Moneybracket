@@ -1,4 +1,4 @@
-import { StyleSheet, View, TextInput, Pressable, Keyboard, ScrollView, useWindowDimensions, Text } from "react-native";
+import { StyleSheet, View, TextInput, Pressable, Keyboard, useWindowDimensions, Text } from "react-native";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import DatePicker from "react-native-date-picker";
 import { useSettings } from "../../providers/SettingsProvider";
@@ -10,9 +10,9 @@ import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { format, parseISO } from "date-fns";
 import PrimaryInput from "@components/AmountInput";
-import { Category, Transaction, TransactionWithCategory } from "types";
-import Header from "@components/Header";
+import { Category, TransactionWithCategory } from "types";
 import { useTheme } from "providers/ThemeProvider";
+import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 
 type SearchParams = {
   _id: string;
@@ -34,7 +34,7 @@ const AddTransaction = () => {
   const amtInputRef = useRef<TextInput>();
   const categorySheetRef = useRef<BottomSheet>();
   const [sheetView, setSheetView] = useState("category");
-  const {textStyle} = useTheme();
+  const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<Omit<TransactionWithCategory, "_id" | "createdAt" | "updatedAt">>({
     category: category.length > 0 ? category[0] : null,
     amount: parseFloat(amount),
@@ -209,13 +209,15 @@ const AddTransaction = () => {
     setValues((prev) => ({ ...prev, category }));
   }, []);
   return (
-    <View style={{ paddingHorizontal: 16, paddingBottom: 16, height }}>
-      <Header
+    <>
+      <CollapsibleHeaderScrollView
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
         title={_id ? "Transaction" : "Add Transaction"}
+        paddingTop={0}
+        style={{ backgroundColor: colors.screen }}
         headerBtns={_id ? [{ icon: "trash", onPress: handlePressDelete, label: "delete_transaction" }] : []}
-      />
-      <ScrollView contentContainerStyle={{ flex: 1, paddingTop: 8 }}>
-        <View style={{ flexDirection: "column", rowGap: 16, flexGrow: 1 }}>
+      >
+        <View style={{ flexDirection: "column", rowGap: 16, flexGrow: 1, marginTop: 16 }}>
           <PrimaryInput
             type="amount"
             onPress={handleTextBoxPress}
@@ -253,7 +255,7 @@ const AddTransaction = () => {
           onSwipeComplete={handleSubmit}
           bgColor={values.category ? values.category.color : undefined}
         />
-      </ScrollView>
+      </CollapsibleHeaderScrollView>
       <BottomSheet
         ref={categorySheetRef}
         snapPoints={[264, "69%"]}
@@ -283,7 +285,7 @@ const AddTransaction = () => {
           />
         )}
       </BottomSheet>
-    </View>
+    </>
   );
 
   // return (

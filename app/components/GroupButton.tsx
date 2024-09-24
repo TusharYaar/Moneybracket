@@ -2,6 +2,7 @@ import { StyleSheet, View, PressableProps, Pressable, StyleProp, ViewStyle } fro
 import React, { useEffect } from "react";
 import Octicons from "@expo/vector-icons/Octicons";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
+import { useTheme } from "providers/ThemeProvider";
 
 interface ButtonProps extends Omit<PressableProps, "children" | "style"> {
   icon: string;
@@ -17,7 +18,9 @@ type Props = {
 };
 
 const GroupButton = ({ buttons, style, activeColor }: Props) => {
-  const backgroundColor = useSharedValue(activeColor ? activeColor : "orange");
+  const {colors}= useTheme();
+  const backgroundColor = useSharedValue(activeColor ? activeColor : colors.headerIconActive);
+
 
   useEffect(() => {
     backgroundColor.value = withTiming(activeColor);
@@ -31,7 +34,7 @@ const GroupButton = ({ buttons, style, activeColor }: Props) => {
             style={[
               styles.btn,
               {
-                backgroundColor: type === "filled" ? backgroundColor : "#f2f2f2",
+                backgroundColor: type === "filled" ? backgroundColor : colors.sectionBackground,
                 borderTopLeftRadius: index === 0 ? 4 : 0,
                 borderBottomLeftRadius: index === 0 ? 4 : 0,
                 borderTopRightRadius: index === buttons.length - 1 ? 4 : 0,

@@ -1,17 +1,14 @@
 import { endOfDay, endOfMonth, startOfDay, startOfMonth } from "date-fns";
 import { isSameDay, compareAsc } from "date-fns/esm";
-import { Results } from "realm";
-import { Transaction } from "../realm/Transaction";
-import { GroupedTransactions } from "../types";
+import { GroupedTransactions ,TransactionWithCategory} from "../types";
 
 export const transactionWithinDates = (date: Date, start: Date, end: Date) => {
-  console.log(end, date, start);
   if (compareAsc(date, start) !== -1 && compareAsc(end, date) !== -1) return true;
   return false;
 };
 
 export const groupTransactionByDate = (
-  transactions: Transaction[],
+  transactions: TransactionWithCategory[],
   start?: Date,
   end?: Date
 ): GroupedTransactions[] => {
@@ -44,7 +41,7 @@ export const groupTransactionByDate = (
   }, [] as GroupedTransactions[]);
 };
 
-export const calcuateTotal = (transactions: Transaction[]) => {
+export const calcuateTotal = (transactions: TransactionWithCategory[]) => {
   let calculated = {
     allTime: {
       income: 0,

@@ -1,28 +1,28 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useMemo } from "react";
-import { TouchableRipple } from "react-native-paper";
-import Icon from "@expo/vector-icons/Ionicons";
+import Octicons from "@expo/vector-icons/Octicons";
+
 
 const ExportItem = ({ item, onPress }: { item: string; onPress: () => void }) => {
   const icon = useMemo(() => {
     const type = item.split(".");
     switch (type[type.length - 1]) {
       case "json":
-        return "code-slash";
+        return "number";
       case "pdf":
-        return "document-text";
+        return "number";
       default:
-        return "document";
+        return "number";
     }
   }, [item]);
 
   return (
-    <TouchableRipple onPress={onPress}>
+    <Pressable onPress={onPress}>
       <View style={styles.container}>
-        <Icon name={icon} size={36} />
+        <Octicons name={icon as undefined} size={36} />
         <Text style={{ flex: 1 }}>{item}</Text>
       </View>
-    </TouchableRipple>
+    </Pressable>
   );
 };
 

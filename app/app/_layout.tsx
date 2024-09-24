@@ -3,9 +3,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import i18n from "../localization";
 import { I18nextProvider } from "react-i18next";
 
-import DataProvider from "../providers/DataProvider";
+import DataProvider from "providers/DataProvider";
 // import ExchangeRatesProvider from "../providers/ExchangeRatesProvider";
-import ThemeProvider from "../providers/ThemeProvider";
+import ThemeProvider from "providers/ThemeProvider";
 
 import { Slot, useNavigationContainerRef } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -13,12 +13,13 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as Sentry from "@sentry/react-native";
 import { isRunningInExpoGo } from "expo";
 import { useEffect } from "react";
+import SettingsProvider from "providers/SettingsProvider";
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 
 Sentry.init({
   dsn: "https://1135924f6142df8d80fdd3b1cce06446@o4507986483085312.ingest.de.sentry.io/4507986484920400",
-  debug: __DEV__, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+  debug: !__DEV__, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
   integrations: [
     new Sentry.ReactNativeTracing({
       // Pass instrumentation to be used as `routingInstrumentation`
@@ -41,7 +42,7 @@ function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <I18nextProvider i18n={i18n}>
         <ThemeProvider>
-          {/* <RealmProvider schema={[Category, Shortcut, Transaction]} closeOnUnmount={false}> */}
+          <SettingsProvider>
           {/* <ExchangeRatesProvider> */}
           <DataProvider>
             <SafeAreaProvider>
@@ -49,7 +50,7 @@ function RootLayout() {
             </SafeAreaProvider>
           </DataProvider>
           {/* </ExchangeRatesProvider> */}
-          {/* </RealmProvider> */}
+          </SettingsProvider>
         </ThemeProvider>
       </I18nextProvider>
     </GestureHandlerRootView>

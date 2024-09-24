@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, View, ViewStyle, Text } from "react-native";
 import React, { ReactNode } from "react";
 // import Icon from "react-native-vector-icons/Ionicons";
 import Octicons from "@expo/vector-icons/Octicons";
+import { useTheme } from "providers/ThemeProvider";
 
 type Props = {
   label: string;
@@ -13,12 +14,13 @@ type Props = {
 };
 
 const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, style }: Props) => {
+  const {textStyle} = useTheme();
   return (
       <Pressable onPress={onPress}>
         <View style={styles.innerContainer}>
           <View style={styles.labelContainer}>
             <Octicons name={leftIcon as undefined} size={26} />
-            <Text style={[styles.itemLabel]}>
+            <Text style={[styles.itemLabel, textStyle.body]}>
               {label}
             </Text>
           </View>

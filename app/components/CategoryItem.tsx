@@ -13,7 +13,7 @@ type Props = {
 
 const CategoryItem = ({ item, onPress, style, itemColor }: Props) => {
   const {
-   textStyle
+   textStyle,colors
   } = useTheme();
 
   const categoryColor = itemColor ? itemColor : item.color;
@@ -26,8 +26,8 @@ const CategoryItem = ({ item, onPress, style, itemColor }: Props) => {
             <Octicons name={item.icon as undefined} size={40} />
           </View>
           <View style={[styles.content]}>
-            <Text style={textStyle.title}>{item.title}</Text>
-            <Text style={textStyle.body} >{item.type}</Text>
+            <Text style={[textStyle.title, {color: colors.text}]}>{item.title}</Text>
+            <Text style={[textStyle.body, {color: colors.text}]} >{item.type}</Text>
           </View>
         </View>
       </Pressable>

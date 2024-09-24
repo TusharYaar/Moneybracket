@@ -1,40 +1,55 @@
-import type { MD3Typescale } from "react-native-paper/lib/typescript/src/types";
+import { Theme_TextStyle } from "types";
+const mediumVariants = ["amountInput", "body"];
+const regularVariants = ["header", "title", "amount", "caption"];
 
-import DefaultConfig from "../data/defaultFontConfig";
+const defaults = {
+  body: {
+    fontSize: 16,
+    letterSpacing: 0.25,
+  },
+  amountInput: {
+    fontSize: 32,
+    letterSpacing: 0.25,
+  },
+  header: {
+    fontSize: 32,
+    letterSpacing: 0.1,
+  },
+  title: {
+    fontSize: 20,
+    letterSpacing: 0.15,
+  },
+  caption: {
+    fontSize: 32,
+    letterSpacing: 0.25,
+  },
+  amount: {
+    fontSize: 24,
+    letterSpacing: 0.25,
+  },
+};
 
-const mediumVariants = ["labelLarge", "labelMedium", "labelSmall", "titleMedium", "titleSmall"];
-const regularVariants = [
-  "bodyLarge",
-  "bodyMedium",
-  "bodySmall",
-  "default",
-  "displayLarge",
-  "displayMedium",
-  "displaySmall",
-  "headlineLarge",
-  "headlineMedium",
-  "headlineSmall",
-  "titleLarge",
-];
-
-export const makeFontConfig = (regular: string, medium: string, sizeMultiplier = 1, spacingMultiplier = 0) => {
+export const makeFontConfig = (
+  regular: string,
+  medium: string,
+  sizeMultiplier = 1,
+  spacingMultiplier = 1
+): Theme_TextStyle => {
   let config = {};
   mediumVariants.forEach((v) => {
     config[v] = {
-      ...DefaultConfig[v],
-      fontSize: DefaultConfig[v].fontSize * sizeMultiplier,
-      letterSpacing: DefaultConfig[v].letterSpacing * spacingMultiplier,
+      fontSize: defaults[v].fontSize * sizeMultiplier,
+      letterSpacing: defaults[v].letterSpacing * spacingMultiplier,
       fontFamily: medium,
     };
   });
   regularVariants.forEach((v) => {
     config[v] = {
-      ...DefaultConfig[v],
+      fontSize: defaults[v].fontSize * sizeMultiplier,
+      letterSpacing: defaults[v].letterSpacing * spacingMultiplier,
       fontFamily: regular,
-      fontSize: DefaultConfig[v].fontSize * sizeMultiplier,
-      letterSpacing: DefaultConfig[v].letterSpacing * spacingMultiplier,
     };
   });
 
-  return config as MD3Typescale;
+  return config as Theme_TextStyle;
 };

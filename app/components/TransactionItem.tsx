@@ -32,7 +32,7 @@ const TransactionItem = ({ data, onPress, style }: Props) => {
         />
         <View style={styles.text}>
           <View>
-            <Text style={textStyle.title}>{data.category.title}</Text>
+            <Text style={[textStyle.title, {color: colors.text} ]}>{data.category.title}</Text>
             {/* {data.note.length > 0 && <Text>{data.note}</Text>} */}
           </View>
           <Text style={[ {color: colors[data.category.type] } ,textStyle.amount]}>

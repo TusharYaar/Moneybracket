@@ -29,7 +29,7 @@ const Header = ({ title = "", hideBackButton = false, headerBtns = [], style }: 
         </Pressable>
       ) : null}
       <View style={[styles.titleContianer,{backgroundColor: colors.headerBackground }]}>
-        <Text style={[header, { color: colors.headerText }]}>{title}</Text>
+        <Text style={[header]}>{title}</Text>
       </View>
       {headerBtns.length > 0 && (
         <View style={{ flexDirection: "row", columnGap: 8 }}>
