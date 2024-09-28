@@ -6,13 +6,13 @@ import * as Print from "expo-print";
 import { startActivityAsync } from "expo-intent-launcher";
 import { shareAsync } from "expo-sharing";
 
-import { createCSV, createHTML, createJSON, getType } from "../../../../utils/exports";
-import { useData } from "../../../../providers/DataProvider";
+import { createCSV, createHTML, createJSON, getType } from "utils/exports";
+import { useData } from "providers/DataProvider";
 import { Button, Surface, Text } from "react-native-paper";
 
-import { EXPORTS_DIRECTORY } from "../../../../data";
+import { EXPORTS_DIRECTORY } from "data";
 import { FlashList } from "@shopify/flash-list";
-import ExportItem from "../../../../components/ExportItem";
+import ExportItem from "components/ExportItem";
 import { useTranslation } from "react-i18next";
 
 const Exports = () => {

@@ -1,14 +1,14 @@
 import { Text, View, TextInput, Pressable, useWindowDimensions, ScrollView } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
-import { COLORS } from "../../data";
+import { COLORS } from "data";
 import SwipeButton from "@components/SwipeButton";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import PrimaryInput from "@components/AmountInput";
 import { useData } from "providers/DataProvider";
-import Octicons from "@expo/vector-icons/Octicons";
 import GroupButton from "@components/GroupButton";
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
+import Icon from "@components/Icon";
 
 const CATEGORY_TYPES = [
   {
@@ -100,7 +100,7 @@ const AddCategoryScreen = () => {
                   backgroundColor: values.color,
                 }}
               >
-                <Octicons name={values.icon as undefined} size={48} />
+                <Icon name={values.icon as undefined} size={48} />
               </View>
             </Pressable>
           </View>

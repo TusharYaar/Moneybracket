@@ -1,11 +1,11 @@
 import { StyleSheet, View, ViewStyle, Text, Pressable } from "react-native";
 import React from "react";
-import Octicons from "@expo/vector-icons/Octicons";
 import { chooseBetterContrast } from "../utils/colors";
 
 import { TransactionWithCategory } from "types";
 import { useTheme } from "providers/ThemeProvider";
 import { useSettings } from "providers/SettingsProvider";
+import Icon from "./Icon";
 
 type Props = {
   data: TransactionWithCategory;
@@ -20,7 +20,7 @@ const TransactionItem = ({ data, onPress, style }: Props) => {
   return (
     <Pressable onPress={onPress} style={style}>
       <View style={styles.innerContainer}>
-        <Octicons
+        <Icon
           name={data.category.icon as any}
           size={36}
           style={{

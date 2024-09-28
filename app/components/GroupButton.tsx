@@ -1,8 +1,8 @@
 import { StyleSheet, View, PressableProps, Pressable, StyleProp, ViewStyle } from "react-native";
 import React, { useEffect } from "react";
-import Octicons from "@expo/vector-icons/Octicons";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { useTheme } from "providers/ThemeProvider";
+import Icon from "./Icon";
 
 interface ButtonProps extends Omit<PressableProps, "children" | "style"> {
   icon: string;
@@ -42,7 +42,7 @@ const GroupButton = ({ buttons, style, activeColor }: Props) => {
               },
             ]}
           >
-            <Octicons name={icon as undefined} size={40} />
+            <Icon name={icon} size={40} />
           </Animated.View>
         </Pressable>
       ))}

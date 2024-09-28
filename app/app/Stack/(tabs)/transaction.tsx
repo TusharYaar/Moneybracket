@@ -1,20 +1,33 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useData } from "../../../providers/DataProvider";
 import { useTranslation } from "react-i18next";
 // import { calcuateTotal, groupTransactionByDate } from "../../../utils/transaction";
-import { useRouter } from "expo-router";
-import TransactionItem from "../../../components/TransactionItem";
+import { Stack, useFocusEffect, useNavigation, useRouter } from "expo-router";
+import TransactionItem from "@components/TransactionItem";
 import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
 import { Transaction } from "types";
 import { useTheme } from "providers/ThemeProvider";
+import { View } from "react-native";
+import { useHeader } from "providers/HeaderProvider";
 
 const AllTransaction = () => {
   const router = useRouter();
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const { transaction } = useData();
   const { t } = useTranslation("", {
     keyPrefix: "screens.tracker.allTransaction",
   });
+  const {showTabbar} = useHeader();
+
+
+  const navigation = useNavigation("/Stack");
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({title: "transaction"});
+      showTabbar();
+
+    }, [])
+  );
 
   const _transaction = useMemo(
     () => [],
@@ -29,13 +42,11 @@ const AllTransaction = () => {
   //   return groupTransactionByDate(_transaction);
   // }, [_transaction]);
 
-  const handlePressTransaction = (transaction: Transaction) => {
-    // showAddTransactionModal(transaction);
-  };
+  
 
   return (
+    <View style={{ backgroundColor: colors.screen, flex: 1 }}>
       <CollapsibleHeaderFlatList
-        style={{backgroundColor: colors.screen}}
         title="transactions"
         data={transaction}
         hideBackButton={true}
@@ -44,7 +55,7 @@ const AllTransaction = () => {
             data={item}
             onPress={() =>
               router.push(
-                `addTransaction?_id=${item._id}&amount=${item.amount}&date=${item.date.toISOString()}&category=${
+                `Stack/addTransaction?_id=${item._id}&amount=${item.amount}&date=${item.date.toISOString()}&category=${
                   item.category._id
                 }`
               )
@@ -58,6 +69,7 @@ const AllTransaction = () => {
           { icon: "filter", onPress: () => console.log("filter"), label: "filter", disabled: true },
         ]}
       />
+    </View>
   );
 };
 

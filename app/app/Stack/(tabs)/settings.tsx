@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { isEnrolledAsync, authenticateAsync } from "expo-local-authentication";
 import SettingItem from "@components/SettingItem";
 
-import { Dcategories } from "../../../../data/dummy";
+import { Dcategories } from "data/dummy";
 import { useData } from "providers/DataProvider";
 
 import { ALL_FONTS, ICONS, COLORS, DATE, CURRENCIES, ALL_THEMES } from "data";
@@ -13,16 +13,17 @@ import { nativeBuildVersion, nativeApplicationVersion } from "expo-application";
 
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { View, Switch, Text, StyleSheet, Pressable } from "react-native";
 import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
+import { useHeader } from "providers/HeaderProvider";
 
 const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
   font: ALL_FONTS.filter((d) => d.isVisible).map((d) => ({ label: d.name, value: d.id })),
   theme: ALL_THEMES.filter((d) => d.isVisible).map((d) => ({ label: d.name, value: d.id })),
   language: [{ label: "English", value: "en" }],
-  icon: [],
+  icon: Object.keys(ICONS).map(k => ({label: k, value: k})),
   currency: Object.values(CURRENCIES).map((cur) => ({ label: cur.code, value: cur.name })),
 };
 
@@ -32,6 +33,7 @@ const Setting = () => {
   const { addCategory } = useData();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
+  const { showHeader, showTabbar, hideHeader, hideTabbar } = useHeader();
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectList, setSelectList] = useState({
     visible: false,
@@ -39,6 +41,14 @@ const Setting = () => {
     selected: "",
   });
 
+  const navigation = useNavigation("/Stack");
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({ title: "settings" });
+      showTabbar();
+
+    }, [])
+  );
   const router = useRouter();
   const selectListRef = useRef<BottomSheet>();
 
@@ -116,10 +126,17 @@ const Setting = () => {
   );
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
+
+  const handleOnAnimate = (_, to: number) => {
+    if (to === 2) hideHeader();
+    else showHeader();
+    if (to === -1) showTabbar();
+    else hideTabbar();
+  };
   return (
     <>
       <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 84 }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
         title="Settings"
         paddingTop={0}
         hideBackButton={true}
@@ -127,17 +144,19 @@ const Setting = () => {
       >
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>Appearance</Text>
-          <SettingItem label={t("font")} leftIcon="typography" onPress={() => showSelectList("font", settings.font)}>
+          <SettingItem label={t("font")} leftIcon="font" onPress={() => showSelectList("font", settings.font)}>
             <Text style={textStyle.body}>{OPTIONS.font.find((f) => f.value === settings.font).label}</Text>
           </SettingItem>
-          <SettingItem label={t("theme")} leftIcon="paintbrush" onPress={() => showSelectList("theme", settings.theme)}>
+          <SettingItem label={t("theme")} leftIcon="theme" onPress={() => showSelectList("theme", settings.theme)}>
             <Text style={textStyle.body}>{OPTIONS.theme.find((f) => f.value === settings.theme).label}</Text>
           </SettingItem>
           {__DEV__ && (
-            <SettingItem label={t("icon")} leftIcon="apps" onPress={() => showSelectList("icon", settings.icon)}>
+            <SettingItem label={t("icon")} leftIcon="icon" onPress={() => showSelectList("icon", settings.icon)}>
               <Text style={textStyle.body}>{settings.icon}</Text>
             </SettingItem>
           )}
+
+          <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("_sitemap")} />
         </View>
 
         {/* <SettingItem label={t("theme")} leftIcon="paintbrush" onPress={() => router.push("settings/theme")}> */}
@@ -145,14 +164,14 @@ const Setting = () => {
           <Text style={textStyle.title}>Preference</Text>
           <SettingItem
             label={t("currency")}
-            leftIcon="globe"
+            leftIcon="currency"
             onPress={() => showSelectList("currency", settings.currency.code)}
           >
             <Text style={textStyle.body}>{settings.currency.name}</Text>
           </SettingItem>
           <SettingItem
             label={t("language")}
-            leftIcon="comment-discussion"
+            leftIcon="language"
             onPress={() => showSelectList("language", settings.language)}
           >
             <Text style={textStyle.body}>{wt(`languages.${settings.language}`)}</Text>
@@ -160,7 +179,7 @@ const Setting = () => {
 
           <SettingItem
             label={t("dateFormat")}
-            leftIcon="calendar"
+            leftIcon="date"
             onPress={() => showSelectList("dateFormat", settings.dateFormat)}
           >
             <Text style={textStyle.body}>{settings.dateFormat}</Text>
@@ -179,9 +198,9 @@ const Setting = () => {
           <Text style={textStyle.title}>Data Management</Text>
 
           {__DEV__ && (
-            <SettingItem label={t("export")} leftIcon="download" onPress={() => router.push("settings/export")} />
+            <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("Stack/export")} />
           )}
-          <SettingItem label={t("backup")} leftIcon="duplicate" onPress={() => router.push("settings/backup")} />
+          <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("Stack/backup")} />
 
           {/* <DeleteDialog
             visible={deleteModal}
@@ -190,21 +209,21 @@ const Setting = () => {
             body={t("confirmDeleteBody")}
             title={t("confirmDeleteTitle")}
           /> */}
-          {__DEV__ && <SettingItem label={t("deleteAllData")} leftIcon="trash" onPress={() => setDeleteModal(true)} />}
+          {__DEV__ && <SettingItem label={t("deleteAllData")} leftIcon="delete" onPress={() => setDeleteModal(true)} />}
         </View>
 
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>About</Text>
 
-          <SettingItem label={t("help")} leftIcon="info" onPress={() => router.push("settings/help")} />
+          <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("Stack/help")} />
 
-          <SettingItem label={t("about")} leftIcon="smiley" onPress={() => router.push("settings/about")} />
+          <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("Stack/about")} />
 
-          <SettingItem label={t("appVersion")} leftIcon="ellipsis" onPress={() => setDeleteModal(true)}>
+          <SettingItem label={t("appVersion")} leftIcon="appVersion" onPress={() => setDeleteModal(true)}>
             <Text style={textStyle.body}>{nativeApplicationVersion}</Text>
           </SettingItem>
 
-          <SettingItem label={t("buildVersion")} leftIcon="bug" onPress={() => setDeleteModal(true)}>
+          <SettingItem label={t("buildVersion")} leftIcon="buildVersion" onPress={() => setDeleteModal(true)}>
             <Text style={textStyle.body}>{nativeBuildVersion}</Text>
           </SettingItem>
         </View>
@@ -215,6 +234,7 @@ const Setting = () => {
         index={-1}
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
+        onAnimate={handleOnAnimate}
         // onAnimate={(index, to) => to !== -1 && selectListRef.current.snapToIndex(index)}
       >
         <BottomSheetFlatList

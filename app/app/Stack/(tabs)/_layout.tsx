@@ -1,14 +1,14 @@
 import { Tabs } from "expo-router";
-import Tabbar from "../../../components/Tabbar";
+import Tabbar from "@components/Tabbar";
 
 const icons = {
-  transaction: "hash",
-  category: "rows",
-  recurring: "iterations",
-  "settings/index": "tools",
+  transaction: "transactionTab",
+  category: "categoryTab",
+  recurring: "recurringTab",
+  settings: "settingTab",
 };
 
-const visibleTabs = Object.keys(icons);
+const visibleTabs = Object.keys(icons).filter((k) => (__DEV__ ? true : k !== "recurring"));
 
 export default function TabLayout() {
   return (

@@ -1,9 +1,9 @@
 import { StyleSheet, View, TextInput, Pressable, Keyboard, useWindowDimensions, Text } from "react-native";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import DatePicker from "react-native-date-picker";
-import { useSettings } from "../../providers/SettingsProvider";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { useData } from "../../providers/DataProvider";
+import { useSettings } from "providers/SettingsProvider";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useData } from "providers/DataProvider";
 import SwipeButton from "@components/SwipeButton";
 import CategoryItem from "@components/CategoryItem";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
@@ -47,6 +47,12 @@ const AddTransaction = () => {
   const animatedColor = useSharedValue(category.length > 0 ? category[0].color : "orange");
   // const { rates } = useExchangeRate();
   const router = useRouter();
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({title: _id ? "Update" : "add"})
+  },[navigation, _id]);
 
   // const [viewModal, setViewModal] = useState("datepicker");
   // const [showDelete, setShowDelete] = useState(false);

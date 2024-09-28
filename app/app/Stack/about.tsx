@@ -7,10 +7,10 @@ import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView
 // import file from "../../../../package.json";
 
 const AboutScreen = () => {
-  const { textStyle } = useTheme();
+  const { textStyle, colors } = useTheme();
   return (
     <CollapsibleHeaderScrollView
-    contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 84 }}
+    contentContainerStyle={{ paddingHorizontal: 16, backgroundColor: colors.screen }}
     title="About"
     paddingTop={8}
   >

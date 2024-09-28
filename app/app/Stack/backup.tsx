@@ -1,16 +1,13 @@
 import { Platform, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import { BACKUP_DIRECTORY } from "../../../../data";
-import { useData } from "../../../../providers/DataProvider";
+import { BACKUP_DIRECTORY } from "data";
+import { useData } from "providers/DataProvider";
 import { Button, Surface, Text } from "react-native-paper";
 
 import * as FileSystem from "expo-file-system";
 import * as DocumentPicker from "expo-document-picker";
-// import { useRealm } from "../../realm";
-import { generateBackupFile, readBackupFile } from "../../../../utils/backup";
-import { Category } from "../../../../realm/Category";
-import { BackupFile } from "../../../../types";
-import Loading from "../../../../components/Modals/Loading";
+import { generateBackupFile, readBackupFile } from "utils/backup";
+import { BackupFile, Category } from "types";
 import { useTranslation } from "react-i18next";
 
 const Backup = () => {
@@ -155,7 +152,7 @@ const Backup = () => {
           </Button>
         </Surface>
       </View>
-      <Loading visible={Boolean(loading)} text={t("restoring_backup")} />
+      {/* <Loading visible={Boolean(loading)} text={t("restoring_backup")} /> */}
     </View>
   );
 };

@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useMemo } from "react";
-import Octicons from "@expo/vector-icons/Octicons";
+import Icon from "./Icon";
 
 
 const ExportItem = ({ item, onPress }: { item: string; onPress: () => void }) => {
@@ -19,7 +19,7 @@ const ExportItem = ({ item, onPress }: { item: string; onPress: () => void }) =>
   return (
     <Pressable onPress={onPress}>
       <View style={styles.container}>
-        <Octicons name={icon as undefined} size={36} />
+        <Icon name={icon} size={36} />
         <Text style={{ flex: 1 }}>{item}</Text>
       </View>
     </Pressable>

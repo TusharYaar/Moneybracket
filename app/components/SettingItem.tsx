@@ -1,8 +1,7 @@
 import { Pressable, StyleSheet, View, ViewStyle, Text } from "react-native";
-import React, { ReactNode } from "react";
-// import Icon from "react-native-vector-icons/Ionicons";
-import Octicons from "@expo/vector-icons/Octicons";
 import { useTheme } from "providers/ThemeProvider";
+import React, { ReactNode } from "react";
+import Icon from "./Icon";
 
 type Props = {
   label: string;
@@ -19,13 +18,13 @@ const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, style }: P
       <Pressable onPress={onPress}>
         <View style={styles.innerContainer}>
           <View style={styles.labelContainer}>
-            <Octicons name={leftIcon as undefined} size={26} />
+            <Icon name={leftIcon as undefined} size={26} />
             <Text style={[styles.itemLabel, textStyle.body]}>
               {label}
             </Text>
           </View>
           {children}
-          {rightIcon && <Octicons name={rightIcon as undefined} size={16} style={styles.rightIcon} />}
+          {rightIcon && <Icon name={rightIcon as undefined} size={16} style={styles.rightIcon} />}
         </View>
       </Pressable>
   );

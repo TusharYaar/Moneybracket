@@ -8,12 +8,11 @@ import DataProvider from "providers/DataProvider";
 import ThemeProvider from "providers/ThemeProvider";
 
 import { Slot, useNavigationContainerRef } from "expo-router";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-
 import * as Sentry from "@sentry/react-native";
 import { isRunningInExpoGo } from "expo";
 import { useEffect } from "react";
 import SettingsProvider from "providers/SettingsProvider";
+import HeaderProvider from "providers/HeaderProvider";
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 
@@ -43,13 +42,13 @@ function RootLayout() {
       <I18nextProvider i18n={i18n}>
         <ThemeProvider>
           <SettingsProvider>
-          {/* <ExchangeRatesProvider> */}
-          <DataProvider>
-            <SafeAreaProvider>
-              <Slot />
-            </SafeAreaProvider>
-          </DataProvider>
-          {/* </ExchangeRatesProvider> */}
+            {/* <ExchangeRatesProvider> */}
+            <DataProvider>
+              <HeaderProvider>
+                <Slot />
+              </HeaderProvider>
+            </DataProvider>
+            {/* </ExchangeRatesProvider> */}
           </SettingsProvider>
         </ThemeProvider>
       </I18nextProvider>

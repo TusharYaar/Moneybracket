@@ -1,10 +1,12 @@
 import { Platform, Pressable, StyleSheet, ToastAndroid, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Link } from "expo-router";
-import Octicons from "@expo/vector-icons/Octicons";
 import { useTheme } from "providers/ThemeProvider";
+import { useHeader } from "providers/HeaderProvider";
+import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
+import Icon from "./Icon";
 
 interface Props extends BottomTabBarProps {
   icons: Record<string, string>;
@@ -13,8 +15,17 @@ interface Props extends BottomTabBarProps {
 
 const Tabbar = ({ state, descriptors, navigation, icons, visibleTabs }: Props) => {
   const { colors } = useTheme();
+  // const { } = useRouter
+
+  const bottom = useSharedValue(16);
+  const { isTabbarVisible } = useHeader();
+  useEffect(() => {
+    if (isTabbarVisible) bottom.value = withTiming(16);
+    else bottom.value = withTiming(-100);
+  }, [isTabbarVisible]);
+
   return (
-    <View style={styles.tabbarContainer}>
+    <Animated.View style={[styles.tabbarContainer, { bottom }]}>
       <View style={{ flexDirection: "row", justifyContent: "space-between", flexGrow: 1 }}>
         <View style={[styles.tabsContainer, { borderRadius: 8, backgroundColor: colors.tabbarBackground }]}>
           {state.routes.map((route, index) => {
@@ -48,8 +59,8 @@ const Tabbar = ({ state, descriptors, navigation, icons, visibleTabs }: Props) =
                   onLongPress={onLongPress}
                 >
                   <View style={[styles.tabs]}>
-                    <Octicons
-                      name={icons[route.name] as undefined}
+                    <Icon
+                      name={icons[route.name]}
                       size={32}
                       color={isFocused ? colors.tabbarIconActive : colors.tabbarIcon}
                     />
@@ -58,15 +69,15 @@ const Tabbar = ({ state, descriptors, navigation, icons, visibleTabs }: Props) =
               );
           })}
         </View>
-        <Link href="/addTransaction" asChild>
+        <Link href="Stack/addTransaction" asChild>
           <Pressable>
             <View style={[styles.addBtn, { backgroundColor: colors.tabbarBackgroundSecondary }]}>
-              <Octicons name="plus" size={32} color={colors.tabbarIconActiveSecondary} />
+              <Icon name="add" size={32} color={colors.tabbarIconActiveSecondary} />
             </View>
           </Pressable>
         </Link>
       </View>
-    </View>
+    </Animated.View>
   );
 };
 

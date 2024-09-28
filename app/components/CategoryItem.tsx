@@ -1,8 +1,8 @@
 import { StyleSheet, View, ViewStyle,Text, Pressable } from "react-native";
 import React from "react";
 import { Category } from "types";
-import Octicons from "@expo/vector-icons/Octicons";
 import { useTheme } from "../providers/ThemeProvider";
+import Icon from "./Icon";
 
 type Props = {
   item: Category;
@@ -23,7 +23,7 @@ const CategoryItem = ({ item, onPress, style, itemColor }: Props) => {
       <Pressable style={styles.container} onPress={() => onPress(item)}>
         <View style={styles.innerContainer}>
           <View style={[styles.iconContainer, { backgroundColor: categoryColor }]}>
-            <Octicons name={item.icon as undefined} size={40} />
+            <Icon name={item.icon as undefined} size={40} />
           </View>
           <View style={[styles.content]}>
             <Text style={[textStyle.title, {color: colors.text}]}>{item.title}</Text>

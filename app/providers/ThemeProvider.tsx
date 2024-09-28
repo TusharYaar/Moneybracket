@@ -101,8 +101,6 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     return fonts;
   }, [font, colors]);
 
-  // const [font, setFont] = useState(LOCAL_FONTS[0]);
-
   const [roundness, setRoundness] = useState(parseInt(getFromStorageOrDefault(SETTING_KEYS.roundness, "-1", true)));
 
   const changeTheme = useCallback((theme: string) => {

@@ -1,17 +1,12 @@
-import { StyleSheet, FlatListProps, View } from "react-native";
 import React from "react";
 
-import Animated, {
-  interpolate,
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
-import Header from "./Header";
+import { useSharedValue } from "react-native-reanimated";
+import { FlashList, FlashListProps } from "@shopify/flash-list";
+import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import { useHeader } from "providers/HeaderProvider";
 
-interface Props<T> extends FlatListProps<T> {
-  showHeader?: boolean;
+interface Props<T> extends FlashListProps<T> {
+  headerVisible?: boolean;
   title?: string;
   hideBackButton?: boolean;
   //   If Pading top is required with Header
@@ -29,7 +24,7 @@ const APPBAR_HEIGHT = 64;
 
 function CollapsibleHeaderFlatList<T>({
   onScroll = undefined,
-  showHeader = true,
+  headerVisible = true,
   title = "",
   hideBackButton,
   handleClickBack = null,
@@ -39,60 +34,34 @@ function CollapsibleHeaderFlatList<T>({
   ...props
 }: Props<T>) {
   const lastContentOffset = useSharedValue(0);
-  const height = useSharedValue(APPBAR_HEIGHT);
+  const { showHeader, hideHeader, hideTabbar, showTabbar } = useHeader();
 
-  const handleOnScroll = useAnimatedScrollHandler({
-    onScroll: ({ contentOffset }) => {
-      const diff = lastContentOffset.value - contentOffset.y;
-      // scrolling up diff -ve
-      // scrolling down diff +ve
-      if (contentOffset.y === 0) height.value = withTiming(APPBAR_HEIGHT);
-      else if (diff < 0) height.value = height.value + diff > 60 ? height.value + diff : withTiming(0);
-      else height.value = height.value + diff <= APPBAR_HEIGHT ? height.value + diff : withTiming(APPBAR_HEIGHT);
-      lastContentOffset.value = contentOffset.y;
-    },
-  });
-
-  const aStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(height.value, [0, APPBAR_HEIGHT], [-APPBAR_HEIGHT, 0]),
-        },
-      ],
-    };
-  });
-
+  const handleOnScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const diff = lastContentOffset.value - event.nativeEvent.contentOffset.y;
+    lastContentOffset.value = event.nativeEvent.contentOffset.y;
+    if (event.nativeEvent.contentOffset.y < 64)
+      {
+        showTabbar();
+        showHeader();
+      } 
+    else if (diff < 0)  {
+      hideHeader();
+      hideTabbar();
+    }
+    else {
+      showTabbar();
+      showHeader();
+    } 
+  };
   return (
-    <>
-      <Animated.View
-        style={[styles.headerContainer, aStyle]}
-        onLayout={(event) => console.log(event.nativeEvent.layout)}
-      >
-        <View style={{ paddingHorizontal: 16 }}>
-          <Header title={title} hideBackButton={hideBackButton} headerBtns={headerBtns} />
-        </View>
-      </Animated.View>
-      <Animated.FlatList
-        {...props}
-        onScroll={handleOnScroll}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[contentContainerStyle, title ? { paddingTop: paddingTop + APPBAR_HEIGHT } : null]}
-      />
-    </>
+    <FlashList
+      {...props}
+      onScroll={handleOnScroll}
+      estimatedItemSize={78}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ ...contentContainerStyle, paddingTop: title ? paddingTop + APPBAR_HEIGHT : 0 }}
+    />
   );
 }
 
 export default CollapsibleHeaderFlatList;
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    position: "absolute",
-    zIndex: 10,
-    width: "100%",
-    // height: APPBAR_HEIGHT,
-    // backgroundColor: "#010a19",
-    // flexDirection: "row",
-    // alignItems: "center"
-  },
-});
