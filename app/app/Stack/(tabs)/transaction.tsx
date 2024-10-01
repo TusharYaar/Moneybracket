@@ -17,15 +17,19 @@ const AllTransaction = () => {
   const { t } = useTranslation("", {
     keyPrefix: "screens.tracker.allTransaction",
   });
-  const {showTabbar} = useHeader();
-
+  const { showTabbar } = useHeader();
 
   const navigation = useNavigation("/Stack");
   useFocusEffect(
     useCallback(() => {
-      navigation.setOptions({title: "transaction"});
+      navigation.setOptions({
+        title: "transaction",
+        headerRightBtn: [
+          { icon: "search", onPress: () => console.log("search"), label: "search", disabled: true },
+          { icon: "filter", onPress: () => console.log("filter"), label: "filter", disabled: true },
+        ],
+      });
       showTabbar();
-
     }, [])
   );
 
@@ -41,8 +45,6 @@ const AllTransaction = () => {
   //     // return groupTransactionByDate(_transaction, dateFilter.startDate, dateFilter.endDate);
   //   return groupTransactionByDate(_transaction);
   // }, [_transaction]);
-
-  
 
   return (
     <View style={{ backgroundColor: colors.screen, flex: 1 }}>
@@ -64,10 +66,6 @@ const AllTransaction = () => {
         )}
         contentContainerStyle={{ paddingHorizontal: 16 }}
         paddingTop={8}
-        headerBtns={[
-          { icon: "search", onPress: () => console.log("search"), label: "search", disabled: true },
-          { icon: "filter", onPress: () => console.log("filter"), label: "filter", disabled: true },
-        ]}
       />
     </View>
   );

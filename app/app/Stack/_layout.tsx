@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Stack } from "expo-router";
 import Header from "@components/Header";
@@ -24,5 +23,3 @@ const StackLayout = () => {
 };
 
 export default StackLayout;
-
-const styles = StyleSheet.create({});

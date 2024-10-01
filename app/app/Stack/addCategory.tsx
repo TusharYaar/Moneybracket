@@ -1,8 +1,8 @@
 import { Text, View, TextInput, Pressable, useWindowDimensions, ScrollView } from "react-native";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { COLORS } from "data";
 import SwipeButton from "@components/SwipeButton";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import PrimaryInput from "@components/AmountInput";
 import { useData } from "providers/DataProvider";
 import GroupButton from "@components/GroupButton";
@@ -14,17 +14,17 @@ const CATEGORY_TYPES = [
   {
     label: "income",
     value: "income",
-    icon: "diff-added",
+    icon: "income",
   },
   {
     label: "expense",
     value: "expense",
-    icon: "diff-removed",
+    icon: "expense",
   },
   {
     label: "transfer",
     value: "transfer",
-    icon: "diff-renamed",
+    icon: "transfer",
   },
 ];
 
@@ -53,7 +53,7 @@ const AddCategoryScreen = () => {
     color: color ? `#${color}` : COLORS[(Math.random() * COLORS.length).toFixed()],
     icon: "feed-tag",
   });
-
+  const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
   const handleSubmit = () => {
     const date = new Date().toISOString();
@@ -70,13 +70,18 @@ const AddCategoryScreen = () => {
     router.back();
   }, [_id]);
 
+  useEffect(() => {
+    navigation.setOptions({
+      title: _id ? "Update Category" : "Add Category",
+      headerRightBtn: _id ? [{ icon: "delete", onPress: handlePressDelete, label: "delete_category" }] : []})
+  },[_id]); 
+
   return (
     <CollapsibleHeaderScrollView
     contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
     title={_id ? "Category" : "Category"}
     paddingTop={0}
     style={{backgroundColor: colors.screen}}
-    headerBtns={_id ? [{ icon: "trash", onPress: handlePressDelete, label: "delete_category" }] : []}
   >
         <View style={{ flex: 1, marginTop: 16 }}>
         <PrimaryInput

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   itemLabel: {
-    marginHorizontal: 5,
+    marginHorizontal: 16,
   },
   rightIcon: {
     marginLeft: 5,

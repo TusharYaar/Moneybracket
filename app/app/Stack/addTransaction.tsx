@@ -51,8 +51,11 @@ const AddTransaction = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    navigation.setOptions({title: _id ? "Update" : "add"})
-  },[navigation, _id]);
+    navigation.setOptions({
+      title: _id ? "Update Transaction" : "Add Transaction",
+      headerRightBtn: _id ? [{ icon: "delete", onPress: handlePressDelete, label: "delete_transaction" }] : [],
+    });
+  }, [navigation, _id]);
 
   // const [viewModal, setViewModal] = useState("datepicker");
   // const [showDelete, setShowDelete] = useState(false);
@@ -214,14 +217,14 @@ const AddTransaction = () => {
     animatedColor.value = withTiming(category.color);
     setValues((prev) => ({ ...prev, category }));
   }, []);
+
   return (
     <>
       <CollapsibleHeaderScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
         title={_id ? "Transaction" : "Add Transaction"}
         paddingTop={0}
-        style={{ backgroundColor: colors.screen }}
-        headerBtns={_id ? [{ icon: "trash", onPress: handlePressDelete, label: "delete_transaction" }] : []}
+        style={{ backgroundColor: colors.screen  }}
       >
         <View style={{ flexDirection: "column", rowGap: 16, flexGrow: 1, marginTop: 16 }}>
           <PrimaryInput

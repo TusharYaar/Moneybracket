@@ -1,8 +1,5 @@
-import { StyleSheet, useWindowDimensions } from "react-native";
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import Header from "@components/Header";
-import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import React, { createContext, useCallback, useContext, useState } from "react";
+import { HeaderBtn } from "@components/Header";
 
 const HeaderContext = createContext({
   hideHeader: () => {},
@@ -11,27 +8,19 @@ const HeaderContext = createContext({
   showTabbar: () => {},
   isHeaderVisible: true,
   isTabbarVisible: true,
-
-  // headerHeight:
+  setRightHeaderBtn: (btn: HeaderBtn[]) => {},
+  headerBtn: [] as HeaderBtn[],
 });
 
 export const useHeader = () => useContext(HeaderContext);
 
 const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  // const { height, width } = useWindowDimensions();
   const [headerVisible, setHeaderVisible] = useState(true);
   const [tabbarVisible, setTabbarVisible] = useState(true);
+  const [headerBtn, setHeaderBtns] = useState<HeaderBtn[]>([]);
 
-  // const lastContentOffset = useSharedValue(0);
-  // const top = useSharedValue(insets.top);
-
-  const hideHeader = useCallback(() => {
-    // top.value = withTiming(-100);
-    setHeaderVisible(false);
-  }, []);
-
+  const hideHeader = useCallback(() => setHeaderVisible(false), []);
   const showHeader = useCallback(() => setHeaderVisible(true), []);
-
   const showTabbar = useCallback(() => setTabbarVisible(true), []);
   const hideTabbar = useCallback(() => setTabbarVisible(false), []);
 
@@ -44,6 +33,8 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
         hideTabbar,
         isHeaderVisible: headerVisible,
         isTabbarVisible: tabbarVisible,
+        headerBtn,
+        setRightHeaderBtn: setHeaderBtns,
       }}
     >
       {children}

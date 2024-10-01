@@ -33,7 +33,7 @@ const Setting = () => {
   const { addCategory } = useData();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
-  const { showHeader, showTabbar, hideHeader, hideTabbar } = useHeader();
+  const { showHeader, showTabbar, hideHeader, hideTabbar, setRightHeaderBtn } = useHeader();
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectList, setSelectList] = useState({
     visible: false,
@@ -44,7 +44,7 @@ const Setting = () => {
   const navigation = useNavigation("/Stack");
   useFocusEffect(
     useCallback(() => {
-      navigation.setOptions({ title: "settings" });
+      navigation.setOptions({ title: "settings", headerRightBtn: [] });
       showTabbar();
 
     }, [])
