@@ -127,6 +127,7 @@ export type Theme_Color = {
   headerIconDisabled: string;
 
   sectionBackground: string;
+  rippleColor: string;
   
   tabbarBackground: string;
   tabbarIcon: string;

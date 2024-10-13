@@ -54,7 +54,9 @@
                 "date": "Fecha",
                 "category": "Categoría",
                 "note": "Nota",
-                "optional": "Opcional"
+                "optional": "Opcional",
+                "swipeButtonAdd": "Deslizar para Agregar Transacción",
+                "swipeButtonUpdate": "Deslizar para Actualizar Transacción"
             },
             "backup": {
                 "backup": "Copia de Seguridad",
@@ -93,19 +95,10 @@
     "delete": "Yes, Delete",
     "loading": "Loading",
     "components": {
-        "addCategory": {
-            "title": "Add A Category",
-            "iconAndTitle": "Category Icon and Title",
-            "type": "Category Type",
-            "color": "Category Color"
-        },
-        "addTransaction": {
-            "title": "Add A Transaction",
-            "amount": "Amount",
-            "date": "Date",
-            "category": "Category",
-            "note": "Note",
-            "optional": "Optional"
+        "categoryItem": {
+            "income": "Ingresos",
+            "expense": "Gastos",
+            "transfer": "Transferencia"
         },
         "addShortcut": {
             "title": "Add A Shortcut",

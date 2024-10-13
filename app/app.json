@@ -3,7 +3,7 @@
     "name": "Money Bracket",
     "slug": "moneybracket",
     "scheme": "com.tusharyaar.mb",
-    "version": "0.7.12",
+    "version": "0.7.13",
     "jsEngine": "hermes",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -16,12 +16,15 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.tusharyaar.moneybracket"
     },
     "android": {
-      "versionCode": 5019,
+      "versionCode": 5020,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "monochromeImage": "./assets/monochorme-icon.png",
@@ -35,22 +38,25 @@
       }
     },
     "plugins": [
-      ["./withDrawableAssets.js", "./assets/shortcuts"],
+      [
+        "./withDrawableAssets.js",
+        "./assets/shortcuts"
+      ],
       "expo-router",
       [
         "@sentry/react-native/expo",
         {
           "organization": "sentry org slug, or use the `SENTRY_ORG` environment variable",
           "project": "sentry project name, or use the `SENTRY_PROJECT` environment variable",
-          // If you are using a self-hosted instance, update the value of the url property
-          // to point towards your self-hosted instance. For example, https://self-hosted.example.com/.
           "url": "https://sentry.io/"
         }
       ],
       [
         "expo-font",
         {
-          "fonts": ["./assets/Lexend-Regular.ttf"]
+          "fonts": [
+            "./assets/Lexend-Regular.ttf"
+          ]
         }
       ]
     ]

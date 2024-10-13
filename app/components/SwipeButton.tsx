@@ -15,7 +15,7 @@ const screenPadding = 16;
 const pillSize = 64;
 const trackPadding = 8;
 
-const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text =""}: Props) => {
+const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "" }: Props) => {
   const { width } = useWindowDimensions();
   const gestureEndPoint = useMemo(() => width - screenPadding * 2 - pillSize - trackPadding, [width]);
   const { textStyle } = useTheme();
@@ -36,13 +36,19 @@ const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text =""}: Prop
 
   return (
     <View
-      style={[{
-        height: pillSize + trackPadding * 2,
-        backgroundColor: bgColor,
-        borderRadius: 8,
-        justifyContent: "center",
-      }, style]}
+      style={[
+        {
+          height: pillSize + trackPadding * 2,
+          backgroundColor: bgColor,
+          borderRadius: 8,
+          justifyContent: "center",
+        },
+        style,
+      ]}
     >
+      <Text style={[{ alignSelf: "center" }, textStyle.title]} accessible={false}>
+        {text}
+      </Text>
       <GestureDetector gesture={pan}>
         <Animated.View
           style={{
@@ -55,7 +61,6 @@ const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text =""}: Prop
           }}
         ></Animated.View>
       </GestureDetector>
-      <Text style={[{ alignSelf: "center" }, textStyle.title]}>{text}</Text>
     </View>
   );
 };

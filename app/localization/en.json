@@ -54,7 +54,9 @@
                 "date": "Date",
                 "category": "Category",
                 "note": "Note",
-                "optional": "Optional"
+                "optional": "Optional",
+                "swipeButtonAdd": "Swipe to Add Transaction",
+                "swipeButtonUpdate": "Swipe to Update Transaction"
             },
             "backup": {
                 "backup": "Backup",
@@ -78,34 +80,11 @@
             "help": {}
         }
     },
-    "amountValue": "{{amount, number}}",
-    "income": "Income",
-    "expense": "Expense",
-    "transfer": "Transfer",
-    "amount": "Amount",
-    "date": "Date",
-    "category": "Category",
-    "transaction": "Transaction",
-    "note": "Note",
-    "optional": "Optional",
-    "tracker": "tracker",
-    "cancel": "No, Cancel",
-    "delete": "Yes, Delete",
-    "loading": "Loading",
     "components": {
-        "addCategory": {
-            "title": "Add A Category",
-            "iconAndTitle": "Category Icon and Title",
-            "type": "Category Type",
-            "color": "Category Color"
-        },
-        "addTransaction": {
-            "title": "Add A Transaction",
-            "amount": "Amount",
-            "date": "Date",
-            "category": "Category",
-            "note": "Note",
-            "optional": "Optional"
+        "categoryItem": {
+            "income": "Income",
+            "expense": "Expense",
+            "transfer": "Transfer"
         },
         "addShortcut": {
             "title": "Add A Shortcut",
@@ -188,5 +167,19 @@
         "FONT_NOT_UNLOCKED": "Font not unlocked",
         "THEME_NOT_UNLOCKED": "Theme not unlocked",
         "ROUNDNESS_NOT_UNLOCKED": "Roundness feature not unlocked"
-    }
+    },
+    "amountValue": "{{amount, number}}",
+    "income": "Income",
+    "expense": "Expense",
+    "transfer": "Transfer",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "transaction": "Transaction",
+    "note": "Note",
+    "optional": "Optional",
+    "tracker": "tracker",
+    "cancel": "No, Cancel",
+    "delete": "Yes, Delete",
+    "loading": "Loading"
 }

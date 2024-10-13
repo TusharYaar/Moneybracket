@@ -3,6 +3,7 @@ import React from "react";
 import { Category } from "types";
 import { useTheme } from "../providers/ThemeProvider";
 import Icon from "./Icon";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   item: Category;
@@ -15,6 +16,7 @@ const CategoryItem = ({ item, onPress, style, itemColor }: Props) => {
   const {
    textStyle,colors
   } = useTheme();
+  const { t } = useTranslation("", { keyPrefix: "components.categoryItem" });
 
   const categoryColor = itemColor ? itemColor : item.color;
 
@@ -27,7 +29,7 @@ const CategoryItem = ({ item, onPress, style, itemColor }: Props) => {
           </View>
           <View style={[styles.content]}>
             <Text style={[textStyle.title, {color: colors.text}]}>{item.title}</Text>
-            <Text style={[textStyle.body, {color: colors.text}]} >{item.type}</Text>
+            <Text style={[textStyle.body, {color: colors.text}]} >{t(item.type)}</Text>
           </View>
         </View>
       </Pressable>

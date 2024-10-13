@@ -13,6 +13,7 @@ export const defaultT: CustomTheme = {
     statusbar: "#f2f2f2",
     
     sectionBackground: "#d9f6fc",
+    rippleColor: "#010a1930",
     
     tabbarBackground: "#010a19",
     tabbarIcon: "#a8dadc",
@@ -47,6 +48,7 @@ export const darkT: CustomTheme = {
     statusbar: "#202020",
     
     sectionBackground: "#2b2b2b",
+    rippleColor: "#010a1930",
     
     tabbarBackground: "#010a19",
     tabbarIcon: "#cca53c",

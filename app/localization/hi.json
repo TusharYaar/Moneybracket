@@ -54,7 +54,9 @@
                 "date": "तारीख",
                 "category": "श्रेणी",
                 "note": "नोट",
-                "optional": "वैकल्पिक"
+                "optional": "वैकल्पिक",
+                "swipeButtonAdd": "लेनदेन जोड़ने के लिए स्वाइप करें",
+                "swipeButtonUpdate": "लेनदेन अपडेट करने के लिए स्वाइप करें"
             },
             "backup": {
                 "backup": "बैकअप",
@@ -93,19 +95,10 @@
     "delete": "Yes, Delete",
     "loading": "Loading",
     "components": {
-        "addCategory": {
-            "title": "Add A Category",
-            "iconAndTitle": "Category Icon and Title",
-            "type": "Category Type",
-            "color": "Category Color"
-        },
-        "addTransaction": {
-            "title": "Add A Transaction",
-            "amount": "Amount",
-            "date": "Date",
-            "category": "Category",
-            "note": "Note",
-            "optional": "Optional"
+        "categoryItem": {
+            "income": "आय",
+            "expense": "व्यय",
+            "transfer": "स्थानांतरण"
         },
         "addShortcut": {
             "title": "Add A Shortcut",

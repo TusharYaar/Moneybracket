@@ -264,6 +264,7 @@ const AddTransaction = () => {
           style={{ marginTop: 16 }}
           onSwipeComplete={handleSubmit}
           bgColor={values.category ? values.category.color : undefined}
+          text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
       </CollapsibleHeaderScrollView>
       <BottomSheet

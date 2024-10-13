@@ -13,9 +13,9 @@ type Props = {
 };
 
 const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, style }: Props) => {
-  const {textStyle} = useTheme();
+  const {textStyle,colors} = useTheme();
   return (
-      <Pressable onPress={onPress}>
+      <Pressable onPress={onPress} android_ripple={{color: colors.rippleColor }}>
         <View style={styles.innerContainer}>
           <View style={styles.labelContainer}>
             <Icon name={leftIcon as undefined} size={26} />

@@ -47,7 +47,7 @@ const Setting = () => {
       navigation.setOptions({ title: t("title"), headerRightBtn: [] });
       showTabbar();
 
-    }, [])
+    }, [settings.language])
   );
   const router = useRouter();
   const selectListRef = useRef<BottomSheet>();
