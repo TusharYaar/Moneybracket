@@ -3,77 +3,77 @@
         "stack": {
             "tabs": {
                 "category": {
-                    "title": "श्रेणी"
+                    "title": "Categoría"
                 },
                 "recurring": {
-                    "title": "दोहराने वाला"
+                    "title": "Recurrente"
                 },
                 "settings": {
-                    "title": "सेटिंग्स",
-                    "appearance": "दृश्य",
-                    "preference": "पसंद",
-                    "security": "सुरक्षा",
-                    "dataManagement": "डेटा प्रबंधन",
-                    "about": "बारे में",
-                    "font": "फॉन्ट",
-                    "theme": "थीम",
-                    "icon": "आइकन",
-                    "currency": "मुद्रा",
-                    "language": "भाषा",
-                    "dateFormat": "तारीख प्रारूप",
-                    "deleteAllData": "सभी डेटा हटाएं",
-                    "export": "निर्यात",
-                    "help": "सहायता",
-                    "appVersion": "ऐप संस्करण",
-                    "buildVersion": "बिल्ड संस्करण",
-                    "backup": "बैकअप और पुनर्स्थापना",
-                    "lock": "ऐप लॉक सक्षम करें",
-                    "confirmDeleteBody": "क्या आप सुनिश्चित हैं कि आप सभी डेटा हटाना चाहते हैं? इसमें सभी लेनदेन डेटा और श्रेणियाँ शामिल हैं।",
-                    "confirmDeleteTitle": "सभी डेटा हटाएं?"
+                    "title": "Configuraciones",
+                    "appearance": "Apariencia",
+                    "preference": "Preferencia",
+                    "security": "Seguridad",
+                    "dataManagement": "Gestión de Datos",
+                    "about": "Acerca de",
+                    "font": "Fuente",
+                    "theme": "Tema",
+                    "icon": "Ícono",
+                    "currency": "Moneda",
+                    "language": "Idioma",
+                    "dateFormat": "Formato de Fecha",
+                    "deleteAllData": "Eliminar Todos los Datos",
+                    "export": "Exportar",
+                    "help": "Ayuda",
+                    "appVersion": "Versión de la App",
+                    "buildVersion": "Versión de Construcción",
+                    "backup": "Copia de Seguridad y Restaurar",
+                    "lock": "Habilitar Bloqueo de la App",
+                    "confirmDeleteBody": "¿Está seguro de que desea eliminar todos los datos? Esto incluye todos los datos de transacciones y categorías.",
+                    "confirmDeleteTitle": "¿Eliminar Todos los Datos?"
                 },
                 "transaction": {
-                    "title": "लेनदेन"
+                    "title": "Transacciones"
                 }
             },
             "about": {},
             "addCategory": {
-                "addTitle": "श्रेणी जोड़ें",
-                "updateTitle": "श्रेणी अपडेट करें",
-                "swipeButtonAdd": "श्रेणी जोड़ने के लिए स्वाइप करें",
-                "swipeButtonUpdate": "श्रेणी अपडेट करने के लिए स्वाइप करें",
-                "icon": "आइकन",
-                "type": "प्रकार",
-                "color": "रंग",
-                "current": "वर्तमान",
-                "suggested": "सुझाए गए"
+                "addTitle": "Agregar Categoría",
+                "updateTitle": "Actualizar Categoría",
+                "swipeButtonAdd": "Deslizar para Agregar Categoría",
+                "swipeButtonUpdate": "Deslizar para Actualizar Categoría",
+                "icon": "Ícono",
+                "type": "Tipo",
+                "color": "Color",
+                "current": "Actual",
+                "suggested": "Sugerido"
             },
             "addTransaction": {
-                "addTitle": "लेनदेन जोड़ें",
-                "updateTitle": "लेनदेन अपडेट करें",
-                "amount": "राशि",
-                "date": "तारीख",
-                "category": "श्रेणी",
-                "note": "नोट",
-                "optional": "वैकल्पिक"
+                "addTitle": "Agregar Transacción",
+                "updateTitle": "Actualizar Transacción",
+                "amount": "Monto",
+                "date": "Fecha",
+                "category": "Categoría",
+                "note": "Nota",
+                "optional": "Opcional"
             },
             "backup": {
-                "backup": "बैकअप",
-                "restore": "पुनर्स्थापना",
-                "loading": "लोड हो रहा है",
-                "restoring_backup": "चुने हुए फ़ाइल से आइटम पुनर्स्थापित करना",
-                "backup_text": "आप अपने डेटा को फ़ाइल में बैकअप कर सकते हैं और बाद में पुनर्स्थापित कर सकते हैं। बैकअप केवल आपकी श्रेणी और लेनदेन का बैकअप लेता है। चित्र शामिल नहीं हैं।",
-                "restore_text": "आप बैकअप फ़ाइल से श्रेणियों और लेनदेन को पुनर्स्थापित कर सकते हैं।",
-                "text_1": "आप अपने डेटा को सुरक्षित रखने या किसी अन्य डिवाइस से स्थानांतरित करने के लिए बैकअप बना सकते हैं।"
+                "backup": "Copia de Seguridad",
+                "restore": "Restaurar",
+                "loading": "Cargando",
+                "restoring_backup": "Restaurando elementos del archivo seleccionado",
+                "backup_text": "Puedes hacer una copia de seguridad de tus datos en un archivo y restaurarlos más tarde. La copia de seguridad solo guarda tus categorías y transacciones. Las imágenes no están incluidas.",
+                "restore_text": "Puedes restaurar categorías y transacciones desde un archivo de copia de seguridad.",
+                "text_1": "Puedes crear una copia de seguridad para proteger tus datos, o transferir de/de otro dispositivo."
             },
             "export": {
-                "export": "निर्यात",
-                "exportAs": "निर्यात के रूप में",
+                "export": "Exportar",
+                "exportAs": "Exportar Como",
                 "pdf": "PDF",
                 "json": "JSON",
                 "excel": "Excel",
                 "csv": "CSV",
-                "recentExports": "हाल के निर्यात",
-                "noExports": "आपके पास कोई निर्यात नहीं है"
+                "recentExports": "Exportaciones Recientes",
+                "noExports": "No tienes exportaciones"
             },
             "help": {}
         }

@@ -8,13 +8,14 @@ type Props = {
   onSwipeComplete: () => void;
   bgColor?: string;
   style?: ViewStyle;
+  text?: string;
 };
 
 const screenPadding = 16;
 const pillSize = 64;
 const trackPadding = 8;
 
-const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style}: Props) => {
+const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text =""}: Props) => {
   const { width } = useWindowDimensions();
   const gestureEndPoint = useMemo(() => width - screenPadding * 2 - pillSize - trackPadding, [width]);
   const { textStyle } = useTheme();
@@ -54,7 +55,7 @@ const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style}: Props) => {
           }}
         ></Animated.View>
       </GestureDetector>
-      <Text style={[{ alignSelf: "center" }, textStyle.title]}>Swipe to Add</Text>
+      <Text style={[{ alignSelf: "center" }, textStyle.title]}>{text}</Text>
     </View>
   );
 };

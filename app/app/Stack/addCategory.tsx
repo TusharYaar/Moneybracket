@@ -12,6 +12,7 @@ import Icon from "@components/Icon";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { useHeader } from "providers/HeaderProvider";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
+import { useTranslation } from "react-i18next";
 
 const CATEGORY_TYPES = [
   {
@@ -47,6 +48,7 @@ type SearchParams = {
 const AddCategoryScreen = () => {
   const { addCategory, updateCategory, deleteCategory } = useData();
   const { _id, color, title = "", type = "income" } = useLocalSearchParams<SearchParams>();
+  const { t } = useTranslation("", { keyPrefix: "app.stack.addCategory" });
   const router = useRouter();
   const { showHeader, hideHeader } = useHeader();
   const inputRef = useRef<TextInput>();
@@ -64,10 +66,9 @@ const AddCategoryScreen = () => {
   const recommendColor = useMemo(() => {
     if (_id) {
       return "";
-    }
-    else {
-      const color =  COLORS[(Math.random() * COLORS.length).toFixed()];
-      setValues(prev => ({...prev, color}))
+    } else {
+      const color = COLORS[(Math.random() * COLORS.length).toFixed()];
+      setValues((prev) => ({ ...prev, color }));
       return color;
     }
   }, [_id, setValues]);
@@ -103,7 +104,7 @@ const AddCategoryScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: _id ? "Update Category" : "Add Category",
+      title: _id ? t("updateTitle") : t("addTitle"),
       headerRightBtn: _id ? [{ icon: "delete", onPress: handlePressDelete, label: "delete_category" }] : [],
     });
   }, [_id]);
@@ -114,7 +115,7 @@ const AddCategoryScreen = () => {
     <>
       <CollapsibleHeaderScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
-        title={_id ? "Category" : "Category"}
+        title="Category"
         paddingTop={0}
         style={{ backgroundColor: colors.screen }}
       >
@@ -128,7 +129,7 @@ const AddCategoryScreen = () => {
           />
           <View style={{ flexDirection: "row", justifyContent: "space-between", columnGap: 16, marginTop: 32 }}>
             <View>
-              <Text style={textStyle.body}>Icon</Text>
+              <Text style={textStyle.body}>{t("icon")}</Text>
               <Pressable onPress={() => iconListRef.current.snapToIndex(0)}>
                 <View
                   style={{
@@ -145,7 +146,7 @@ const AddCategoryScreen = () => {
               </Pressable>
             </View>
             <View>
-              <Text style={textStyle.body}>Colors</Text>
+              <Text style={textStyle.body}>{t("color")}</Text>
               <ScrollView
                 contentContainerStyle={{ flexDirection: "row", columnGap: 8, paddingRight: 16 }}
                 horizontal
@@ -155,16 +156,31 @@ const AddCategoryScreen = () => {
                 {COLORS.map((color) => (
                   <Pressable key={color} onPress={() => setValues((prev) => ({ ...prev, color }))}>
                     <View style={{ backgroundColor: color, borderRadius: 4, height: 64, width: 64 }} />
-                    {values.color === color && <Animated.Text exiting={FadeOutUp} entering={FadeInUp} style={[textStyle.label, { textAlign: "center" }]}>current</Animated.Text>}
-                    {values.color !== color&& recommendColor === color  && <Animated.Text exiting={FadeOutUp} entering={FadeInUp} style={[textStyle.label, { textAlign: "center" }]}>suggested</Animated.Text>}
-
+                    {values.color === color && (
+                      <Animated.Text
+                        exiting={FadeOutUp}
+                        entering={FadeInUp}
+                        style={[textStyle.label, { textAlign: "center" }]}
+                      >
+                        {t("current")}
+                      </Animated.Text>
+                    )}
+                    {values.color !== color && recommendColor === color && (
+                      <Animated.Text
+                        exiting={FadeOutUp}
+                        entering={FadeInUp}
+                        style={[textStyle.label, { textAlign: "center" }]}
+                      >
+                        {t("suggested")}
+                      </Animated.Text>
+                    )}
                   </Pressable>
                 ))}
               </ScrollView>
             </View>
           </View>
           <View style={{ marginTop: 32 }}>
-            <Text style={textStyle.body}>Type</Text>
+            <Text style={textStyle.body}>{t("type")}</Text>
             <GroupButton
               buttons={CATEGORY_TYPES.map((cat) => ({
                 ...cat,
@@ -176,7 +192,12 @@ const AddCategoryScreen = () => {
           </View>
         </View>
 
-        <SwipeButton bgColor={values.color} onSwipeComplete={handleSubmit} style={{ marginTop: 32 }} />
+        <SwipeButton
+          bgColor={values.color}
+          onSwipeComplete={handleSubmit}
+          style={{ marginTop: 32 }}
+          text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
+        />
       </CollapsibleHeaderScrollView>
 
       <BottomSheet

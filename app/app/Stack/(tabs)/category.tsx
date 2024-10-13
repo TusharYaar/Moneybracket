@@ -7,17 +7,18 @@ import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { useTheme } from "providers/ThemeProvider";
 import { useHeader } from "providers/HeaderProvider";
+import { useTranslation } from "react-i18next";
 
 const AllCategory = () => {
   const { category } = useData();
   const router = useRouter();
   const { colors } = useTheme();
-  const { showTabbar, setRightHeaderBtn } = useHeader();
-
+  const { showTabbar } = useHeader();
+  const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.category" });
   const navigation = useNavigation("/Stack");
   useFocusEffect(
     useCallback(() => {
-      navigation.setOptions({ title: "category" , headerRightBtn: [{ icon: "add", onPress: () => router.push("Stack/addCategory"), label: "add_category" }]});
+      navigation.setOptions({ title: t("title") , headerRightBtn: [{ icon: "add", onPress: () => router.push("Stack/addCategory"), label: "add_category" }]});
       showTabbar();
     }, [])
   );

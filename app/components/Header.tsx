@@ -47,7 +47,7 @@ const Header = ({ back, options: { title = "", headerRightBtn }, navigation }: P
 
   const fontSize = useMemo(() => {
     if (title) {
-      const calculated = titleContainerWidth / (0.6 * title.length);
+      const calculated = titleContainerWidth / (0.7 * title.length);
       if (calculated < header.fontSize) return Math.floor(calculated);
     }
     return header.fontSize;
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 64,
     flexGrow: 1,
+    justifyContent:"center"
   },
   headerActionBtn: {
     padding: 16,

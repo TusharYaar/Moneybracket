@@ -13,6 +13,7 @@ import PrimaryInput from "@components/AmountInput";
 import { Category, TransactionWithCategory } from "types";
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
+import { useTranslation } from "react-i18next";
 
 type SearchParams = {
   _id: string;
@@ -28,7 +29,7 @@ const AddTransaction = () => {
     category: category2,
   } = useLocalSearchParams<SearchParams>();
   const { height, width } = useWindowDimensions();
-  // const { t } = useTranslation("", { keyPrefix: "components.addTransaction" });
+  const { t } = useTranslation("", { keyPrefix: "app.stack.addTransaction" });
   const { currency: defaultCurrency, dateFormat } = useSettings();
   const { category, addTransaction, updateTransaction, deleteTransaction } = useData();
   const amtInputRef = useRef<TextInput>();
@@ -52,7 +53,7 @@ const AddTransaction = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: _id ? "Update Transaction" : "Add Transaction",
+      title: _id ? t("updateTitle") : t("addTitle"),
       headerRightBtn: _id ? [{ icon: "delete", onPress: handlePressDelete, label: "delete_transaction" }] : [],
     });
   }, [navigation, _id]);
@@ -222,7 +223,7 @@ const AddTransaction = () => {
     <>
       <CollapsibleHeaderScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
-        title={_id ? "Transaction" : "Add Transaction"}
+        title={_id ? t("updateTitle") : t("addTitle")}
         paddingTop={0}
         style={{ backgroundColor: colors.screen  }}
       >

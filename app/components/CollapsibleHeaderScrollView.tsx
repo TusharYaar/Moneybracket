@@ -36,23 +36,19 @@ function CollapsibleHeaderScrollView<T>({
   const lastContentOffset = useSharedValue(0);
   const { showHeader, hideHeader, hideTabbar, showTabbar } = useHeader();
 
-
   const handleOnScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const diff = lastContentOffset.value - event.nativeEvent.contentOffset.y;
     lastContentOffset.value = event.nativeEvent.contentOffset.y;
-    if (event.nativeEvent.contentOffset.y < 64)
-      {
-        showTabbar();
-        showHeader();
-      } 
-    else if (diff < 0)  {
-      hideHeader();
-      hideTabbar();
-    }
-    else {
+    if (event.nativeEvent.contentOffset.y < 64) {
       showTabbar();
       showHeader();
-    } 
+    } else if (diff < 0) {
+      hideHeader();
+      hideTabbar();
+    } else {
+      showTabbar();
+      showHeader();
+    }
   };
 
   // const aStyle = useAnimatedStyle(() => {
@@ -79,7 +75,10 @@ function CollapsibleHeaderScrollView<T>({
       {...props}
       onScroll={handleOnScroll}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={[contentContainerStyle, title ? { paddingTop: paddingTop + APPBAR_HEIGHT } : null]}
+      contentContainerStyle={[
+        contentContainerStyle,
+        title ? { paddingTop: paddingTop + APPBAR_HEIGHT } : { paddingTop },
+      ]}
     />
   );
 }

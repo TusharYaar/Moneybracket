@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { useData } from "../../../providers/DataProvider";
 import { useTranslation } from "react-i18next";
 // import { calcuateTotal, groupTransactionByDate } from "../../../utils/transaction";
-import { Stack, useFocusEffect, useNavigation, useRouter } from "expo-router";
+import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import TransactionItem from "@components/TransactionItem";
 import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
 import { Transaction } from "types";
@@ -15,7 +15,7 @@ const AllTransaction = () => {
   const { colors } = useTheme();
   const { transaction } = useData();
   const { t } = useTranslation("", {
-    keyPrefix: "screens.tracker.allTransaction",
+    keyPrefix: "app.stack.tabs.transaction",
   });
   const { showTabbar } = useHeader();
 
@@ -23,7 +23,7 @@ const AllTransaction = () => {
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({
-        title: "transaction",
+        title: t("title"),
         headerRightBtn: [
           { icon: "search", onPress: () => console.log("search"), label: "search", disabled: true },
           { icon: "filter", onPress: () => console.log("filter"), label: "filter", disabled: true },

@@ -5,18 +5,20 @@ import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
 import { useTheme } from "providers/ThemeProvider";
 import { useHeader } from "providers/HeaderProvider";
+import { useTranslation } from "react-i18next";
 
 const AllRecurring = () => {
   const { category } = useData();
   const router = useRouter();
   const { colors } = useTheme();
   const { showTabbar } = useHeader();
+  const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.recurring" });
 
   const navigation = useNavigation("/Stack");
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({
-        title: "recurring",
+        title: t("title"),
         headerRightBtn: [{ icon: "add", onPress: () => router.push("Stack/addCategory"), label: "add_category" }],
       });
       showTabbar();

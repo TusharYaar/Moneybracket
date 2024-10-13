@@ -1,4 +1,83 @@
 {
+    "app": {
+        "stack": {
+            "tabs": {
+                "category": {
+                    "title": "Category"
+                },
+                "recurring": {
+                    "title": "Recurring"
+                },
+                "settings": {
+                    "title": "Settings",
+                    "appearance": "Appearance",
+                    "preference": "Preference",
+                    "security": "Security",
+                    "dataManagement": "Data Management",
+                    "about": "About",
+                    "font": "Font",
+                    "theme": "Theme",
+                    "icon": "Icon",
+                    "currency": "Currency",
+                    "language": "Language",
+                    "dateFormat": "Date Format",
+                    "deleteAllData": "Delete All Data",
+                    "export": "Export",
+                    "help": "Help",
+                    "appVersion": "App Version",
+                    "buildVersion": "Build Version",
+                    "backup": "Backup & Restore",
+                    "lock": "Enable App Lock",
+                    "confirmDeleteBody": "Are you sure you want to delete all data. This includes all Transction data and Categories.",
+                    "confirmDeleteTitle": "Delete All Data?"
+                },
+                "transaction": {
+                    "title":"Transactions"
+                }
+            },
+            "about": {},
+            "addCategory": {
+                "addTitle": "Add Category",
+                "updateTitle": "Update Category",
+                "swipeButtonAdd": "Swipe to Add Category",
+                "swipeButtonUpdate": "Swipe to Update Category",
+                "icon": "Icon",
+                "type": "Type",
+                "color": "Color",
+                "current": "Current",
+                "suggested": "Suggested"
+            },
+            "addTransaction": {
+                "addTitle": "Add Transaction",
+                "updateTitle": "Update Transaction",
+                "amount": "Amount",
+                "date": "Date",
+                "category": "Category",
+                "note": "Note",
+                "optional": "Optional"
+            },
+            "backup": {
+                "backup": "Backup",
+                "restore": "Restore",
+                "loading": "Loading",
+                "restoring_backup": "Restoring items from selected file",
+                "backup_text": "You can backup your data to a file and restore it later. Backup only backs up your category and transactions. Images are not included",
+                "restore_text": "You can restore categories and transcations from a backup file.",
+                "text_1": "You can create backup to safeguard your data, or transfer to/from another device."
+            },
+            "export": {
+                "export": "Export",
+                "exportAs": "Export As",
+                "pdf": "PDF",
+                "json": "JSON",
+                "excel": "Excel",
+                "csv": "CSV",
+                "recentExports": "Recent Exports",
+                "noExports": "You have no exports"
+            },
+            "help": {}
+        }
+    },
     "amountValue": "{{amount, number}}",
     "income": "Income",
     "expense": "Expense",
@@ -42,12 +121,6 @@
             "selected": "Selected",
             "unlock": "Unlock",
             "download": "Download"
-        },
-        "languageModal": {
-            "title": "Choose A Language"
-        },
-        "dateFormatModal": {
-            "title": "Choose A Date Format"
         }
     },
     "navigator": {
@@ -92,41 +165,6 @@
                 "categorySelected": "{{count}} category selected",
                 "categorySelected_plural": "{{count}} categories selected"
             }
-        },
-        "settings": {
-            "backup": {
-                "backup": "Backup",
-                "restore": "Restore",
-                "loading": "Loading",
-                "restoring_backup": "Restoring items from selected file",
-                "backup_text": "You can backup your data to a file and restore it later. Backup only backs up your category and transactions. Images are not included",
-                "restore_text": "You can restore categories and transcations from a backup file.",
-                "text_1": "You can create backup to safeguard your data, or transfer to/from another device."
-            },
-            "export": {
-                "export": "Export",
-                "exportAs": "Export As",
-                "pdf": "PDF",
-                "json": "JSON",
-                "excel": "Excel",
-                "csv": "CSV",
-                "recentExports": "Recent Exports",
-                "noExports": "You have no exports"
-            },
-            "setting": {
-                "font": "Font",
-                "theme": "Theme",
-                "currency": "Currency",
-                "language": "Language",
-                "dateFormat": "Date Format",
-                "deleteAllData": "Delete All Data",
-                "export": "Export",
-                "backup": "Backup & Restore",
-                "lock": "Enable App Lock",
-                "confirmDeleteBody": "Are you sure you want to delete all data. This includes all Transction data and Categories.",
-                "confirmDeleteTitle": "Delete All Data?"
-            },
-            "theme": {}
         }
     },
     "languages": {

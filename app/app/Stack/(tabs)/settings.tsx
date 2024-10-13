@@ -22,7 +22,7 @@ const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
   font: ALL_FONTS.filter((d) => d.isVisible).map((d) => ({ label: d.name, value: d.id })),
   theme: ALL_THEMES.filter((d) => d.isVisible).map((d) => ({ label: d.name, value: d.id })),
-  language: [{ label: "English", value: "en" }],
+  language: [{ label: "English", value: "en", }, {"label": "Hindi", value: "hi"}, {"label": "Spanish", value: "es"}],
   icon: Object.keys(ICONS).map(k => ({label: k, value: k})),
   currency: Object.values(CURRENCIES).map((cur) => ({ label: cur.code, value: cur.name })),
 };
@@ -31,7 +31,7 @@ const Setting = () => {
   const { updateSettings, ...settings } = useSettings();
   const { textStyle, colors } = useTheme();
   const { addCategory } = useData();
-  const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
+  const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.settings" });
   const { t: wt } = useTranslation();
   const { showHeader, showTabbar, hideHeader, hideTabbar } = useHeader();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -44,7 +44,7 @@ const Setting = () => {
   const navigation = useNavigation("/Stack");
   useFocusEffect(
     useCallback(() => {
-      navigation.setOptions({ title: "settings", headerRightBtn: [] });
+      navigation.setOptions({ title: t("title"), headerRightBtn: [] });
       showTabbar();
 
     }, [])
@@ -143,7 +143,7 @@ const Setting = () => {
         style={{ backgroundColor: colors.screen }}
       >
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
-          <Text style={textStyle.title}>Appearance</Text>
+          <Text style={textStyle.title}>{t("appearance")}</Text>
           <SettingItem label={t("font")} leftIcon="font" onPress={() => showSelectList("font", settings.font)}>
             <Text style={textStyle.body}>{OPTIONS.font.find((f) => f.value === settings.font).label}</Text>
           </SettingItem>
@@ -161,7 +161,7 @@ const Setting = () => {
 
         {/* <SettingItem label={t("theme")} leftIcon="paintbrush" onPress={() => router.push("settings/theme")}> */}
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
-          <Text style={textStyle.title}>Preference</Text>
+          <Text style={textStyle.title}>{t("preference")}</Text>
           <SettingItem
             label={t("currency")}
             leftIcon="currency"
@@ -186,7 +186,7 @@ const Setting = () => {
           </SettingItem>
         </View>
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
-          <Text style={textStyle.title}>Security</Text>
+          <Text style={textStyle.title}>{t("security")}</Text>
           <SettingItem label={t("lock")} leftIcon="lock">
             <Switch value={settings.appLock === "ENABLE"} onValueChange={handleToggleLock} />
           </SettingItem>
@@ -195,7 +195,7 @@ const Setting = () => {
         {/* {__DEV__ && category.length > 0 && <SettingItem label={"dummy Trans"} leftIcon="trash" onPress={addDummy} />} */}
 
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
-          <Text style={textStyle.title}>Data Management</Text>
+          <Text style={textStyle.title}>{t("dataManagement")}</Text>
 
           {__DEV__ && (
             <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("Stack/export")} />
@@ -213,7 +213,7 @@ const Setting = () => {
         </View>
 
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
-          <Text style={textStyle.title}>About</Text>
+          <Text style={textStyle.title}>{t("about")}</Text>
 
           <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("Stack/help")} />
 

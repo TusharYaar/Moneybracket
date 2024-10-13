@@ -3,6 +3,7 @@ import {  CURRENCIES, SETTING_KEYS } from "../data";
 import { useTheme } from "./ThemeProvider";
 import { Currency } from "../types";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
+import { useTranslation } from "react-i18next";
 // import Purchases from "react-native-purchases";
 
 type Props = {
@@ -60,7 +61,7 @@ export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { changeFont, changeTheme } = useTheme();
-
+  const {i18n} = useTranslation();
   const [settings, setSettings] = useState(SETTINGS);
   // const [offlineFonts, setOfflineFonts] = useState(LOCAL_FONTS);
 
@@ -80,6 +81,7 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
         } else if (key === "font") {
           changeFont(value);
         } else if (key === "language") {
+          i18n.changeLanguage(value);
         }
         setSettings((prev) => ({ ...prev, [key]: value }));
       }
@@ -90,6 +92,8 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
   useEffect(() => {
     changeTheme(SETTINGS.theme);
     changeFont(SETTINGS.font);
+    i18n.changeLanguage(SETTINGS.language);
+
   },[]);
 
   // const updateFont = useCallback(async (font: string, notify = true) => {}, []);
