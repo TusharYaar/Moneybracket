@@ -1,8 +1,13 @@
 import { Theme_TextStyle } from "types";
-const mediumVariants = ["amountInput", "body"];
+const mediumVariants = ["amountInput", "body", "label"];
 const regularVariants = ["header", "title", "amount", "caption"];
 
 const defaults = {
+  label: {
+    fontSize: 12,
+    letterSpacing: 0.25,
+  },
+
   body: {
     fontSize: 16,
     letterSpacing: 0.25,

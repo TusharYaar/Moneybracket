@@ -1,18 +1,16 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 
 import * as FileSystem from "expo-file-system";
-import * as Print from "expo-print";
+// import * as Print from "expo-print";
 import { startActivityAsync } from "expo-intent-launcher";
-import { shareAsync } from "expo-sharing";
+// import { shareAsync } from "expo-sharing";
 
 import { createCSV, createHTML, createJSON, getType } from "utils/exports";
 import { useData } from "providers/DataProvider";
-import { Button, Surface, Text } from "react-native-paper";
-
 import { EXPORTS_DIRECTORY } from "data";
-import { FlashList } from "@shopify/flash-list";
-import ExportItem from "components/ExportItem";
+// import { FlashList } from "@shopify/flash-list";
+// import ExportItem from "components/ExportItem";
 import { useTranslation } from "react-i18next";
 
 const Exports = () => {
@@ -96,7 +94,7 @@ const Exports = () => {
 
   return (
     <View style={styles.screen}>
-      <Surface>
+      <View>
         <Text>{t("exportAs")}</Text>
         <View style={styles.btnContainer}>
           {/* <Button onPress={exportPDF} style={styles.btn}>
@@ -112,7 +110,7 @@ const Exports = () => {
             {t("excel")}
           </Button> */}
         </View>
-      </Surface>
+      </View>
       <Text>{t("recentExports")}</Text>
       {files.length === 0 && <Text>{t("noExports")}</Text>}
       {/* {files.length > 0 && (

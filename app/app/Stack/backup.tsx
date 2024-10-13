@@ -1,8 +1,7 @@
-import { Platform, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View, Text, Pressable } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { BACKUP_DIRECTORY } from "data";
 import { useData } from "providers/DataProvider";
-import { Button, Surface, Text } from "react-native-paper";
 
 import * as FileSystem from "expo-file-system";
 import * as DocumentPicker from "expo-document-picker";
@@ -139,18 +138,22 @@ const Backup = () => {
     <View style={styles.screen}>
       <Text>{t("text_1")}</Text>
       <View style={styles.outerContainer}>
-        <Surface style={styles.container}>
-          <Text variant="bodyMedium">{t("backup_text")}</Text>
-          <Button onPress={createBackup} mode="contained" disabled={category.length === 0}>
+        <View style={styles.container}>
+          <Text>{t("backup_text")}</Text>
+          <Pressable onPress={createBackup} disabled={category.length === 0}>
+            <Text>
             {t("backup")}
-          </Button>
-        </Surface>
-        <Surface style={styles.container}>
-          <Text variant="bodyMedium">{t("restore_text")}</Text>
-          <Button onPress={chooseRestoreFile} mode="contained" disabled={category.length > 0}>
+            </Text>
+          </Pressable>
+        </View>
+        <View style={styles.container}>
+          <Text>{t("restore_text")}</Text>
+          <Pressable onPress={chooseRestoreFile} disabled={category.length > 0}>
+            <Text>
             {t("restore")}
-          </Button>
-        </Surface>
+            </Text>
+          </Pressable>
+        </View>
       </View>
       {/* <Loading visible={Boolean(loading)} text={t("restoring_backup")} /> */}
     </View>

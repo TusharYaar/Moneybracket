@@ -1,5 +1,5 @@
-import React, { useContext, createContext, useState, useMemo, useCallback, useEffect } from "react";
-import { ALL_FONTS, FONTS_DIRECTORY, ALL_THEMES, SETTING_KEYS } from "../data";
+import React, { useContext, createContext, useState, useMemo, useCallback } from "react";
+import { ALL_FONTS, ALL_THEMES, SETTING_KEYS } from "../data";
 import { StatusBar } from "expo-status-bar";
 // import { isLoaded, loadAsync, useFonts } from "expo-font";
 // import { downloadAsync, getInfoAsync, makeDirectoryAsync, readDirectoryAsync } from "expo-file-system";
@@ -96,6 +96,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
       title: { ..._fonts.title, color: colors.text },
       caption: { ..._fonts.caption, color: colors.text },
       header: { ..._fonts.header, color: colors.headerText },
+      label: { ..._fonts.label, color: colors.text },
     };
 
     return fonts;

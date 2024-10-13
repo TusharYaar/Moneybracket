@@ -149,4 +149,5 @@ export type Theme_TextStyle = {
   header: TextStyle;
   title: TextStyle;
   caption: TextStyle;
+  label: TextStyle;
 };

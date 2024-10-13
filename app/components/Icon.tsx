@@ -14,15 +14,20 @@ type IconProps = {
 
 const IconComponentList = {
   default: Octicons,
-  material: MaterialIcons
-
-}
+  material: MaterialIcons,
+};
 
 const Icon = ({ name, size, color = "#000", style }: IconProps) => {
-
-  const  { icon}= useSettings();
+  const { icon } = useSettings();
   const IconComponent = IconComponentList[icon];
-  return <IconComponent name={ICONS[icon][name]? ICONS[icon][name] : ICONS[icon].undefined as undefined} size={size} color={color} style={style} />;
+  return (
+    <IconComponent
+      name={ICONS[icon][name] ? ICONS[icon][name] : (ICONS[icon].undefined as undefined)}
+      size={size}
+      color={color}
+      style={style}
+    />
+  );
 };
 
 export default Icon;

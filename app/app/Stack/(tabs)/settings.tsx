@@ -33,7 +33,7 @@ const Setting = () => {
   const { addCategory } = useData();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
-  const { showHeader, showTabbar, hideHeader, hideTabbar, setRightHeaderBtn } = useHeader();
+  const { showHeader, showTabbar, hideHeader, hideTabbar } = useHeader();
   const [deleteModal, setDeleteModal] = useState(false);
   const [selectList, setSelectList] = useState({
     visible: false,
