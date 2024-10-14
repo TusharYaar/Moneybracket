@@ -38,7 +38,7 @@ const AllCategory = () => {
             item={item}
             onPress={() =>
               router.push(
-                `Stack/addCategory?_id=${item._id}&title=${item.title}&color=${item.color.replace("#", "")}&type=${
+                `Stack/addCategory?_id=${item._id}&title=${item.title}&color=${ item.color ? item.color.replace("#", ""): "345678"}&type=${
                   item.type
                 }`
               )
