@@ -1,18 +1,49 @@
-import type { MD3Theme, MD3Colors, MD3Typescale } from "react-native-paper/lib/typescript/src/types";
-import { Theme } from "@react-navigation/native";
-import { Transaction } from "./realm/Transaction";
-import { Platform } from "react-native";
 
-export interface CustomTheme extends MD3Theme {
+import { Platform, TextStyle } from "react-native";
+
+export type Transaction = {
+  _id: string;
+  note: string;
+  date: Date;
+  amount: number;
+  currency: string;
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+  // isFavorite: boolean;
+  image: string;
+};
+export interface TransactionWithCategory extends Omit<Transaction, "category"> {
+  category: Category;
+}
+
+export type Category = {
+  _id: string;
+  title: string;
+  type: string;
+  isFavorite: boolean;
+  createdAt: string;
+  updatedAt: string;
+  color: string;
+  icon: string;
+};
+export type Shortcut = {
+  _id: string;
+  category: string;
+  note: string;
+  amount: number;
+  createdAt: string;
+  updatedAt: string;
+  currency: string;
+  icon: string;
+  title: string;
+};
+export interface CustomTheme {
   id: string;
   name: string;
-  colors: MD3Colors &
-    Theme["colors"] & {
-      income: string;
-      expense: string;
-      transfer: string;
-      cardToneBackground: string;
-    };
+  colors: Theme_Color;
+  statusbar?: "dark" | "light" | "inverted"
+  isVisible?: boolean;
   image?: string;
   isPaid?: boolean;
 }
@@ -21,17 +52,18 @@ export interface FontObject {
   id: string;
   name: string;
   by: string;
-  font: MD3Typescale;
+  font: Theme_TextStyle;
   isPaid?: boolean;
-  files: {
+  files?: {
     name: string;
     link: string;
   }[];
+  isVisible?:boolean; 
 }
 
 export interface GroupedTransactions {
   date: Date;
-  transactions: Transaction[];
+  transactions: TransactionWithCategory[];
 }
 
 export type Currency = {
@@ -84,4 +116,39 @@ export type BackupFile = {
     isFavorite: boolean;
     image: string;
   }[];
+};
+
+export type Theme_Color = {
+  screen: string;
+  statusbar: string;
+  headerBackground: string;
+  headerText: string;
+  headerIconActive: string;
+  headerIconDisabled: string;
+
+  sectionBackground: string;
+  rippleColor: string;
+  
+  tabbarBackground: string;
+  tabbarIcon: string;
+  tabbarIconActive: string;
+  tabbarIconDisabled: string;
+  tabbarBackgroundSecondary: string;
+  tabbarIconActiveSecondary: string;
+
+  income: string;
+  expense: string;
+  transfer: string;
+
+  text: string;
+};
+
+export type Theme_TextStyle = {
+  body: TextStyle;
+  amount: TextStyle;
+  amountInput: TextStyle;
+  header: TextStyle;
+  title: TextStyle;
+  caption: TextStyle;
+  label: TextStyle;
 };

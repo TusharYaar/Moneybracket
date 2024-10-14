@@ -4,6 +4,8 @@ import { getFromStorageOrDefault } from "../utils/storage";
 
 import en from "./en.json";
 import hi from "./hi.json";
+import es from "./es.json";
+
 
 export const resources = {
   en: {
@@ -11,6 +13,9 @@ export const resources = {
   },
   hi: {
     translation: hi,
+  },
+  es: {
+    translation: es,
   },
 };
 

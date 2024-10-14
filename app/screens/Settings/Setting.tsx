@@ -29,7 +29,7 @@ type Props = NativeStackScreenProps<StackParamList, "FontSetting">;
 const Setting = ({ navigation }: Props) => {
   const { currency, language, appLock, dateFormat, updateCurrency, updateLanguage, updateDateFormat, updateLock } =
     useSettings();
-  const { enqueueSnackbar, theme, font } = useCustomTheme();
+  const { theme, font } = useCustomTheme();
   const { category, deleteAllData } = useData();
   const { t, i18n } = useTranslation("", { keyPrefix: "screens.settings.setting" });
   const { t: wt } = useTranslation();
@@ -98,12 +98,13 @@ const Setting = ({ navigation }: Props) => {
       if (result) {
         const valid = await authenticateAsync();
         if (valid.success === true) {
-          enqueueSnackbar("APPLOCK_UPDATE_SUCCESS");
+          // enqueueSnackbar("APPLOCK_UPDATE_SUCCESS");
           return updateLock(true);
         } else {
-          if (valid.error === "user_cancel") return enqueueSnackbar("APPLOCK_USER_CANCEL");
+          // if (valid.error === "user_cancel") return enqueueSnackbar("APPLOCK_USER_CANCEL");
         }
-      } else enqueueSnackbar("APPLOCK_DEVICE_NOT_ENROLL");
+      } 
+      // else enqueueSnackbar("APPLOCK_DEVICE_NOT_ENROLL");
     }
     updateLock(false);
   }, []);

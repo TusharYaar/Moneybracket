@@ -3,88 +3,102 @@
         "stack": {
             "tabs": {
                 "category": {
-                    "title": "Category"
+                    "title": "Categoría"
                 },
                 "recurring": {
-                    "title": "Recurring"
+                    "title": "Recurrente"
                 },
                 "settings": {
-                    "title": "Settings",
-                    "appearance": "Appearance",
-                    "preference": "Preference",
-                    "security": "Security",
-                    "dataManagement": "Data Management",
-                    "about": "About",
-                    "font": "Font",
-                    "theme": "Theme",
-                    "icon": "Icon",
-                    "currency": "Currency",
-                    "language": "Language",
-                    "dateFormat": "Date Format",
-                    "deleteAllData": "Delete All Data",
-                    "export": "Export",
-                    "help": "Help",
-                    "appVersion": "App Version",
-                    "buildVersion": "Build Version",
-                    "backup": "Backup & Restore",
-                    "lock": "Enable App Lock",
-                    "confirmDeleteBody": "Are you sure you want to delete all data. This includes all Transction data and Categories.",
-                    "confirmDeleteTitle": "Delete All Data?"
+                    "title": "Configuraciones",
+                    "appearance": "Apariencia",
+                    "preference": "Preferencia",
+                    "security": "Seguridad",
+                    "dataManagement": "Gestión de Datos",
+                    "about": "Acerca de",
+                    "font": "Fuente",
+                    "theme": "Tema",
+                    "icon": "Ícono",
+                    "currency": "Moneda",
+                    "language": "Idioma",
+                    "dateFormat": "Formato de Fecha",
+                    "deleteAllData": "Eliminar Todos los Datos",
+                    "export": "Exportar",
+                    "help": "Ayuda",
+                    "appVersion": "Versión de la App",
+                    "buildVersion": "Versión de Construcción",
+                    "backup": "Copia de Seguridad y Restaurar",
+                    "lock": "Habilitar Bloqueo de la App",
+                    "confirmDeleteBody": "¿Está seguro de que desea eliminar todos los datos? Esto incluye todos los datos de transacciones y categorías.",
+                    "confirmDeleteTitle": "¿Eliminar Todos los Datos?"
                 },
                 "transaction": {
-                    "title":"Transactions"
+                    "title": "Transacciones"
                 }
             },
             "about": {},
             "addCategory": {
-                "addTitle": "Add Category",
-                "updateTitle": "Update Category",
-                "swipeButtonAdd": "Swipe to Add Category",
-                "swipeButtonUpdate": "Swipe to Update Category",
-                "icon": "Icon",
-                "type": "Type",
+                "addTitle": "Agregar Categoría",
+                "updateTitle": "Actualizar Categoría",
+                "swipeButtonAdd": "Deslizar para Agregar Categoría",
+                "swipeButtonUpdate": "Deslizar para Actualizar Categoría",
+                "icon": "Ícono",
+                "type": "Tipo",
                 "color": "Color",
-                "current": "Current",
-                "suggested": "Suggested"
+                "current": "Actual",
+                "suggested": "Sugerido"
             },
             "addTransaction": {
-                "addTitle": "Add Transaction",
-                "updateTitle": "Update Transaction",
-                "amount": "Amount",
-                "date": "Date",
-                "category": "Category",
-                "note": "Note",
-                "optional": "Optional",
-                "swipeButtonAdd": "Swipe to Add Transaction",
-                "swipeButtonUpdate": "Swipe to Update Transaction"
+                "addTitle": "Agregar Transacción",
+                "updateTitle": "Actualizar Transacción",
+                "amount": "Monto",
+                "date": "Fecha",
+                "category": "Categoría",
+                "note": "Nota",
+                "optional": "Opcional",
+                "swipeButtonAdd": "Deslizar para Agregar Transacción",
+                "swipeButtonUpdate": "Deslizar para Actualizar Transacción"
             },
             "backup": {
-                "backup": "Backup",
-                "restore": "Restore",
-                "loading": "Loading",
-                "restoring_backup": "Restoring items from selected file",
-                "backup_text": "You can backup your data to a file and restore it later. Backup only backs up your category and transactions. Images are not included",
-                "restore_text": "You can restore categories and transcations from a backup file.",
-                "text_1": "You can create backup to safeguard your data, or transfer to/from another device."
+                "backup": "Copia de Seguridad",
+                "restore": "Restaurar",
+                "loading": "Cargando",
+                "restoring_backup": "Restaurando elementos del archivo seleccionado",
+                "backup_text": "Puedes hacer una copia de seguridad de tus datos en un archivo y restaurarlos más tarde. La copia de seguridad solo guarda tus categorías y transacciones. Las imágenes no están incluidas.",
+                "restore_text": "Puedes restaurar categorías y transacciones desde un archivo de copia de seguridad.",
+                "text_1": "Puedes crear una copia de seguridad para proteger tus datos, o transferir de/de otro dispositivo."
             },
             "export": {
-                "export": "Export",
-                "exportAs": "Export As",
+                "export": "Exportar",
+                "exportAs": "Exportar Como",
                 "pdf": "PDF",
                 "json": "JSON",
                 "excel": "Excel",
                 "csv": "CSV",
-                "recentExports": "Recent Exports",
-                "noExports": "You have no exports"
+                "recentExports": "Exportaciones Recientes",
+                "noExports": "No tienes exportaciones"
             },
             "help": {}
         }
     },
+    "amountValue": "{{amount, number}}",
+    "income": "Income",
+    "expense": "Expense",
+    "transfer": "Transfer",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "transaction": "Transaction",
+    "note": "Note",
+    "optional": "Optional",
+    "tracker": "tracker",
+    "cancel": "No, Cancel",
+    "delete": "Yes, Delete",
+    "loading": "Loading",
     "components": {
         "categoryItem": {
-            "income": "Income",
-            "expense": "Expense",
-            "transfer": "Transfer"
+            "income": "Ingresos",
+            "expense": "Gastos",
+            "transfer": "Transferencia"
         },
         "addShortcut": {
             "title": "Add A Shortcut",
@@ -167,19 +181,5 @@
         "FONT_NOT_UNLOCKED": "Font not unlocked",
         "THEME_NOT_UNLOCKED": "Theme not unlocked",
         "ROUNDNESS_NOT_UNLOCKED": "Roundness feature not unlocked"
-    },
-    "amountValue": "{{amount, number}}",
-    "income": "Income",
-    "expense": "Expense",
-    "transfer": "Transfer",
-    "amount": "Amount",
-    "date": "Date",
-    "category": "Category",
-    "transaction": "Transaction",
-    "note": "Note",
-    "optional": "Optional",
-    "tracker": "tracker",
-    "cancel": "No, Cancel",
-    "delete": "Yes, Delete",
-    "loading": "Loading"
+    }
 }

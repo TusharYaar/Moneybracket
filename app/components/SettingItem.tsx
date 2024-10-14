@@ -1,7 +1,7 @@
-import { StyleSheet, View, ViewStyle } from "react-native";
+import { Pressable, StyleSheet, View, ViewStyle, Text } from "react-native";
+import { useTheme } from "providers/ThemeProvider";
 import React, { ReactNode } from "react";
-import { Surface, TouchableRipple, Text } from "react-native-paper";
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from "./Icon";
 
 type Props = {
   label: string;
@@ -13,21 +13,20 @@ type Props = {
 };
 
 const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, style }: Props) => {
+  const {textStyle,colors} = useTheme();
   return (
-    <Surface style={[styles.surface, style]}>
-      <TouchableRipple onPress={onPress}>
+      <Pressable onPress={onPress} android_ripple={{color: colors.rippleColor }}>
         <View style={styles.innerContainer}>
           <View style={styles.labelContainer}>
-            <Icon name={leftIcon} size={26} />
-            <Text style={[styles.itemLabel]} variant="bodyMedium">
+            <Icon name={leftIcon as undefined} size={26} />
+            <Text style={[styles.itemLabel, textStyle.body]}>
               {label}
             </Text>
           </View>
           {children}
-          {rightIcon && <Icon name={rightIcon} size={16} style={styles.rightIcon} />}
+          {rightIcon && <Icon name={rightIcon as undefined} size={16} style={styles.rightIcon} />}
         </View>
-      </TouchableRipple>
-    </Surface>
+      </Pressable>
   );
 };
 
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   itemLabel: {
-    marginHorizontal: 5,
+    marginHorizontal: 16,
   },
   rightIcon: {
     marginLeft: 5,

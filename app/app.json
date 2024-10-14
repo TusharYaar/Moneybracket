@@ -2,9 +2,10 @@
   "expo": {
     "name": "Money Bracket",
     "slug": "moneybracket",
-    "version": "0.6.7",
+    "scheme": "com.tusharyaar.mb",
+    "version": "0.7.14",
     "jsEngine": "hermes",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -19,10 +20,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.tusharyaar.moneybracket"
     },
     "android": {
-      "versionCode": 5017,
+      "versionCode": 5021,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "monochromeImage": "./assets/monochorme-icon.png",
@@ -35,6 +37,28 @@
         "projectId": "7f819d50-7144-4e92-9f26-a4e970e6325d"
       }
     },
-      "plugins": [["./withDrawableAssets.js", "./assets/shortcuts"]]
+    "plugins": [
+      [
+        "./withDrawableAssets.js",
+        "./assets/shortcuts"
+      ],
+      "expo-router",
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "sentry org slug, or use the `SENTRY_ORG` environment variable",
+          "project": "sentry project name, or use the `SENTRY_PROJECT` environment variable",
+          "url": "https://sentry.io/"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/Lexend-Regular.ttf"
+          ]
+        }
+      ]
+    ]
   }
 }

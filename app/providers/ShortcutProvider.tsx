@@ -1,21 +1,20 @@
 import React, { useContext, createContext, useMemo, useState, useCallback, useEffect } from "react";
-import { Transaction } from "../realm/Transaction";
+import { Category, Shortcut, Transaction } from "types";
 // import * as QuickActions from "expo-quick-actions";
 
-import { useQuery} from "@realm/react";
+// import { useQuery} from "@realm/react";
 
-import { Shortcut } from "../realm/Shortcut";
-import AddShortcut from "../components/Modals/AddShortcut";
+// import { Shortcut } from "../realm/Shortcut";
+// import AddShortcut from "../components/Modals/AddShortcut";
 import { useData } from "./DataProvider";
 // import { DeviceEventEmitter } from "react-native";
-import { Category } from "../realm/Category";
 type Props = {
-  shortcut: Realm.Results<Shortcut>;
+  shortcuts: Shortcut[];
   showAddShortcutModal: (item?: Shortcut) => void;
 };
 
 const SchortcutContext = createContext<Props>({
-  shortcut: [] as unknown as Realm.Results<Shortcut>,
+  shortcuts: [],
   showAddShortcutModal: () => {},
 });
 
@@ -24,8 +23,7 @@ export const useSchortcut = () => useContext(SchortcutContext);
 const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { category } = useData();
   // const realm = useRealm();
-  const _shortcut = useQuery(Shortcut);
-  const shortcut = useMemo(() => _shortcut.sorted("amount"), [_shortcut]);
+  const shortcuts = useMemo(() => [], []);
 
   const [addShortcut, setAddShortcut] = useState<{
     visible: boolean;
@@ -58,7 +56,7 @@ const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[]
     //     }))
     //   );
     // }
-  }, [_shortcut]);
+  }, []);
 
   const addNewTransaction = useCallback(
     async (amount: number, currency: string, date: Date, note: string, category: Category) => {
@@ -90,16 +88,16 @@ const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[]
   return (
     <SchortcutContext.Provider
       value={{
-        shortcut,
+        shortcuts,
         showAddShortcutModal,
       }}
     >
-      <AddShortcut
+      {/* <AddShortcut
         category={category}
         item={addShortcut.item}
         visible={addShortcut.visible}
         onDismiss={dismissAddShortcutModal}
-      />
+      /> */}
       {children}
     </SchortcutContext.Provider>
   );

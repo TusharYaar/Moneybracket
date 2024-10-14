@@ -1,12 +1,10 @@
-import { Category } from "../realm/Category";
-import { Transaction } from "../realm/Transaction";
-
 import { Platform } from "react-native";
-import { BackupFile } from "../types";
+import { BackupFile, Category } from "../types";
+import Transaction from "realm/Transaction";
 
 export const generateBackupFile = (
-  category: Realm.Results<Category>,
-  transaction: Realm.Results<Transaction>,
+  category: Category[],
+  transaction: Transaction[],
   settings: any
 ) => {
   const bcategory = category.map((cat) => ({
@@ -19,12 +17,12 @@ export const generateBackupFile = (
   const btrans = transaction.map((tran) => ({
     amount: tran.amount,
     currency: tran.currency,
-    date: tran.date.toUTCString(),
+    date: tran.date,
     createdAt: tran.createdAt.toString(),
-    note: tran.note,
+    // note: tran.note,
     category: tran.category.title,
     isFavorite: tran.isFavorite,
-    image: "",
+    // image: "",
   }));
 
   let backup: BackupFile = {

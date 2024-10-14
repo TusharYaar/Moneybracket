@@ -3,28 +3,36 @@ import { makeFontConfig } from "../utils/fonts";
 
 export const ALL_FONTS: FontObject[] = [
   {
+    id: "lexend",
+    name: "Lexend",
+    by: "Bonnie Shaver-Troup, Thomas Jockin, Santiago Orozco, Héctor Gómez, Superunion ",
+    font: makeFontConfig("Lexend-Regular", "Lexend-Regular"),
+    isPaid: false,
+    isVisible: true,
+  },
+  {
     id: "sansserif",
     name: "Sans Serif",
     isPaid: false,
+    isVisible: true,
     by: "",
     font: makeFontConfig("sans-serif", "sans-serif-medium"),
-    files: [],
   },
   {
     id: "serif",
     name: "Serif",
     isPaid: false,
+    isVisible: true,
     by: "",
     font: makeFontConfig("serif", "serif"),
-    files: [],
   },
   {
     id: "monospace",
     name: "Monospace",
     isPaid: false,
+    isVisible: true,
     by: "",
     font: makeFontConfig("monospace", "monospace"),
-    files: [],
   },
   {
     id: "montserrat",
@@ -57,23 +65,6 @@ export const ALL_FONTS: FontObject[] = [
       {
         name: "FiraCode-Regular",
         link: "https://res.cloudinary.com/tusharyaar/raw/upload/v1676740121/MoneyBracket/Fonts/FiraCode-Regular_il6qjq.ttf",
-      },
-    ],
-  },
-  {
-    id: "lexend",
-    name: "Lexend",
-    by: "Bonnie Shaver-Troup, Thomas Jockin, Santiago Orozco, Héctor Gómez, Superunion ",
-    font: makeFontConfig("Lexend-Regular", "Lexend-SemiBold", 0.9),
-    isPaid: true,
-    files: [
-      {
-        name: "Lexend-SemiBold",
-        link: "https://res.cloudinary.com/tusharyaar/raw/upload/v1676740121/MoneyBracket/Fonts/Lexend-SemiBold_eshn5y.ttf",
-      },
-      {
-        name: "Lexend-Regular",
-        link: "https://res.cloudinary.com/tusharyaar/raw/upload/v1676740121/MoneyBracket/Fonts/Lexend-Regular_uwfomd.ttf",
       },
     ],
   },

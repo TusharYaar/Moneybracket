@@ -1,112 +1,163 @@
 {
+    "app": {
+        "stack": {
+            "tabs": {
+                "category": {
+                    "title": "श्रेणी"
+                },
+                "recurring": {
+                    "title": "दोहराने वाला"
+                },
+                "settings": {
+                    "title": "सेटिंग्स",
+                    "appearance": "दृश्य",
+                    "preference": "पसंद",
+                    "security": "सुरक्षा",
+                    "dataManagement": "डेटा प्रबंधन",
+                    "about": "बारे में",
+                    "font": "फॉन्ट",
+                    "theme": "थीम",
+                    "icon": "आइकन",
+                    "currency": "मुद्रा",
+                    "language": "भाषा",
+                    "dateFormat": "तारीख प्रारूप",
+                    "deleteAllData": "सभी डेटा हटाएं",
+                    "export": "निर्यात",
+                    "help": "सहायता",
+                    "appVersion": "ऐप संस्करण",
+                    "buildVersion": "बिल्ड संस्करण",
+                    "backup": "बैकअप और पुनर्स्थापना",
+                    "lock": "ऐप लॉक सक्षम करें",
+                    "confirmDeleteBody": "क्या आप सुनिश्चित हैं कि आप सभी डेटा हटाना चाहते हैं? इसमें सभी लेनदेन डेटा और श्रेणियाँ शामिल हैं।",
+                    "confirmDeleteTitle": "सभी डेटा हटाएं?"
+                },
+                "transaction": {
+                    "title": "लेनदेन"
+                }
+            },
+            "about": {},
+            "addCategory": {
+                "addTitle": "श्रेणी जोड़ें",
+                "updateTitle": "श्रेणी अपडेट करें",
+                "swipeButtonAdd": "श्रेणी जोड़ने के लिए स्वाइप करें",
+                "swipeButtonUpdate": "श्रेणी अपडेट करने के लिए स्वाइप करें",
+                "icon": "आइकन",
+                "type": "प्रकार",
+                "color": "रंग",
+                "current": "वर्तमान",
+                "suggested": "सुझाए गए"
+            },
+            "addTransaction": {
+                "addTitle": "लेनदेन जोड़ें",
+                "updateTitle": "लेनदेन अपडेट करें",
+                "amount": "राशि",
+                "date": "तारीख",
+                "category": "श्रेणी",
+                "note": "नोट",
+                "optional": "वैकल्पिक",
+                "swipeButtonAdd": "लेनदेन जोड़ने के लिए स्वाइप करें",
+                "swipeButtonUpdate": "लेनदेन अपडेट करने के लिए स्वाइप करें"
+            },
+            "backup": {
+                "backup": "बैकअप",
+                "restore": "पुनर्स्थापना",
+                "loading": "लोड हो रहा है",
+                "restoring_backup": "चुने हुए फ़ाइल से आइटम पुनर्स्थापित करना",
+                "backup_text": "आप अपने डेटा को फ़ाइल में बैकअप कर सकते हैं और बाद में पुनर्स्थापित कर सकते हैं। बैकअप केवल आपकी श्रेणी और लेनदेन का बैकअप लेता है। चित्र शामिल नहीं हैं।",
+                "restore_text": "आप बैकअप फ़ाइल से श्रेणियों और लेनदेन को पुनर्स्थापित कर सकते हैं।",
+                "text_1": "आप अपने डेटा को सुरक्षित रखने या किसी अन्य डिवाइस से स्थानांतरित करने के लिए बैकअप बना सकते हैं।"
+            },
+            "export": {
+                "export": "निर्यात",
+                "exportAs": "निर्यात के रूप में",
+                "pdf": "PDF",
+                "json": "JSON",
+                "excel": "Excel",
+                "csv": "CSV",
+                "recentExports": "हाल के निर्यात",
+                "noExports": "आपके पास कोई निर्यात नहीं है"
+            },
+            "help": {}
+        }
+    },
     "amountValue": "{{amount, number}}",
-    "income": "आय",
-    "expense": "व्यय",
-    "transfer": "अंतरण",
-    "amount": "राशि",
-    "date": "तारीख",
-    "category": "श्रेणी",
-    "transaction": "लेन-देन",
-    "note": "टिप्पणी",
-    "optional": "वैकल्पिक",
-    "tracker": "ट्रैकर",
-    "cancel": "नहीं, रद्द करें",
-    "delete": "हाँ, हटाएं",
+    "income": "Income",
+    "expense": "Expense",
+    "transfer": "Transfer",
+    "amount": "Amount",
+    "date": "Date",
+    "category": "Category",
+    "transaction": "Transaction",
+    "note": "Note",
+    "optional": "Optional",
+    "tracker": "tracker",
+    "cancel": "No, Cancel",
+    "delete": "Yes, Delete",
+    "loading": "Loading",
     "components": {
-        "addCategory": {
-            "title": "एक श्रेणी जोड़ें",
-            "iconAndTitle": "श्रेणी चिह्न और शीर्षक",
-            "type": "श्रेणी प्रकार",
-            "color": "श्रेणी रंग"
+        "categoryItem": {
+            "income": "आय",
+            "expense": "व्यय",
+            "transfer": "स्थानांतरण"
         },
-        "addTransaction": {
-            "title": "एक लेनदेन जोड़ें",
-            "amount": "राशि",
-            "date": "तारीख",
-            "category": "श्रेणी",
-            "note": "टिप्पणी",
-            "optional": "वैकल्पिक"
+        "addShortcut": {
+            "title": "Add A Shortcut",
+            "amount": "Amount",
+            "date": "Date",
+            "category": "Category",
+            "note": "Note",
+            "optional": "Optional"
         },
         "fontView": {
-            "dummyText": "लोरेम इप्सम डोलर सिट अमेट, कंसेक्टेटुर एडिपिस्सिंग एलिट, सेड डो एउस्मोड टेम्पोर इनसीडीदूंट उत लाबोरे एत दोलोरे मग्ना अलिक्वा।",
-            "select": "चुनें",
-            "selected": "चयनित",
-            "unlock": "अनलॉक करें",
-            "download": "डाउनलोड करें"
-        },
-        "languageModal": {
-            "title": "भाषा चुनें"
-        },
-        "dateFormatModal": {
-            "title": "तारीख प्रारूप चुनें"
+            "dummyText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+            "select": "Select",
+            "selected": "Selected",
+            "unlock": "Unlock",
+            "download": "Download"
         }
     },
     "navigator": {
         "drawer": {
-            "tracker": "लेन-देन",
-            "recurring": "आवर्ती लेन-देन",
-            "category": "श्रेणियाँ",
-            "exchange": "विनिमय दरें",
-            "setting": "सेटिंग्स",
-            "about": "एबाउट",
-            "help": "मदद",
-            "store": "स्टोर"
+            "TrackerStack": "Transactions",
+            "RecurringStack": "Recurring Transactions",
+            "CategoryStack": "Categories",
+            "ExchangeStack": "Exchange Rates",
+            "SettingStack": "Settings",
+            "AboutStack": "About",
+            "HelpStack": "Help",
+            "StoreStack": "Store",
+            "ShortcutStack": "Shortcuts"
         },
         "tab": {
-            "allTransaction": "लेन-देन",
-            "charts": "चार्ट",
-            "category": "श्रेणियाँ"
+            "allTransaction": "Transactions",
+            "charts": "Charts",
+            "category": "Categories"
         },
         "stack": {
-            "TrackerTab": "लेन-देन",
-            "CategoryTab": "श्रेणियाँ",
-            "ExchangeRateScreen": "विनिमय दरें",
-            "SettingScreen": "सेटिंग",
-            "FontSetting": "फ़ॉन्ट",
-            "ThemeSetting": "थीम",
-            "ExportScreen": "निर्यात",
-            "BackupScreen": "बैकअप और रिस्टोर",
-            "AboutScreen": "बारे में",
-            "HelpScreen": "मदद",
-            "StoreScreen": "स्टोर"
+            "TrackerTab": "Transactions",
+            "CategoryTab": "Categories",
+            "ExchangeRateScreen": "Exchange Rates",
+            "SettingScreen": "Settings",
+            "FontSetting": "Fonts",
+            "ThemeSetting": "Themes",
+            "ExportScreen": "Exports",
+            "BackupScreen": "Backup & Restore",
+            "AboutScreen": "About",
+            "HelpScreen": "Help",
+            "StoreScreen": "Store",
+            "ShortcutScreen": "Shortcuts"
         }
     },
     "screens": {
         "tracker": {
             "allTransaction": {
-                "noTransaction": "कोई लेन-देन नहीं। कोशिश करके अवधि बदलें या एक लेन-देन जोड़ें।"
+                "noTransaction": "No Transactions. Try Changing the period or add a transaction."
             },
             "charts": {
-                "categorySelected": "{{count}} श्रेणी चयनित",
-                "categorySelected_plural": "{{count}} श्रेणियाँ चयनित"
+                "noCharts": "No Charts to display. Try Changing the period or filter or add a new transaction.",
+                "categorySelected": "{{count}} category selected",
+                "categorySelected_plural": "{{count}} categories selected"
             }
-        },
-        "settings": {
-            "backup": {},
-            "export": {
-                "export": "निर्यात करें",
-                "exportAs": "के रूप में निर्यात करें",
-                "pdf": "पीडीएफ",
-                "json": "जेएसओएन",
-                "excel": "एक्सेल",
-                "csv": "सीएसवी",
-                "recentExports": "हाल के निर्यात",
-                "noExports": "आपके पास कोई निर्यात नहीं है"
-            },
-            "setting": {
-                "font": "फ़ॉन्ट",
-                "theme": "थीम",
-                "currency": "मुद्रा",
-                "language": "भाषा",
-                "dateFormat": "तारीख का प्रारूप",
-                "deleteAllData": "सभी डेटा हटाएं",
-                "export": "निर्यात",
-                "backup": "बैकअप",
-                "lock": "ऐप लॉक सक्षम करें",
-                "confirmDeleteBody": "क्या आप सभी डेटा को हटाना चाहते हैं। इसमें सभी लेन-देन डेटा और श्रेणियां शामिल हैं।",
-                "confirmDeleteTitle": "सभी डेटा हटाएं?"
-            },
-            "theme": {}
         }
     },
     "languages": {
@@ -114,20 +165,21 @@
         "hi": "Hindi"
     },
     "messages": {
-        "TRANSACTION_ADD_SUCCESS": "लेनदेन सफलतापूर्वक जोड़ा गया",
-        "TRANSACTION_ADD_FAIL": "लेनदेन जोड़ने में असमर्थ, कृपया पुनः प्रयास करें",
-        "CATEGORY_ADD_SUCCESS": "श्रेणी सफलतापूर्वक बनाई गई",
-        "CATEGORY_ADD_FAIL": "श्रेणी बनाने में असमर्थ, कृपया पुनः प्रयास करें",
-        "FONT_UPDATE_SUCCESS": "फ़ॉन्ट सफलतापूर्वक अपडेट किया गया",
-        "THEME_UPDATE_SUCCESS": "थीम सफलतापूर्वक अपडेट की गई",
+        "TRANSACTION_ADD_SUCCESS": "Transaction added successfully",
+        "TRANSACTION_ADD_FAIL": "Unable to add transaction, please try again",
+        "CATEGORY_ADD_SUCCESS": "Category created successfully",
+        "CATEGORY_ADD_FAIL": "Unable to create category, please try again",
+        "FONT_UPDATE_SUCCESS": "Font updated successfully",
+        "DOWNLOADING_FONT": "Downloading Font. Please wait",
+        "THEME_UPDATE_SUCCESS": "Theme updated successfully",
         "ROUNDNESS_UPDATE_SUCCESS": "",
-        "LANGUAGE_UPDATE_SUCCESS": "भाषा सफलतापूर्वक अपडेट की गई",
-        "APPLOCK_UPDATE_SUCCESS": "ऐप लॉक सफलतापूर्वक अपडेट किया गया",
-        "APPLOCK_USER_CANCEL": "उपयोगकर्ता ने संचालन रद्द कर दिया है",
-        "APPLOCK_DEVICE_NOT_ENROLL": "डिवाइस में लॉक नहीं है",
-        "CURRENCY_UPDATE_SUCCESS": "मुद्रा सफलतापूर्वक अपडेट की गई",
-        "FONT_NOT_UNLOCKED": "फ़ॉन्ट अनलॉक नहीं हुआ है",
-        "THEME_NOT_UNLOCKED": "थीम अनलॉक नहीं हुई है",
-        "ROUNDNESS_NOT_UNLOCKED": "गोलाई विशेषता अनलॉक नहीं हुई है"
+        "LANGUAGE_UPDATE_SUCCESS": "Langauge updated successfully",
+        "APPLOCK_UPDATE_SUCCESS": "App Lock updated successfully",
+        "APPLOCK_USER_CANCEL": "User cancelled the operation",
+        "APPLOCK_DEVICE_NOT_ENROLL": "Device does not have a lock",
+        "CURRENCY_UPDATE_SUCCESS": "Currency updated successfully",
+        "FONT_NOT_UNLOCKED": "Font not unlocked",
+        "THEME_NOT_UNLOCKED": "Theme not unlocked",
+        "ROUNDNESS_NOT_UNLOCKED": "Roundness feature not unlocked"
     }
 }
