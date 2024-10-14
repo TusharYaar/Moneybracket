@@ -29,7 +29,7 @@ const AllCategory = () => {
     <View style={{ backgroundColor: colors.screen, flex: 1 }}>
       <CollapsibleHeaderFlatList
         title="Category"
-        paddingTop={8}
+        paddingTop={0}
         hideBackButton={true}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 112 }}
         data={category}

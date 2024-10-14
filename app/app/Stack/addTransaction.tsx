@@ -6,7 +6,7 @@ import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useData } from "providers/DataProvider";
 import SwipeButton from "@components/SwipeButton";
 import CategoryItem from "@components/CategoryItem";
-import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { format, parseISO } from "date-fns";
 import PrimaryInput from "@components/AmountInput";
@@ -218,6 +218,7 @@ const AddTransaction = () => {
     animatedColor.value = withTiming(category.color);
     setValues((prev) => ({ ...prev, category }));
   }, []);
+  const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
   return (
     <>
@@ -225,7 +226,7 @@ const AddTransaction = () => {
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
         title={_id ? t("updateTitle") : t("addTitle")}
         paddingTop={0}
-        style={{ backgroundColor: colors.screen  }}
+        style={{ backgroundColor: colors.screen }}
       >
         <View style={{ flexDirection: "column", rowGap: 16, flexGrow: 1, marginTop: 16 }}>
           <PrimaryInput
@@ -249,7 +250,7 @@ const AddTransaction = () => {
           )}
           <Animated.View style={[styles.outlineButton, { borderColor: animatedColor }]}>
             <Pressable
-              android_ripple={{ color: values.category?.color || "black" }}
+              android_ripple={{ color: values.category?.color || colors.rippleColor }}
               style={styles.button}
               onPress={() => {
                 categorySheetRef.current.snapToIndex(0);
@@ -268,14 +269,17 @@ const AddTransaction = () => {
         />
       </CollapsibleHeaderScrollView>
       <BottomSheet
+        style={{ backgroundColor: colors.screen }}
         ref={categorySheetRef}
         snapPoints={[264, "69%"]}
         enablePanDownToClose
         index={-1}
+        backdropComponent={renderBackdrop}
         onAnimate={(index) => setSheetView((prev) => (index > -1 ? (index === 1 ? "date" : "category") : prev))}
       >
         {sheetView === "category" && (
           <BottomSheetFlatList
+          style={{ backgroundColor: colors.screen }}
             data={category}
             renderItem={({ item }) => (
               <CategoryItem
@@ -287,13 +291,16 @@ const AddTransaction = () => {
           />
         )}
         {sheetView === "date" && (
+        <View 
+        style={{ backgroundColor: colors.screen, flex: 1 }}>
           <DatePicker
             date={values.date}
             onDateChange={(date) => setValues((prev) => ({ ...prev, date }))}
             mode="date"
             maximumDate={new Date()}
             style={{ width, height: 200 }}
-          />
+            />
+            </View>
         )}
       </BottomSheet>
     </>
