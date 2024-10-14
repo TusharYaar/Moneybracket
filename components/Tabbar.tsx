@@ -69,7 +69,7 @@ const Tabbar = ({ state, descriptors, navigation, icons, visibleTabs }: Props) =
               );
           })}
         </View>
-        <Link href="Stack/addTransaction" asChild>
+        <Link href="stack/addTransaction" asChild>
           <Pressable>
             <View style={[styles.addBtn, { backgroundColor: colors.tabbarBackgroundSecondary }]}>
               <Icon name="add" size={32} color={colors.tabbarIconActiveSecondary} />

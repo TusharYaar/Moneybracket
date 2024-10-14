@@ -41,7 +41,7 @@ const Setting = () => {
     selected: "",
   });
 
-  const navigation = useNavigation("/Stack");
+  const navigation = useNavigation("/stack");
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({ title: t("title"), headerRightBtn: [] });
@@ -198,9 +198,9 @@ const Setting = () => {
           <Text style={textStyle.title}>{t("dataManagement")}</Text>
 
           {__DEV__ && (
-            <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("Stack/export")} />
+            <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("stack/export")} />
           )}
-          <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("Stack/backup")} />
+          <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("stack/backup")} />
 
           {/* <DeleteDialog
             visible={deleteModal}
@@ -215,9 +215,9 @@ const Setting = () => {
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("about")}</Text>
 
-          <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("Stack/help")} />
+          <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("stack/help")} />
 
-          <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("Stack/about")} />
+          <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("stack/about")} />
 
           <SettingItem label={t("appVersion")} leftIcon="appVersion" onPress={() => setDeleteModal(true)}>
             <Text style={textStyle.body}>{nativeApplicationVersion}</Text>

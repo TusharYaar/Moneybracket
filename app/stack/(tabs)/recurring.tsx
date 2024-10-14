@@ -14,12 +14,12 @@ const AllRecurring = () => {
   const { showTabbar } = useHeader();
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.recurring" });
 
-  const navigation = useNavigation("/Stack");
+  const navigation = useNavigation("/stack");
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({
         title: t("title"),
-        headerRightBtn: [{ icon: "add", onPress: () => router.push("Stack/addCategory"), label: "add_category" }],
+        headerRightBtn: [{ icon: "add", onPress: () => router.push("stack/addCategory"), label: "add_category" }],
       });
       showTabbar();
     }, [])

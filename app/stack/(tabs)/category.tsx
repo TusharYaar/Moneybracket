@@ -15,10 +15,10 @@ const AllCategory = () => {
   const { colors } = useTheme();
   const { showTabbar } = useHeader();
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.category" });
-  const navigation = useNavigation("/Stack");
+  const navigation = useNavigation("/stack");
   useFocusEffect(
     useCallback(() => {
-      navigation.setOptions({ title: t("title") , headerRightBtn: [{ icon: "add", onPress: () => router.push("Stack/addCategory"), label: "add_category" }]});
+      navigation.setOptions({ title: t("title") , headerRightBtn: [{ icon: "add", onPress: () => router.push("stack/addCategory"), label: "add_category" }]});
       showTabbar();
     }, [])
   );

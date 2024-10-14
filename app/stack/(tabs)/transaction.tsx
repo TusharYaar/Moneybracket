@@ -19,7 +19,7 @@ const AllTransaction = () => {
   });
   const { showTabbar } = useHeader();
 
-  const navigation = useNavigation("/Stack");
+  const navigation = useNavigation("/stack");
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({
@@ -57,7 +57,7 @@ const AllTransaction = () => {
             data={item}
             onPress={() =>
               router.push(
-                `Stack/addTransaction?_id=${item._id}&amount=${item.amount}&date=${item.date.toISOString()}&category=${
+                `stack/addTransaction?_id=${item._id}&amount=${item.amount}&date=${item.date.toISOString()}&category=${
                   item.category._id
                 }`
               )
