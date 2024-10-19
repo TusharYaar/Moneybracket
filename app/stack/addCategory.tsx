@@ -88,7 +88,7 @@ const AddCategoryScreen = () => {
   );
 
   const handleSubmit = () => {
-    const date = new Date().toISOString();
+    const date = new Date();
     // TODO: ADD Check
     if (_id) {
       // TODO: fetch created_at date and populate here
@@ -121,6 +121,7 @@ const AddCategoryScreen = () => {
       >
         <View style={{ flex: 1, marginTop: 16 }}>
           <PrimaryInput
+            autofocus={_id ? false : true}
             onPress={() => {}}
             ref={inputRef}
             backgroundColor={values.color}

@@ -38,10 +38,10 @@
       }
     },
     "plugins": [
-      [
-        "./withDrawableAssets.js",
-        "./assets/shortcuts"
-      ],
+      // [
+      //   "./withDrawableAssets.js",
+      //   "./assets/shortcuts"
+      // ],
       "expo-router",
       [
         "@sentry/react-native/expo",

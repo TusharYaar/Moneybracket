@@ -12,12 +12,13 @@ type Props = {
   prefix?: string;
   type?: "amount" | "string";
   keyboardType?: KeyboardTypeOptions;
+  autofocus?: boolean;
 };
 
 const MIN_CHAR = 4;
 
 const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
-  { prefix = "", initialValue = "", backgroundColor, ...props },
+  { prefix = "", initialValue = "", backgroundColor,autofocus = true, ...props },
   ref
 ) {
   const { width, height } = useWindowDimensions();
@@ -68,7 +69,7 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
     >
       <Pressable onPress={props.onPress} style={styles.pressable}>
         <TextInput
-          autoFocus
+          autoFocus={autofocus}
           ref={ref}
           placeholder={props.placeholder}
           onChangeText={handleChangeText}

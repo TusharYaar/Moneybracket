@@ -1,5 +1,5 @@
 import { StyleSheet, View, TextInput, Pressable, Keyboard, useWindowDimensions, Text } from "react-native";
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import DatePicker from "react-native-date-picker";
 import { useSettings } from "providers/SettingsProvider";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
@@ -10,7 +10,7 @@ import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/b
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { format, parseISO } from "date-fns";
 import PrimaryInput from "@components/AmountInput";
-import { Category, TransactionWithCategory } from "types";
+import { Category, Transaction, TransactionWithCategory } from "types";
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import { useTranslation } from "react-i18next";
@@ -36,8 +36,8 @@ const AddTransaction = () => {
   const categorySheetRef = useRef<BottomSheet>();
   const [sheetView, setSheetView] = useState("category");
   const { textStyle, colors } = useTheme();
-  const [values, setValues] = useState<Omit<TransactionWithCategory, "_id" | "createdAt" | "updatedAt">>({
-    category: category.length > 0 ? category[0] : null,
+  const [values, setValues] = useState<Omit<Transaction, "_id" | "createdAt" | "updatedAt">>({
+    category: category.length > 0 ? category[0]._id : null,
     amount: parseFloat(amount),
     date: parseISO(date),
     note: "",
@@ -58,7 +58,6 @@ const AddTransaction = () => {
     });
   }, [navigation, _id]);
 
-  // const [viewModal, setViewModal] = useState("datepicker");
   // const [showDelete, setShowDelete] = useState(false);
   // const [showImageOptions, setShowImageOptions] = useState(false);
   // const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
@@ -92,9 +91,9 @@ const AddTransaction = () => {
 
   useEffect(() => {
     if (category2) {
-      setValues((prev) => ({ ...prev, category: category.find((c) => c._id === category2) }));
+      setValues((prev) => ({ ...prev, category: category2 }));
     } else {
-      setValues((prev) => ({ ...prev, category: category[0] }));
+      setValues((prev) => ({ ...prev, category: category[0]._id }));
     }
   }, [category, category2]);
 
@@ -111,53 +110,15 @@ const AddTransaction = () => {
   //   return `${IMAGES_DIRECTORY}/${name[name.length - 1]}`;
   // }, []);
 
-  // useEffect(() => {
-  //   setViewModal("transaction");
-  // if (item) {
-  //   const { amount, category, date, note, image } = item;
-  //   setValues({
-  //     amount: `${amount}`,
-  //     category: category,
-  //     date: new Date(date),
-  //     note: note,
-  //     currency: defaultCurrency.code,
-  //     image,
-  //   });
-  // } else {
-  //   setValues({
-  //     amount: "100",
-  //     category: category.length > 0 ? category[0] : null,
-  //     date: new Date(),
-  //     note: "",
-  //     currency: defaultCurrency.code,
-  //     image: "",
-  //   });
-  // }
-  // }, []);
-
-  // const updateDate = useCallback((date: DateTimePickerEvent) => {
-  //   if (date.nativeEvent.timestamp) {
-  //     setValues((prev) => ({
-  //       ...prev,
-  //       date: new Date(date.nativeEvent.timestamp as number),
-  //     }));
-  //     // setViewModal("transaction");
-  //   }
-  // }, []);
-
   const handleSubmit = () => {
-    const updatedAt = new Date().toISOString();
-
+    const updatedAt = new Date();
     if (_id) {
-      updateTransaction(_id, { ...values, category: values.category._id, updatedAt, createdAt: updatedAt });
+      updateTransaction(_id, { ...values, category: values.category, updatedAt, createdAt: updatedAt });
     } else {
-      addTransaction({ ...values, category: values.category._id, updatedAt, createdAt: updatedAt });
+      addTransaction({ ...values, category: values.category, updatedAt, createdAt: updatedAt });
     }
-
     if (router.canGoBack) router.back();
     else router.replace("(tabs)/transaction");
-    // if (item) updateTransaction(item, values);
-    // else addNewTransaction(values);
   };
 
   const handlePressDelete = useCallback(() => {
@@ -216,8 +177,11 @@ const AddTransaction = () => {
   const updateCategory = useCallback((category: Category) => {
     categorySheetRef.current.close();
     animatedColor.value = withTiming(category.color);
-    setValues((prev) => ({ ...prev, category }));
+    setValues((prev) => ({ ...prev, category: category._id }));
   }, []);
+
+  const selectedCategory = useMemo(() => category.find(c => c._id === values.category), [values.category]); 
+
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
   return (
@@ -233,7 +197,7 @@ const AddTransaction = () => {
             type="amount"
             onPress={handleTextBoxPress}
             onChangeText={(text) => setValues((prev) => ({ ...prev, amount: parseFloat(text) }))}
-            backgroundColor={values.category ? values.category.color : undefined}
+            backgroundColor={values.category ? selectedCategory.color : undefined}
             ref={amtInputRef}
             initialValue={values.amount > 0 ? values.amount.toString() : undefined}
             prefix={defaultCurrency.symbol_native}
@@ -241,7 +205,7 @@ const AddTransaction = () => {
           />
           {values.category && (
             <CategoryItem
-              item={values.category}
+              item={selectedCategory}
               onPress={() => {
                 categorySheetRef.current.snapToIndex(1);
                 setSheetView("category");
@@ -250,7 +214,7 @@ const AddTransaction = () => {
           )}
           <Animated.View style={[styles.outlineButton, { borderColor: animatedColor }]}>
             <Pressable
-              android_ripple={{ color: values.category?.color || colors.rippleColor }}
+              android_ripple={{ color: selectedCategory.color || colors.rippleColor }}
               style={styles.button}
               onPress={() => {
                 categorySheetRef.current.snapToIndex(0);
@@ -264,7 +228,7 @@ const AddTransaction = () => {
         <SwipeButton
           style={{ marginTop: 16 }}
           onSwipeComplete={handleSubmit}
-          bgColor={values.category ? values.category.color : undefined}
+          bgColor={values.category ? selectedCategory.color : undefined}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
       </CollapsibleHeaderScrollView>

@@ -28,6 +28,11 @@ export const ICONS = {
     appVersion: "ellipsis",
     buildVersion: "bug",
 
+    travel:"rocket",
+    "shopping": "ruby",
+    food:"pulse",
+    "salary": "briefcase",
+
     icon_0: "accessibility",
     icon_1: "alert",
     icon_2: "apps",
@@ -156,6 +161,11 @@ export const ICONS = {
     about: "info-outline",
     appVersion: "perm-device-info",
     buildVersion: "bug-report",
+
+    travel:"airplane-ticket",
+    "shopping": "shopping-bag",
+    food:"fastfood",
+    "salary": "money",
 
     icon_0: "123",
     icon_1: "360",

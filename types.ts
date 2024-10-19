@@ -8,8 +8,8 @@ export type Transaction = {
   amount: number;
   currency: string;
   category: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   // isFavorite: boolean;
   image: string;
 };
@@ -18,12 +18,12 @@ export interface TransactionWithCategory extends Omit<Transaction, "category"> {
 }
 
 export type Category = {
-  _id: string;
+  _id:string;
   title: string;
   type: string;
   isFavorite: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   color: string;
   icon: string;
 };

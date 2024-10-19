@@ -32,3 +32,29 @@ export const Dcategories = [
     type: "expense",
   },
 ];
+
+export const DefaultCategories = [
+{
+  title: "Travel",
+  type: "expense",
+  icon: "travel",
+  },
+  {
+    title: "Salary",
+    type: "income",
+  icon: "salary",
+
+  },
+  {
+    title: "Food",
+    type: "expense",
+  icon: "food",
+
+  },
+  {
+    title: "Shopping",
+    type: "expense",
+  icon: "shopping",
+
+  },
+]
