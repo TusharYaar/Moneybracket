@@ -119,12 +119,12 @@ const Setting = () => {
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
-  const handleOnAnimate = (_, to: number) => {
+  const handleOnAnimate = useCallback((_, to: number) => {
     if (to === 2) hideHeader();
     else showHeader();
     if (to === -1) showTabbar();
     else hideTabbar();
-  };
+  },[hideHeader, showHeader, hideTabbar, showTabbar]);
   return (
     <>
       <CollapsibleHeaderScrollView
@@ -236,7 +236,6 @@ const Setting = () => {
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
         onAnimate={handleOnAnimate}
-        // onAnimate={(index, to) => to !== -1 && selectListRef.current.snapToIndex(index)}
       >
         <BottomSheetFlatList
           style={{ backgroundColor: colors.screen }}

@@ -13,6 +13,7 @@ import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/b
 import { useHeader } from "providers/HeaderProvider";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 import { useTranslation } from "react-i18next";
+import DeleteContainer from "@components/DeleteContainer";
 
 const CATEGORY_TYPES = [
   {
@@ -59,9 +60,11 @@ const AddCategoryScreen = () => {
     color: color ? `#${color}` : colors.screen,
     icon: "icon_6",
   });
+  const [sheetView, setSheetView] = useState<"icon" | "delete">("icon");
+
   const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
-  const iconListRef = useRef<BottomSheet>();
+  const sheetRef = useRef<BottomSheet>();
 
   const recommendColor = useMemo(() => {
     if (_id) {
@@ -82,9 +85,9 @@ const AddCategoryScreen = () => {
   const handleSelectIcon = useCallback(
     (icon: string) => {
       setValues((prev) => ({ ...prev, icon }));
-      iconListRef.current.close();
+      sheetRef.current.close();
     },
-    [iconListRef]
+    [sheetRef]
   );
 
   const handleSubmit = () => {
@@ -98,14 +101,20 @@ const AddCategoryScreen = () => {
     else router.replace("(tabs)/category");
   };
   const handlePressDelete = useCallback(() => {
+    sheetRef.current.close();
     deleteCategory(_id);
     router.back();
   }, [_id]);
 
+  const showDeleteModal = useCallback(() => {
+    setSheetView("delete");
+    sheetRef.current.snapToIndex(0);
+  }, [sheetRef, setSheetView]);
+
   useEffect(() => {
     navigation.setOptions({
       title: _id ? t("updateTitle") : t("addTitle"),
-      headerRightBtn: _id ? [{ icon: "delete", onPress: handlePressDelete, label: "delete_category" }] : [],
+      headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, label: "delete_category" }] : [],
     });
   }, [_id]);
 
@@ -131,7 +140,12 @@ const AddCategoryScreen = () => {
           <View style={{ flexDirection: "row", justifyContent: "space-between", columnGap: 16, marginTop: 32 }}>
             <View>
               <Text style={textStyle.body}>{t("icon")}</Text>
-              <Pressable onPress={() => iconListRef.current.snapToIndex(0)}>
+              <Pressable
+                onPress={() => {
+                  setSheetView("icon");
+                  sheetRef.current.snapToIndex(0);
+                }}
+              >
                 <View
                   style={{
                     borderRadius: 4,
@@ -202,40 +216,54 @@ const AddCategoryScreen = () => {
       </CollapsibleHeaderScrollView>
 
       <BottomSheet
-        ref={iconListRef}
-        snapPoints={["69%", "100%"]}
+        ref={sheetRef}
+        snapPoints={[225, "69%", "100%"]}
         index={-1}
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
         onAnimate={handleOnAnimate}
+        enableHandlePanningGesture={sheetView === "icon"}
       >
-        <BottomSheetFlatList
-          numColumns={numCol}
-          key={`icon_flatlist_${numCol}`}
-          style={{ backgroundColor: colors.screen }}
-          contentContainerStyle={{ padding: 16 }}
-          columnWrapperStyle={{ flex: 1, justifyContent: "space-around", margin: 8 }}
-          data={Array(99)
-            .fill(1)
-            .map((_, index) => `icon_${index}`)}
-          renderItem={({ item }) => (
-            <Pressable key={item} onPress={() => handleSelectIcon(item)}>
-              <View
-                style={{
-                  borderRadius: 4,
-                  height: 64,
-                  width: 64,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: values.icon === item ? values.color : undefined,
-                  borderColor: values.icon === item ? undefined : values.color,
-                }}
-              >
-                <Icon name={item} size={48} color={values.icon === item ? colors.text : values.color} />
-              </View>
-            </Pressable>
-          )}
-        />
+        {sheetView === "icon" && (
+          <BottomSheetFlatList
+            numColumns={numCol}
+            key={`icon_flatlist_${numCol}`}
+            style={{ backgroundColor: colors.screen }}
+            contentContainerStyle={{ padding: 16 }}
+            columnWrapperStyle={{ flex: 1, justifyContent: "space-around", margin: 8 }}
+            data={Array(99)
+              .fill(1)
+              .map((_, index) => `icon_${index}`)}
+            renderItem={({ item }) => (
+              <Pressable key={item} onPress={() => handleSelectIcon(item)}>
+                <View
+                  style={{
+                    borderRadius: 4,
+                    height: 64,
+                    width: 64,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: values.icon === item ? values.color : undefined,
+                    borderColor: values.icon === item ? undefined : values.color,
+                  }}
+                >
+                  <Icon name={item} size={48} color={values.icon === item ? colors.text : values.color} />
+                </View>
+              </Pressable>
+            )}
+          />
+        )}
+        {sheetView === "delete" && (
+          <DeleteContainer
+            text={t("deleteText")}
+            title={t("deleteTitle")}
+            onComfirm={handlePressDelete}
+            onCancel={sheetRef.current.close}
+            cancel={t("cancel")}
+            color={values.color}
+            confirm={t("confirm")}
+          />
+        )}
       </BottomSheet>
     </>
   );

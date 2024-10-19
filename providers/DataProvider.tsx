@@ -199,6 +199,15 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
 
   const deleteCategory = useCallback(async (_id: string) => {
     let cat: Category;
+    let transactions:Transaction[] = [];
+    setTransaction((prev) => prev.filter((t)=> {
+      if (t.category === _id) {
+        transactions.push(t);
+        return false;
+      }
+      return true;
+    })
+    )
     setCategory((prev) =>
       prev.filter((c) => {
         if (c._id === _id) {
@@ -214,6 +223,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     } catch (e) {
       // TODO: ADD SENETRY LOGGING
       setCategory((prev) => prev.concat(cat));
+      setTransaction(prev => prev.concat(transactions));
     }
   }, []);
 

@@ -14,6 +14,8 @@ import { Category, Transaction, TransactionWithCategory } from "types";
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import { useTranslation } from "react-i18next";
+import { useHeader } from "providers/HeaderProvider";
+import DeleteContainer from "@components/DeleteContainer";
 
 type SearchParams = {
   _id: string;
@@ -50,15 +52,20 @@ const AddTransaction = () => {
   const router = useRouter();
 
   const navigation = useNavigation();
+  const { showHeader, hideHeader } = useHeader();
+
+  const showDeleteModal = useCallback(() => {
+    setSheetView("delete");
+    categorySheetRef.current.snapToIndex(0);
+  }, [categorySheetRef, setSheetView]);
 
   useEffect(() => {
     navigation.setOptions({
       title: _id ? t("updateTitle") : t("addTitle"),
-      headerRightBtn: _id ? [{ icon: "delete", onPress: handlePressDelete, label: "delete_transaction" }] : [],
+      headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, label: "delete_transaction" }] : [],
     });
   }, [navigation, _id]);
 
-  // const [showDelete, setShowDelete] = useState(false);
   // const [showImageOptions, setShowImageOptions] = useState(false);
   // const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
   // const [imagePermission, requestImagePermission] = ImagePicker.useMediaLibraryPermissions();
@@ -122,6 +129,7 @@ const AddTransaction = () => {
   };
 
   const handlePressDelete = useCallback(() => {
+    categorySheetRef.current.close();
     deleteTransaction(_id);
     router.back();
   }, [_id]);
@@ -180,10 +188,16 @@ const AddTransaction = () => {
     setValues((prev) => ({ ...prev, category: category._id }));
   }, []);
 
-  const selectedCategory = useMemo(() => category.find(c => c._id === values.category), [values.category]); 
+  const selectedCategory = useMemo(() => category.find((c) => c._id === values.category), [values.category]);
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
-
+  const handleOnAnimate = useCallback(
+    (_, to: number) => {
+      if (to === 2) hideHeader();
+      else showHeader();
+    },
+    [hideHeader, showHeader]
+  );
   return (
     <>
       <CollapsibleHeaderScrollView
@@ -207,7 +221,7 @@ const AddTransaction = () => {
             <CategoryItem
               item={selectedCategory}
               onPress={() => {
-                categorySheetRef.current.snapToIndex(1);
+                categorySheetRef.current.snapToIndex(2);
                 setSheetView("category");
               }}
             />
@@ -217,7 +231,7 @@ const AddTransaction = () => {
               android_ripple={{ color: selectedCategory.color || colors.rippleColor }}
               style={styles.button}
               onPress={() => {
-                categorySheetRef.current.snapToIndex(0);
+                categorySheetRef.current.snapToIndex(1);
                 setSheetView("date");
               }}
             >
@@ -235,15 +249,16 @@ const AddTransaction = () => {
       <BottomSheet
         style={{ backgroundColor: colors.screen }}
         ref={categorySheetRef}
-        snapPoints={[264, "69%"]}
+        snapPoints={[225, 264, "100%"]}
         enablePanDownToClose
         index={-1}
         backdropComponent={renderBackdrop}
-        onAnimate={(index) => setSheetView((prev) => (index > -1 ? (index === 1 ? "date" : "category") : prev))}
+        enableHandlePanningGesture={sheetView === "category"}
+        onAnimate={handleOnAnimate}
       >
         {sheetView === "category" && (
           <BottomSheetFlatList
-          style={{ backgroundColor: colors.screen }}
+            style={{ backgroundColor: colors.screen }}
             data={category}
             renderItem={({ item }) => (
               <CategoryItem
@@ -255,107 +270,30 @@ const AddTransaction = () => {
           />
         )}
         {sheetView === "date" && (
-        <View 
-        style={{ backgroundColor: colors.screen, flex: 1 }}>
-          <DatePicker
-            date={values.date}
-            onDateChange={(date) => setValues((prev) => ({ ...prev, date }))}
-            mode="date"
-            maximumDate={new Date()}
-            style={{ width, height: 200 }}
+          <View style={{ backgroundColor: colors.screen, flex: 1 }}>
+            <DatePicker
+              date={values.date}
+              onDateChange={(date) => setValues((prev) => ({ ...prev, date }))}
+              mode="date"
+              maximumDate={new Date()}
+              style={{ width, height: 200 }}
             />
-            </View>
+          </View>
+        )}
+        {sheetView === "delete" && (
+          <DeleteContainer
+            text={t("deleteText")}
+            title={t("deleteTitle")}
+            onComfirm={handlePressDelete}
+            onCancel={categorySheetRef.current.close}
+            cancel={t("cancel")}
+            color={selectedCategory.color}
+            confirm={t("confirm")}
+          />
         )}
       </BottomSheet>
     </>
   );
-
-  // return (
-  //   <View style={{ flex: 1 }}>
-  //     <View
-  //       style={{
-  //         backgroundColor: theme.colors.cardToneBackground,
-  //         padding: 8,
-  //       }}
-  //     >
-  //       <Text variant="labelLarge" style={{ marginBottom: 4 }}>
-  //         {t("date")}
-  //       </Text>
-  //       {/* <Button icon="calendar" mode="outlined" onPress={() => setViewModal("datepicker")}>
-  //           {format(values.date, dateFormat)}
-  //         </Button> */}
-  //     </View>
-  //     <View
-  //       style={{
-  //         backgroundColor: theme.colors.cardToneBackground,
-  //         padding: 8,
-  //       }}
-  //     >
-  //       <TextInput
-  //         // right={<TextInput.Icon onPress={() => setViewModal("currency")} icon="repeat" />}
-  //         // left={<TextInput.Affix text={values.currency} />}
-  //         value={values.amount}
-  //         onChangeText={(text) => setValues((prev) => ({ ...prev, amount: text }))}
-  //         mode="outlined"
-  //         keyboardType="decimal-pad"
-  //         style={theme.fonts.titleLarge}
-  //       />
-  //       {/* {values.currency !== defaultCurrency.code ? (
-  //           <Amount
-  //             amount={parseFloat(values.amount) * (rates.find((rate) => rate.code === values.currency)?.rate as number)}
-  //           />
-  //         ) : null} */}
-  //     </View>
-  //     <View>
-  //       {!values.category && <Text>Please Add A category</Text>}
-  //       {/* {values.category && <CategoryItem item={values.category} onPress={() => setViewModal("category")} />} */}
-  //     </View>
-  //     <View style={{ padding: 8 }}>
-  //       <Text variant="labelLarge" style={{ marginBottom: 0 }}>
-  //         {`${t("note")} (${t("optional")})`}
-  //       </Text>
-  //       <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
-  //         <TextInput
-  //           multiline
-  //           mode="outlined"
-  //           value={values.note}
-  //           style={{ flex: 1 }}
-  //           onChangeText={(text) => setValues((prev) => ({ ...prev, note: text }))}
-  //         />
-  //         <IconButton
-  //           icon="image"
-  //           onPress={() => setShowImageOptions(true)}
-  //           style={{
-  //             marginRight: 0,
-  //             borderRadius: theme.roundness * 4,
-  //             backgroundColor: theme.colors.inversePrimary,
-  //           }}
-  //         />
-  //       </View>
-  //     </View>
-  //     {values.image.length > 0 && (
-  //       <TouchableRipple style={{ marginHorizontal: 8, marginBottom: 8 }} onPress={() => {}}>
-  //         <Image
-  //           source={{
-  //             uri: values.image,
-  //           }}
-  //           style={{ height: 100 }}
-  //         />
-  //       </TouchableRipple>
-  //     )}
-  //     <View style={{ flexDirection: "row" }}>
-  //       <IconButton icon="add" onPress={router.back} />
-  //       <Button onPress={addNewTransaction}>Swipe to Add</Button>
-  //     </View>
-  //     <Dialog visible={showImageOptions} onDismiss={() => setShowImageOptions(false)}>
-  //       <Dialog.Content>
-  //         <Button onPress={handleCamera}>Open Camera</Button>
-  //         <Button onPress={handlePickImage}>Pick Image</Button>
-  //         {values.image.length > 0 && <Button onPress={removeImage}>Remove Image</Button>}
-  //       </Dialog.Content>
-  //     </Dialog>
-  //   </View>
-  // );
 };
 
 export default AddTransaction;
@@ -365,9 +303,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
   },
+
   button: {
     padding: 16,
     justifyContent: "center",
     alignItems: "center",
+    flex: 1,
   },
 });
