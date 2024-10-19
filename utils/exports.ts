@@ -1,8 +1,7 @@
 import { format } from "date-fns";
-import { Transaction } from "../realm/Transaction";
-
+import { Transaction } from "types";
 export const createHTML = (
-  transactions: Realm.Results<Transaction>,
+  transactions: Transaction[],
   order = ["category", "createdAt", "note", "amount"],
   dateFormat = "dd MMMM, yyyy"
 ) => {
@@ -10,12 +9,12 @@ export const createHTML = (
   const data = transactions.map((item) => {
     let row = "<tr>";
     order.forEach((value) => {
-      if (value === "category") row += `<td>${item.category.title}</td>`;
+      if (value === "category") row += `<td>${""}</td>`;
       else if (value === "createdAt") row += `<td>${format(item.date, dateFormat)}</td>`;
       else if (value === "amount") {
         ["income", "expense", "transfer"].forEach((tType, index) => {
-          if (tType === item.category.type) {
-            row += `<td class='${item.category.type}'>${item.currency} ${item.amount}</td>`;
+          if (tType === "item.category.type") {
+            row += `<td class='${false}'>${item.currency} ${item.amount}</td>`;
             total[index] += item.amount;
           } else row += "<td></td>";
         });
@@ -62,7 +61,7 @@ export const createHTML = (
 };
 
 export const createCSV = (
-  transactions: Realm.Results<Transaction>,
+  transactions: Transaction[],
   order = ["category", "createdAt", "note", "amount"]
 ) => {
   let header = [];
@@ -80,11 +79,11 @@ export const createCSV = (
     order.forEach((key) => {
       if (key === "amount") {
         ["income", "expense", "transfer"].forEach((tType, index) => {
-          if (tType === item.category.type) {
+          if (tType === "income") {
             row.push(`${item.amount}`);
           } else row.push("");
         });
-      } else if (key === "category") row.push(`"${item.category.title}"`);
+      } else if (key === "category") row.push(`"${''}"`);
       else if (key === "createdAt") {
         row.push(`"${format(item.date, "dd MMMM, yyyy")}"`);
       } else {
@@ -97,12 +96,12 @@ export const createCSV = (
   return data;
 };
 
-export const createJSON = (transaction: Realm.Results<Transaction>) => {
+export const createJSON = (transaction: Transaction[]) => {
   const data = transaction.map((item) => ({
     amount: item.amount,
     note: item.note,
-    category: item.category.title,
-    type: item.category.type,
+    category: "item.category.title",
+    type: "icome",
     date: item.date.toISOString(),
   }));
   return data;

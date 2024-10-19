@@ -45,7 +45,11 @@
                 "type": "प्रकार",
                 "color": "रंग",
                 "current": "वर्तमान",
-                "suggested": "सुझाए गए"
+                "suggested": "सुझाव",
+                "deleteTitle": "क्या आप सुनिश्चित हैं?",
+                "deleteText": "यह श्रेणी और इसके सभी लेन-देन को हटा देगा",
+                "cancel": "रद्द करें",
+                "confirm": "हटाएं"
             },
             "addTransaction": {
                 "addTitle": "लेनदेन जोड़ें",
@@ -56,7 +60,11 @@
                 "note": "नोट",
                 "optional": "वैकल्पिक",
                 "swipeButtonAdd": "लेनदेन जोड़ने के लिए स्वाइप करें",
-                "swipeButtonUpdate": "लेनदेन अपडेट करने के लिए स्वाइप करें"
+                "swipeButtonUpdate": "लेनदेन अपडेट करने के लिए स्वाइप करें",
+                "deleteTitle": "क्या आप सुनिश्चित हैं?",
+                "deleteText": "यह लेन-देन को हटा देगा",
+                "cancel": "रद्द करें",
+                "confirm": "हटाएं"
             },
             "backup": {
                 "backup": "बैकअप",
@@ -114,50 +122,6 @@
             "selected": "Selected",
             "unlock": "Unlock",
             "download": "Download"
-        }
-    },
-    "navigator": {
-        "drawer": {
-            "TrackerStack": "Transactions",
-            "RecurringStack": "Recurring Transactions",
-            "CategoryStack": "Categories",
-            "ExchangeStack": "Exchange Rates",
-            "SettingStack": "Settings",
-            "AboutStack": "About",
-            "HelpStack": "Help",
-            "StoreStack": "Store",
-            "ShortcutStack": "Shortcuts"
-        },
-        "tab": {
-            "allTransaction": "Transactions",
-            "charts": "Charts",
-            "category": "Categories"
-        },
-        "stack": {
-            "TrackerTab": "Transactions",
-            "CategoryTab": "Categories",
-            "ExchangeRateScreen": "Exchange Rates",
-            "SettingScreen": "Settings",
-            "FontSetting": "Fonts",
-            "ThemeSetting": "Themes",
-            "ExportScreen": "Exports",
-            "BackupScreen": "Backup & Restore",
-            "AboutScreen": "About",
-            "HelpScreen": "Help",
-            "StoreScreen": "Store",
-            "ShortcutScreen": "Shortcuts"
-        }
-    },
-    "screens": {
-        "tracker": {
-            "allTransaction": {
-                "noTransaction": "No Transactions. Try Changing the period or add a transaction."
-            },
-            "charts": {
-                "noCharts": "No Charts to display. Try Changing the period or filter or add a new transaction.",
-                "categorySelected": "{{count}} category selected",
-                "categorySelected_plural": "{{count}} categories selected"
-            }
         }
     },
     "languages": {

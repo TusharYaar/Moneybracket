@@ -31,14 +31,14 @@ const AllCategory = () => {
         title="Category"
         paddingTop={0}
         hideBackButton={true}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 112 }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
         data={category}
         renderItem={({ item }) => (
           <CategoryItem
             item={item}
             onPress={() =>
               router.push(
-                `Stack/addCategory?_id=${item._id}&title=${item.title}&color=${ item.color ? item.color.replace("#", ""): "345678"}&type=${
+                `stack/addCategory?_id=${item._id}&title=${item.title}&color=${ item.color ? item.color.replace("#", ""): "345678"}&type=${
                   item.type
                 }`
               )

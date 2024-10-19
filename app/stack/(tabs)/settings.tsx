@@ -17,6 +17,8 @@ import { useFocusEffect, useNavigation, useRouter } from "expo-router";
 import { View, Switch, Text, StyleSheet, Pressable } from "react-native";
 import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { useHeader } from "providers/HeaderProvider";
+import { generateDummyTransaction } from "@utils/dummy";
+import { Transaction } from "types";
 
 const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
@@ -30,7 +32,7 @@ const OPTIONS: Record<string, { label: string; value: string }[]> = {
 const Setting = () => {
   const { updateSettings, ...settings } = useSettings();
   const { textStyle, colors } = useTheme();
-  const { addCategory } = useData();
+  const { addCategory,category, addTransaction } = useData();
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.settings" });
   const { t: wt } = useTranslation();
   const { showHeader, showTabbar, hideHeader, hideTabbar } = useHeader();
@@ -53,38 +55,28 @@ const Setting = () => {
   const selectListRef = useRef<BottomSheet>();
 
   const addDummyCategories = useCallback(() => {
+    const cats = [];
     Dcategories.forEach((cat, index) => {
       const date = new Date().toISOString();
-      setTimeout(() => {
-        addCategory({
+      cats.push({
           ...cat,
           color: COLORS[Math.floor(Math.random() * COLORS.length)],
           createdAt: date,
           updatedAt: date,
           isFavorite: false,
-          icon: "feed-tag",
+          icon: `icon_${Math.floor(Math.random() * 98)}`,
         });
-      }, index * 200);
     });
+    addCategory(cats);
   }, []);
-  const addDummy = useCallback(() => {
-    // realm.write(() => {
-    //   const trans = generateDummyTransaction();
-    //   trans.forEach((element) => {
-    //     realm.create(
-    //       "Transaction",
-    //       Transaction.generate(
-    //         // element.amount,
-    //         13,
-    //         currency.code,
-    //         new Date(),
-    //         // element.date,
-    //         "dummy transaction",
-    //         category[Math.floor(Math.random() * category.length)]
-    //       )
-    //     );
-    //   });
-    // });
+
+  const addDummyTransactions = useCallback(() => {
+      const trans = generateDummyTransaction();
+      let _trans = trans.map((element) => ({
+          ...element,
+            category: category[Math.floor(Math.random() * category.length)]._id
+      })) as Omit<Transaction,"_id">[] ;
+      addTransaction(_trans);
   }, []);
 
   const dismissModal = useCallback(() => {
@@ -127,12 +119,12 @@ const Setting = () => {
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
-  const handleOnAnimate = (_, to: number) => {
+  const handleOnAnimate = useCallback((_, to: number) => {
     if (to === 2) hideHeader();
     else showHeader();
     if (to === -1) showTabbar();
     else hideTabbar();
-  };
+  },[hideHeader, showHeader, hideTabbar, showTabbar]);
   return (
     <>
       <CollapsibleHeaderScrollView
@@ -150,16 +142,25 @@ const Setting = () => {
           <SettingItem label={t("theme")} leftIcon="theme" onPress={() => showSelectList("theme", settings.theme)}>
             <Text style={textStyle.body}>{OPTIONS.theme.find((f) => f.value === settings.theme).label}</Text>
           </SettingItem>
-          {__DEV__ && (
             <SettingItem label={t("icon")} leftIcon="icon" onPress={() => showSelectList("icon", settings.icon)}>
               <Text style={textStyle.body}>{settings.icon}</Text>
             </SettingItem>
-          )}
+          
+        </View>
+
+
+        {__DEV__ &&
+        <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
+          <Text style={textStyle.title}>{t("developer")}</Text>
+          <SettingItem label="add dummy category" leftIcon="buildVersion" onPress={addDummyCategories}>
+          </SettingItem>
+
+          <SettingItem label="add dummy transactions" leftIcon="buildVersion" onPress={addDummyTransactions}>
+          </SettingItem>
 
           <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("_sitemap")} />
         </View>
-
-        {/* <SettingItem label={t("theme")} leftIcon="paintbrush" onPress={() => router.push("settings/theme")}> */}
+          }
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("preference")}</Text>
           <SettingItem
@@ -235,7 +236,6 @@ const Setting = () => {
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
         onAnimate={handleOnAnimate}
-        // onAnimate={(index, to) => to !== -1 && selectListRef.current.snapToIndex(index)}
       >
         <BottomSheetFlatList
           style={{ backgroundColor: colors.screen }}

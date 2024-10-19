@@ -1,6 +1,7 @@
-import {add} from "date-fns";
+import { add } from "date-fns";
+import { Transaction } from "types";
 
-export const generateDummyTransaction = () => {
+export const generateDummyTransaction: () => Omit<Transaction, "id"| "category">[] = () => {
   let ar = [];
   for (let i = 0; i < 50; i++) {
     let amount = 1000;
@@ -19,8 +20,7 @@ export const generateDummyTransaction = () => {
         days,
       });
     }
-
-    ar.push({date, amount});
+    ar.push({ date, amount, note: `dummy transaction ${i}`, currency: "INR" });
   }
   return ar;
 };

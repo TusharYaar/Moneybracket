@@ -30,6 +30,7 @@ export const SETTING_KEYS = {
   font: "settings/font",
   dateFormat: "settings/dateFormat",
   roundness: "settings/roundness",
+  isFirstLaunch: "settings/isFirstLaunch",
 };
 
 export {

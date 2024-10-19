@@ -1,77 +1,77 @@
-import React, { useContext, createContext, useMemo, useState, useCallback, useEffect } from "react";
-import { BackupFile, Category, Transaction, TransactionWithCategory } from "../types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useContext, createContext, useMemo, useState, useCallback } from "react";
+import { Category, Transaction, TransactionWithCategory } from "../types";
 import { randomUUID } from "expo-crypto";
 import { format, parse } from "date-fns";
-const ASYNC_STORAGE = {
-  CATEGORY_KEY: "CATEGORY",
-  DATES: "DATES",
-};
+
+import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import { openDatabaseSync } from "expo-sqlite/next";
+import { categoryTable, transactionTable } from "data/schema";
+import migrations from "drizzle/migrations";
+import { eq } from "drizzle-orm";
+
+const expo = openDatabaseSync("MB.db");
+const db = drizzle(expo);
 
 const STORAGE_DATE_FORMAT = "dd-MMM-yyyy";
 
 type Props = {
   category: Category[];
   transaction: TransactionWithCategory[];
-  addTransaction: (value: Omit<Transaction, "_id">) => void;
+  addTransaction: (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => void;
   updateTransaction: (_id: string, value: Omit<Transaction, "_id">) => void;
   deleteTransaction: (_id: string) => void;
-  addCategory: (value: Omit<Category, "_id">) => void;
+  addCategory: (value: Omit<Category, "_id"> | Omit<Category, "_id">[]) => void;
   updateCategory: (_id: string, value: Omit<Category, "_id">) => void;
   deleteCategory: (_id: string) => void;
+  fetchData: () => void;
+  migration_success: boolean;
+  migration_error?: Error;
 };
 
 type TransactionDateString = Omit<Transaction, "date"> & { date: string };
 
 const DataContext = createContext<Props>({
-  // dateFilter: {
-  //   type: "all",
-  //   startDate: new Date(),
-  //   endDate: new Date(),
-  // },
   transaction: [],
   addTransaction: (value: Omit<Transaction, "_id">) => {},
   updateTransaction: (_id: string, value: Omit<Transaction, "_id">) => {},
   deleteTransaction: (_id: string) => {},
 
-  // selectedCategory: [],
   category: [],
   addCategory: (value: Omit<Category, "_id">) => {},
   updateCategory: (_id: string, value: Omit<Category, "_id">) => {},
   deleteCategory: (_id: string) => {},
-  // transaction: [] as unknown as Realm.Results<Transaction>,
   // deleteAllData: () => {},
+  migration_success: false,
+  fetchData: () => {},
 });
 
 export const useData = () => useContext(DataContext);
 
 const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+  const { success: migration_success, error: migration_error } = useMigrations(db, migrations);
   const [category, setCategory] = useState<Category[]>([]);
 
-  const [allTransactionDates, setAllTransactionDates] = useState<Set<string>>(new Set());
-  const [_transaction, setTransaction] = useState<TransactionDateString[]>([]);
+  const [_transaction, setTransaction] = useState<Transaction[]>([]);
 
-  const categoryObj: Record<string, Category> = useMemo(
-    () => category.reduce((prev, curr) => ({ ...prev, [curr._id]: curr }), {}),
-    [category]
-  );
+  const categoryObj: Record<string, Category> = useMemo(() => {
+    if (category) return category.reduce((prev, curr) => ({ ...prev, [curr._id]: curr }), {});
+    else return {};
+  }, [category]);
 
   const transaction = useMemo(
     () =>
       _transaction.map((trans) => ({
         ...trans,
         category: categoryObj[trans.category],
-        date: parse(trans.date, STORAGE_DATE_FORMAT, new Date()),
       })),
     [_transaction, categoryObj]
   );
 
   const getAllCategory = useCallback(async () => {
     try {
-      const value = await AsyncStorage.getItem(ASYNC_STORAGE.CATEGORY_KEY);
-      if (value !== null) {
-        return JSON.parse(value) as Category[];
-      } else return [];
+      const data = await db.select().from(categoryTable);
+      return data;
     } catch (e) {
       console.log(e);
       // TODO: ADD SENETRY LOGGING
@@ -79,12 +79,9 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     }
   }, []);
 
-  const getAllTransactionForDate = useCallback(async (date: string) => {
+  const getAllTransaction = useCallback(async () => {
     try {
-      const value = await AsyncStorage.getItem(date);
-      if (value !== null) {
-        return JSON.parse(value) as TransactionDateString[];
-      } else return [];
+      return await db.select().from(transactionTable);
     } catch (e) {
       console.log(e);
       // TODO: ADD SENETRY LOGGING
@@ -92,139 +89,125 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     }
   }, []);
 
-  useEffect(() => {
-    const fetchAllCategory = async () => {
-      const data = await getAllCategory();
-      setCategory(data);
-    };
-    const fetchAllTransactionDates = async () => {
-      const data = await AsyncStorage.getAllKeys();
-      const values = Object.values(ASYNC_STORAGE);
-      const dates = data.filter((date) => !values.includes(date));
-      setAllTransactionDates(new Set(dates));
+  const fetchData = useCallback(async () => {
+    const data = await getAllCategory();
+    setCategory(data);
+    const transactions = await getAllTransaction();
+    setTransaction(transactions);
+  }, [getAllCategory, setCategory, getAllTransaction, setTransaction]);
 
-      const transactions: TransactionDateString[] = [];
-
-      for (let i = 0; i < dates.length && i < 10; i++) {
-        const result = await getAllTransactionForDate(dates[i]);
-        transactions.push(...result);
+  const addCategory = useCallback(
+    async (value: Omit<Category, "_id"> | Omit<Category, "_id">[]) => {
+      let values: Category[] = [];
+      if (Array.isArray(value)) {
+        values = value.map((val) => ({ ...val, _id: randomUUID() }));
+      } else {
+        const _id = randomUUID();
+        values = [{ ...value, _id }];
       }
-      setTransaction(transactions);
-    };
-    fetchAllCategory();
-    fetchAllTransactionDates();
-  }, [getAllCategory, setCategory, getAllTransactionForDate]);
-
-  const addCategory = useCallback(async (value: Omit<Category, "_id">) => {
-    const _id = randomUUID();
-    setCategory((prev) => prev.concat({ ...value, _id }));
-    try {
-      const categories = await getAllCategory();
-      categories.push({ ...value, _id });
-
-      await AsyncStorage.setItem(ASYNC_STORAGE.CATEGORY_KEY, JSON.stringify(categories));
-    } catch (e) {
-      // saving error
-      // TODO: ADD SENETRY LOGGING
-      setCategory((prev) => prev.filter((cat) => cat._id !== _id));
-    }
-  }, []);
+      try {
+        await db.insert(categoryTable).values(values);
+        setCategory(values);
+      } catch (e) {
+        // saving error
+        // TODO: ADD SENETRY LOGGING
+        console.log(e);
+        const ids = values.map((v) => v._id);
+        setCategory((prev) => prev.filter((cat) => !ids.includes(cat._id)));
+      }
+    },
+    [setCategory]
+  );
 
   const updateCategory = async (_id: string, value: Omit<Category, "_id">) => {
-    setCategory((prev) => prev.map((cat) => (cat._id === _id ? { ...value, _id } : cat)));
+    let oldValue: Category;
+    setCategory((prev) =>
+      prev.map((cat) => {
+        if (cat._id === _id) {
+          oldValue = cat;
+          return { ...value, _id };
+        } else return cat;
+      })
+    );
     try {
-      const categories = await getAllCategory();
-      const updatedCategories = categories.map((cat) => (cat._id === _id ? { ...value, _id } : cat));
-
-      await AsyncStorage.setItem(ASYNC_STORAGE.CATEGORY_KEY, JSON.stringify(updatedCategories));
+      await db.update(categoryTable).set(value).where(eq(categoryTable._id, _id));
     } catch (e) {
       // saving error
       // TODO: ADD SENETRY LOGGING
-      setCategory((prev) => prev.filter((cat) => cat._id !== _id));
+      console.log(e);
+      if (oldValue) setCategory((prev) => prev.map((cat) => (cat._id === _id ? oldValue : cat)));
     }
   };
-  const addTransaction = useCallback(
-    async (value: Omit<Transaction, "_id">) => {
+  const addTransaction = useCallback(async (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => {
+    let vals: Transaction[] = [];
+    if (Array.isArray(value)) {
+      vals = value.map((val) => ({ ...val, _id: randomUUID() }));
+    } else {
       const _id = randomUUID();
-      console.log(value);
-      const date = format(value.date, STORAGE_DATE_FORMAT);
-      setTransaction((prev) => prev.concat({ ...value, _id, category: categoryObj[value.category]._id, date }));
-      setAllTransactionDates((prev) => prev.add(date));
-      try {
-        const transactions = await getAllTransactionForDate(date);
-        await AsyncStorage.setItem(date, JSON.stringify(transactions.concat({ ...value, date, _id })));
-      } catch (e) {
-        // TODO: ADD SENETRY LOGGING
-        console.log(e);
-        setTransaction((prev) => prev.filter((trans) => trans._id !== _id));
-      }
-    },
-    [getAllTransactionForDate, categoryObj]
-  );
+      vals = [{ ...value, _id }];
+    }
+    try {
+      await db.insert(transactionTable).values(vals);
+      setTransaction((prev) => prev.concat(vals));
+    } catch (e) {
+      // saving error
+      // TODO: ADD SENETRY LOGGING
+      console.log(e);
+      const ids = vals.map((v) => v._id);
+      setTransaction((prev) => prev.filter((cat) => !ids.includes(cat._id)));
+    }
+  }, []);
 
-  const deleteTransaction = useCallback(
-    async (_id: string) => {
-      let date = "";
-      setTransaction((prev) =>
-        prev.filter((t) => {
-          if (t._id === _id) {
-            date = t.date;
-            return false;
-          }
-          return true;
-        })
-      );
-      try {
-        console.log(date);
-        const transactions = await getAllTransactionForDate(date);
-        await AsyncStorage.setItem(date, JSON.stringify(transactions.filter((t) => t._id !== _id)));
-      } catch (e) {
-        // TODO: ADD SENETRY LOGGING
-        console.log(e);
-        // setTransaction((prev) => prev.filter((trans) => trans._id !== _id));
-      }
-    },
-    [getAllTransactionForDate, categoryObj]
-  );
-
-  const updateTransaction = useCallback(
-    async (_id: string, value: Omit<Transaction, "_id">) => {
-      const date = format(value.date, STORAGE_DATE_FORMAT);
-      let prevDate = "";
-      setTransaction((prev) =>
-        prev.map((t) => {
-          if (t._id === _id) {
-            prevDate = t.date;
-            return { ...value, _id, category: categoryObj[value.category]._id, date };
-          } else return t;
-        })
-      );
-      setAllTransactionDates((prev) => prev.add(date));
-      try {
-        if (prevDate === date) {
-          const transactions = await getAllTransactionForDate(date);
-          await AsyncStorage.setItem(
-            date,
-            JSON.stringify(transactions.map((t) => (t._id === _id ? { ...value, date, _id } : t)))
-          );
-        } else {
-          let transactions = await getAllTransactionForDate(prevDate);
-          await AsyncStorage.setItem(date, JSON.stringify(transactions.filter((t) => t._id !== _id)));
-          transactions = await getAllTransactionForDate(date);
-          await AsyncStorage.setItem(date, JSON.stringify(transactions.concat({ ...value, date, _id })));
+  const deleteTransaction = useCallback(async (_id: string) => {
+    let trans: Transaction;
+    setTransaction((prev) =>
+      prev.filter((t) => {
+        if (t._id === _id) {
+          trans = t;
+          return false;
         }
-      } catch (e) {
-        // TODO: ADD SENETRY LOGGING
-        console.log(e);
-        setTransaction((prev) => prev.filter((trans) => trans._id !== _id));
-      }
-    },
-    [getAllTransactionForDate, categoryObj]
-  );
+        return true;
+      })
+    );
+    try {
+      await db.delete(transactionTable).where(eq(transactionTable._id, _id));
+    } catch (e) {
+      // TODO: ADD SENETRY LOGGING
+      console.log(e);
+      setTransaction((prev) => prev.concat(trans));
+    }
+  }, []);
+
+  const updateTransaction = useCallback(async (_id: string, value: Omit<Transaction, "_id">) => {
+    let oldValue: Transaction;
+    setTransaction((prev) =>
+      prev.map((cat) => {
+        if (cat._id === _id) {
+          oldValue = cat;
+          return { ...value, _id };
+        } else return cat;
+      })
+    );
+    try {
+      await db.update(transactionTable).set(value).where(eq(transactionTable._id, _id));
+    } catch (e) {
+      // TODO: ADD SENETRY LOGGING
+      console.log(e);
+      if (oldValue) setTransaction((prev) => prev.map((val) => (val._id === _id ? oldValue : val)));
+    }
+  }, []);
 
   const deleteCategory = useCallback(async (_id: string) => {
     let cat: Category;
-
+    let transactions:Transaction[] = [];
+    setTransaction((prev) => prev.filter((t)=> {
+      if (t.category === _id) {
+        transactions.push(t);
+        return false;
+      }
+      return true;
+    })
+    )
     setCategory((prev) =>
       prev.filter((c) => {
         if (c._id === _id) {
@@ -235,12 +218,12 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       })
     );
     try {
-      const categories = await getAllCategory();
-      await AsyncStorage.setItem(ASYNC_STORAGE.CATEGORY_KEY, JSON.stringify(categories.filter((t) => t._id !== _id)));
+      await db.delete(transactionTable).where(eq(transactionTable.category, _id));
+      await db.delete(categoryTable).where(eq(categoryTable._id, _id));
     } catch (e) {
       // TODO: ADD SENETRY LOGGING
       setCategory((prev) => prev.concat(cat));
-      console.log(e);
+      setTransaction(prev => prev.concat(transactions));
     }
   }, []);
 
@@ -255,6 +238,9 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
         updateCategory,
         deleteTransaction,
         deleteCategory,
+        fetchData,
+        migration_error,
+        migration_success,
       }}
     >
       {children}

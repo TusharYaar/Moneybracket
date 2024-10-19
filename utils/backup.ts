@@ -1,6 +1,5 @@
 import { Platform } from "react-native";
-import { BackupFile, Category } from "../types";
-import Transaction from "realm/Transaction";
+import { BackupFile, Category, Transaction } from "../types";
 
 export const generateBackupFile = (
   category: Category[],
@@ -20,8 +19,8 @@ export const generateBackupFile = (
     date: tran.date,
     createdAt: tran.createdAt.toString(),
     // note: tran.note,
-    category: tran.category.title,
-    isFavorite: tran.isFavorite,
+    category:" tran.category.title",
+    isFavorite: false,
     // image: "",
   }));
 
@@ -33,7 +32,7 @@ export const generateBackupFile = (
     includeImages: false,
     settings: settings,
     category: bcategory,
-    transaction: btrans,
+    transaction: [],
   };
   return backup;
 };

@@ -14,6 +14,7 @@ type Props = {
   font: string;
   icon: string;
   dateFormat: string;
+  isFirstLaunch: string;
 
   updateSettings: (key: string, value: string) => void;
   // roundness: number;
@@ -45,6 +46,7 @@ const SETTINGS: Props = {
   // updateLock: () => {},
   // refreshUnlockedItems: () => {},
   // updateRoundness: () => {},
+  isFirstLaunch: getFromStorageOrDefault(SETTING_KEYS.isFirstLaunch, "true"),
   updateSettings: () => {},
 };
 

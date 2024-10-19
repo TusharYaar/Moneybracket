@@ -45,7 +45,11 @@
                 "type": "Type",
                 "color": "Color",
                 "current": "Current",
-                "suggested": "Suggested"
+                "suggested": "Suggested",
+                "deleteTitle": "Are you Sure?",
+                "deleteText":"This will delete the category and all its transactions",
+                "cancel":"Cancel",
+                "confirm": "Delete"
             },
             "addTransaction": {
                 "addTitle": "Add Transaction",
@@ -56,7 +60,11 @@
                 "note": "Note",
                 "optional": "Optional",
                 "swipeButtonAdd": "Swipe to Add Transaction",
-                "swipeButtonUpdate": "Swipe to Update Transaction"
+                "swipeButtonUpdate": "Swipe to Update Transaction",
+                "deleteTitle": "Are you Sure?",
+                "deleteText":"This will delete the transaction",
+                "cancel":"Cancel",
+                "confirm": "Delete"
             },
             "backup": {
                 "backup": "Backup",
@@ -100,50 +108,6 @@
             "selected": "Selected",
             "unlock": "Unlock",
             "download": "Download"
-        }
-    },
-    "navigator": {
-        "drawer": {
-            "TrackerStack": "Transactions",
-            "RecurringStack": "Recurring Transactions",
-            "CategoryStack": "Categories",
-            "ExchangeStack": "Exchange Rates",
-            "SettingStack": "Settings",
-            "AboutStack": "About",
-            "HelpStack": "Help",
-            "StoreStack": "Store",
-            "ShortcutStack": "Shortcuts"
-        },
-        "tab": {
-            "allTransaction": "Transactions",
-            "charts": "Charts",
-            "category": "Categories"
-        },
-        "stack": {
-            "TrackerTab": "Transactions",
-            "CategoryTab": "Categories",
-            "ExchangeRateScreen": "Exchange Rates",
-            "SettingScreen": "Settings",
-            "FontSetting": "Fonts",
-            "ThemeSetting": "Themes",
-            "ExportScreen": "Exports",
-            "BackupScreen": "Backup & Restore",
-            "AboutScreen": "About",
-            "HelpScreen": "Help",
-            "StoreScreen": "Store",
-            "ShortcutScreen": "Shortcuts"
-        }
-    },
-    "screens": {
-        "tracker": {
-            "allTransaction": {
-                "noTransaction": "No Transactions. Try Changing the period or add a transaction."
-            },
-            "charts": {
-                "noCharts": "No Charts to display. Try Changing the period or filter or add a new transaction.",
-                "categorySelected": "{{count}} category selected",
-                "categorySelected_plural": "{{count}} categories selected"
-            }
         }
     },
     "languages": {
