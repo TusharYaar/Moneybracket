@@ -38,10 +38,6 @@
       }
     },
     "plugins": [
-      // [
-      //   "./withDrawableAssets.js",
-      //   "./assets/shortcuts"
-      // ],
       "expo-router",
       [
         "@sentry/react-native/expo",
@@ -59,6 +55,7 @@
           ]
         }
       ]
-    ]
+    ],
+    "owner": "tusharyaar"
   }
 }
