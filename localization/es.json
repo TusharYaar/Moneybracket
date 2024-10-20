@@ -28,6 +28,7 @@
                     "buildVersion": "Versión de Construcción",
                     "backup": "Copia de Seguridad y Restaurar",
                     "lock": "Habilitar Bloqueo de la App",
+                    "biometricLock": "Usa solo biometría.",
                     "deleteText": "¿Está seguro de que desea eliminar todos los datos? Esto incluye todos los datos de transacciones y categorías.",
                     "deleteTitle": "¿Eliminar Todos los Datos?",
                     "cancel": "Cancelar",

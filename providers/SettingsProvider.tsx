@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 type Props = {
   language: string;
   currency: Currency;
-  appLock: "ENABLE" | "DISABLE";
+  appLock: "BIOMETRIC" | "PIN" | "DISABLE";
   theme: string;
   font: string;
   icon: string;

@@ -28,6 +28,7 @@
                     "buildVersion": "Build Version",
                     "backup": "Backup & Restore",
                     "lock": "Enable App Lock",
+                    "biometricLock": "Use biometric only",
                     "deleteTitle": "Delete All Data?",
                     "deleteText":"Are you sure you want to delete all data. This includes all Transction data and Categories.",
                     "cancel":"Cancel",
