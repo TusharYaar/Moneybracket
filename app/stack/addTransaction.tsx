@@ -286,7 +286,7 @@ const AddTransaction = () => {
             text={t("deleteText")}
             title={t("deleteTitle")}
             onComfirm={handlePressDelete}
-            onCancel={categorySheetRef.current.close}
+            onCancel={() => categorySheetRef.current.close()}
             cancel={t("cancel")}
             color={selectedCategory.color}
             confirm={t("confirm")}

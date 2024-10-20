@@ -206,7 +206,7 @@ const Setting = () => {
           <Text style={textStyle.title}>{t("dataManagement")}</Text>
 
           {__DEV__ && <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("stack/export")} />}
-          <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("stack/backup")} />
+          {__DEV__ && <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("stack/backup")} />}
 
           <SettingItem label={t("deleteAllData")} leftIcon="delete" onPress={() => showSelectList("delete", "")} />
         </View>
