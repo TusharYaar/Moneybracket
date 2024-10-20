@@ -28,8 +28,10 @@
                     "buildVersion": "Versión de Construcción",
                     "backup": "Copia de Seguridad y Restaurar",
                     "lock": "Habilitar Bloqueo de la App",
-                    "confirmDeleteBody": "¿Está seguro de que desea eliminar todos los datos? Esto incluye todos los datos de transacciones y categorías.",
-                    "confirmDeleteTitle": "¿Eliminar Todos los Datos?"
+                    "deleteText": "¿Está seguro de que desea eliminar todos los datos? Esto incluye todos los datos de transacciones y categorías.",
+                    "deleteTitle": "¿Eliminar Todos los Datos?",
+                    "cancel": "Cancelar",
+                    "confirm": "Eliminar"
                 },
                 "transaction": {
                     "title": "Transacciones"

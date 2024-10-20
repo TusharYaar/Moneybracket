@@ -19,24 +19,28 @@ import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/b
 import { useHeader } from "providers/HeaderProvider";
 import { generateDummyTransaction } from "@utils/dummy";
 import { Transaction } from "types";
+import DeleteContainer from "@components/DeleteContainer";
 
 const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
   font: ALL_FONTS.filter((d) => d.isVisible).map((d) => ({ label: d.name, value: d.id })),
   theme: ALL_THEMES.filter((d) => d.isVisible).map((d) => ({ label: d.name, value: d.id })),
-  language: [{ label: "English", value: "en", }, {"label": "Hindi", value: "hi"}, {"label": "Spanish", value: "es"}],
-  icon: Object.keys(ICONS).map(k => ({label: k, value: k})),
+  language: [
+    { label: "English", value: "en" },
+    { label: "Hindi", value: "hi" },
+    { label: "Spanish", value: "es" },
+  ],
+  icon: Object.keys(ICONS).map((k) => ({ label: k, value: k })),
   currency: Object.values(CURRENCIES).map((cur) => ({ label: cur.code, value: cur.name })),
 };
 
 const Setting = () => {
   const { updateSettings, ...settings } = useSettings();
   const { textStyle, colors } = useTheme();
-  const { addCategory,category, addTransaction } = useData();
+  const { addCategory, category, addTransaction, deleteAllData } = useData();
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.settings" });
   const { t: wt } = useTranslation();
   const { showHeader, showTabbar, hideHeader, hideTabbar } = useHeader();
-  const [deleteModal, setDeleteModal] = useState(false);
   const [selectList, setSelectList] = useState({
     visible: false,
     menu: "dateFormat",
@@ -48,7 +52,6 @@ const Setting = () => {
     useCallback(() => {
       navigation.setOptions({ title: t("title"), headerRightBtn: [] });
       showTabbar();
-
     }, [settings.language])
   );
   const router = useRouter();
@@ -59,34 +62,31 @@ const Setting = () => {
     Dcategories.forEach((cat, index) => {
       const date = new Date().toISOString();
       cats.push({
-          ...cat,
-          color: COLORS[Math.floor(Math.random() * COLORS.length)],
-          createdAt: date,
-          updatedAt: date,
-          isFavorite: false,
-          icon: `icon_${Math.floor(Math.random() * 98)}`,
-        });
+        ...cat,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        createdAt: date,
+        updatedAt: date,
+        isFavorite: false,
+        icon: `icon_${Math.floor(Math.random() * 98)}`,
+      });
     });
     addCategory(cats);
-  }, []);
+  }, [addCategory]);
 
   const addDummyTransactions = useCallback(() => {
-      const trans = generateDummyTransaction();
-      let _trans = trans.map((element) => ({
-          ...element,
-            category: category[Math.floor(Math.random() * category.length)]._id
-      })) as Omit<Transaction,"_id">[] ;
-      addTransaction(_trans);
-  }, []);
-
-  const dismissModal = useCallback(() => {
-    setDeleteModal(false);
-  }, []);
+    const trans = generateDummyTransaction();
+    let _trans = trans.map((element) => ({
+      ...element,
+      category: category[Math.floor(Math.random() * category.length)]._id,
+    })) as Omit<Transaction, "_id">[];
+    addTransaction(_trans);
+  }, [addTransaction]);
 
   const handleDeleteAllData = useCallback(() => {
-    // deleteAllData();
-    dismissModal();
-  }, []);
+    selectListRef.current.close();
+    setSelectList((prev) => ({ ...prev, visible: false }));
+    deleteAllData();
+  }, [deleteAllData]);
 
   const handleToggleLock = useCallback(async (value: boolean) => {
     if (value) {
@@ -94,19 +94,24 @@ const Setting = () => {
       if (result) {
         const valid = await authenticateAsync();
         if (valid.success === true) {
-          // return updateLock(true);
         } else {
         }
       }
     }
-    // updateLock(false);
   }, []);
 
-  const showSelectList = (menu: string, selected: string) => {
-    const len = OPTIONS[menu].length;
-    selectListRef.current.snapToIndex(len > 4 ? (len > 10 ? 2 : 1) : 0);
-    setSelectList({ visible: true, menu, selected });
-  };
+  const showSelectList = useCallback(
+    (menu: string, selected: string) => {
+      if (menu === "delete") {
+        selectListRef.current.snapToIndex(0);
+      } else {
+        const len = OPTIONS[menu].length;
+        selectListRef.current.snapToIndex(len > 4 ? (len > 10 ? 3 : 2) : 1);
+      }
+      setSelectList({ visible: true, menu, selected });
+    },
+    [selectListRef, setSelectList]
+  );
 
   const handleItemSelect = useCallback(
     (key: string, value: string) => {
@@ -119,12 +124,15 @@ const Setting = () => {
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
-  const handleOnAnimate = useCallback((_, to: number) => {
-    if (to === 2) hideHeader();
-    else showHeader();
-    if (to === -1) showTabbar();
-    else hideTabbar();
-  },[hideHeader, showHeader, hideTabbar, showTabbar]);
+  const handleOnAnimate = useCallback(
+    (_, to: number) => {
+      if (to === 3) hideHeader();
+      else showHeader();
+      if (to === -1) showTabbar();
+      else hideTabbar();
+    },
+    [hideHeader, showHeader, hideTabbar, showTabbar]
+  );
   return (
     <>
       <CollapsibleHeaderScrollView
@@ -142,25 +150,25 @@ const Setting = () => {
           <SettingItem label={t("theme")} leftIcon="theme" onPress={() => showSelectList("theme", settings.theme)}>
             <Text style={textStyle.body}>{OPTIONS.theme.find((f) => f.value === settings.theme).label}</Text>
           </SettingItem>
-            <SettingItem label={t("icon")} leftIcon="icon" onPress={() => showSelectList("icon", settings.icon)}>
-              <Text style={textStyle.body}>{settings.icon}</Text>
-            </SettingItem>
-          
+          <SettingItem label={t("icon")} leftIcon="icon" onPress={() => showSelectList("icon", settings.icon)}>
+            <Text style={textStyle.body}>{settings.icon}</Text>
+          </SettingItem>
         </View>
 
+        {__DEV__ && (
+          <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
+            <Text style={textStyle.title}>{t("developer")}</Text>
+            <SettingItem label="add dummy category" leftIcon="buildVersion" onPress={addDummyCategories}></SettingItem>
 
-        {__DEV__ &&
-        <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
-          <Text style={textStyle.title}>{t("developer")}</Text>
-          <SettingItem label="add dummy category" leftIcon="buildVersion" onPress={addDummyCategories}>
-          </SettingItem>
+            <SettingItem
+              label="add dummy transactions"
+              leftIcon="buildVersion"
+              onPress={addDummyTransactions}
+            ></SettingItem>
 
-          <SettingItem label="add dummy transactions" leftIcon="buildVersion" onPress={addDummyTransactions}>
-          </SettingItem>
-
-          <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("_sitemap")} />
-        </View>
-          }
+            <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("_sitemap")} />
+          </View>
+        )}
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("preference")}</Text>
           <SettingItem
@@ -186,79 +194,83 @@ const Setting = () => {
             <Text style={textStyle.body}>{settings.dateFormat}</Text>
           </SettingItem>
         </View>
-        <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
-          <Text style={textStyle.title}>{t("security")}</Text>
-          <SettingItem label={t("lock")} leftIcon="lock">
-            <Switch value={settings.appLock === "ENABLE"} onValueChange={handleToggleLock} />
-          </SettingItem>
-        </View>
-        {/* {__DEV__ && <SettingItem label={"dummy Categories"} leftIcon="trash" onPress={addDummyCategories} />} */}
-        {/* {__DEV__ && category.length > 0 && <SettingItem label={"dummy Trans"} leftIcon="trash" onPress={addDummy} />} */}
-
+        {__DEV__ && (
+          <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
+            <Text style={textStyle.title}>{t("security")}</Text>
+            <SettingItem label={t("lock")} leftIcon="lock">
+              <Switch value={settings.appLock === "ENABLE"} onValueChange={handleToggleLock} />
+            </SettingItem>
+          </View>
+        )}
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("dataManagement")}</Text>
 
-          {__DEV__ && (
-            <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("stack/export")} />
-          )}
+          {__DEV__ && <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("stack/export")} />}
           <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("stack/backup")} />
 
-          {/* <DeleteDialog
-            visible={deleteModal}
-            deleteAction={handleDeleteAllData}
-            cancelAction={dismissModal}
-            body={t("confirmDeleteBody")}
-            title={t("confirmDeleteTitle")}
-          /> */}
-          {__DEV__ && <SettingItem label={t("deleteAllData")} leftIcon="delete" onPress={() => setDeleteModal(true)} />}
+          <SettingItem label={t("deleteAllData")} leftIcon="delete" onPress={() => showSelectList("delete", "")} />
         </View>
 
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("about")}</Text>
 
-          <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("stack/help")} />
+          {__DEV__ && <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("stack/help")} />}
 
           <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("stack/about")} />
 
-          <SettingItem label={t("appVersion")} leftIcon="appVersion" onPress={() => setDeleteModal(true)}>
+          <SettingItem label={t("appVersion")} leftIcon="appVersion">
             <Text style={textStyle.body}>{nativeApplicationVersion}</Text>
           </SettingItem>
 
-          <SettingItem label={t("buildVersion")} leftIcon="buildVersion" onPress={() => setDeleteModal(true)}>
+          <SettingItem label={t("buildVersion")} leftIcon="buildVersion">
             <Text style={textStyle.body}>{nativeBuildVersion}</Text>
           </SettingItem>
         </View>
       </CollapsibleHeaderScrollView>
       <BottomSheet
         ref={selectListRef}
-        snapPoints={["40%", "69%", "100%"]}
+        snapPoints={[225, "40%", "69%", "100%"]}
         index={-1}
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
         onAnimate={handleOnAnimate}
+        enableHandlePanningGesture={selectList.menu === "delete" ? false : true}
       >
-        <BottomSheetFlatList
-          style={{ backgroundColor: colors.screen }}
-          contentContainerStyle={{ padding: 16 }}
-          data={OPTIONS[selectList.menu]}
-          renderItem={({ item }) => (
-            <Pressable
-              key={item.value}
-              onPress={() => handleItemSelect(selectList.menu, item.value)}
-              style={[
-                styles.selectItem,
-                {
-                  backgroundColor: selectList.selected === item.value ? colors.sectionBackground : undefined,
-                  borderColor: colors.sectionBackground,
-                },
-              ]}
-            >
-              <View>
-                <Text style={textStyle.title}>{item.label}</Text>
-              </View>
-            </Pressable>
-          )}
-        />
+        {selectList.menu === "delete" && (
+          <DeleteContainer
+            text={t("deleteText")}
+            title={t("deleteTitle")}
+            onComfirm={handleDeleteAllData}
+            onCancel={() => selectListRef.current.close()}
+            cancel={t("cancel")}
+            color={colors.sectionBackground}
+            confirm={t("confirm")}
+          />
+        )}
+        {selectList.menu !== "delete" && (
+          <BottomSheetFlatList
+            style={{ backgroundColor: colors.screen }}
+            contentContainerStyle={{ padding: 16 }}
+            data={OPTIONS[selectList.menu]}
+            renderItem={({ item }) => (
+              <Pressable
+                key={item.value}
+                onPress={() => handleItemSelect(selectList.menu, item.value)}
+                style={[
+                  styles.selectItem,
+                  {
+                    backgroundColor: selectList.selected === item.value ? colors.sectionBackground : undefined,
+                    borderColor: colors.sectionBackground,
+                  },
+                ]}
+              >
+                <View>
+                  <Text style={textStyle.title}>{item.label}</Text>
+                </View>
+              </Pressable>
+            )}
+          />
+        )}
       </BottomSheet>
     </>
   );

@@ -77,7 +77,7 @@ const AddCategoryScreen = () => {
   }, [_id, setValues]);
 
   const handleOnAnimate = (_: number, to: number) => {
-    if (to === 1) hideHeader();
+    if (to === 2) hideHeader();
     else showHeader();
   };
   const numCol = useMemo(() => Math.floor(width / 100), [width]);
@@ -258,7 +258,7 @@ const AddCategoryScreen = () => {
             text={t("deleteText")}
             title={t("deleteTitle")}
             onComfirm={handlePressDelete}
-            onCancel={sheetRef.current.close}
+            onCancel={() => sheetRef.current.close()}
             cancel={t("cancel")}
             color={values.color}
             confirm={t("confirm")}

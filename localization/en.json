@@ -28,8 +28,10 @@
                     "buildVersion": "Build Version",
                     "backup": "Backup & Restore",
                     "lock": "Enable App Lock",
-                    "confirmDeleteBody": "Are you sure you want to delete all data. This includes all Transction data and Categories.",
-                    "confirmDeleteTitle": "Delete All Data?"
+                    "deleteTitle": "Delete All Data?",
+                    "deleteText":"Are you sure you want to delete all data. This includes all Transction data and Categories.",
+                    "cancel":"Cancel",
+                    "confirm": "Delete" 
                 },
                 "transaction": {
                     "title":"Transactions"

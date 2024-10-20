@@ -1,7 +1,6 @@
 import React, { useContext, createContext, useMemo, useState, useCallback } from "react";
 import { Category, Transaction, TransactionWithCategory } from "../types";
 import { randomUUID } from "expo-crypto";
-import { format, parse } from "date-fns";
 
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { drizzle } from "drizzle-orm/expo-sqlite";
@@ -25,6 +24,7 @@ type Props = {
   updateCategory: (_id: string, value: Omit<Category, "_id">) => void;
   deleteCategory: (_id: string) => void;
   fetchData: () => void;
+  deleteAllData: () => void;
   migration_success: boolean;
   migration_error?: Error;
 };
@@ -41,7 +41,7 @@ const DataContext = createContext<Props>({
   addCategory: (value: Omit<Category, "_id">) => {},
   updateCategory: (_id: string, value: Omit<Category, "_id">) => {},
   deleteCategory: (_id: string) => {},
-  // deleteAllData: () => {},
+  deleteAllData: () => {},
   migration_success: false,
   fetchData: () => {},
 });
@@ -77,7 +77,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       // TODO: ADD SENETRY LOGGING
       // error reading value
     }
-  }, []);
+  }, [db]);
 
   const getAllTransaction = useCallback(async () => {
     try {
@@ -87,7 +87,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       // TODO: ADD SENETRY LOGGING
       // error reading value
     }
-  }, []);
+  }, [db]);
 
   const fetchData = useCallback(async () => {
     const data = await getAllCategory();
@@ -116,10 +116,10 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
         setCategory((prev) => prev.filter((cat) => !ids.includes(cat._id)));
       }
     },
-    [setCategory]
+    [setCategory, db]
   );
 
-  const updateCategory = async (_id: string, value: Omit<Category, "_id">) => {
+  const updateCategory = useCallback( async (_id: string, value: Omit<Category, "_id">) => {
     let oldValue: Category;
     setCategory((prev) =>
       prev.map((cat) => {
@@ -134,10 +134,9 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     } catch (e) {
       // saving error
       // TODO: ADD SENETRY LOGGING
-      console.log(e);
-      if (oldValue) setCategory((prev) => prev.map((cat) => (cat._id === _id ? oldValue : cat)));
+      setCategory((prev) => prev.filter((cat) => cat._id !== _id));
     }
-  };
+  },[setCategory, db]);
   const addTransaction = useCallback(async (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => {
     let vals: Transaction[] = [];
     if (Array.isArray(value)) {
@@ -156,7 +155,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       const ids = vals.map((v) => v._id);
       setTransaction((prev) => prev.filter((cat) => !ids.includes(cat._id)));
     }
-  }, []);
+  },  [setTransaction, db]);
 
   const deleteTransaction = useCallback(async (_id: string) => {
     let trans: Transaction;
@@ -176,7 +175,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       console.log(e);
       setTransaction((prev) => prev.concat(trans));
     }
-  }, []);
+  },  [setTransaction, db]);
 
   const updateTransaction = useCallback(async (_id: string, value: Omit<Transaction, "_id">) => {
     let oldValue: Transaction;
@@ -195,19 +194,20 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       console.log(e);
       if (oldValue) setTransaction((prev) => prev.map((val) => (val._id === _id ? oldValue : val)));
     }
-  }, []);
+  }, [setTransaction, db]);
 
   const deleteCategory = useCallback(async (_id: string) => {
     let cat: Category;
-    let transactions:Transaction[] = [];
-    setTransaction((prev) => prev.filter((t)=> {
-      if (t.category === _id) {
-        transactions.push(t);
-        return false;
-      }
-      return true;
-    })
-    )
+    let transactions: Transaction[] = [];
+    setTransaction((prev) =>
+      prev.filter((t) => {
+        if (t.category === _id) {
+          transactions.push(t);
+          return false;
+        }
+        return true;
+      })
+    );
     setCategory((prev) =>
       prev.filter((c) => {
         if (c._id === _id) {
@@ -223,9 +223,31 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     } catch (e) {
       // TODO: ADD SENETRY LOGGING
       setCategory((prev) => prev.concat(cat));
-      setTransaction(prev => prev.concat(transactions));
+      setTransaction((prev) => prev.concat(transactions));
     }
-  }, []);
+  }, [setTransaction, setCategory, db]);
+
+  const deleteAllData = useCallback(async () => {
+    let cat: Category[];
+    let trans: Transaction[] = [];
+    setCategory((prev) => {
+      cat = prev;
+      return [];
+    });
+    setTransaction((prev) => {
+      trans = prev;
+      return [];
+    });
+
+    try {
+      await db.delete(transactionTable);
+      await db.delete(categoryTable);
+    } catch (e) {
+      // TODO: ADD SENETRY LOGGING
+      setCategory((prev) => cat);
+      setTransaction(trans);
+    }
+  }, [setTransaction, db, setCategory]);
 
   return (
     <DataContext.Provider
@@ -241,6 +263,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
         fetchData,
         migration_error,
         migration_success,
+        deleteAllData,
       }}
     >
       {children}

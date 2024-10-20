@@ -209,6 +209,7 @@ const AddTransaction = () => {
         <View style={{ flexDirection: "column", rowGap: 16, flexGrow: 1, marginTop: 16 }}>
           <PrimaryInput
             type="amount"
+            autofocus={_id ? false : true}
             onPress={handleTextBoxPress}
             onChangeText={(text) => setValues((prev) => ({ ...prev, amount: parseFloat(text) }))}
             backgroundColor={values.category ? selectedCategory.color : undefined}
@@ -286,6 +287,17 @@ const AddTransaction = () => {
             title={t("deleteTitle")}
             onComfirm={handlePressDelete}
             onCancel={categorySheetRef.current.close}
+            cancel={t("cancel")}
+            color={selectedCategory.color}
+            confirm={t("confirm")}
+          />
+        )}
+        {sheetView === "delete" && (
+          <DeleteContainer
+            text={t("deleteText")}
+            title={t("deleteTitle")}
+            onComfirm={handlePressDelete}
+            onCancel={() => categorySheetRef.current.close()}
             cancel={t("cancel")}
             color={selectedCategory.color}
             confirm={t("confirm")}
