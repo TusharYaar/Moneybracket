@@ -1,8 +1,8 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSettings } from "providers/SettingsProvider";
 import { useTranslation } from "react-i18next";
 
-import { isEnrolledAsync, authenticateAsync } from "expo-local-authentication";
+import { authenticateAsync, getEnrolledLevelAsync } from "expo-local-authentication";
 import SettingItem from "@components/SettingItem";
 
 import { Dcategories } from "data/dummy";
@@ -46,6 +46,7 @@ const Setting = () => {
     menu: "dateFormat",
     selected: "",
   });
+  const [hasBiometrics, setHasBiometrics] = useState(false);
 
   const navigation = useNavigation("/stack");
   useFocusEffect(
@@ -88,16 +89,47 @@ const Setting = () => {
     deleteAllData();
   }, [deleteAllData]);
 
-  const handleToggleLock = useCallback(async (value: boolean) => {
-    if (value) {
-      const result = await isEnrolledAsync();
-      if (result) {
-        const valid = await authenticateAsync();
+  const handleToggleLock = useCallback(
+    async (value: boolean) => {
+      if (value) {
+        const result = await getEnrolledLevelAsync();
+        if (result > 0) {
+          const valid = await authenticateAsync({ promptMessage: "Authenticate to enable app lock" });
+          if (valid.success === true) {
+            updateSettings("appLock", "PIN");
+          }
+        }
+      } else {
+        const valid = await authenticateAsync({ promptMessage: "Authenticate to disable app lock" });
         if (valid.success === true) {
-        } else {
+          updateSettings("appLock", "DISABLE");
         }
       }
+    },
+    [updateSettings]
+  );
+
+  const handleToggleBiometrics = useCallback(async (value: boolean) => {
+    const valid = await authenticateAsync({
+      promptMessage: "Authenticate to enable app lock",
+      biometricsSecurityLevel: "strong",
+      disableDeviceFallback: true,
+      cancelLabel: 'Cancel',
+    });
+    if (valid.success) {
+      if (value) {
+        updateSettings("appLock", "BIOMETRIC");
+      } else {
+        updateSettings("appLock", "PIN");
+      }
+
     }
+
+  }, []);
+  useEffect(() => {
+    getEnrolledLevelAsync().then((result) => {
+      setHasBiometrics(result === 3);
+    });
   }, []);
 
   const showSelectList = useCallback(
@@ -194,14 +226,21 @@ const Setting = () => {
             <Text style={textStyle.body}>{settings.dateFormat}</Text>
           </SettingItem>
         </View>
-        {__DEV__ && (
+
           <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
             <Text style={textStyle.title}>{t("security")}</Text>
             <SettingItem label={t("lock")} leftIcon="lock">
-              <Switch value={settings.appLock === "ENABLE"} onValueChange={handleToggleLock} />
+              <Switch value={settings.appLock !== "DISABLE"} onValueChange={handleToggleLock} />
+            </SettingItem>
+
+            <SettingItem label={t("biometricLock")} leftIcon="lock">
+              <Switch
+                value={settings.appLock === "BIOMETRIC"}
+                disabled={!hasBiometrics || settings.appLock === "DISABLE" }
+                onValueChange={handleToggleBiometrics}
+              />
             </SettingItem>
           </View>
-        )}
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("dataManagement")}</Text>
 
