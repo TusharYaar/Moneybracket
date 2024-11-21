@@ -4,7 +4,7 @@ import { randomUUID } from "expo-crypto";
 
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { drizzle } from "drizzle-orm/expo-sqlite";
-import { openDatabaseSync } from "expo-sqlite/next";
+import { openDatabaseSync } from "expo-sqlite";
 import { categoryTable, transactionTable } from "data/schema";
 import migrations from "drizzle/migrations";
 import { eq } from "drizzle-orm";

@@ -77,7 +77,7 @@ const Header = ({ back, options: { title = "", headerRightBtn }, navigation }: P
         style={[styles.titleContianer, { backgroundColor: colors.headerBackground, width: titleWidth }]}
         onLayout={(event) => setTitleContainerWidth(event.nativeEvent.layout.width)}
       >
-        <Text style={[header, { fontSize }]}>{title}</Text>
+        <Text style={[header, { fontSize: fontSize > 0 ? fontSize : 10 }]}>{title}</Text>
       </View>
       {headerRightBtn && headerRightBtn?.length > 0 && (
         <View style={{ flexDirection: "row", columnGap: 8 }}>
