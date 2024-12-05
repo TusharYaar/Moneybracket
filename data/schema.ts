@@ -15,7 +15,7 @@ export const categoryTable = sqliteTable("category_table", {
 
 export const transactionTable = sqliteTable("transaction_table", {
   _id: text().notNull().primaryKey(),
-  note: text().notNull(),
+  note: text().default(""),
   date: integer({ mode: 'timestamp' }).notNull(),
   amount: real().notNull(),
   currency: text().notNull(),

@@ -40,7 +40,6 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
 
   const fontSize = useMemo(() => {
     if (amount.length > MIN_CHAR) {
-      console.log(containerDimension);
       const size = (containerDimension.width - 2 * PADDING)/amount.length;
       if (size < maxFontHeight)
         return size;

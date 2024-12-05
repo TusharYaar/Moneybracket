@@ -33,18 +33,19 @@ const AddTransaction = () => {
   const { height, width } = useWindowDimensions();
   const { t } = useTranslation("", { keyPrefix: "app.stack.addTransaction" });
   const { currency: defaultCurrency, dateFormat } = useSettings();
-  const { category, addTransaction, updateTransaction, deleteTransaction } = useData();
+  const { category, addTransaction, updateTransaction, deleteTransaction, transaction } = useData();
   const amtInputRef = useRef<TextInput>();
   const categorySheetRef = useRef<BottomSheet>();
   const [sheetView, setSheetView] = useState("category");
   const { textStyle, colors } = useTheme();
-  const [values, setValues] = useState<Omit<Transaction, "_id" | "createdAt" | "updatedAt">>({
+  const [values, setValues] = useState<Omit<Transaction, "_id" |  "updatedAt">>({
     category: category.length > 0 ? category[0]._id : null,
     amount: parseFloat(amount),
     date: parseISO(date),
     note: "",
     currency: defaultCurrency.code,
     image: "",
+    createdAt: new Date(),
   });
 
   const animatedColor = useSharedValue(category.length > 0 ? category[0].color : "orange");
@@ -61,6 +62,11 @@ const AddTransaction = () => {
   useEffect(() => {
     setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_transaction" }] : []);
   }, [_id]);
+
+  useEffect(() => {
+    const t = transaction.find((trans) => trans._id === _id);
+    setValues((prev) => ({ ...prev, note: t.note, image: t.image, createdAt: t.createdAt }));
+  }, [_id, transaction])
 
   // const [showImageOptions, setShowImageOptions] = useState(false);
   // const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
@@ -118,7 +124,7 @@ const AddTransaction = () => {
     if (_id) {
       updateTransaction(_id, { ...values, category: values.category, updatedAt, createdAt: updatedAt });
     } else {
-      addTransaction({ ...values, category: values.category, updatedAt, createdAt: updatedAt });
+      addTransaction({ ...values, category: values.category, updatedAt });
     }
     if (router.canGoBack) router.back();
     else router.replace("(tabs)/transaction");
