@@ -2,7 +2,7 @@ import { StyleSheet, View, TextInput, Pressable, Keyboard, useWindowDimensions, 
 import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import DatePicker from "react-native-date-picker";
 import { useSettings } from "providers/SettingsProvider";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useData } from "providers/DataProvider";
 import SwipeButton from "@components/SwipeButton";
 import CategoryItem from "@components/CategoryItem";
@@ -51,8 +51,7 @@ const AddTransaction = () => {
   // const { rates } = useExchangeRate();
   const router = useRouter();
 
-  const navigation = useNavigation();
-  const { showHeader, hideHeader } = useHeader();
+  const { header, setHeaderRightButtons, tabbar } = useHeader();
 
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
@@ -60,11 +59,8 @@ const AddTransaction = () => {
   }, [categorySheetRef, setSheetView]);
 
   useEffect(() => {
-    navigation.setOptions({
-      title: _id ? t("updateTitle") : t("addTitle"),
-      headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, label: "delete_transaction" }] : [],
-    });
-  }, [navigation, _id]);
+    setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_transaction" }] : []);
+  }, [_id]);
 
   // const [showImageOptions, setShowImageOptions] = useState(false);
   // const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
@@ -191,19 +187,17 @@ const AddTransaction = () => {
   const selectedCategory = useMemo(() => category.find((c) => c._id === values.category), [values.category]);
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
-  const handleOnAnimate = useCallback(
-    (_, to: number) => {
-      if (to === 2) hideHeader();
-      else showHeader();
-    },
-    [hideHeader, showHeader]
-  );
+  const handleOnAnimate = (_, to: number) => {
+    if (to === 2) header.hide();
+    else header.show();
+  };
   return (
     <>
       <CollapsibleHeaderScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
         title={_id ? t("updateTitle") : t("addTitle")}
         paddingTop={0}
+        tabbarVisible={false}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={{ flexDirection: "column", rowGap: 16, flexGrow: 1, marginTop: 16 }}>

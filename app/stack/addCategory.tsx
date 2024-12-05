@@ -38,6 +38,7 @@ type ValueProps = {
   type: string;
   color: string;
   icon: string;
+  description: string;
 };
 
 type SearchParams = {
@@ -47,11 +48,11 @@ type SearchParams = {
   title: string;
 };
 const AddCategoryScreen = () => {
-  const { addCategory, updateCategory, deleteCategory } = useData();
+  const { addCategory, updateCategory, deleteCategory, category } = useData();
   const { _id, color, title = "", type = "income" } = useLocalSearchParams<SearchParams>();
   const { t } = useTranslation("", { keyPrefix: "app.stack.addCategory" });
   const router = useRouter();
-  const { showHeader, hideHeader } = useHeader();
+  const { header } = useHeader();
   const inputRef = useRef<TextInput>();
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<ValueProps>({
@@ -59,12 +60,18 @@ const AddCategoryScreen = () => {
     type,
     color: color ? `#${color}` : colors.screen,
     icon: "icon_6",
+    description: "",
   });
   const [sheetView, setSheetView] = useState<"icon" | "delete">("icon");
 
   const navigation = useNavigation();
   const { height, width } = useWindowDimensions();
   const sheetRef = useRef<BottomSheet>();
+
+  useEffect(() => {
+    const cate = category.find(cat => cat._id === _id);
+    setValues(prev => ({...prev, description: cate.description, icon: cate.icon}))
+  },[_id, category]);
 
   const recommendColor = useMemo(() => {
     if (_id) {
@@ -77,8 +84,8 @@ const AddCategoryScreen = () => {
   }, [_id, setValues]);
 
   const handleOnAnimate = (_: number, to: number) => {
-    if (to === 2) hideHeader();
-    else showHeader();
+    if (to === 2) header.hide();
+    else header.show();
   };
   const numCol = useMemo(() => Math.floor(width / 100), [width]);
 
@@ -127,6 +134,7 @@ const AddCategoryScreen = () => {
         title="Category"
         paddingTop={0}
         style={{ backgroundColor: colors.screen }}
+        tabbarVisible={false}
       >
         <View style={{ flex: 1, marginTop: 16 }}>
           <PrimaryInput
@@ -203,6 +211,19 @@ const AddCategoryScreen = () => {
                 onPress: () => setValues((prev) => ({ ...prev, type: cat.value })),
               }))}
               activeColor={values.color}
+            />
+          </View>
+          <View style={{ marginTop: 32 }}>
+            <Text style={textStyle.body}>{t("description")}</Text>
+            <TextInput
+              value={values.description}
+              numberOfLines={3}
+              multiline
+              onChangeText={(description) => setValues((prev) => ({ ...prev, description }))}
+              style={[
+                textStyle.label,
+                { borderRadius: 4, borderWidth: 2, borderColor: values.color, minHeight: 30, textAlignVertical: "top" },
+              ]}
             />
           </View>
         </View>

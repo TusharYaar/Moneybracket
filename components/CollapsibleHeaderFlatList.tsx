@@ -6,52 +6,29 @@ import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import { useHeader } from "providers/HeaderProvider";
 
 interface Props<T> extends FlashListProps<T> {
-  headerVisible?: boolean;
-  title?: string;
   hideBackButton?: boolean;
   //   If Pading top is required with Header
-  paddingTop?: number;
-  handleClickBack?: () => {};
-
-  headerBtns?: {
-    onPress: () => void;
-    icon: string;
-    label: string;
-    disabled?: boolean;
-  }[];
+  paddingVertical?: number;
+  // handleClickBack?: () => {};
 }
-const APPBAR_HEIGHT = 64;
 
-function CollapsibleHeaderFlatList<T>({
-  onScroll = undefined,
-  headerVisible = true,
-  title = "",
-  hideBackButton,
-  handleClickBack = null,
-  contentContainerStyle = {},
-  paddingTop = 0,
-  headerBtns = [],
-  ...props
-}: Props<T>) {
+function CollapsibleHeaderFlatList<T>({ onScroll, contentContainerStyle, paddingVertical = 0, ...props }: Props<T>) {
   const lastContentOffset = useSharedValue(0);
-  const { showHeader, hideHeader, hideTabbar, showTabbar } = useHeader();
+  const { header, tabbar, headerHeight, tabbarHeight } = useHeader();
 
   const handleOnScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const diff = lastContentOffset.value - event.nativeEvent.contentOffset.y;
     lastContentOffset.value = event.nativeEvent.contentOffset.y;
-    if (event.nativeEvent.contentOffset.y < 64)
-      {
-        showTabbar();
-        showHeader();
-      } 
-    else if (diff < 0)  {
-      hideHeader();
-      hideTabbar();
+    if (event.nativeEvent.contentOffset.y < 64) {
+      tabbar.show();
+      header.show();
+    } else if (diff < 0) {
+      tabbar.hide();
+      header.hide();
+    } else {
+      tabbar.show();
+      header.show();
     }
-    else {
-      showTabbar();
-      showHeader();
-    } 
   };
   return (
     <FlashList
@@ -59,7 +36,11 @@ function CollapsibleHeaderFlatList<T>({
       onScroll={handleOnScroll}
       estimatedItemSize={78}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ ...contentContainerStyle, paddingTop: title ? paddingTop + APPBAR_HEIGHT : 0 }}
+      contentContainerStyle={{
+        ...contentContainerStyle,
+        paddingTop: headerHeight + paddingVertical,
+        paddingBottom: tabbarHeight + paddingVertical,
+      }}
     />
   );
 }

@@ -79,7 +79,7 @@ const MainScreen = () => {
   else {
   return (
     <View style={{flex: 1, justifyContent: "center", alignItems: "center", padding: 8}}>
-      <Image style={{ width: 150, height: 150, borderRadius: 8 }} source={require("assets/icon.png")} />
+      <Image style={{ width: 150, height: 150, borderRadius: 8 }} source={require("assets/christmas-icon.png")} />
       <View style={{width: "50%", backgroundColor: colors.sectionBackground, marginVertical: 24,padding: 8, borderRadius: 8}}>
       <Pressable onPress={() => 
       handleAuthenticate(appLock)

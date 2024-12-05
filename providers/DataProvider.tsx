@@ -1,10 +1,10 @@
-import React, { useContext, createContext, useMemo, useState, useCallback } from "react";
-import { Category, Transaction, TransactionWithCategory } from "../types";
+import React, { useContext, createContext, useState, useCallback } from "react";
+import { Category, Transaction } from "../types";
 import { randomUUID } from "expo-crypto";
 
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { drizzle } from "drizzle-orm/expo-sqlite";
-import { openDatabaseSync } from "expo-sqlite/next";
+import { openDatabaseSync } from "expo-sqlite";
 import { categoryTable, transactionTable } from "data/schema";
 import migrations from "drizzle/migrations";
 import { eq } from "drizzle-orm";
@@ -16,7 +16,8 @@ const STORAGE_DATE_FORMAT = "dd-MMM-yyyy";
 
 type Props = {
   category: Category[];
-  transaction: TransactionWithCategory[];
+  transaction: Transaction[];
+  // group: Group[],
   addTransaction: (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => void;
   updateTransaction: (_id: string, value: Omit<Transaction, "_id">) => void;
   deleteTransaction: (_id: string) => void;
@@ -41,6 +42,8 @@ const DataContext = createContext<Props>({
   addCategory: (value: Omit<Category, "_id">) => {},
   updateCategory: (_id: string, value: Omit<Category, "_id">) => {},
   deleteCategory: (_id: string) => {},
+
+  // group: [],
   deleteAllData: () => {},
   migration_success: false,
   fetchData: () => {},
@@ -51,22 +54,11 @@ export const useData = () => useContext(DataContext);
 const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { success: migration_success, error: migration_error } = useMigrations(db, migrations);
   const [category, setCategory] = useState<Category[]>([]);
+  // const [group, setGroup] = useState<Group[]>([]);
 
-  const [_transaction, setTransaction] = useState<Transaction[]>([]);
+  const [transaction, setTransaction] = useState<Transaction[]>([]);
 
-  const categoryObj: Record<string, Category> = useMemo(() => {
-    if (category) return category.reduce((prev, curr) => ({ ...prev, [curr._id]: curr }), {});
-    else return {};
-  }, [category]);
 
-  const transaction = useMemo(
-    () =>
-      _transaction.map((trans) => ({
-        ...trans,
-        category: categoryObj[trans.category],
-      })),
-    [_transaction, categoryObj]
-  );
 
   const getAllCategory = useCallback(async () => {
     try {
@@ -252,6 +244,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   return (
     <DataContext.Provider
       value={{
+        // group,
         transaction,
         addTransaction,
         updateTransaction,

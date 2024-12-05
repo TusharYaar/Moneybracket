@@ -64,7 +64,7 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
 
   return (
     <Animated.View
-      style={[styles.container, { backgroundColor: animatedBGColor }]}
+      style={[styles.container]}
       onLayout={(event) => setInputContainerWidth(event.nativeEvent.layout.width)}
     >
       <Pressable onPress={props.onPress} style={styles.pressable}>
@@ -74,7 +74,7 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
           placeholder={props.placeholder}
           onChangeText={handleChangeText}
           value={amount}
-          style={[styles.textbox, { fontSize }]}
+          style={[styles.textbox]}
           keyboardType={props.keyboardType}
         />
         {/* <View style={styles.actionBtnContainer}>

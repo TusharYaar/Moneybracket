@@ -6,69 +6,34 @@ import { useSharedValue } from "react-native-reanimated";
 import { useHeader } from "providers/HeaderProvider";
 
 interface Props<T> extends ScrollViewProps {
-  headerVisible?: boolean;
-  title?: string;
-  hideBackButton?: boolean;
+  tabbarVisible?: boolean;
   //   If Pading top is required with Header
-  paddingTop?: number;
-  handleClickBack?: () => {};
-
-  headerBtns?: {
-    onPress: () => void;
-    icon: string;
-    label: string;
-    disabled?: boolean;
-  }[];
+  paddingVertical?: number;
 }
-const APPBAR_HEIGHT = 64;
 
 function CollapsibleHeaderScrollView<T>({
-  onScroll = undefined,
-  headerVisible = true,
-  title = "",
-  hideBackButton = false,
-  handleClickBack = null,
-  contentContainerStyle = {},
-  paddingTop = 0,
-  headerBtns = [],
+  tabbarVisible = true,
+  contentContainerStyle,
+  paddingVertical = 0,
   ...props
 }: Props<T>) {
   const lastContentOffset = useSharedValue(0);
-  const { showHeader, hideHeader, hideTabbar, showTabbar } = useHeader();
+  const { header, tabbar, headerHeight, tabbarHeight } = useHeader();
 
   const handleOnScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const diff = lastContentOffset.value - event.nativeEvent.contentOffset.y;
     lastContentOffset.value = event.nativeEvent.contentOffset.y;
     if (event.nativeEvent.contentOffset.y < 64) {
-      showTabbar();
-      showHeader();
+      if (tabbarVisible) tabbar.show();
+      header.show();
     } else if (diff < 0) {
-      hideHeader();
-      hideTabbar();
+      tabbar.hide();
+      header.hide();
     } else {
-      showTabbar();
-      showHeader();
+      if (tabbarVisible) tabbar.show();
+      header.show();
     }
   };
-
-  // const aStyle = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [
-  //       {
-  //         translateY: interpolate(height.value, [0, APPBAR_HEIGHT], [-APPBAR_HEIGHT, 0]),
-  //       },
-  //     ],
-  //     //   opacity: interpolate(
-  //     //     animatedValue !== undefined ? animatedValue?.value : maxAnimationValue,
-  //     //     [0, maxAnimationValue],
-  //     //     [0, 1],
-  //     //     {
-  //     //       extrapolateLeft: Extrapolate.CLAMP,
-  //     //       extrapolateRight: Extrapolate.CLAMP,
-  //     //     }
-  //     //   ),
-  //   };
-  // });
 
   return (
     <ScrollView
@@ -77,7 +42,10 @@ function CollapsibleHeaderScrollView<T>({
       showsVerticalScrollIndicator={false}
       contentContainerStyle={[
         contentContainerStyle,
-        title ? { paddingTop: paddingTop + APPBAR_HEIGHT } : { paddingTop },
+        {
+          paddingTop: headerHeight + paddingVertical,
+          paddingBottom: tabbarHeight + paddingVertical,
+        }
       ]}
     />
   );
