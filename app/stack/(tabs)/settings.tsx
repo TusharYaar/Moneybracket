@@ -13,7 +13,7 @@ import { nativeBuildVersion, nativeApplicationVersion } from "expo-application";
 
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
-import { useFocusEffect, useNavigation, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { View, Switch, Text, StyleSheet, Pressable } from "react-native";
 import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { useHeader } from "providers/HeaderProvider";
@@ -40,7 +40,7 @@ const Setting = () => {
   const { addCategory, category, addTransaction, deleteAllData } = useData();
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.settings" });
   const { t: wt } = useTranslation();
-  const { showHeader, showTabbar, hideHeader, hideTabbar } = useHeader();
+  const { header, tabbar, setHeaderRightButtons} = useHeader();
   const [selectList, setSelectList] = useState({
     visible: false,
     menu: "dateFormat",
@@ -48,13 +48,9 @@ const Setting = () => {
   });
   const [hasBiometrics, setHasBiometrics] = useState(false);
 
-  const navigation = useNavigation("/stack");
-  useFocusEffect(
-    useCallback(() => {
-      navigation.setOptions({ title: t("title"), headerRightBtn: [] });
-      showTabbar();
-    }, [settings.language])
-  );
+  useEffect(() => {
+    setHeaderRightButtons([]);
+  },[]);
   const router = useRouter();
   const selectListRef = useRef<BottomSheet>();
 
@@ -158,20 +154,18 @@ const Setting = () => {
 
   const handleOnAnimate = useCallback(
     (_, to: number) => {
-      if (to === 3) hideHeader();
-      else showHeader();
-      if (to === -1) showTabbar();
-      else hideTabbar();
+      if (to === 3) header.hide();
+      else header.show();
+      if (to === -1) tabbar.show();
+      else tabbar.hide();
     },
-    [hideHeader, showHeader, hideTabbar, showTabbar]
+    [header]
   );
   return (
     <>
       <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 16 }}
-        title="Settings"
-        paddingTop={0}
-        hideBackButton={true}
+        contentContainerStyle={{ paddingHorizontal: 8 }}
+        paddingVertical={0}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>

@@ -1,6 +1,5 @@
 
 import { Platform, TextStyle } from "react-native";
-
 export type Transaction = {
   _id: string;
   note: string;
@@ -26,6 +25,7 @@ export type Category = {
   updatedAt: Date;
   color: string;
   icon: string;
+  description: string;
 };
 export type Shortcut = {
   _id: string;
@@ -152,3 +152,10 @@ export type Theme_TextStyle = {
   caption: TextStyle;
   label: TextStyle;
 };
+
+export type HeaderRightButton = {
+  action: string;
+  icon: string;
+  onPress?: () => void;
+  disabled?: boolean;
+}

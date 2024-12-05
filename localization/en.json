@@ -52,7 +52,8 @@
                 "deleteTitle": "Are you Sure?",
                 "deleteText":"This will delete the category and all its transactions",
                 "cancel":"Cancel",
-                "confirm": "Delete"
+                "confirm": "Delete",
+                "description": "Description"
             },
             "addTransaction": {
                 "addTitle": "Add Transaction",

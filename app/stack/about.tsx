@@ -1,10 +1,8 @@
 import React from "react";
 
-import { View, StyleSheet, Image, ScrollView, Text } from "react-native";
+import { View, StyleSheet, Image, Text } from "react-native";
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
-
-// import file from "../../../../package.json";
 
 const AboutScreen = () => {
   const { textStyle, colors } = useTheme();
@@ -15,7 +13,7 @@ const AboutScreen = () => {
     paddingTop={8}
   >
       <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <Image source={require("assets/icon.png")} style={{ width: 100, height: 100, borderRadius: 8 }} />
+        <Image source={require("assets/christmas-icon.png")} style={{ width: 100, height: 100, borderRadius: 8 }} />
       </View>
       <Text style={[{ marginTop: 8 }, textStyle.title]}>About The App</Text>
       <Text style={[textStyle.body, { marginVertical: 4 }]}>

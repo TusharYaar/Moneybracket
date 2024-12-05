@@ -3,17 +3,12 @@
     "name": "Money Bracket",
     "slug": "moneybracket",
     "scheme": "com.tusharyaar.mb",
-    "version": "0.7.18",
+    "version": "0.7.19",
     "jsEngine": "hermes",
     "newArchEnabled": true,
     "orientation": "default",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/christmas-icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#f2f2f2"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -25,10 +20,10 @@
       "bundleIdentifier": "com.tusharyaar.moneybracket"
     },
     "android": {
-      "versionCode": 5025,
+      "versionCode": 5026,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "monochromeImage": "./assets/monochorme-icon.png",
+        "monochromeImage": "./assets/monochrome.png",
         "backgroundColor": "#f2f2f2"
       },
       "package": "com.tusharyaar.moneybracket"
@@ -40,14 +35,14 @@
     },
     "plugins": [
       "expo-router",
-      // [
-      //   "@sentry/react-native/expo",
-      //   {
-      //     "organization": "sentry org slug, or use the `SENTRY_ORG` environment variable",
-      //     "project": "sentry project name, or use the `SENTRY_PROJECT` environment variable",
-      //     "url": "https://sentry.io/"
-      //   }
-      // ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "money-bracket",
+          "organization": "tushar-s-agrawal"
+        }
+      ],
       [
         "expo-font",
         {
@@ -55,8 +50,20 @@
             "./assets/Lexend-Regular.ttf"
           ]
         }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#f2f2f2",
+          "image": "./assets/adaptive-icon.png",
+          "dark": {
+            "image": "./assets/adaptive-icon.png",
+            "backgroundColor": "#282c34"
+          },
+          "imageWidth": 200
+        }
       ]
-    ],
-    "owner": "tusharyaar"
+    ]
+
   }
 }
