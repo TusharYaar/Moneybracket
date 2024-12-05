@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useData } from "../../../providers/DataProvider";
 import { useTranslation } from "react-i18next";
 // import { calcuateTotal, groupTransactionByDate } from "../../../utils/transaction";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import TransactionItem from "@components/TransactionItem";
 import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
 import { Category, Transaction } from "types";
 import { useTheme } from "providers/ThemeProvider";
 import { View } from "react-native";
 import { useHeader } from "providers/HeaderProvider";
-import { groupTransactionByDate } from "@utils/transaction";
+// import { groupTransactionByDate } from "@utils/transaction";
 
 const AllTransaction = () => {
   const router = useRouter();
@@ -21,13 +21,13 @@ const AllTransaction = () => {
   const { setHeaderRightButtons } = useHeader();
 
   // const navigation = useNavigation("/stack");
-  useEffect( () => {
+  useFocusEffect(useCallback(() => {
     setHeaderRightButtons( [
       { icon: "search", onPress: () => console.log("search"), action: "search", disabled: true },
       { icon: "filter", onPress: () => console.log("filter"), action: "filter", disabled: true },
     ],
   );
-},[]);
+},[]));
 
 const categoryObj: Record<string, Category> = useMemo(() => {
   if (category) return category.reduce((prev, curr) => ({ ...prev, [curr._id]: curr }), {});

@@ -10,7 +10,7 @@ import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/b
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { format, parseISO } from "date-fns";
 import PrimaryInput from "@components/AmountInput";
-import { Category, Transaction, TransactionWithCategory } from "types";
+import { Category, Transaction } from "types";
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,7 @@ const AddTransaction = () => {
     _id,
     amount = "0",
     date = new Date().toISOString(),
-    category: category2,
+    category: tcategory,
   } = useLocalSearchParams<SearchParams>();
   const { height, width } = useWindowDimensions();
   const { t } = useTranslation("", { keyPrefix: "app.stack.addTransaction" });
@@ -93,12 +93,12 @@ const AddTransaction = () => {
   }, [amtInputRef, categorySheetRef]);
 
   useEffect(() => {
-    if (category2) {
-      setValues((prev) => ({ ...prev, category: category2 }));
+    if (tcategory) {
+      setValues((prev) => ({ ...prev, category: tcategory }));
     } else {
       setValues((prev) => ({ ...prev, category: category[0]._id }));
     }
-  }, [category, category2]);
+  }, [category, tcategory]);
 
   //   useEffect(() => {
   //     // if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) requestImagePermission();
@@ -194,15 +194,15 @@ const AddTransaction = () => {
   return (
     <>
       <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
-        title={_id ? t("updateTitle") : t("addTitle")}
-        paddingTop={0}
+        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height }}
+        paddingVertical={8}
         tabbarVisible={false}
         style={{ backgroundColor: colors.screen }}
       >
-        <View style={{ flexDirection: "column", rowGap: 16, flexGrow: 1, marginTop: 16 }}>
+        <View style={{ flexDirection: "column", flexGrow: 1 }}>
           <PrimaryInput
             type="amount"
+            containerStyle={{ height: 200 }}
             autofocus={_id ? false : true}
             onPress={handleTextBoxPress}
             onChangeText={(text) => setValues((prev) => ({ ...prev, amount: parseFloat(text) }))}
@@ -212,27 +212,51 @@ const AddTransaction = () => {
             prefix={defaultCurrency.symbol_native}
             keyboardType="decimal-pad"
           />
-          {values.category && (
-            <CategoryItem
-              item={selectedCategory}
-              onPress={() => {
-                categorySheetRef.current.snapToIndex(2);
-                setSheetView("category");
-              }}
+          <View style={{ marginTop: 32 }}>
+            <Text style={textStyle.body}>{t("category")}</Text>
+            {values.category && (
+              <CategoryItem
+                item={selectedCategory}
+                onPress={() => {
+                  categorySheetRef.current.snapToIndex(2);
+                  setSheetView("category");
+                }}
+              />
+            )}
+          </View>
+          <View style={{ marginTop: 16 }}>
+            <Text style={textStyle.body}>{t("date")}</Text>
+            <Animated.View style={[styles.outlineButton, { borderColor: animatedColor }]}>
+              <Pressable
+                android_ripple={{ color: selectedCategory.color || colors.rippleColor }}
+                style={styles.button}
+                onPress={() => {
+                  categorySheetRef.current.snapToIndex(1);
+                  setSheetView("date");
+                }}
+              >
+                <Text style={textStyle.title}>{format(values.date, dateFormat)}</Text>
+              </Pressable>
+            </Animated.View>
+          </View>
+          <View style={{ marginTop: 32 }}>
+            <Text style={textStyle.body}>{t("note")}</Text>
+            <TextInput
+              value={values.note}
+              multiline
+              onChangeText={(note) => setValues((prev) => ({ ...prev, note }))}
+              style={[
+                textStyle.body,
+                {
+                  borderRadius: 4,
+                  borderWidth: 2,
+                  borderColor: selectedCategory.color,
+                  minHeight: 78,
+                  textAlignVertical: "top",
+                },
+              ]}
             />
-          )}
-          <Animated.View style={[styles.outlineButton, { borderColor: animatedColor }]}>
-            <Pressable
-              android_ripple={{ color: selectedCategory.color || colors.rippleColor }}
-              style={styles.button}
-              onPress={() => {
-                categorySheetRef.current.snapToIndex(1);
-                setSheetView("date");
-              }}
-            >
-              <Text style={textStyle.title}>{format(values.date, dateFormat)}</Text>
-            </Pressable>
-          </Animated.View>
+          </View>
         </View>
         <SwipeButton
           style={{ marginTop: 16 }}

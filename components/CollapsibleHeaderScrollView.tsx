@@ -44,7 +44,7 @@ function CollapsibleHeaderScrollView<T>({
         contentContainerStyle,
         {
           paddingTop: headerHeight + paddingVertical,
-          paddingBottom: tabbarHeight + paddingVertical,
+          paddingBottom: tabbarVisible ? tabbarHeight + paddingVertical: paddingVertical,
         }
       ]}
     />

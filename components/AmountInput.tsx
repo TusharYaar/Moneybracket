@@ -1,5 +1,5 @@
 import { GestureResponderEvent, Pressable, StyleSheet, TextInput, useWindowDimensions } from "react-native";
-import type { KeyboardTypeOptions } from "react-native";
+import type { KeyboardTypeOptions, ViewStyle } from "react-native";
 import React, { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 
@@ -13,17 +13,19 @@ type Props = {
   type?: "amount" | "string";
   keyboardType?: KeyboardTypeOptions;
   autofocus?: boolean;
+  containerStyle?: ViewStyle;
 };
 
 const MIN_CHAR = 4;
-
+const PADDING = 16;
+const LINE_HEIGHT = 1.7;
 const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
   { prefix = "", initialValue = "", backgroundColor,autofocus = true, ...props },
   ref
 ) {
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const [amount, setAmount] = useState<string>(prefix + initialValue);
-  const [inputContainerWidth, setInputContainerWidth] = useState(1);
+  const [containerDimension, setContainerDimension] = useState({height: 200, width});
   const animatedBGColor = useSharedValue(backgroundColor ? backgroundColor : "orange");
 
   useEffect(() => {
@@ -32,20 +34,19 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
 
   // TODO: Improve Logic for MaxFontHeight
   const maxFontHeight = useMemo(() => {
-    let _height = (inputContainerWidth - 16 * 2) / MIN_CHAR;
-    if (inputContainerWidth > height) {
-      // device in landscape
-      _height = height * 0.2;
-    }
-    return _height > 300 ? 300 : _height;
-  }, [height, inputContainerWidth]);
+    let minDisn = Math.min(containerDimension.height, containerDimension.width);
+    return (minDisn - 2 * PADDING)/LINE_HEIGHT;
+  }, [containerDimension]);
 
   const fontSize = useMemo(() => {
-    if (amount.length < inputContainerWidth / (maxFontHeight * 0.6)) return Math.floor(maxFontHeight);
-    else {
-      return Math.floor(inputContainerWidth / ((amount.length + 0.5) * 0.6));
+    if (amount.length > MIN_CHAR) {
+      console.log(containerDimension);
+      const size = (containerDimension.width - 2 * PADDING)/amount.length;
+      if (size < maxFontHeight)
+        return size;
     }
-  }, [width, height, amount, maxFontHeight]);
+    return maxFontHeight;
+  }, [amount, maxFontHeight]);
 
   const handleChangeText = useCallback(
     (_text: string) => {
@@ -64,8 +65,8 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
 
   return (
     <Animated.View
-      style={[styles.container]}
-      onLayout={(event) => setInputContainerWidth(event.nativeEvent.layout.width)}
+      style={[styles.container, props.containerStyle, {backgroundColor: animatedBGColor}]}
+      onLayout={(event) => setContainerDimension(event.nativeEvent.layout)}
     >
       <Pressable onPress={props.onPress} style={styles.pressable}>
         <TextInput
@@ -74,9 +75,11 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
           placeholder={props.placeholder}
           onChangeText={handleChangeText}
           value={amount}
-          style={[styles.textbox]}
+          style={[styles.textbox, {fontSize}]}
           keyboardType={props.keyboardType}
+          numberOfLines={1}
         />
+
         {/* <View style={styles.actionBtnContainer}>
           {__DEV__ && (
             <Pressable onPress={() => console.log("e")} style={[styles.actionBtn]}>

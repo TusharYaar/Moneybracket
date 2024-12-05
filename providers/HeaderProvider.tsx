@@ -107,8 +107,8 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
           show: showHeader,
           hide: hideHeader,
         },
-        headerHeight: HEADER_HEIGHT + PADDING,
-        tabbarHeight: HEADER_HEIGHT + PADDING,
+        headerHeight: HEADER_HEIGHT + PADDING + topInset,
+        tabbarHeight: HEADER_HEIGHT + PADDING + bottomInset,
       }}
     >
       <Animated.View style={headerStyle}>

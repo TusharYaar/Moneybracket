@@ -20,7 +20,7 @@
       "bundleIdentifier": "com.tusharyaar.moneybracket"
     },
     "android": {
-      "versionCode": 5026,
+      "versionCode": 5027,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "monochromeImage": "./assets/monochrome.png",

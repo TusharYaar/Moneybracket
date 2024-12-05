@@ -69,9 +69,9 @@ const AddCategoryScreen = () => {
   const sheetRef = useRef<BottomSheet>();
 
   useEffect(() => {
-    const cate = category.find(cat => cat._id === _id);
-    setValues(prev => ({...prev, description: cate.description, icon: cate.icon}))
-  },[_id, category]);
+    const cate = category.find((cat) => cat._id === _id);
+    setValues((prev) => ({ ...prev, description: cate.description, icon: cate.icon }));
+  }, [_id, category]);
 
   const recommendColor = useMemo(() => {
     if (_id) {
@@ -130,13 +130,12 @@ const AddCategoryScreen = () => {
   return (
     <>
       <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32, minHeight: height }}
-        title="Category"
-        paddingTop={0}
+        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height }}
+        paddingVertical={8}
         style={{ backgroundColor: colors.screen }}
         tabbarVisible={false}
       >
-        <View style={{ flex: 1, marginTop: 16 }}>
+        <View style={{ flex: 1 }}>
           <PrimaryInput
             autofocus={_id ? false : true}
             onPress={() => {}}
@@ -221,8 +220,8 @@ const AddCategoryScreen = () => {
               multiline
               onChangeText={(description) => setValues((prev) => ({ ...prev, description }))}
               style={[
-                textStyle.label,
-                { borderRadius: 4, borderWidth: 2, borderColor: values.color, minHeight: 30, textAlignVertical: "top" },
+                textStyle.body,
+                { borderRadius: 4, borderWidth: 2, borderColor: values.color, minHeight: 78, textAlignVertical: "top" },
               ]}
             />
           </View>
