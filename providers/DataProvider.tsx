@@ -1,11 +1,11 @@
 import React, { useContext, createContext, useState, useCallback } from "react";
-import { Category, Transaction } from "../types";
+import { Category, Group, Transaction } from "../types";
 import { randomUUID } from "expo-crypto";
 
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { openDatabaseSync } from "expo-sqlite";
-import { categoryTable, transactionTable } from "data/schema";
+import { categoryTable, groupTable, transactionTable } from "data/schema";
 import migrations from "drizzle/migrations";
 import { eq } from "drizzle-orm";
 
@@ -17,7 +17,7 @@ const STORAGE_DATE_FORMAT = "dd-MMM-yyyy";
 type Props = {
   category: Category[];
   transaction: Transaction[];
-  // group: Group[],
+  group: Group[],
   addTransaction: (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => void;
   updateTransaction: (_id: string, value: Omit<Transaction, "_id">) => void;
   deleteTransaction: (_id: string) => void;
@@ -28,9 +28,10 @@ type Props = {
   deleteAllData: () => void;
   migration_success: boolean;
   migration_error?: Error;
+  addGroup: (value: Omit<Group, "_id"> | Omit<Group, "_id">[]) => void;
+  updateGroup: (_id: string, value: Omit<Group, "_id">) => void;
+  deleteGroup: (_id: string) => void;
 };
-
-type TransactionDateString = Omit<Transaction, "date"> & { date: string };
 
 const DataContext = createContext<Props>({
   transaction: [],
@@ -42,11 +43,15 @@ const DataContext = createContext<Props>({
   addCategory: (value: Omit<Category, "_id">) => {},
   updateCategory: (_id: string, value: Omit<Category, "_id">) => {},
   deleteCategory: (_id: string) => {},
-
-  // group: [],
+  
   deleteAllData: () => {},
   migration_success: false,
   fetchData: () => {},
+
+  group: [],
+  addGroup: (value: Omit<Group, "_id">) => {},
+  updateGroup: (_id: string, value: Omit<Group, "_id">) => {},
+  deleteGroup: (_id: string) => {},
 });
 
 export const useData = () => useContext(DataContext);
@@ -54,7 +59,7 @@ export const useData = () => useContext(DataContext);
 const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { success: migration_success, error: migration_error } = useMigrations(db, migrations);
   const [category, setCategory] = useState<Category[]>([]);
-  // const [group, setGroup] = useState<Group[]>([]);
+  const [group, setGroup] = useState<Group[]>([]);
 
   const [transaction, setTransaction] = useState<Transaction[]>([]);
 
@@ -81,12 +86,24 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     }
   }, [db]);
 
+  const getAllGroup = useCallback(async () => {
+    try {
+      return await db.select().from(groupTable);
+    } catch (e) {
+      console.log(e);
+      // TODO: ADD SENETRY LOGGING
+      // error reading value
+    }
+  }, [db]);
+
   const fetchData = useCallback(async () => {
     const data = await getAllCategory();
     setCategory(data);
     const transactions = await getAllTransaction();
     setTransaction(transactions);
-  }, [getAllCategory, setCategory, getAllTransaction, setTransaction]);
+    const group = await getAllGroup();
+    setGroup(group);
+  }, [getAllCategory, setCategory, getAllTransaction, setTransaction, setGroup, getAllGroup]);
 
   const addCategory = useCallback(
     async (value: Omit<Category, "_id"> | Omit<Category, "_id">[]) => {
@@ -99,7 +116,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
       }
       try {
         await db.insert(categoryTable).values(values);
-        setCategory(values);
+        setCategory(prev => prev.concat(values));
       } catch (e) {
         // saving error
         // TODO: ADD SENETRY LOGGING
@@ -126,7 +143,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     } catch (e) {
       // saving error
       // TODO: ADD SENETRY LOGGING
-      setCategory((prev) => prev.filter((cat) => cat._id !== _id));
+      setCategory((prev) => prev.map((cat) => cat._id === _id ? oldValue : cat));
     }
   },[setCategory, db]);
   const addTransaction = useCallback(async (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => {
@@ -234,6 +251,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     try {
       await db.delete(transactionTable);
       await db.delete(categoryTable);
+      await db.delete(groupTable);
     } catch (e) {
       // TODO: ADD SENETRY LOGGING
       setCategory((prev) => cat);
@@ -241,10 +259,76 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     }
   }, [setTransaction, db, setCategory]);
 
+  const addGroup = useCallback(
+    async (value: Omit<Group, "_id"> | Omit<Group, "_id">[]) => {
+      let values: Group[] = [];
+      if (Array.isArray(value)) {
+        values = value.map((val) => ({ ...val, _id: randomUUID() }));
+      } else {
+        const _id = randomUUID();
+        values = [{ ...value, _id }];
+      }
+      try {
+        await db.insert(groupTable).values(values);
+        setGroup(prev => prev.concat(values));
+      } catch (e) {
+        // saving error
+        // TODO: ADD SENETRY LOGGING
+        console.log(e);
+        const ids = values.map((v) => v._id);
+        setGroup((prev) => prev.filter((cat) => !ids.includes(cat._id)));
+      }
+    },
+    [setGroup, db]
+  );
+
+  const deleteGroup = useCallback(async (_id: string) => {
+    let cat: Group;
+    let transactions: Transaction[] = [];
+    setTransaction((prev) =>
+      prev.map((t) => t.group === _id ? ({...t, group: null}) : t)
+    );
+    setGroup((prev) =>
+      prev.filter((c) => {
+        if (c._id === _id) {
+          cat = c;
+          return false;
+        }
+        return true;
+      })
+    );
+    try {
+      await db.delete(groupTable).where(eq(groupTable._id, _id));
+    } catch (e) {
+      // TODO: ADD SENETRY LOGGING
+      setGroup((prev) => prev.concat(cat));
+      // setTransaction((prev) => prev.concat(transactions));
+    }
+  }, [setTransaction, setCategory, db]);
+
+  const updateGroup = useCallback( async (_id: string, value: Omit<Group, "_id">) => {
+    let oldValue: Group;
+    setGroup((prev) =>
+      prev.map((grp) => {
+        if (grp._id === _id) {
+          oldValue = grp;
+          return { ...value, _id };
+        } else return grp;
+      })
+    );
+    try {
+      await db.update(groupTable).set(value).where(eq(groupTable._id, _id));
+    } catch (e) {
+      // saving error
+      // TODO: ADD SENETRY LOGGING
+      setGroup((prev) => prev.map((grp) => grp._id === _id ? oldValue : grp));
+    }
+  },[setGroup, db]);
+
   return (
     <DataContext.Provider
       value={{
-        // group,
+        group,
         transaction,
         addTransaction,
         updateTransaction,
@@ -257,6 +341,9 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
         migration_error,
         migration_success,
         deleteAllData,
+        addGroup,
+        updateGroup,
+        deleteGroup,
       }}
     >
       {children}

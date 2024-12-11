@@ -4,7 +4,7 @@ import CategoryItem from "@components/CategoryItem";
 
 import { StyleSheet, View } from "react-native";
 import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
-import { useFocusEffect, useRouter } from "expo-router";
+import { Link, useFocusEffect, useRouter } from "expo-router";
 import { useTheme } from "providers/ThemeProvider";
 import { useHeader } from "providers/HeaderProvider";
 import { useTranslation } from "react-i18next";
@@ -13,11 +13,12 @@ const AllCategory = () => {
   const { category } = useData();
   const router = useRouter();
   const { colors } = useTheme();
-  const { setHeaderRightButtons } = useHeader();
+  const { setHeaderRightButtons, setHeaderTitle } = useHeader();
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.category" });
   useFocusEffect(
     useCallback(() => {
       setHeaderRightButtons([{ icon: "add", onPress: () => router.push("stack/addCategory"), action: "add_category" }]);
+    setHeaderTitle(t("title"));
     }, [])
   );
 
@@ -25,23 +26,26 @@ const AllCategory = () => {
     <View style={{ backgroundColor: colors.screen, flex: 1 }}>
       <CollapsibleHeaderFlatList
         paddingVertical={8}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
+        contentContainerStyle={{ paddingHorizontal: 8}}
         data={category}
         renderItem={({ item }) => (
+          <Link href={{pathname: "stack/addCategory",
+            params: {
+              title: item.title,
+              _id: item._id,
+              color: item.color,
+              type: item.type,
+            }
+          }}
+          asChild>
           <CategoryItem
             item={item}
-            onPress={() =>
-              router.push(
-                `stack/addCategory?_id=${item._id}&title=${item.title}&color=${
-                  item.color ? item.color.replace("#", "") : "345678"
-                }&type=${item.type}`
-              )
-            }
             style={styles.category}
-          />
+            />
+            </Link>
         )}
       />
-    </View>
+      </View>
   );
 };
 
@@ -54,6 +58,6 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   category: {
-    marginVertical: 8,
+    marginBottom: 8,
   },
 });

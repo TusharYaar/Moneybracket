@@ -5,6 +5,7 @@ import Tabbar from "@components/Tabbar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { HeaderRightButton } from "types";
+import { useWindowDimensions } from "react-native";
 
 const HEADER_HEIGHT = 64;
 const PADDING = 8;
@@ -20,37 +21,48 @@ const HeaderContext = createContext({
   setHeaderRightButtons: (btns: HeaderRightButton[]) => {},
   headerHeight: HEADER_HEIGHT + PADDING,
   tabbarHeight: HEADER_HEIGHT + PADDING,
+  setHeaderTitle: (t: string) => {},
 });
 
 export const useHeader = () => useContext(HeaderContext);
-// "(tabs)/group",
 const VISIBLE_TABS = !__DEV__
-  ? ["(tabs)/transaction", "(tabs)/category", "(tabs)/settings"]
-  : ["(tabs)/transaction", "(tabs)/category", "(tabs)/recurring", "(tabs)/settings"];
+  ? ["(tabs)/transaction", "(tabs)/category", "(tabs)/group", "(tabs)/settings"]
+  : ["(tabs)/transaction", "(tabs)/category", "(tabs)/group", "(tabs)/recurring", "(tabs)/settings"];
 
 const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
   const headerPosition = useSharedValue(topInset + 8);
   const tabbarPosition = useSharedValue(bottomInset + 8);
+  const [headerRightButtons, setHeaderRightButtons] = useState<HeaderRightButton[]>([]);
+  const [headerTitle, setHeaderTitle] = useState("");
   const {
     routes: [nav],
   } = useRootNavigationState();
   const navigation = useNavigationContainerRef();
+
+  const isWide = useMemo(() => {
+    const space = width - (VISIBLE_TABS.length + 1) * 64 - 8 * 2;
+    if (space > 8) {
+      return true;
+    }
+    return false;
+  }, [width]);
+
   useEffect(() => {
     if (navigation.isReady()) {
       headerPosition.value = topInset + 8;
       SplashScreen.hideAsync();
+      tabbarPosition.value = isWide ? bottomInset + 8 : bottomInset + 8 + 64;
     }
-  }, [navigation, topInset]);
-
-  const [headerRightButtons, setHeaderRightButtons] = useState<HeaderRightButton[]>([]);
+  }, [navigation, topInset, isWide]);
 
   const hideHeader = useCallback(() => {
     headerPosition.value = withTiming(-HEADER_HEIGHT);
   }, []);
   const hideTabbar = useCallback(() => {
-    tabbarPosition.value = withTiming(-HEADER_HEIGHT);
-  }, []);
+    tabbarPosition.value = withTiming( isWide ? -HEADER_HEIGHT : -HEADER_HEIGHT * 2 - 8);
+  }, [isWide]);
   const showHeader = useCallback(() => {
     headerPosition.value = withTiming(topInset + 8);
   }, [topInset]);
@@ -90,7 +102,7 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
       bottom: tabbarPosition.value,
       position: "absolute",
       width: "100%",
-      height: HEADER_HEIGHT,
+      height: isWide ? HEADER_HEIGHT : HEADER_HEIGHT * 2 + 8,
       zIndex: 100,
     };
   });
@@ -109,10 +121,12 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
         },
         headerHeight: HEADER_HEIGHT + PADDING + topInset,
         tabbarHeight: HEADER_HEIGHT + PADDING + bottomInset,
+        setHeaderTitle,
       }}
     >
       <Animated.View style={headerStyle}>
         <Header
+        title={headerTitle}
           route={routes.length ? routes[currentIndex] : {}}
           back={currentIndex > 0 ? routes[currentIndex - 1].name : undefined}
           headerRightButtons={headerRightButtons}
@@ -120,7 +134,7 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
       </Animated.View>
       {children}
       <Animated.View style={tabbarStyle}>
-        <Tabbar visibleTabs={VISIBLE_TABS} current={routes.length ? routes[currentIndex] : {}} />
+        <Tabbar visibleTabs={VISIBLE_TABS} current={routes.length ? routes[currentIndex] : {}} isWide={isWide} />
       </Animated.View>
     </HeaderContext.Provider>
   );

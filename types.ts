@@ -9,6 +9,7 @@ export type Transaction = {
   category: string;
   createdAt: Date;
   updatedAt: Date;
+  group: null | string;
   // isFavorite: boolean;
   image: string;
 };
@@ -20,6 +21,17 @@ export type Category = {
   _id:string;
   title: string;
   type: string;
+  isFavorite: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  color: string;
+  icon: string;
+  description: string;
+};
+
+export type Group = {
+  _id:string;
+  title: string;
   isFavorite: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -63,6 +75,7 @@ export interface FontObject {
 
 export interface GroupedTransactions {
   date: Date;
+  amount: number;
   transactions: TransactionWithCategory[];
 }
 
@@ -159,3 +172,11 @@ export type HeaderRightButton = {
   onPress?: () => void;
   disabled?: boolean;
 }
+
+export type TransactionDate = {
+  date: Date;
+  _id: string;
+  label: string;
+  amount: number;
+  type: string;
+};

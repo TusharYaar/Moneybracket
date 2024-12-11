@@ -5,6 +5,9 @@
                 "category": {
                     "title": "Category"
                 },
+                "group": {
+                    "title": "Group"
+                },
                 "recurring": {
                     "title": "Recurring"
                 },
@@ -68,7 +71,24 @@
                 "deleteTitle": "Are you Sure?",
                 "deleteText":"This will delete the transaction",
                 "cancel":"Cancel",
-                "confirm": "Delete"
+                "confirm": "Delete",
+                "group": "Group",
+                "noGroup": "Part of no Group"
+            },
+            "addGroup": {
+                "addTitle": "Add Group",
+                "updateTitle": "Update Group",
+                "swipeButtonAdd": "Swipe to Add Group",
+                "swipeButtonUpdate": "Swipe to Update Group",
+                "icon": "Icon",
+                "color": "Color",
+                "current": "Current",
+                "suggested": "Suggested",
+                "deleteTitle": "Are you Sure?",
+                "deleteText":"This will delete the group and all its transactions will be unlinked",
+                "cancel":"Cancel",
+                "confirm": "Delete",
+                "description": "Description"
             },
             "backup": {
                 "backup": "Backup",

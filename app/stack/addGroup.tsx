@@ -1,11 +1,10 @@
 import { Text, View, TextInput, Pressable, useWindowDimensions, ScrollView } from "react-native";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { COLORS } from "data";
+import { GROUP_COLORS } from "data";
 import SwipeButton from "@components/SwipeButton";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import PrimaryInput from "@components/AmountInput";
 import { useData } from "providers/DataProvider";
-import GroupButton from "@components/GroupButton";
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import Icon from "@components/Icon";
@@ -15,27 +14,8 @@ import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 import { useTranslation } from "react-i18next";
 import DeleteContainer from "@components/DeleteContainer";
 
-const CATEGORY_TYPES = [
-  {
-    label: "income",
-    value: "income",
-    icon: "income",
-  },
-  {
-    label: "expense",
-    value: "expense",
-    icon: "expense",
-  },
-  {
-    label: "transfer",
-    value: "transfer",
-    icon: "transfer",
-  },
-];
-
 type ValueProps = {
   title: string;
-  type: string;
   color: string;
   icon: string;
   description: string;
@@ -44,20 +24,18 @@ type ValueProps = {
 type SearchParams = {
   _id: string;
   color: string;
-  type: string;
   title: string;
 };
-const AddCategoryScreen = () => {
-  const { addCategory, updateCategory, deleteCategory, category } = useData();
-  const { _id, color, title = "", type = "income" } = useLocalSearchParams<SearchParams>();
-  const { t } = useTranslation("", { keyPrefix: "app.stack.addCategory" });
+const AddGroupScreen = () => {
+  const { addGroup, updateGroup, deleteGroup, group } = useData();
+  const { _id=null, color, title = "" } = useLocalSearchParams<SearchParams>();
+  const { t } = useTranslation("", { keyPrefix: "app.stack.addGroup" });
   const router = useRouter();
-  const {setHeaderRightButtons, setHeaderTitle, header} = useHeader();
+  const { header,setHeaderRightButtons, setHeaderTitle } = useHeader();
   const inputRef = useRef<TextInput>();
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<ValueProps>({
     title,
-    type,
     color: color ? color : colors.screen,
     icon: "icon_6",
     description: "",
@@ -68,24 +46,22 @@ const AddCategoryScreen = () => {
   const sheetRef = useRef<BottomSheet>();
 
   useEffect(() => {
-    setHeaderRightButtons(
-      _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_category" }] : [],
-    );
+    setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_group" }] : [])
     setHeaderTitle(_id ? t("updateTitle") : t("addTitle"));
   }, [_id]);
 
   useEffect(() => {
     if (_id) {
-      const cate = category.find((cat) => cat._id === _id);
-      setValues((prev) => ({ ...prev, description: cate.description, icon: cate.icon }));
+        const grup = group.find((grp) => grp._id === _id);
+        setValues((prev) => ({ ...prev, description: grup.description, icon: grup.icon }));
     }
-  }, [_id, category]);
+  }, [_id, group]);
 
   const recommendColor = useMemo(() => {
     if (_id) {
       return "";
     } else {
-      const color = COLORS[(Math.random() * COLORS.length).toFixed()];
+      const color = GROUP_COLORS[(Math.random() * GROUP_COLORS.length).toFixed()];
       setValues((prev) => ({ ...prev, color }));
       return color;
     }
@@ -110,14 +86,14 @@ const AddCategoryScreen = () => {
     // TODO: ADD Check
     if (_id) {
       // TODO: fetch created_at date and populate here
-      updateCategory(_id, { ...values, createdAt: date, updatedAt: date, isFavorite: false });
-    } else addCategory({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
+      updateGroup(_id, { ...values, createdAt: date, updatedAt: date, isFavorite: false });
+    } else addGroup({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
     if (router.canGoBack) router.back();
-    else router.replace("(tabs)/category");
+    else router.replace("(tabs)/group");
   };
   const handlePressDelete = useCallback(() => {
     sheetRef.current.close();
-    deleteCategory(_id);
+    deleteGroup(_id);
     router.back();
   }, [_id]);
 
@@ -176,7 +152,7 @@ const AddCategoryScreen = () => {
                 showsHorizontalScrollIndicator={false}
                 style={{ width: width - 64 - 16 - 16 }}
               >
-                {COLORS.map((color) => (
+                {GROUP_COLORS.map((color) => (
                   <Pressable key={color} onPress={() => setValues((prev) => ({ ...prev, color }))}>
                     <View style={{ backgroundColor: color, borderRadius: 4, height: 64, width: 64 }} />
                     {values.color === color && (
@@ -201,17 +177,6 @@ const AddCategoryScreen = () => {
                 ))}
               </ScrollView>
             </View>
-          </View>
-          <View style={{ marginTop: 32 }}>
-            <Text style={textStyle.body}>{t("type")}</Text>
-            <GroupButton
-              buttons={CATEGORY_TYPES.map((cat) => ({
-                ...cat,
-                type: cat.value === values.type ? "filled" : "outline",
-                onPress: () => setValues((prev) => ({ ...prev, type: cat.value })),
-              }))}
-              activeColor={values.color}
-            />
           </View>
           <View style={{ marginTop: 32 }}>
             <Text style={textStyle.body}>{t("description")}</Text>
@@ -290,4 +255,4 @@ const AddCategoryScreen = () => {
   );
 };
 
-export default AddCategoryScreen;
+export default AddGroupScreen;

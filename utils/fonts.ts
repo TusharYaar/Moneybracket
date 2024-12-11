@@ -29,7 +29,7 @@ const defaults = {
     letterSpacing: 0.25,
   },
   amount: {
-    fontSize: 24,
+    fontSize: 18,
     letterSpacing: 0.25,
   },
 };

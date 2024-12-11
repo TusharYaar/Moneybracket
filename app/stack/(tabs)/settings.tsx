@@ -20,6 +20,7 @@ import { useHeader } from "providers/HeaderProvider";
 import { generateDummyTransaction } from "@utils/dummy";
 import { Transaction } from "types";
 import DeleteContainer from "@components/DeleteContainer";
+import { startOfDay } from "date-fns";
 
 const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
@@ -40,7 +41,7 @@ const Setting = () => {
   const { addCategory, category, addTransaction, deleteAllData } = useData();
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.settings" });
   const { t: wt } = useTranslation();
-  const { header, tabbar, setHeaderRightButtons} = useHeader();
+  const { header, tabbar, setHeaderRightButtons, setHeaderTitle} = useHeader();
   const [selectList, setSelectList] = useState({
     visible: false,
     menu: "dateFormat",
@@ -50,6 +51,7 @@ const Setting = () => {
 
   useEffect(() => {
     setHeaderRightButtons([]);
+    setHeaderTitle(t("title"))
   },[]);
   const router = useRouter();
   const selectListRef = useRef<BottomSheet>();
@@ -57,7 +59,7 @@ const Setting = () => {
   const addDummyCategories = useCallback(() => {
     const cats = [];
     Dcategories.forEach((cat, index) => {
-      const date = new Date().toISOString();
+      const date = startOfDay(new Date());
       cats.push({
         ...cat,
         color: COLORS[Math.floor(Math.random() * COLORS.length)],

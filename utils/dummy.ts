@@ -1,4 +1,4 @@
-import { add } from "date-fns";
+import { add, startOfDay } from "date-fns";
 import { Transaction } from "types";
 
 export const generateDummyTransaction: () => Omit<Transaction, "id"| "category">[] = () => {
@@ -20,7 +20,7 @@ export const generateDummyTransaction: () => Omit<Transaction, "id"| "category">
         days,
       });
     }
-    ar.push({ date, amount, note: `dummy transaction ${i}`, currency: "INR" });
+    ar.push({ date: startOfDay(date), amount, note: `dummy transaction ${i}`, currency: "INR" });
   }
   return ar;
 };

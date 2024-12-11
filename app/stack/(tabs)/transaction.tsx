@@ -1,80 +1,112 @@
-import React, { useCallback, useEffect, useMemo } from "react";
-import { useData } from "../../../providers/DataProvider";
+import React, { useCallback, useMemo } from "react";
+import { View } from "react-native";
+import { Link, useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
-// import { calcuateTotal, groupTransactionByDate } from "../../../utils/transaction";
-import { useFocusEffect, useRouter } from "expo-router";
+import { useData } from "providers/DataProvider";
+import { useTheme } from "providers/ThemeProvider";
+import { useHeader } from "providers/HeaderProvider";
+import { groupTransactionByDate } from "@utils/transaction";
 import TransactionItem from "@components/TransactionItem";
 import CollapsibleHeaderFlatList from "@components/CollapsibleHeaderFlatList";
-import { Category, Transaction } from "types";
-import { useTheme } from "providers/ThemeProvider";
-import { View } from "react-native";
-import { useHeader } from "providers/HeaderProvider";
-// import { groupTransactionByDate } from "@utils/transaction";
+import TransactionDateItem from "@components/TransactionDateItem";
+import { Category, TransactionDate, TransactionWithCategory } from "types";
+
+
+type ListItem =
+  | {
+      type: "date";
+      data: TransactionDate;
+    }
+  | {
+      type: "transaction";
+      data: TransactionWithCategory;
+    };
 
 const AllTransaction = () => {
-  const router = useRouter();
   const { colors } = useTheme();
   const { transaction, category } = useData();
   const { t } = useTranslation("", {
     keyPrefix: "app.stack.tabs.transaction",
   });
-  const { setHeaderRightButtons } = useHeader();
+  const { setHeaderRightButtons, setHeaderTitle } = useHeader();
 
-  // const navigation = useNavigation("/stack");
-  useFocusEffect(useCallback(() => {
-    setHeaderRightButtons( [
-      { icon: "search", onPress: () => console.log("search"), action: "search", disabled: true },
-      { icon: "filter", onPress: () => console.log("filter"), action: "filter", disabled: true },
-    ],
+  useFocusEffect(
+    useCallback(() => {
+      __DEV__ && setHeaderRightButtons([
+        { icon: "search", onPress: () => console.log("search"), action: "search", disabled: true },
+        { icon: "filter", onPress: () => console.log("filter"), action: "filter", disabled: true },
+      ]);
+    setHeaderTitle(t("title"));
+
+    }, [])
   );
-},[]));
 
-const categoryObj: Record<string, Category> = useMemo(() => {
-  if (category) return category.reduce((prev, curr) => ({ ...prev, [curr._id]: curr }), {});
-  else return {};
-}, [category]);
+  const categoryObj: Record<string, Category> = useMemo(() => {
+    if (category) return category.reduce((prev, curr) => ({ ...prev, [curr._id]: curr }), {});
+    else return {};
+  }, [category]);
 
-const _transaction = useMemo(
-  () =>
-    transaction.map((trans) => ({
-      ...trans,
-      category: categoryObj[trans.category],
-    })),
-  [transaction, categoryObj]
-);
+  const _transaction = useMemo(
+    () =>
+      transaction.map((trans) => ({
+        ...trans,
+        category: categoryObj[trans.category],
+      })),
+    [transaction, categoryObj]
+  );
 
+  const groupedToDates = useMemo(() => {
+    // if (dateFilter.type !== "all")
+    // return groupTransactionByDate(_transaction, dateFilter.startDate, dateFilter.endDate);
+    return groupTransactionByDate(_transaction);
+  }, [_transaction]);
 
-// console.log(_transaction);
+  const presentationData: ListItem[] = useMemo(() => {
+    return (
+      groupedToDates
+        // .filter((item, index) => index < 3)
+        .flatMap((group) => [
+          {
+            type: "date" as const,
+            data: {
+              date: group.date,
+              _id: group.date.toUTCString(),
+              label: group.date.toISOString(),
+              amount: group.amount,
+              type: "income",
+            },
+          },
+          ...group.transactions.map((data) => ({ type: "transaction" as const, data })),
+        ])
+    );
+  }, [groupedToDates]);
 
-  // const _transaction = useMemo(
-  //   () => [],
-  //   []
-  //   // [transaction, selectedCategory
-  // );
-  // transaction.filter((tran) => selectedCategory.includes(tran.category._id.toHexString())),
-
-  // const grouped = useMemo(() => {
-  //   // if (dateFilter.type !== "all")
-  //     // return groupTransactionByDate(_transaction, dateFilter.startDate, dateFilter.endDate);
-  //   return groupTransactionByDate(transaction);
-  // }, [transaction]);
   return (
     <View style={{ backgroundColor: colors.screen, flex: 1 }}>
       <CollapsibleHeaderFlatList
-        data={_transaction}
+        data={presentationData}
         hideBackButton={true}
-        renderItem={({ item }) => (
-          <TransactionItem
-            data={item}
-            onPress={() =>
-              router.push(
-                `stack/addTransaction?_id=${item._id}&amount=${item.amount}&date=${item.date.toISOString()}&category=${
-                  item.category._id
-                }`
-              )
-            }
-          />
-        )}
+        renderItem={({ item: { type, data } }) =>
+          type === "date" ? (
+            <TransactionDateItem {...data} style={{marginTop: 8}}/>
+          ) : (
+            <Link
+              href={{
+                pathname: "stack/addTransaction",
+                params: {
+                  _id: data._id,
+                  amount: data.amount,
+                  date: data.date.toISOString(),
+                  category: data.category._id,
+                },
+              }}
+              asChild
+              style={{marginVertical: 4}}
+            >
+              <TransactionItem data={data} />
+            </Link>
+          )
+        }
         contentContainerStyle={{ paddingHorizontal: 16 }}
         paddingVertical={8}
       />

@@ -1,33 +1,29 @@
-import { StyleSheet, View, ViewStyle,Text, Pressable } from "react-native";
+import { StyleSheet, View, ViewStyle, Text, Pressable } from "react-native";
 import React, { forwardRef } from "react";
-import { Category } from "types";
+import { Group } from "types";
 import { useTheme } from "../providers/ThemeProvider";
 import Icon from "./Icon";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 
 type Props = {
-  item: Category;
-  onPress?: (item: Category) => void;
+  item: Group;
+  onPress?: (item: Group) => void;
   style?: ViewStyle;
   itemColor?: string;
 };
+const GroupItem = forwardRef<View, Props>(function GroupItem({ item, onPress, style, itemColor }, ref) {
+  const { textStyle, colors } = useTheme();
+  const color = itemColor ? itemColor : item.color;
 
-const CategoryItem = forwardRef<View, Props>(function AmountInput({ item, onPress, style, itemColor }, ref) {
-  const {
-   textStyle,colors
-  } = useTheme();
-  const { t } = useTranslation("", { keyPrefix: "components.categoryItem" });
-  const categoryColor = itemColor ? itemColor : item.color;
   return (
-    <View style={[styles.overflowContainer, { borderColor: categoryColor, borderRadius: 8 }, style]}>
+    <View style={[styles.overflowContainer, { backgroundColor: color, borderRadius: 8 }, style]}>
       <Pressable style={styles.container} onPress={() => onPress(item)} ref={ref}>
         <View style={styles.innerContainer}>
-          <View style={[styles.iconContainer, { backgroundColor: categoryColor }]}>
+          <View style={[styles.iconContainer, { backgroundColor: color }]}>
             <Icon name={item.icon as undefined} size={40} />
           </View>
           <View style={[styles.content]}>
-            <Text style={[textStyle.title, {color: colors.text}]}>{item.title}</Text>
-            <Text style={[textStyle.body, {color: colors.text}]} >{t(item.type)}</Text>
+            <Text style={[textStyle.title, { color: colors.text }]}>{item.title}</Text>
           </View>
         </View>
       </Pressable>
@@ -35,12 +31,11 @@ const CategoryItem = forwardRef<View, Props>(function AmountInput({ item, onPres
   );
 });
 
-export default CategoryItem;
+export default GroupItem;
 
 const styles = StyleSheet.create({
   overflowContainer: {
     borderRadius: 8,
-    borderWidth: 2,
     overflow: "hidden",
   },
   container: {
@@ -56,7 +51,7 @@ const styles = StyleSheet.create({
     height: 64,
     width: 64,
     alignItems: "center",
-    justifyContent:"center"
+    justifyContent: "center",
   },
   content: {
     marginLeft: 8,

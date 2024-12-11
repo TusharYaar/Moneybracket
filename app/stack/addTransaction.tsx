@@ -1,6 +1,6 @@
 import { StyleSheet, View, TextInput, Pressable, Keyboard, useWindowDimensions, Text } from "react-native";
 import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
-import DatePicker from "react-native-date-picker";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { useSettings } from "providers/SettingsProvider";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useData } from "providers/DataProvider";
@@ -10,12 +10,13 @@ import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/b
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { format, parseISO } from "date-fns";
 import PrimaryInput from "@components/AmountInput";
-import { Category, Transaction } from "types";
+import { Category, Group, Transaction } from "types";
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import { useTranslation } from "react-i18next";
 import { useHeader } from "providers/HeaderProvider";
 import DeleteContainer from "@components/DeleteContainer";
+import GroupItem from "@components/GroupItem";
 
 type SearchParams = {
   _id: string;
@@ -23,6 +24,18 @@ type SearchParams = {
   amount: string;
   category: string;
 };
+
+const NULL_GROUP = {
+  _id: null,
+  title: "No Group",
+  isFavorite: true,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  color: "#7f7f7f",
+  icon: "cancel",
+  description: "No group",
+};
+
 const AddTransaction = () => {
   const {
     _id,
@@ -33,12 +46,12 @@ const AddTransaction = () => {
   const { height, width } = useWindowDimensions();
   const { t } = useTranslation("", { keyPrefix: "app.stack.addTransaction" });
   const { currency: defaultCurrency, dateFormat } = useSettings();
-  const { category, addTransaction, updateTransaction, deleteTransaction, transaction } = useData();
+  const { category, addTransaction, updateTransaction, deleteTransaction, transaction, group } = useData();
   const amtInputRef = useRef<TextInput>();
   const categorySheetRef = useRef<BottomSheet>();
   const [sheetView, setSheetView] = useState("category");
   const { textStyle, colors } = useTheme();
-  const [values, setValues] = useState<Omit<Transaction, "_id" |  "updatedAt">>({
+  const [values, setValues] = useState<Omit<Transaction, "_id" | "updatedAt">>({
     category: category.length > 0 ? category[0]._id : null,
     amount: parseFloat(amount),
     date: parseISO(date),
@@ -46,13 +59,13 @@ const AddTransaction = () => {
     currency: defaultCurrency.code,
     image: "",
     createdAt: new Date(),
+    group: null,
   });
-
   const animatedColor = useSharedValue(category.length > 0 ? category[0].color : "orange");
   // const { rates } = useExchangeRate();
   const router = useRouter();
 
-  const { header, setHeaderRightButtons, tabbar } = useHeader();
+  const { header, setHeaderRightButtons, setHeaderTitle } = useHeader();
 
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
@@ -61,12 +74,15 @@ const AddTransaction = () => {
 
   useEffect(() => {
     setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_transaction" }] : []);
+    setHeaderTitle(_id ? t("updateTitle") : t("addTitle"));
   }, [_id]);
 
   useEffect(() => {
-    const t = transaction.find((trans) => trans._id === _id);
-    setValues((prev) => ({ ...prev, note: t.note, image: t.image, createdAt: t.createdAt }));
-  }, [_id, transaction])
+    if (_id) {
+      const t = transaction.find((trans) => trans._id === _id);
+      setValues((prev) => ({ ...prev, note: t.note, image: t.image, createdAt: t.createdAt, group: t.group }));
+    }
+  }, [_id, transaction]);
 
   // const [showImageOptions, setShowImageOptions] = useState(false);
   // const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
@@ -169,17 +185,6 @@ const AddTransaction = () => {
   //   }
   // }, [imagePermission]);
 
-  // if (viewModal === "datepicker")
-  //   return (
-  //     <DateTimePicker
-  //       mode="date"
-  //       display="calendar"
-  //       value={values.date}
-  //       testID="dateTimePicker"
-  //       onChange={updateDate}
-  //     />
-  //   );
-
   const handleTextBoxPress = useCallback(() => {
     amtInputRef.current.focus();
   }, []);
@@ -191,12 +196,29 @@ const AddTransaction = () => {
   }, []);
 
   const selectedCategory = useMemo(() => category.find((c) => c._id === values.category), [values.category]);
+  const selectedGroup = useMemo(() => {
+    if (values.group !== null && values.group !== NULL_GROUP._id) return group.find((g) => g._id === values.group);
+    else return NULL_GROUP;
+  }, [values.group]);
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
   const handleOnAnimate = (_, to: number) => {
     if (to === 2) header.hide();
     else header.show();
   };
+  const handleDateChange = useCallback(
+    (event: DateTimePickerEvent, date: Date) => {
+      setSheetView("category");
+      setValues((prev) => ({ ...prev, date }));
+    },
+    [setSheetView]
+  );
+
+  const handleChangeGroup = useCallback((group: Group | null) => {
+    setValues((prev) => ({ ...prev, group: group._id }));
+    categorySheetRef.current.close();
+  }, []);
+
   return (
     <>
       <CollapsibleHeaderScrollView
@@ -236,10 +258,7 @@ const AddTransaction = () => {
               <Pressable
                 android_ripple={{ color: selectedCategory.color || colors.rippleColor }}
                 style={styles.button}
-                onPress={() => {
-                  categorySheetRef.current.snapToIndex(1);
-                  setSheetView("date");
-                }}
+                onPress={() => setSheetView("date")}
               >
                 <Text style={textStyle.title}>{format(values.date, dateFormat)}</Text>
               </Pressable>
@@ -262,6 +281,21 @@ const AddTransaction = () => {
                 },
               ]}
             />
+          </View>
+          <View style={{ marginTop: 16 }}>
+            <Text style={textStyle.body}>{t("group")}</Text>
+            <Animated.View style={[{ backgroundColor: selectedGroup.color, borderRadius: 8 }]}>
+              <Pressable
+                android_ripple={{ color: selectedGroup.color || colors.rippleColor }}
+                style={styles.button}
+                onPress={() => {
+                  categorySheetRef.current.snapToIndex(2);
+                  setSheetView("group");
+                }}
+              >
+                <Text style={textStyle.title}>{selectedGroup ? selectedGroup.title : t("noGroup")}</Text>
+              </Pressable>
+            </Animated.View>
           </View>
         </View>
         <SwipeButton
@@ -294,17 +328,11 @@ const AddTransaction = () => {
             )}
           />
         )}
-        {sheetView === "date" && (
+        {/* {sheetView === "date" && (
           <View style={{ backgroundColor: colors.screen, flex: 1 }}>
-            <DatePicker
-              date={values.date}
-              onDateChange={(date) => setValues((prev) => ({ ...prev, date }))}
-              mode="date"
-              maximumDate={new Date()}
-              style={{ width, height: 200 }}
-            />
+            
           </View>
-        )}
+        )} */}
         {sheetView === "delete" && (
           <DeleteContainer
             text={t("deleteText")}
@@ -316,18 +344,23 @@ const AddTransaction = () => {
             confirm={t("confirm")}
           />
         )}
-        {sheetView === "delete" && (
-          <DeleteContainer
-            text={t("deleteText")}
-            title={t("deleteTitle")}
-            onComfirm={handlePressDelete}
-            onCancel={() => categorySheetRef.current.close()}
-            cancel={t("cancel")}
-            color={selectedCategory.color}
-            confirm={t("confirm")}
+        {sheetView === "group" && (
+          <BottomSheetFlatList
+            style={{ backgroundColor: colors.screen }}
+            data={group.concat(NULL_GROUP)}
+            renderItem={({ item }) => (
+              <GroupItem
+                item={{ ...item }}
+                onPress={handleChangeGroup}
+                style={{ marginHorizontal: 16, marginVertical: 8 }}
+              />
+            )}
           />
         )}
       </BottomSheet>
+      {sheetView === "date" && (
+        <DateTimePicker value={values.date} onChange={handleDateChange} mode="date" maximumDate={new Date()} />
+      )}
     </>
   );
 };

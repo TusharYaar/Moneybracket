@@ -57,7 +57,7 @@ export const darkT: CustomTheme = {
     tabbarBackgroundSecondary: "#383e4a",
     tabbarIconActiveSecondary: "#e63946",
     
-    income: "#3c6134",
+    income: "#85ea2d",
     expense: "#fe5a5a",
     transfer: "#3f6dbb",
 

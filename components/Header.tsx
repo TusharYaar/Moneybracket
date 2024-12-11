@@ -9,9 +9,10 @@ interface Props {
   route: Route<any>
   headerRightButtons: HeaderRightButton[];
   back?: string;
+  title?: string;
 }
 
-const Header = ({route, back, headerRightButtons}: Props) => {
+const Header = ({route, back, headerRightButtons, title}: Props) => {
   // const [titleContainerWidth, setTitleContainerWidth] = useState(1);
   const {
     colors,
@@ -51,7 +52,7 @@ const Header = ({route, back, headerRightButtons}: Props) => {
         style={[styles.titleContianer, { backgroundColor: colors.headerBackground }]}
         // onLayout={(event) => setTitleContainerWidth(event.nativeEvent.layout.width)}
       >
-        <Text style={[header, { fontSize: fontSize > 0 ? fontSize : 10 }]}>{route.name}</Text>
+        <Text style={[header, { fontSize: fontSize > 0 ? fontSize : 10 }]}>{title}</Text>
       </View>
       {headerRightButtons && headerRightButtons?.length > 0 && (
         <View style={{ flexDirection: "row", columnGap: 8 }}>

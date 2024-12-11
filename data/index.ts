@@ -1,5 +1,5 @@
 import { ICONS } from "./icons";
-import COLORS from "./colors";
+import COLORS, {GROUP_COLORS} from "./colors";
 import DATE from "./dates";
 import CURRENCIES from "./currencies";
 import ALL_FONTS from "./fonts";
@@ -36,6 +36,7 @@ export const SETTING_KEYS = {
 export {
   ICONS,
   COLORS,
+  GROUP_COLORS,
   CURRENCIES,
   DATE,
   ALL_FONTS,

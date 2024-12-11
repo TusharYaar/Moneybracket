@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, useWindowDimensions, View } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
 import { useTheme } from "providers/ThemeProvider";
@@ -9,6 +9,7 @@ import { Route } from "@react-navigation/native";
 interface Props {
   visibleTabs: string[];
   current: Route<any>;
+  isWide: boolean;
 }
 
 const ICONS = {
@@ -16,14 +17,22 @@ const ICONS = {
   "(tabs)/category": "categoryTab",
   "(tabs)/recurring": "recurringTab",
   "(tabs)/settings": "settingTab",
+  "(tabs)/group": "groupTab",
 };
 
-const Tabbar = ({ visibleTabs, current }: Props) => {
+const TabSize = 64;
+
+const Tabbar = ({ visibleTabs, current, isWide }: Props) => {
   const { colors } = useTheme();
   return (
-    <View style={styles.tabbarContainer}>
-      <View style={[styles.tabsContainer, { borderRadius: 8, backgroundColor: colors.tabbarBackground }]}>
-
+    <View style={isWide ? styles.tabbarContainerInRow : styles.tabbarContainerInCol}>
+      <View
+        style={[
+          styles.tabsContainer,
+          { backgroundColor: colors.tabbarBackground },
+          isWide ? {} : { width: "100%", marginTop: 8 },
+        ]}
+      >
         {visibleTabs.map((route) => (
           <Link
             key={route}
@@ -31,7 +40,6 @@ const Tabbar = ({ visibleTabs, current }: Props) => {
             replace
             accessibilityRole="button"
             accessibilityState={route === current.name ? { selected: true } : {}}
-
             disabled={route === current.name}
           >
             <View style={[styles.tabs]}>
@@ -58,15 +66,23 @@ const Tabbar = ({ visibleTabs, current }: Props) => {
 export default Tabbar;
 
 const styles = StyleSheet.create({
-  tabbarContainer: {
-    flexDirection: "row", justifyContent: "space-between",
+  tabbarContainerInRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 8,
+  },
+  tabbarContainerInCol: {
+    flexDirection: "column-reverse",
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
+    alignItems: "flex-end",
   },
   tabsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    zIndex: 1,
+    zIndex: 10,
+    borderRadius: 8,
   },
   tabs: {
     padding: 16,
