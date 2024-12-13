@@ -9,10 +9,12 @@ interface Props<T> extends FlashListProps<T> {
   hideBackButton?: boolean;
   //   If Pading top is required with Header
   paddingVertical?: number;
+  paddingTop?: number;
+  paddingBottom?: number;
   // handleClickBack?: () => {};
 }
 
-function CollapsibleHeaderFlatList<T>({ onScroll, contentContainerStyle, paddingVertical = 0, ...props }: Props<T>) {
+function CollapsibleHeaderFlatList<T>({ onScroll, contentContainerStyle, paddingVertical = 0,paddingTop = 0, paddingBottom = 0, ...props }: Props<T>) {
   const lastContentOffset = useSharedValue(0);
   const { header, tabbar, headerHeight, tabbarHeight } = useHeader();
 
@@ -38,8 +40,8 @@ function CollapsibleHeaderFlatList<T>({ onScroll, contentContainerStyle, padding
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         ...contentContainerStyle,
-        paddingTop: headerHeight + paddingVertical,
-        paddingBottom: tabbarHeight + paddingVertical,
+        paddingTop: headerHeight + (paddingTop ? paddingTop : paddingVertical) ,
+        paddingBottom: tabbarHeight + (paddingBottom ? paddingBottom : paddingVertical),
       }}
     />
   );

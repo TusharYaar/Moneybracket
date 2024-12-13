@@ -13,6 +13,7 @@ import { useHeader } from "providers/HeaderProvider";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 import { useTranslation } from "react-i18next";
 import DeleteContainer from "@components/DeleteContainer";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type ValueProps = {
   title: string;
@@ -43,6 +44,7 @@ const AddGroupScreen = () => {
   const [sheetView, setSheetView] = useState<"icon" | "delete">("icon");
 
   const { height, width } = useWindowDimensions();
+  const {top: topInset} = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>();
 
   useEffect(() => {
@@ -107,7 +109,7 @@ const AddGroupScreen = () => {
   return (
     <>
       <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height }}
+        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset}}
         paddingVertical={8}
         style={{ backgroundColor: colors.screen }}
         tabbarVisible={false}

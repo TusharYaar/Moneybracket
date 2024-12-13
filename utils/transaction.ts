@@ -1,4 +1,4 @@
-import { endOfDay, endOfMonth, isAfter, startOfDay, startOfMonth } from "date-fns";
+import { endOfDay, endOfMonth, format, isAfter, startOfDay, startOfMonth } from "date-fns";
 import { isSameDay, compareAsc } from "date-fns";
 import { GroupedTransactions, TransactionWithCategory} from "../types";
 
@@ -7,11 +7,42 @@ export const transactionWithinDates = (date: Date, start: Date, end: Date) => {
   return false;
 };
 
+const STORAGE_DATE_FORMAT = "dd-MMM-yyyy";
+
+
 export const groupTransactionByDate = (
   transactions: TransactionWithCategory[],
   start?: Date,
   end?: Date
 ): GroupedTransactions[] => {
+  const myData = (transactions.filter((d,index) => index < 3));
+  myData[0].date;
+
+
+  const newData:Record<string, GroupedTransactions> = transactions.reduce((prev, curr) => {
+    const key =     format(curr.date,STORAGE_DATE_FORMAT);
+    if (prev[key] !== undefined) {
+      prev[key] ={
+        date: curr.date,
+        amount: curr.category.type === "expense" ? prev[key].amount  -curr.amount : prev[key].amount + curr.amount,
+        transactions: prev[key].transactions.concat(curr)
+      }
+    }
+    else 
+      prev[key] = {
+        date: curr.date,
+        amount: curr.category.type === "expense" ?  -curr.amount : curr.amount,
+        transactions: [curr]
+    };
+    return prev;
+  },{});
+
+  const values = Object.values(newData);
+  return values.sort((a,b) => (isAfter(a.date, b.date) ? - 1 : 1));
+
+
+
+
   const data:GroupedTransactions[] =  transactions.reduce((result, val) => {
     if (start && end && !transactionWithinDates(val.date, start, end)) return result;
     if (result.length === 0) {

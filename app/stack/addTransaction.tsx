@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { useHeader } from "providers/HeaderProvider";
 import DeleteContainer from "@components/DeleteContainer";
 import GroupItem from "@components/GroupItem";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type SearchParams = {
   _id: string;
@@ -43,7 +44,6 @@ const AddTransaction = () => {
     date = new Date().toISOString(),
     category: tcategory,
   } = useLocalSearchParams<SearchParams>();
-  const { height, width } = useWindowDimensions();
   const { t } = useTranslation("", { keyPrefix: "app.stack.addTransaction" });
   const { currency: defaultCurrency, dateFormat } = useSettings();
   const { category, addTransaction, updateTransaction, deleteTransaction, transaction, group } = useData();
@@ -64,8 +64,12 @@ const AddTransaction = () => {
   const animatedColor = useSharedValue(category.length > 0 ? category[0].color : "orange");
   // const { rates } = useExchangeRate();
   const router = useRouter();
-
+  
   const { header, setHeaderRightButtons, setHeaderTitle } = useHeader();
+  
+  const { height } = useWindowDimensions();
+  const {top: topInset} = useSafeAreaInsets();
+
 
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
@@ -222,7 +226,7 @@ const AddTransaction = () => {
   return (
     <>
       <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height }}
+        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset }}
         paddingVertical={8}
         tabbarVisible={false}
         style={{ backgroundColor: colors.screen }}

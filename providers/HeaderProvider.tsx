@@ -51,9 +51,9 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
 
   useEffect(() => {
     if (navigation.isReady()) {
-      headerPosition.value = topInset + 8;
+      headerPosition.value = topInset + PADDING;
       SplashScreen.hideAsync();
-      tabbarPosition.value = isWide ? bottomInset + 8 : bottomInset + 8 + 64;
+      tabbarPosition.value = isWide ? bottomInset + PADDING : bottomInset + PADDING + 64;
     }
   }, [navigation, topInset, isWide]);
 
@@ -64,10 +64,10 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
     tabbarPosition.value = withTiming( isWide ? -HEADER_HEIGHT : -HEADER_HEIGHT * 2 - 8);
   }, [isWide]);
   const showHeader = useCallback(() => {
-    headerPosition.value = withTiming(topInset + 8);
+    headerPosition.value = withTiming(topInset + PADDING);
   }, [topInset]);
   const showTabbar = useCallback(() => {
-    tabbarPosition.value = withTiming(bottomInset + 8);
+    tabbarPosition.value = withTiming(bottomInset + PADDING);
   }, [bottomInset]);
 
   const routes = useMemo(() => {
@@ -119,8 +119,8 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
           show: showHeader,
           hide: hideHeader,
         },
-        headerHeight: HEADER_HEIGHT + PADDING + topInset,
-        tabbarHeight: HEADER_HEIGHT + PADDING + bottomInset,
+        headerHeight: HEADER_HEIGHT + PADDING,
+        tabbarHeight: HEADER_HEIGHT + PADDING,
         setHeaderTitle,
       }}
     >

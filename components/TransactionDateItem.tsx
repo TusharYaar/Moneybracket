@@ -12,11 +12,13 @@ interface Props extends TransactionDate {
 
 const TransactionDateItem = ({ date, amount, label, style }: Props) => {
   const { textStyle, colors } = useTheme();
-  const { dateFormat } = useSettings();
+  const { dateFormat, currency } = useSettings();
   return (
-    <View style={[{ flexDirection: "row", justifyContent: "space-between" }, style]}>
-      <Text style={textStyle.title}>{format(date, dateFormat)}</Text>
-      <Text style={[textStyle.title, { color: amount > 0 ? colors.income : colors.expense }]}>{Math.abs(amount)}</Text>
+    <View style={[{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end"}, style]}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", flex: 1 }}>
+      <Text style={textStyle.caption}>{format(date, dateFormat)}</Text>
+      <Text style={[textStyle.title, { color: amount > 0 ? colors.income : colors.expense }]}>{`${currency.symbol_native} ${Math.abs(amount)}`}</Text>
+      </View>
     </View>
   );
 };
