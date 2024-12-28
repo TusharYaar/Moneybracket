@@ -1,6 +1,6 @@
-import { endOfDay, endOfMonth, format, isAfter, startOfDay, startOfMonth } from "date-fns";
-import { isSameDay, compareAsc } from "date-fns";
-import { GroupedTransactions, TransactionWithCategory} from "../types";
+import {  format, isAfter} from "date-fns";
+import { compareAsc } from "date-fns";
+import { GroupedTransactions, TransactionWithCategory } from "../types";
 
 export const transactionWithinDates = (date: Date, start: Date, end: Date) => {
   if (compareAsc(date, start) !== -1 && compareAsc(end, date) !== -1) return true;
@@ -9,88 +9,43 @@ export const transactionWithinDates = (date: Date, start: Date, end: Date) => {
 
 const STORAGE_DATE_FORMAT = "dd-MMM-yyyy";
 
-
 export const groupTransactionByDate = (
   transactions: TransactionWithCategory[],
   start?: Date,
   end?: Date
 ): GroupedTransactions[] => {
-  const myData = (transactions.filter((d,index) => index < 3));
-  myData[0].date;
-
-
-  const newData:Record<string, GroupedTransactions> = transactions.reduce((prev, curr) => {
-    const key =     format(curr.date,STORAGE_DATE_FORMAT);
+  const newData: Record<string, GroupedTransactions> = transactions.reduce((prev, curr) => {
+    const key = format(curr.date, STORAGE_DATE_FORMAT);
     if (prev[key] !== undefined) {
-      prev[key] ={
-        date: curr.date,
-        amount: curr.category.type === "expense" ? prev[key].amount  -curr.amount : prev[key].amount + curr.amount,
-        transactions: prev[key].transactions.concat(curr)
-      }
-    }
-    else 
       prev[key] = {
         date: curr.date,
-        amount: curr.category.type === "expense" ?  -curr.amount : curr.amount,
-        transactions: [curr]
-    };
+        amount: curr.category.type === "expense" ? prev[key].amount - curr.amount : prev[key].amount + curr.amount,
+        transactions: prev[key].transactions.concat(curr),
+      };
+    } else
+      prev[key] = {
+        date: curr.date,
+        amount: curr.category.type === "expense" ? -curr.amount : curr.amount,
+        transactions: [curr],
+      };
     return prev;
-  },{});
+  }, {});
 
   const values = Object.values(newData);
-  return values.sort((a,b) => (isAfter(a.date, b.date) ? - 1 : 1));
-
-
-
-
-  const data:GroupedTransactions[] =  transactions.reduce((result, val) => {
-    if (start && end && !transactionWithinDates(val.date, start, end)) return result;
-    if (result.length === 0) {
-      let obj = {
-
-        date: val.date,
-        transactions: [val],
-      };
-      result.push(obj);
-      return result;
-    } else {
-      const group = result[result.length - 1];
-      if (isSameDay(group.date, val.date)) {
-        result[result.length - 1] = {
-          date: group.date,
-          transactions: [...group.transactions, val],
-        };
-        return result;
-      } else {
-        let obj = {
-          date: val.date,
-          transactions: [val],
-        };
-        result.push(obj);
-        return result;
-      }
-    }
-  }, []);
-  
-  const complete = data.map(group => ({...group, amount: calculateAmount(group.transactions)}))
-
-  return complete.sort((a,b) => (isAfter(a.date, b.date) ? - 1 : 1));
+  return values.sort((a, b) => (isAfter(a.date, b.date) ? -1 : 1));
 };
-
 
 const calculateAmount = (transactions: TransactionWithCategory[]) => {
   let amount = 0;
-  transactions.forEach(t => {
-
+  transactions.forEach((t) => {
     if (t.category.type === "income") {
       amount += t.amount;
+    } else if (t.category.type === "expense") {
+      amount -= t.amount;
     }
-    else if(t.category.type === "expense") {
-      amount -= t.amount
-    }
-  })
+  });
   return amount;
-}
+};
 
 // export const calcuateTotal = (transactions: TransactionWithCategory[]) => {
 //   let calculated = {

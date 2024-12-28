@@ -53,8 +53,8 @@ const AddCategoryScreen = () => {
   const { _id, color, title = "", type = "income" } = useLocalSearchParams<SearchParams>();
   const { t } = useTranslation("", { keyPrefix: "app.stack.addCategory" });
   const router = useRouter();
-  const {setHeaderRightButtons, setHeaderTitle, header} = useHeader();
-  const inputRef = useRef<TextInput>();
+  const { setHeaderRightButtons, setHeaderTitle, header } = useHeader();
+  const inputRef = useRef<TextInput>(null);
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<ValueProps>({
     title,
@@ -66,20 +66,20 @@ const AddCategoryScreen = () => {
   const [sheetView, setSheetView] = useState<"icon" | "delete">("icon");
 
   const { height, width } = useWindowDimensions();
-  const {top: topInset} = useSafeAreaInsets();
-  const sheetRef = useRef<BottomSheet>();
+  const { top: topInset } = useSafeAreaInsets();
+  const sheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
-    setHeaderRightButtons(
-      _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_category" }] : [],
-    );
+    setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_category" }] : []);
     setHeaderTitle(_id ? t("updateTitle") : t("addTitle"));
   }, [_id]);
 
   useEffect(() => {
     if (_id) {
       const cate = category.find((cat) => cat._id === _id);
-      setValues((prev) => ({ ...prev, description: cate.description, icon: cate.icon }));
+      if (cate) {
+        setValues((prev) => ({ ...prev, description: cate.description ? cate.description : "", icon: cate.icon }));
+      }
     }
   }, [_id, category]);
 
@@ -102,7 +102,7 @@ const AddCategoryScreen = () => {
   const handleSelectIcon = useCallback(
     (icon: string) => {
       setValues((prev) => ({ ...prev, icon }));
-      sheetRef.current.close();
+      sheetRef.current?.close();
     },
     [sheetRef]
   );
@@ -114,18 +114,18 @@ const AddCategoryScreen = () => {
       // TODO: fetch created_at date and populate here
       updateCategory(_id, { ...values, createdAt: date, updatedAt: date, isFavorite: false });
     } else addCategory({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
-    if (router.canGoBack) router.back();
+    if (router.canGoBack()) router.back();
     else router.replace("(tabs)/category");
   };
   const handlePressDelete = useCallback(() => {
-    sheetRef.current.close();
+    sheetRef.current?.close();
     deleteCategory(_id);
     router.back();
   }, [_id]);
 
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
-    sheetRef.current.snapToIndex(0);
+    sheetRef.current?.snapToIndex(0);
   }, [sheetRef, setSheetView]);
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
@@ -133,7 +133,7 @@ const AddCategoryScreen = () => {
   return (
     <>
       <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset}}
+        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset }}
         paddingVertical={8}
         style={{ backgroundColor: colors.screen }}
         tabbarVisible={false}
@@ -153,7 +153,7 @@ const AddCategoryScreen = () => {
               <Pressable
                 onPress={() => {
                   setSheetView("icon");
-                  sheetRef.current.snapToIndex(0);
+                  sheetRef.current?.snapToIndex(0);
                 }}
               >
                 <View
@@ -166,7 +166,7 @@ const AddCategoryScreen = () => {
                     backgroundColor: values.color,
                   }}
                 >
-                  <Icon name={values.icon as undefined} size={48} />
+                  <Icon name={values.icon} size={48} />
                 </View>
               </Pressable>
             </View>
@@ -281,7 +281,7 @@ const AddCategoryScreen = () => {
             text={t("deleteText")}
             title={t("deleteTitle")}
             onComfirm={handlePressDelete}
-            onCancel={() => sheetRef.current.close()}
+            onCancel={() => sheetRef.current?.close()}
             cancel={t("cancel")}
             color={values.color}
             confirm={t("confirm")}

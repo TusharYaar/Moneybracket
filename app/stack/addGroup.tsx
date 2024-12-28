@@ -29,11 +29,11 @@ type SearchParams = {
 };
 const AddGroupScreen = () => {
   const { addGroup, updateGroup, deleteGroup, group } = useData();
-  const { _id=null, color, title = "" } = useLocalSearchParams<SearchParams>();
+  const { _id = null, color, title = "" } = useLocalSearchParams<SearchParams>();
   const { t } = useTranslation("", { keyPrefix: "app.stack.addGroup" });
   const router = useRouter();
-  const { header,setHeaderRightButtons, setHeaderTitle } = useHeader();
-  const inputRef = useRef<TextInput>();
+  const { header, setHeaderRightButtons, setHeaderTitle } = useHeader();
+  const inputRef = useRef<TextInput>(null);
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<ValueProps>({
     title,
@@ -44,18 +44,20 @@ const AddGroupScreen = () => {
   const [sheetView, setSheetView] = useState<"icon" | "delete">("icon");
 
   const { height, width } = useWindowDimensions();
-  const {top: topInset} = useSafeAreaInsets();
-  const sheetRef = useRef<BottomSheet>();
+  const { top: topInset } = useSafeAreaInsets();
+  const sheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
-    setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_group" }] : [])
+    setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_group" }] : []);
     setHeaderTitle(_id ? t("updateTitle") : t("addTitle"));
   }, [_id]);
 
   useEffect(() => {
     if (_id) {
-        const grup = group.find((grp) => grp._id === _id);
+      const grup = group.find((grp) => grp._id === _id);
+      if (grup) {
         setValues((prev) => ({ ...prev, description: grup.description, icon: grup.icon }));
+      }
     }
   }, [_id, group]);
 
@@ -78,7 +80,7 @@ const AddGroupScreen = () => {
   const handleSelectIcon = useCallback(
     (icon: string) => {
       setValues((prev) => ({ ...prev, icon }));
-      sheetRef.current.close();
+      sheetRef.current?.close();
     },
     [sheetRef]
   );
@@ -90,18 +92,18 @@ const AddGroupScreen = () => {
       // TODO: fetch created_at date and populate here
       updateGroup(_id, { ...values, createdAt: date, updatedAt: date, isFavorite: false });
     } else addGroup({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
-    if (router.canGoBack) router.back();
+    if (router.canGoBack()) router.back();
     else router.replace("(tabs)/group");
   };
   const handlePressDelete = useCallback(() => {
-    sheetRef.current.close();
-    deleteGroup(_id);
+    sheetRef.current?.close();
+    if (_id !== null) deleteGroup(_id);
     router.back();
   }, [_id]);
 
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
-    sheetRef.current.snapToIndex(0);
+    sheetRef.current?.snapToIndex(0);
   }, [sheetRef, setSheetView]);
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
@@ -109,7 +111,7 @@ const AddGroupScreen = () => {
   return (
     <>
       <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset}}
+        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset }}
         paddingVertical={8}
         style={{ backgroundColor: colors.screen }}
         tabbarVisible={false}
@@ -129,7 +131,7 @@ const AddGroupScreen = () => {
               <Pressable
                 onPress={() => {
                   setSheetView("icon");
-                  sheetRef.current.snapToIndex(0);
+                  sheetRef.current?.snapToIndex(0);
                 }}
               >
                 <View
@@ -142,7 +144,7 @@ const AddGroupScreen = () => {
                     backgroundColor: values.color,
                   }}
                 >
-                  <Icon name={values.icon as undefined} size={48} />
+                  <Icon name={values.icon} size={48} />
                 </View>
               </Pressable>
             </View>
@@ -246,7 +248,7 @@ const AddGroupScreen = () => {
             text={t("deleteText")}
             title={t("deleteTitle")}
             onComfirm={handlePressDelete}
-            onCancel={() => sheetRef.current.close()}
+            onCancel={() => sheetRef.current?.close()}
             cancel={t("cancel")}
             color={values.color}
             confirm={t("confirm")}

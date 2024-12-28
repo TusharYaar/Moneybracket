@@ -19,7 +19,7 @@ const HeaderContext = createContext({
     hide: () => {},
   },
   setHeaderRightButtons: (btns: HeaderRightButton[]) => {},
-  headerHeight: HEADER_HEIGHT + PADDING,
+  headerHeight: HEADER_HEIGHT,
   tabbarHeight: HEADER_HEIGHT + PADDING,
   setHeaderTitle: (t: string) => {},
 });
@@ -32,8 +32,8 @@ const VISIBLE_TABS = !__DEV__
 const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
   const { width } = useWindowDimensions();
-  const headerPosition = useSharedValue(topInset + 8);
-  const tabbarPosition = useSharedValue(bottomInset + 8);
+  const headerPosition = useSharedValue(topInset);
+  const tabbarPosition = useSharedValue(bottomInset + PADDING);
   const [headerRightButtons, setHeaderRightButtons] = useState<HeaderRightButton[]>([]);
   const [headerTitle, setHeaderTitle] = useState("");
   const {
@@ -51,7 +51,7 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
 
   useEffect(() => {
     if (navigation.isReady()) {
-      headerPosition.value = topInset + PADDING;
+      headerPosition.value = topInset;
       SplashScreen.hideAsync();
       tabbarPosition.value = isWide ? bottomInset + PADDING : bottomInset + PADDING + 64;
     }
@@ -61,10 +61,10 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
     headerPosition.value = withTiming(-HEADER_HEIGHT);
   }, []);
   const hideTabbar = useCallback(() => {
-    tabbarPosition.value = withTiming( isWide ? -HEADER_HEIGHT : -HEADER_HEIGHT * 2 - 8);
+    tabbarPosition.value = withTiming(isWide ? -HEADER_HEIGHT : -HEADER_HEIGHT * 2 - 8);
   }, [isWide]);
   const showHeader = useCallback(() => {
-    headerPosition.value = withTiming(topInset + PADDING);
+    headerPosition.value = withTiming(topInset);
   }, [topInset]);
   const showTabbar = useCallback(() => {
     tabbarPosition.value = withTiming(bottomInset + PADDING);
@@ -119,14 +119,14 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
           show: showHeader,
           hide: hideHeader,
         },
-        headerHeight: HEADER_HEIGHT + PADDING,
+        headerHeight: HEADER_HEIGHT,
         tabbarHeight: HEADER_HEIGHT + PADDING,
         setHeaderTitle,
       }}
     >
       <Animated.View style={headerStyle}>
         <Header
-        title={headerTitle}
+          title={headerTitle}
           route={routes.length ? routes[currentIndex] : {}}
           back={currentIndex > 0 ? routes[currentIndex - 1].name : undefined}
           headerRightButtons={headerRightButtons}

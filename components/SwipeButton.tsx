@@ -9,13 +9,14 @@ type Props = {
   bgColor?: string;
   style?: ViewStyle;
   text?: string;
+  disable?: boolean;
 };
 
 const screenPadding = 16;
 const pillSize = 64;
 const trackPadding = 8;
 
-const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "" }: Props) => {
+const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "", disable=false}: Props) => {
   const { width } = useWindowDimensions();
   const gestureEndPoint = useMemo(() => width - screenPadding * 2 - pillSize - trackPadding, [width]);
   const { textStyle } = useTheme();
@@ -28,7 +29,7 @@ const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "" }: Pr
       else onLeft.value = e.translationX;
     })
     .onFinalize((e) => {
-      if (e.translationX + 32 >= gestureEndPoint) {
+      if (e.translationX + 32 >= gestureEndPoint && !disable) {
         onLeft.value = withTiming(gestureEndPoint);
         runOnJS(onSwipeComplete)();
       } else onLeft.value = withTiming(trackPadding);
@@ -52,7 +53,7 @@ const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "" }: Pr
       <GestureDetector gesture={pan}>
         <Animated.View
           style={{
-            backgroundColor: "#e63946",
+            backgroundColor: disable ? "#7f7f7f" : "#e63946",
             height: pillSize,
             width: pillSize,
             borderRadius: 8,

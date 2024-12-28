@@ -4,6 +4,7 @@ export const defaultT: CustomTheme = {
   name: "Default Theme",
   id: "default",
   isVisible: true,
+  statusbar: "dark",
   colors: {
     headerBackground: "#010a19",
     headerIconActive: "#e63946",

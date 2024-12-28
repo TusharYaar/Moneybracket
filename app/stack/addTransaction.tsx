@@ -27,8 +27,8 @@ type SearchParams = {
 };
 
 const NULL_GROUP = {
-  _id: null,
-  title: "No Group",
+  _id: "no_group",
+  title: "no_group",
   isFavorite: true,
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -37,9 +37,20 @@ const NULL_GROUP = {
   description: "No group",
 };
 
+const NULL_CATEGORY: Category = {
+  _id: "no_category",
+  title: "no_category",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  type: "expense",
+  color: "#7f7f7f",
+  icon: "cancel",
+  isFavorite: false,
+};
+
 const AddTransaction = () => {
   const {
-    _id,
+    _id = null,
     amount = "0",
     date = new Date().toISOString(),
     category: tcategory,
@@ -47,12 +58,12 @@ const AddTransaction = () => {
   const { t } = useTranslation("", { keyPrefix: "app.stack.addTransaction" });
   const { currency: defaultCurrency, dateFormat } = useSettings();
   const { category, addTransaction, updateTransaction, deleteTransaction, transaction, group } = useData();
-  const amtInputRef = useRef<TextInput>();
-  const categorySheetRef = useRef<BottomSheet>();
+  const amtInputRef = useRef<TextInput>(null);
+  const categorySheetRef = useRef<BottomSheet>(null);
   const [sheetView, setSheetView] = useState("category");
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<Omit<Transaction, "_id" | "updatedAt">>({
-    category: category.length > 0 ? category[0]._id : null,
+    category: category.length > 0 ? category[0]._id : NULL_CATEGORY._id,
     amount: parseFloat(amount),
     date: parseISO(date),
     note: "",
@@ -64,16 +75,15 @@ const AddTransaction = () => {
   const animatedColor = useSharedValue(category.length > 0 ? category[0].color : "orange");
   // const { rates } = useExchangeRate();
   const router = useRouter();
-  
-  const { header, setHeaderRightButtons, setHeaderTitle } = useHeader();
-  
-  const { height } = useWindowDimensions();
-  const {top: topInset} = useSafeAreaInsets();
 
+  const { header, setHeaderRightButtons, setHeaderTitle } = useHeader();
+
+  const { height } = useWindowDimensions();
+  const { top: topInset } = useSafeAreaInsets();
 
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
-    categorySheetRef.current.snapToIndex(0);
+    categorySheetRef.current?.snapToIndex(0);
   }, [categorySheetRef, setSheetView]);
 
   useEffect(() => {
@@ -84,7 +94,9 @@ const AddTransaction = () => {
   useEffect(() => {
     if (_id) {
       const t = transaction.find((trans) => trans._id === _id);
-      setValues((prev) => ({ ...prev, note: t.note, image: t.image, createdAt: t.createdAt, group: t.group }));
+      if (t) {
+        setValues((prev) => ({ ...prev, note: t.note, image: t.image, createdAt: t.createdAt, group: t.group }));
+      }
     }
   }, [_id, transaction]);
 
@@ -105,11 +117,11 @@ const AddTransaction = () => {
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", (e) => {
-      categorySheetRef.current.close();
+      categorySheetRef.current?.close();
     });
 
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      amtInputRef.current.blur();
+      amtInputRef.current?.blur();
     });
 
     return () => {
@@ -122,7 +134,7 @@ const AddTransaction = () => {
     if (tcategory) {
       setValues((prev) => ({ ...prev, category: tcategory }));
     } else {
-      setValues((prev) => ({ ...prev, category: category[0]._id }));
+      setValues((prev) => ({ ...prev, category: category.length > 0 ? category[0]._id : NULL_CATEGORY._id }));
     }
   }, [category, tcategory]);
 
@@ -146,13 +158,13 @@ const AddTransaction = () => {
     } else {
       addTransaction({ ...values, category: values.category, updatedAt });
     }
-    if (router.canGoBack) router.back();
+    if (router.canGoBack()) router.back();
     else router.replace("(tabs)/transaction");
   };
 
   const handlePressDelete = useCallback(() => {
-    categorySheetRef.current.close();
-    deleteTransaction(_id);
+    categorySheetRef.current?.close();
+    if (_id) deleteTransaction(_id);
     router.back();
   }, [_id]);
 
@@ -190,19 +202,27 @@ const AddTransaction = () => {
   // }, [imagePermission]);
 
   const handleTextBoxPress = useCallback(() => {
-    amtInputRef.current.focus();
+    amtInputRef.current?.focus();
   }, []);
 
   const updateCategory = useCallback((category: Category) => {
-    categorySheetRef.current.close();
+    categorySheetRef.current?.close();
     animatedColor.value = withTiming(category.color);
     setValues((prev) => ({ ...prev, category: category._id }));
   }, []);
 
-  const selectedCategory = useMemo(() => category.find((c) => c._id === values.category), [values.category]);
+  const selectedCategory = useMemo(() => {
+    const _cat = category.find((c) => c._id === values.category);
+
+    if (_cat) return _cat;
+    else return NULL_CATEGORY;
+  }, [values.category]);
   const selectedGroup = useMemo(() => {
-    if (values.group !== null && values.group !== NULL_GROUP._id) return group.find((g) => g._id === values.group);
-    else return NULL_GROUP;
+    if (values.group !== null && values.group !== NULL_GROUP._id) {
+      const grp = group.find((g) => g._id === values.group);
+      if (grp) return grp;
+      else return NULL_GROUP;
+    } else return NULL_GROUP;
   }, [values.group]);
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
@@ -219,9 +239,14 @@ const AddTransaction = () => {
   );
 
   const handleChangeGroup = useCallback((group: Group | null) => {
-    setValues((prev) => ({ ...prev, group: group._id }));
-    categorySheetRef.current.close();
+    setValues((prev) => ({ ...prev, group: group ? group._id : null }));
+    categorySheetRef.current?.close();
   }, []);
+
+  const disableSwipeBtn = useMemo(() => {
+    if (Number.isNaN(values.amount) || !Number.isInteger(values.amount) || values.amount <= 0 || values.category === NULL_CATEGORY._id) return true;
+    else return false;
+  }, [values]);
 
   return (
     <>
@@ -238,7 +263,7 @@ const AddTransaction = () => {
             autofocus={_id ? false : true}
             onPress={handleTextBoxPress}
             onChangeText={(text) => setValues((prev) => ({ ...prev, amount: parseFloat(text) }))}
-            backgroundColor={values.category ? selectedCategory.color : undefined}
+            backgroundColor={selectedCategory.color}
             ref={amtInputRef}
             initialValue={values.amount > 0 ? values.amount.toString() : undefined}
             prefix={defaultCurrency.symbol_native}
@@ -246,15 +271,14 @@ const AddTransaction = () => {
           />
           <View style={{ marginTop: 32 }}>
             <Text style={textStyle.body}>{t("category")}</Text>
-            {values.category && (
-              <CategoryItem
-                item={selectedCategory}
-                onPress={() => {
-                  categorySheetRef.current.snapToIndex(2);
-                  setSheetView("category");
-                }}
-              />
-            )}
+
+            <CategoryItem
+              item={selectedCategory}
+              onPress={() => {
+                categorySheetRef.current?.snapToIndex(2);
+                setSheetView("category");
+              }}
+            />
           </View>
           <View style={{ marginTop: 16 }}>
             <Text style={textStyle.body}>{t("date")}</Text>
@@ -293,7 +317,7 @@ const AddTransaction = () => {
                 android_ripple={{ color: selectedGroup.color || colors.rippleColor }}
                 style={styles.button}
                 onPress={() => {
-                  categorySheetRef.current.snapToIndex(2);
+                  categorySheetRef.current?.snapToIndex(2);
                   setSheetView("group");
                 }}
               >
@@ -305,6 +329,7 @@ const AddTransaction = () => {
         <SwipeButton
           style={{ marginTop: 16 }}
           onSwipeComplete={handleSubmit}
+          disable={disableSwipeBtn}
           bgColor={values.category ? selectedCategory.color : undefined}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
@@ -342,7 +367,7 @@ const AddTransaction = () => {
             text={t("deleteText")}
             title={t("deleteTitle")}
             onComfirm={handlePressDelete}
-            onCancel={() => categorySheetRef.current.close()}
+            onCancel={() => categorySheetRef.current?.close()}
             cancel={t("cancel")}
             color={selectedCategory.color}
             confirm={t("confirm")}

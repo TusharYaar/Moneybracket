@@ -11,10 +11,11 @@ interface Props<T> extends FlashListProps<T> {
   paddingVertical?: number;
   paddingTop?: number;
   paddingBottom?: number;
+  // onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => {}
   // handleClickBack?: () => {};
 }
 
-function CollapsibleHeaderFlatList<T>({ onScroll, contentContainerStyle, paddingVertical = 0,paddingTop = 0, paddingBottom = 0, ...props }: Props<T>) {
+function CollapsibleHeaderFlatList<T>({ onScroll, contentContainerStyle, paddingVertical = 0,paddingTop = 0, paddingBottom = 0 ,...props}: Props<T>) {
   const lastContentOffset = useSharedValue(0);
   const { header, tabbar, headerHeight, tabbarHeight } = useHeader();
 
@@ -31,6 +32,8 @@ function CollapsibleHeaderFlatList<T>({ onScroll, contentContainerStyle, padding
       tabbar.show();
       header.show();
     }
+    if (onScroll) onScroll(event);
+
   };
   return (
     <FlashList

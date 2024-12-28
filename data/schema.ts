@@ -21,7 +21,7 @@ export const transactionTable = sqliteTable("transaction_table", {
   currency: text().notNull(),
   category: text().notNull(),
   conversionRate: real().default(1),  //for future use
-  group: text().default(null), // for future use
+  group: text(), // for future use
   image: text().default(null), //for future use
   createdAt: integer({ mode: 'timestamp' }).default(sql`(CURRENT_DATE)`),
   updatedAt: integer({ mode: 'timestamp' }).default(sql`(CURRENT_DATE)`),

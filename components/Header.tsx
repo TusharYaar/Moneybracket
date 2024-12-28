@@ -60,7 +60,7 @@ const Header = ({route, back, headerRightButtons, title}: Props) => {
             <Pressable onPress={btn.onPress} disabled={btn.disabled === true} key={btn.icon}>
               <View style={[styles.headerActionBtn, { backgroundColor: colors.headerBackground }]}>
                 <Icon
-                  name={btn.icon as undefined}
+                  name={btn.icon}
                   size={24}
                   color={btn.disabled === true ? colors.headerIconDisabled : colors.headerIconActive}
                 />

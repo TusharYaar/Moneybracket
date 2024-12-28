@@ -20,10 +20,10 @@ const CategoryItem = forwardRef<View, Props>(function AmountInput({ item, onPres
   const categoryColor = itemColor ? itemColor : item.color;
   return (
     <View style={[styles.overflowContainer, { borderColor: categoryColor, borderRadius: 8 }, style]}>
-      <Pressable style={styles.container} onPress={() => onPress(item)} ref={ref}>
+      <Pressable style={styles.container} onPress={() => onPress ? onPress(item): {}} ref={ref}>
         <View style={styles.innerContainer}>
           <View style={[styles.iconContainer, { backgroundColor: categoryColor }]}>
-            <Icon name={item.icon as undefined} size={40} />
+            <Icon name={item.icon} size={40} />
           </View>
           <View style={[styles.content]}>
             <Text style={[textStyle.title, {color: colors.text}]}>{item.title}</Text>

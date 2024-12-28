@@ -1,11 +1,11 @@
 import React, { useContext, createContext, useState, useMemo, useCallback } from "react";
 import { ALL_FONTS, ALL_THEMES, SETTING_KEYS } from "../data";
-import { StatusBar } from "expo-status-bar";
 // import { isLoaded, loadAsync, useFonts } from "expo-font";
 // import { downloadAsync, getInfoAsync, makeDirectoryAsync, readDirectoryAsync } from "expo-file-system";
 import { getFromStorageOrDefault } from "../utils/storage";
-import type { Theme_Color, Theme_TextStyle } from "../types";
+import type { CustomTheme, FontObject, Theme_Color, Theme_TextStyle } from "../types";
 import { Platform } from "react-native";
+import { SystemBars } from "react-native-edge-to-edge";
 
 // const textStyle: Theme_TextStyle = {
 //   body: {
@@ -62,33 +62,18 @@ const ThemeContext = createContext<Props>({
 export const useTheme = () => useContext(ThemeContext);
 
 const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  // const [loaded, error] = useFonts({
-  //   Raleway_100: require("../assets/Raleway_100.ttf"),
-  //   Raleway_200: require("../assets/Raleway_200.ttf"),
-  //   Raleway_300: require("../assets/Raleway_300.ttf"),
-  //   Raleway_400: require("../assets/Raleway_400.ttf"),
-  //   Raleway_500: require("../assets/Raleway_500.ttf"),
-  //   Raleway_600: require("../assets/Raleway_600.ttf"),
-  //   Raleway_700: require("../assets/Raleway_700.ttf"),
-  //   Raleway_800: require("../assets/Raleway_800.ttf"),
-  //   Raleway_900: require("../assets/Raleway_900.ttf"),
-
-  //   Lexend_400: require("../assets/Lexend_400.ttf"),
-  //   Lexend_500: require("../assets/Lexend_500.ttf"),
-  //   Lexend_600: require("../assets/Lexend_600.ttf"),
-  //   Lexend_700: require("../assets/Lexend_700.ttf"),
-  //   Lexend_800: require("../assets/Lexend_800.ttf"),
-  //   Lexend_900: require("../assets/Lexend_900.ttf"),
-  // });
   const [theme, setTheme] = useState("default");
   const [font, setFont] = useState("lexend");
 
-  const colors = useMemo(() => ALL_THEMES.find((f) => f.id === theme).colors, [theme]);
+  const colors = useMemo(() => (ALL_THEMES.find((f) => f.id === theme) as CustomTheme).colors, [theme]);
 
-  const statusBarStyle = useMemo(() => ALL_THEMES.find((f) => f.id === theme).statusbar || "dark", [theme]);
+  const statusBarStyle = useMemo(
+    () => (ALL_THEMES.find((f) => f.id === theme) as CustomTheme).statusbar || "dark",
+    [theme]
+  );
 
   const textStyle = useMemo(() => {
-    const _fonts = ALL_FONTS.find((f) => f.id === font).font;
+    const _fonts = (ALL_FONTS.find((f) => f.id === font) as FontObject).font;
     const fonts = {
       amountInput: _fonts.amountInput,
       amount: _fonts.amount,
@@ -194,7 +179,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
         textStyle,
       }}
     >
-      <StatusBar style={statusBarStyle} />
+      <SystemBars style={statusBarStyle} />
       {children}
     </ThemeContext.Provider>
   );

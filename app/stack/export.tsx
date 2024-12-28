@@ -26,7 +26,7 @@ const Exports = () => {
       await FileSystem.makeDirectoryAsync(EXPORTS_DIRECTORY, { intermediates: true });
     }
     const files = await FileSystem.readDirectoryAsync(EXPORTS_DIRECTORY);
-    setFiles(files);
+    // setFiles(files);
   }, []);
 
   useEffect(() => {

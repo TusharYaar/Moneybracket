@@ -18,13 +18,13 @@ const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, style }: P
       <Pressable onPress={onPress} android_ripple={{color: colors.rippleColor }}>
         <View style={styles.innerContainer}>
           <View style={styles.labelContainer}>
-            <Icon name={leftIcon as undefined} size={26} />
+            <Icon name={leftIcon} size={26} />
             <Text style={[styles.itemLabel, textStyle.body]}>
               {label}
             </Text>
           </View>
           {children}
-          {rightIcon && <Icon name={rightIcon as undefined} size={16} style={styles.rightIcon} />}
+          {rightIcon && <Icon name={rightIcon} size={16} style={styles.rightIcon} />}
         </View>
       </Pressable>
   );

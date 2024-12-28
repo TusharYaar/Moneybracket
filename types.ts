@@ -26,7 +26,7 @@ export type Category = {
   updatedAt: Date;
   color: string;
   icon: string;
-  description: string;
+  description?: string;
 };
 
 export type Group = {
@@ -54,7 +54,7 @@ export interface CustomTheme {
   id: string;
   name: string;
   colors: Theme_Color;
-  statusbar?: "dark" | "light" | "inverted"
+  statusbar?: "dark" | "light";
   isVisible?: boolean;
   image?: string;
   isPaid?: boolean;

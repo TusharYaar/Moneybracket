@@ -18,9 +18,10 @@ import { View, Switch, Text, StyleSheet, Pressable } from "react-native";
 import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { useHeader } from "providers/HeaderProvider";
 import { generateDummyTransaction } from "@utils/dummy";
-import { Transaction } from "types";
+import { Category, Transaction } from "types";
 import DeleteContainer from "@components/DeleteContainer";
 import { startOfDay } from "date-fns";
+import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
 const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
@@ -41,7 +42,7 @@ const Setting = () => {
   const { addCategory, category, addTransaction, deleteAllData } = useData();
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.settings" });
   const { t: wt } = useTranslation();
-  const { header, tabbar, setHeaderRightButtons, setHeaderTitle} = useHeader();
+  const { header, tabbar, setHeaderRightButtons, setHeaderTitle } = useHeader();
   const [selectList, setSelectList] = useState({
     visible: false,
     menu: "dateFormat",
@@ -51,13 +52,13 @@ const Setting = () => {
 
   useEffect(() => {
     setHeaderRightButtons([]);
-    setHeaderTitle(t("title"))
-  },[]);
+    setHeaderTitle(t("title"));
+  }, []);
   const router = useRouter();
-  const selectListRef = useRef<BottomSheet>();
+  const selectListRef = useRef<BottomSheet>(null);
 
   const addDummyCategories = useCallback(() => {
-    const cats = [];
+    const cats: Omit<Category, "_id">[] = [];
     Dcategories.forEach((cat, index) => {
       const date = startOfDay(new Date());
       cats.push({
@@ -82,7 +83,7 @@ const Setting = () => {
   }, [addTransaction]);
 
   const handleDeleteAllData = useCallback(() => {
-    selectListRef.current.close();
+    selectListRef.current?.close();
     setSelectList((prev) => ({ ...prev, visible: false }));
     deleteAllData();
   }, [deleteAllData]);
@@ -112,7 +113,7 @@ const Setting = () => {
       promptMessage: "Authenticate to enable app lock",
       biometricsSecurityLevel: "strong",
       disableDeviceFallback: true,
-      cancelLabel: 'Cancel',
+      cancelLabel: "Cancel",
     });
     if (valid.success) {
       if (value) {
@@ -120,9 +121,7 @@ const Setting = () => {
       } else {
         updateSettings("appLock", "PIN");
       }
-
     }
-
   }, []);
   useEffect(() => {
     getEnrolledLevelAsync().then((result) => {
@@ -133,10 +132,10 @@ const Setting = () => {
   const showSelectList = useCallback(
     (menu: string, selected: string) => {
       if (menu === "delete") {
-        selectListRef.current.snapToIndex(0);
+        selectListRef.current?.snapToIndex(0);
       } else {
         const len = OPTIONS[menu].length;
-        selectListRef.current.snapToIndex(len > 4 ? (len > 10 ? 3 : 2) : 1);
+        selectListRef.current?.snapToIndex(len > 4 ? (len > 10 ? 3 : 2) : 1);
       }
       setSelectList({ visible: true, menu, selected });
     },
@@ -146,7 +145,7 @@ const Setting = () => {
   const handleItemSelect = useCallback(
     (key: string, value: string) => {
       updateSettings(key, value);
-      selectListRef.current.close();
+      selectListRef.current?.close();
       setSelectList((prev) => ({ ...prev, visible: false }));
     },
     [updateSettings, setSelectList, selectListRef]
@@ -173,10 +172,10 @@ const Setting = () => {
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("appearance")}</Text>
           <SettingItem label={t("font")} leftIcon="font" onPress={() => showSelectList("font", settings.font)}>
-            <Text style={textStyle.body}>{OPTIONS.font.find((f) => f.value === settings.font).label}</Text>
+            <Text style={textStyle.body}>{OPTIONS.font.find((f) => f.value === settings.font)?.label}</Text>
           </SettingItem>
           <SettingItem label={t("theme")} leftIcon="theme" onPress={() => showSelectList("theme", settings.theme)}>
-            <Text style={textStyle.body}>{OPTIONS.theme.find((f) => f.value === settings.theme).label}</Text>
+            <Text style={textStyle.body}>{OPTIONS.theme.find((f) => f.value === settings.theme)?.label}</Text>
           </SettingItem>
           <SettingItem label={t("icon")} leftIcon="icon" onPress={() => showSelectList("icon", settings.icon)}>
             <Text style={textStyle.body}>{settings.icon}</Text>
@@ -223,20 +222,20 @@ const Setting = () => {
           </SettingItem>
         </View>
 
-          <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
-            <Text style={textStyle.title}>{t("security")}</Text>
-            <SettingItem label={t("lock")} leftIcon="lock">
-              <Switch value={settings.appLock !== "DISABLE"} onValueChange={handleToggleLock} />
-            </SettingItem>
+        <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
+          <Text style={textStyle.title}>{t("security")}</Text>
+          <SettingItem label={t("lock")} leftIcon="lock">
+            <Switch value={settings.appLock !== "DISABLE"} onValueChange={handleToggleLock} />
+          </SettingItem>
 
-            <SettingItem label={t("biometricLock")} leftIcon="lock">
-              <Switch
-                value={settings.appLock === "BIOMETRIC"}
-                disabled={!hasBiometrics || settings.appLock === "DISABLE" }
-                onValueChange={handleToggleBiometrics}
-              />
-            </SettingItem>
-          </View>
+          <SettingItem label={t("biometricLock")} leftIcon="lock">
+            <Switch
+              value={settings.appLock === "BIOMETRIC"}
+              disabled={!hasBiometrics || settings.appLock === "DISABLE"}
+              onValueChange={handleToggleBiometrics}
+            />
+          </SettingItem>
+        </View>
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("dataManagement")}</Text>
 
@@ -276,7 +275,7 @@ const Setting = () => {
             text={t("deleteText")}
             title={t("deleteTitle")}
             onComfirm={handleDeleteAllData}
-            onCancel={() => selectListRef.current.close()}
+            onCancel={() => selectListRef.current?.close()}
             cancel={t("cancel")}
             color={colors.sectionBackground}
             confirm={t("confirm")}
