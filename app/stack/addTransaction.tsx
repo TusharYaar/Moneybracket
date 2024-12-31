@@ -244,7 +244,7 @@ const AddTransaction = () => {
   }, []);
 
   const disableSwipeBtn = useMemo(() => {
-    if (Number.isNaN(values.amount) || !Number.isInteger(values.amount) || values.amount <= 0 || values.category === NULL_CATEGORY._id) return true;
+    if (values.amount <= 0 || values.category === NULL_CATEGORY._id) return true;
     else return false;
   }, [values]);
 
@@ -357,11 +357,6 @@ const AddTransaction = () => {
             )}
           />
         )}
-        {/* {sheetView === "date" && (
-          <View style={{ backgroundColor: colors.screen, flex: 1 }}>
-            
-          </View>
-        )} */}
         {sheetView === "delete" && (
           <DeleteContainer
             text={t("deleteText")}

@@ -20,12 +20,12 @@ const MIN_CHAR = 4;
 const PADDING = 16;
 const LINE_HEIGHT = 1.7;
 const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
-  { prefix = "", initialValue = "", backgroundColor,autofocus = true, ...props },
+  { prefix = "", initialValue = "", backgroundColor, autofocus = true, ...props },
   ref
 ) {
   const { width } = useWindowDimensions();
   const [amount, setAmount] = useState<string>(prefix + initialValue);
-  const [containerDimension, setContainerDimension] = useState({height: 200, width});
+  const [containerDimension, setContainerDimension] = useState({ height: 200, width });
   const animatedBGColor = useSharedValue(backgroundColor ? backgroundColor : "orange");
 
   useEffect(() => {
@@ -35,14 +35,13 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
   // TODO: Improve Logic for MaxFontHeight
   const maxFontHeight = useMemo(() => {
     let minDisn = Math.min(containerDimension.height, containerDimension.width);
-    return (minDisn - 2 * PADDING)/LINE_HEIGHT;
+    return (minDisn - 2 * PADDING) / LINE_HEIGHT;
   }, [containerDimension]);
 
   const fontSize = useMemo(() => {
     if (amount.length > MIN_CHAR) {
-      const size = (containerDimension.width - 2 * PADDING)/amount.length;
-      if (size < maxFontHeight)
-        return size;
+      const size = (containerDimension.width - 2 * PADDING) / amount.length;
+      if (size < maxFontHeight) return size;
     }
     return maxFontHeight;
   }, [amount, maxFontHeight]);
@@ -55,7 +54,10 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
       if (prefixLength > 0) {
         text = _text.substring(0, prefixLength) === prefix ? _text : prefix + text;
       }
-
+      if (props.type === "amount") {
+        const match = text.substring(prefixLength).match(/^[0-9]*$/g);
+        if (match === null) return;
+      }
       if (props.onChangeText) props.onChangeText(text.substring(prefixLength));
       setAmount(text);
     },
@@ -64,7 +66,7 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
 
   return (
     <Animated.View
-      style={[styles.container, props.containerStyle, {backgroundColor: animatedBGColor}]}
+      style={[styles.container, props.containerStyle, { backgroundColor: animatedBGColor }]}
       onLayout={(event) => setContainerDimension(event.nativeEvent.layout)}
     >
       <Pressable onPress={props.onPress} style={styles.pressable}>
@@ -74,7 +76,7 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
           placeholder={props.placeholder}
           onChangeText={handleChangeText}
           value={amount}
-          style={[styles.textbox, {fontSize}]}
+          style={[styles.textbox, { fontSize }]}
           keyboardType={props.keyboardType}
           numberOfLines={1}
         />
