@@ -242,7 +242,7 @@ const Setting = () => {
           {__DEV__ && <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("stack/export")} />}
           {__DEV__ && <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("stack/backup")} />}
 
-          <SettingItem label={t("deleteAllData")} leftIcon="delete" onPress={() => showSelectList("delete", "")} />
+          <SettingItem label={t("deleteAllData")} leftIcon="delete" onPress={() => showSelectList("delete", "")} testId="delete-all-data" />
         </View>
 
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>

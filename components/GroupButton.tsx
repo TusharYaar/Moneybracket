@@ -4,10 +4,9 @@ import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { useTheme } from "providers/ThemeProvider";
 import Icon from "./Icon";
 
-interface ButtonProps extends Omit<PressableProps, "children" | "style"> {
+interface ButtonProps extends Omit<PressableProps, "children"> {
   icon: string;
   label?: string;
-  style?: StyleProp<ViewStyle>;
   type?: "outline" | "filled";
 }
 
@@ -15,9 +14,10 @@ type Props = {
   buttons: ButtonProps[];
   style?: StyleProp<ViewStyle>;
   activeColor: string;
+  testId?: string;
 };
 
-const GroupButton = ({ buttons, style, activeColor }: Props) => {
+const GroupButton = ({ buttons, style, activeColor, testId }: Props) => {
   const {colors}= useTheme();
   const backgroundColor = useSharedValue(activeColor ? activeColor : colors.headerIconActive);
 
@@ -27,7 +27,7 @@ const GroupButton = ({ buttons, style, activeColor }: Props) => {
   }, [activeColor]);
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID={testId}>
       {buttons.map(({ icon, style, type = "filled", ...btn }, index) => (
         <Pressable style={{ flexGrow: 1 }} key={icon} {...btn}>
           <Animated.View

@@ -21,16 +21,19 @@ const CATEGORY_TYPES = [
     label: "income",
     value: "income",
     icon: "income",
+    testId: "group-btn-income",
   },
   {
     label: "expense",
     value: "expense",
     icon: "expense",
+    testId: "group-btn-expense",
   },
   {
     label: "transfer",
     value: "transfer",
     icon: "transfer",
+    testId: "group-btn-transfer",
   },
 ];
 
@@ -207,6 +210,7 @@ const AddCategoryScreen = () => {
           <View style={{ marginTop: 32 }}>
             <Text style={textStyle.body}>{t("type")}</Text>
             <GroupButton
+              testId="category-group-btn"
               buttons={CATEGORY_TYPES.map((cat) => ({
                 ...cat,
                 type: cat.value === values.type ? "filled" : "outline",

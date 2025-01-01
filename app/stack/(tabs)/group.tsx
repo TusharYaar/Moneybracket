@@ -1,4 +1,4 @@
-import React, { useCallback} from "react";
+import React, { useCallback } from "react";
 import { useData } from "providers/DataProvider";
 
 import { View } from "react-native";
@@ -17,38 +17,39 @@ const GroupScreen = () => {
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.group" });
   useFocusEffect(
     useCallback(() => {
-      setHeaderRightButtons([
-        { icon: "add", onPress: () => router.push("stack/addGroup"), action: "add_group" },
-        { icon: "graph", onPress: () => router.push("stack/addGroup"), action: "add_group" },
-      ].filter(a => __DEV__ ? true : a.icon !== "graph"));
+      setHeaderRightButtons(
+        [
+          { icon: "add", onPress: () => router.push("stack/addGroup"), action: "add_group", testId: "add-group" },
+          { icon: "graph", onPress: () => router.push("stack/addGroup"), action: "add_group", testId: "chart-group" },
+        ].filter((a) => (__DEV__ ? true : a.icon !== "graph"))
+      );
       setHeaderTitle(t("title"));
     }, [setHeaderRightButtons])
   );
 
   return (
     <View style={{ backgroundColor: colors.screen, flex: 1 }}>
-
-    <CollapsibleHeaderFlatList
-      paddingVertical={8}
-      hideBackButton={true}
-      contentContainerStyle={{ paddingHorizontal: 16 }}
-      data={group}
-      renderItem={({ item }) => (
-        <Link
-          href={{
-            pathname: "stack/addGroup",
-            params: {
-              _id: item._id,
-              color: item.color,
-              title: item.title
-            },
-          }}
-          asChild
-        >
-          <GroupItem item={item} style={{marginBottom: 8}} />
-        </Link>
-      )}
-    />
+      <CollapsibleHeaderFlatList
+        paddingVertical={8}
+        hideBackButton={true}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
+        data={group}
+        renderItem={({ item }) => (
+          <Link
+            href={{
+              pathname: "stack/addGroup",
+              params: {
+                _id: item._id,
+                color: item.color,
+                title: item.title,
+              },
+            }}
+            asChild
+          >
+            <GroupItem item={item} style={{ marginBottom: 8 }} />
+          </Link>
+        )}
+      />
     </View>
   );
 };

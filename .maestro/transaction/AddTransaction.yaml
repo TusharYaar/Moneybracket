@@ -1,0 +1,15 @@
+appId: com.tusharyaar.moneybracket
+name: Test to add transaction
+---
+- launchApp
+- tapOn:
+     id: add-transaction
+- assertVisible: Add Transaction
+- inputText: 400
+- hideKeyboard
+- swipe:
+   from: 
+     id: "swipe-button-pill"
+   direction: RIGHT 
+- assertVisible: 
+             id: add-transaction

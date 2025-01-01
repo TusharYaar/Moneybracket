@@ -1,0 +1,21 @@
+appId: com.tusharyaar.moneybracket
+name: Test to add category
+---
+- launchApp
+- tapOn:
+     id: tab-category
+- assertVisible: Category
+- tapOn:
+     id: add-category
+- assertVisible: Add Category
+- inputText: Test Income
+- hideKeyboard
+# - tapOn:
+#      id: group-btn-income 
+- swipe:
+   from: 
+     id: "swipe-button-pill"
+   direction: RIGHT 
+- assertVisible: Category
+- assertVisible:
+             id: add-category 

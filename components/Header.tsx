@@ -42,7 +42,7 @@ const Header = ({route, back, headerRightButtons, title}: Props) => {
   return (
     <View style={[styles.headerContainer, { columnGap: 16 }]}>
       {back ? (
-        <Link href={`stack/${back}`} dismissTo>
+        <Link href={`stack/${back}`} dismissTo testID="page-back">
           <View style={[styles.headerActionBtn, { backgroundColor: colors.headerBackground }]}>
             <Icon name="back" size={24} color={colors.headerIconActive} />
           </View>
@@ -52,12 +52,12 @@ const Header = ({route, back, headerRightButtons, title}: Props) => {
         style={[styles.titleContianer, { backgroundColor: colors.headerBackground }]}
         // onLayout={(event) => setTitleContainerWidth(event.nativeEvent.layout.width)}
       >
-        <Text style={[header, { fontSize: fontSize > 0 ? fontSize : 10 }]}>{title}</Text>
+        <Text style={[header, { fontSize: fontSize > 0 ? fontSize : 10 }]} testID="header-title">{title}</Text>
       </View>
       {headerRightButtons && headerRightButtons?.length > 0 && (
         <View style={{ flexDirection: "row", columnGap: 8 }}>
           {headerRightButtons.map((btn) => (
-            <Pressable onPress={btn.onPress} disabled={btn.disabled === true} key={btn.icon}>
+            <Pressable onPress={btn.onPress} disabled={btn.disabled === true} key={btn.icon} testID={btn.testId}>
               <View style={[styles.headerActionBtn, { backgroundColor: colors.headerBackground }]}>
                 <Icon
                   name={btn.icon}

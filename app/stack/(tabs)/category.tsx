@@ -17,8 +17,15 @@ const AllCategory = () => {
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.category" });
   useFocusEffect(
     useCallback(() => {
-      setHeaderRightButtons([{ icon: "add", onPress: () => router.push("stack/addCategory"), action: "add_category" }]);
-    setHeaderTitle(t("title"));
+      setHeaderRightButtons([
+        {
+          icon: "add",
+          onPress: () => router.push("stack/addCategory"),
+          action: "add_category",
+          testId: "add-category",
+        },
+      ]);
+      setHeaderTitle(t("title"));
     }, [])
   );
 
@@ -26,26 +33,26 @@ const AllCategory = () => {
     <View style={{ backgroundColor: colors.screen, flex: 1 }}>
       <CollapsibleHeaderFlatList
         paddingVertical={8}
-        contentContainerStyle={{ paddingHorizontal: 8}}
+        contentContainerStyle={{ paddingHorizontal: 8 }}
         data={category}
         renderItem={({ item }) => (
-          <Link href={{pathname: "stack/addCategory",
-            params: {
-              title: item.title,
-              _id: item._id,
-              color: item.color,
-              type: item.type,
-            }
-          }}
-          asChild>
-          <CategoryItem
-            item={item}
-            style={styles.category}
-            />
-            </Link>
+          <Link
+            href={{
+              pathname: "stack/addCategory",
+              params: {
+                title: item.title,
+                _id: item._id,
+                color: item.color,
+                type: item.type,
+              },
+            }}
+            asChild
+          >
+            <CategoryItem item={item} style={styles.category} />
+          </Link>
         )}
       />
-      </View>
+    </View>
   );
 };
 
