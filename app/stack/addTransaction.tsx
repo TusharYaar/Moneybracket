@@ -168,39 +168,6 @@ const AddTransaction = () => {
     router.back();
   }, [_id]);
 
-  // const handleCamera = useCallback(async () => {
-  //   if (cameraPermission && !cameraPermission.granted && cameraPermission.canAskAgain) await requestCameraPermission();
-  //   if (!cameraPermission) {
-  //     setShowImageOptions(false);
-  //     const { assets, canceled } = await ImagePicker.launchCameraAsync();
-  //     if (!canceled) {
-  //       setValues((prev) => ({ ...prev, image: assets[0].uri }));
-  //     }
-  //   } else {
-  //     console.log("No camera Permissions");
-  //   }
-  // }, []);
-  // const removeImage = useCallback(() => {
-  //   setValues((prev) => ({ ...prev, image: "" }));
-  //   setShowImageOptions(false);
-  // }, [cameraPermission]);
-
-  // const handlePickImage = useCallback(async () => {
-  //   if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) await requestImagePermission();
-  //   if (imagePermission.granted) {
-  //     setShowImageOptions(false);
-  //     const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
-  //       allowsMultipleSelection: false,
-  //       allowsEditing: true,
-  //     });
-  //     if (!canceled && assets.length > 0) {
-  //       setValues((prev) => ({ ...prev, image: assets[0].uri }));
-  //     }
-  //   } else {
-  //     console.log("please provide permission");
-  //   }
-  // }, [imagePermission]);
-
   const handleTextBoxPress = useCallback(() => {
     amtInputRef.current?.focus();
   }, []);
@@ -275,7 +242,7 @@ const AddTransaction = () => {
             <CategoryItem
               item={selectedCategory}
               onPress={() => {
-                categorySheetRef.current?.snapToIndex(2);
+                categorySheetRef.current?.snapToIndex(1);
                 setSheetView("category");
               }}
             />
@@ -317,7 +284,7 @@ const AddTransaction = () => {
                 android_ripple={{ color: selectedGroup.color || colors.rippleColor }}
                 style={styles.button}
                 onPress={() => {
-                  categorySheetRef.current?.snapToIndex(2);
+                  categorySheetRef.current?.snapToIndex(1);
                   setSheetView("group");
                 }}
               >
@@ -337,12 +304,13 @@ const AddTransaction = () => {
       <BottomSheet
         style={{ backgroundColor: colors.screen }}
         ref={categorySheetRef}
-        snapPoints={[225, 264, "100%"]}
+        snapPoints={[225, "69%", "100%"]}
         enablePanDownToClose
         index={-1}
         backdropComponent={renderBackdrop}
         enableHandlePanningGesture={sheetView === "category"}
         onAnimate={handleOnAnimate}
+        enableDynamicSizing={false}
       >
         {sheetView === "category" && (
           <BottomSheetFlatList

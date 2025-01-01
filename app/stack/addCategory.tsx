@@ -254,6 +254,7 @@ const AddCategoryScreen = () => {
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
         onAnimate={handleOnAnimate}
+        enableDynamicSizing={false}
         enableHandlePanningGesture={sheetView === "icon"}
       >
         {sheetView === "icon" && (
