@@ -35,7 +35,9 @@
                     "deleteTitle": "Delete All Data?",
                     "deleteText":"Are you sure you want to delete all data. This includes all Transction data and Categories.",
                     "cancel":"Cancel",
-                    "confirm": "Delete" 
+                    "confirm": "Delete",
+                    "enableNotification": "Enable Notifications",
+                    "reminderNotification": "Reminder Notifications"
                 },
                 "transaction": {
                     "title":"Transactions"
@@ -73,7 +75,8 @@
                 "cancel":"Cancel",
                 "confirm": "Delete",
                 "group": "Group",
-                "noGroup": "Part of no Group"
+                "noGroup": "Part of no Group",
+                "noCategory": "No Category Present"
             },
             "addGroup": {
                 "addTitle": "Add Group",

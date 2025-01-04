@@ -26,11 +26,14 @@ export const SETTING_KEYS = {
   appLock: "settings/applock",
   theme: "settings/theme",
   icon: "settings/icon",
-  themeVariant: "settings/themeVariant",
   font: "settings/font",
   dateFormat: "settings/dateFormat",
   roundness: "settings/roundness",
   isFirstLaunch: "settings/isFirstLaunch",
+  // 
+  notificationEnable: "settings/notification/enable",
+  reminderNotificationEnable: "settings/notification/reminderEnable",
+  reminderNotificationTime: "settings/notification/reminderTime"
 };
 
 export {

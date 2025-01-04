@@ -27,8 +27,8 @@ type SearchParams = {
 };
 
 const NULL_GROUP = {
-  _id: "no_group",
-  title: "no_group",
+  _id: "noGroup",
+  title: "noGroup",
   isFavorite: true,
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -38,8 +38,8 @@ const NULL_GROUP = {
 };
 
 const NULL_CATEGORY: Category = {
-  _id: "no_category",
-  title: "no_category",
+  _id: "noCategory",
+  title: "noCategory",
   createdAt: new Date(),
   updatedAt: new Date(),
   type: "expense",
