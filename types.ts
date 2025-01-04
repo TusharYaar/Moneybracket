@@ -171,6 +171,7 @@ export type HeaderRightButton = {
   icon: string;
   onPress?: () => void;
   disabled?: boolean;
+  testId?: string; 
 }
 
 export type TransactionDate = {

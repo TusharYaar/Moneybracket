@@ -21,7 +21,7 @@ import { generateDummyTransaction } from "@utils/dummy";
 import { Category, Transaction } from "types";
 import DeleteContainer from "@components/DeleteContainer";
 import { startOfDay } from "date-fns";
-import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
+import { getPermissionsAsync, requestPermissionsAsync } from "expo-notifications";
 
 const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
@@ -162,6 +162,46 @@ const Setting = () => {
     },
     [header]
   );
+
+  const hasNotificationPermission = useCallback(async () => {
+    const { status: existingStatus } = await getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus === "granted") {
+      return true;
+    }
+    return false;
+  }, []);
+
+  const handleToggleNotification = useCallback(
+    async (value: boolean) => {
+      if (value) {
+        const perm = await hasNotificationPermission();
+        if (perm) {
+          updateSettings("notificationEnable", "ENABLE");
+        }
+      } else {
+        updateSettings("notificationEnable", "DISABLE");
+      }
+    },
+    [updateSettings]
+  );
+
+  const handleToggleReminderNotification = useCallback(async (value: boolean) => {
+    if (value) {
+      const perm = await hasNotificationPermission();
+      console.log(perm);
+      if (perm) {
+        updateSettings("reminderNotificationEnable", "ENABLE");
+      }
+    } else {
+      updateSettings("reminderNotificationEnable", "DISABLE");
+    }
+  }, []);
+
   return (
     <>
       <CollapsibleHeaderScrollView
@@ -193,7 +233,7 @@ const Setting = () => {
               onPress={addDummyTransactions}
             ></SettingItem>
 
-            <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("_sitemap")} />
+            <SettingItem label={t("siteMap")} leftIcon="about" onPress={() => router.push("_sitemap")} />
           </View>
         )}
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
@@ -220,6 +260,19 @@ const Setting = () => {
           >
             <Text style={textStyle.body}>{settings.dateFormat}</Text>
           </SettingItem>
+          {/* <SettingItem
+            label={t("enableNotification")}
+            leftIcon="date"
+            onPress={() => showSelectList("dateFormat", settings.dateFormat)}
+          >
+            <Switch value={settings.notificationEnable === "ENABLE"} onValueChange={handleToggleNotification} />
+          </SettingItem> */}
+          <SettingItem label={t("reminderNotification")} leftIcon="notification">
+            <Switch
+              value={settings.reminderNotificationEnable === "ENABLE"}
+              onValueChange={handleToggleReminderNotification}
+            />
+          </SettingItem>
         </View>
 
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
@@ -242,7 +295,7 @@ const Setting = () => {
           {__DEV__ && <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("stack/export")} />}
           {__DEV__ && <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("stack/backup")} />}
 
-          <SettingItem label={t("deleteAllData")} leftIcon="delete" onPress={() => showSelectList("delete", "")} />
+          <SettingItem label={t("deleteAllData")} leftIcon="delete" onPress={() => showSelectList("delete", "")} testId="delete-all-data" />
         </View>
 
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>

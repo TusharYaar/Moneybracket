@@ -10,16 +10,17 @@ type Props = {
   onPress?: () => void;
   children?: ReactNode;
   style?: ViewStyle;
+  testId?: string;
 };
 
-const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, style }: Props) => {
+const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, testId, style }: Props) => {
   const {textStyle,colors} = useTheme();
   return (
-      <Pressable onPress={onPress} android_ripple={{color: colors.rippleColor }}>
+      <Pressable onPress={onPress} android_ripple={{color: colors.rippleColor }} testID={testId}>
         <View style={styles.innerContainer}>
           <View style={styles.labelContainer}>
             <Icon name={leftIcon} size={26} />
-            <Text style={[styles.itemLabel, textStyle.body]}>
+            <Text style={[styles.itemLabel, textStyle.body]} testID={`${testId}-label`}>
               {label}
             </Text>
           </View>

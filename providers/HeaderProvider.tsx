@@ -26,8 +26,8 @@ const HeaderContext = createContext({
 
 export const useHeader = () => useContext(HeaderContext);
 const VISIBLE_TABS = !__DEV__
-  ? ["(tabs)/transaction", "(tabs)/category", "(tabs)/group", "(tabs)/settings"]
-  : ["(tabs)/transaction", "(tabs)/category", "(tabs)/group", "(tabs)/recurring", "(tabs)/settings"];
+  ? ["transaction", "category", "group", "settings"]
+  : ["transaction", "category", "group", "recurring", "settings"];
 
 const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();

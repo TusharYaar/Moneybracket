@@ -28,6 +28,7 @@ export const ICONS = {
     about: "smiley",
     appVersion: "ellipsis",
     buildVersion: "bug",
+    notification: "bell",
 
     travel:"rocket",
     "shopping": "ruby",
@@ -163,6 +164,7 @@ export const ICONS = {
     about: "info-outline",
     appVersion: "perm-device-info",
     buildVersion: "bug-report",
+    notification: "notifications",
 
     travel:"airplane-ticket",
     "shopping": "shopping-bag",
