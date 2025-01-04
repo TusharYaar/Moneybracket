@@ -5,6 +5,7 @@ import { getFromStorageOrDefault } from "../utils/storage";
 import en from "./en.json";
 import hi from "./hi.json";
 import es from "./es.json";
+import { SETTING_KEYS } from "data";
 
 
 export const resources = {
@@ -30,7 +31,7 @@ i18n
     },
   })
   .then(() => {
-    const lang = getFromStorageOrDefault("settings/language", "en");
+    const lang = getFromStorageOrDefault(SETTING_KEYS.language, "en");
     i18n.changeLanguage(lang);
   });
 export default i18n;

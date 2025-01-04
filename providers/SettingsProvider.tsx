@@ -1,10 +1,28 @@
 import { useContext, createContext, useState, useCallback, useEffect } from "react";
-import {  CURRENCIES, SETTING_KEYS } from "../data";
+import { CURRENCIES, SETTING_KEYS } from "../data";
 import { useTheme } from "./ThemeProvider";
 import { Currency } from "../types";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
 import { useTranslation } from "react-i18next";
 // import Purchases from "react-native-purchases";
+import {
+  AndroidImportance,
+  cancelAllScheduledNotificationsAsync,
+  getNotificationChannelAsync,
+  SchedulableTriggerInputTypes,
+  scheduleNotificationAsync,
+  setNotificationChannelAsync,
+  setNotificationHandler,
+} from "expo-notifications";
+import { Platform } from "react-native";
+
+setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 type Props = {
   language: string;
@@ -15,6 +33,8 @@ type Props = {
   icon: string;
   dateFormat: string;
   isFirstLaunch: string;
+  notificationEnable: "ENABLE" | "DISABLE" | string;
+  reminderNotificationEnable: "ENABLE" | "DISABLE" | string;
 
   updateSettings: (key: string, value: string) => void;
   // roundness: number;
@@ -38,6 +58,8 @@ const SETTINGS: Props = {
   font: getFromStorageOrDefault(SETTING_KEYS.font, "lexend", true),
   appLock: getFromStorageOrDefault(SETTING_KEYS.appLock, "DISABLE", true) as Props["appLock"],
   dateFormat: getFromStorageOrDefault(SETTING_KEYS.dateFormat, "dd MMM, yyyy", true),
+  notificationEnable: getFromStorageOrDefault(SETTING_KEYS.notificationEnable, "ENABLE", true),
+  reminderNotificationEnable: getFromStorageOrDefault(SETTING_KEYS.reminderNotificationEnable, "DISABLE", true),
   // unlockedThemes: DEFAULT_THEMES,
   // unlockedFonts: LOCAL_FONTS,
   // updateCurrency: () => {},
@@ -63,7 +85,7 @@ export const useSettings = () => useContext(SettingContext);
 
 const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   const { changeFont, changeTheme } = useTheme();
-  const {i18n} = useTranslation();
+  const { i18n } = useTranslation();
   const [settings, setSettings] = useState(SETTINGS);
   // const [offlineFonts, setOfflineFonts] = useState(LOCAL_FONTS);
 
@@ -71,6 +93,25 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
   //   setSettings((prev) => ({ ...prev, language: lang }));
   //   setStorage(SETTING_KEYS.language, lang);
   // }, []);
+
+  const scheduleDailyReminderNotification = useCallback(() => {
+    scheduleNotificationAsync({
+      content: {
+        title: "Reminder",
+        body: "Time to add daily expenses",
+      },
+      trigger: {
+        type: SchedulableTriggerInputTypes.DAILY,
+        hour: 22,
+        channelId: "reminderNotification",
+        minute: 39,
+      },
+    }).then(() => console.log("done"));
+  }, []);
+
+  const clearDailyReminderNotification = useCallback(() => {
+    cancelAllScheduledNotificationsAsync();
+  }, []);
 
   const updateSettings = useCallback(
     (key: string, value: string) => {
@@ -86,17 +127,34 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
           i18n.changeLanguage(value);
         }
         setSettings((prev) => ({ ...prev, [key]: value }));
+
+        if (key === "reminderNotificationEnable") {
+          if (value === "ENABLE") scheduleDailyReminderNotification();
+          else clearDailyReminderNotification();
+        }
       }
     },
     [setSettings]
   );
 
+  const createNotificationChannels = useCallback(async () => {
+    if (Platform.OS === "android") {
+      const channel = await getNotificationChannelAsync("reminderNotification");
+      if (channel === null) {
+        await setNotificationChannelAsync("reminderNotification", {
+          name: "Daily Reminder Notifications",
+          importance: AndroidImportance.DEFAULT,
+        });
+      }
+    }
+  }, []);
+
   useEffect(() => {
     changeTheme(SETTINGS.theme);
     changeFont(SETTINGS.font);
     i18n.changeLanguage(SETTINGS.language);
-
-  },[]);
+    createNotificationChannels();
+  }, []);
 
   // const updateFont = useCallback(async (font: string, notify = true) => {}, []);
   // const updateRoundness = useCallback(async (value: number, notify = true) => {
