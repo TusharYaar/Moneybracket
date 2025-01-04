@@ -17,19 +17,22 @@ import DeleteContainer from "@components/DeleteContainer";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const CATEGORY_TYPES = [
-  {
+  { 
+    id: "income",
     label: "income",
     value: "income",
     icon: "income",
     testId: "group-btn-income",
   },
   {
+    id: "expense",
     label: "expense",
     value: "expense",
     icon: "expense",
     testId: "group-btn-expense",
   },
   {
+    id: "transfer",
     label: "transfer",
     value: "transfer",
     icon: "transfer",
@@ -133,6 +136,11 @@ const AddCategoryScreen = () => {
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
+  const disableSwipeBtn = useMemo(() => {
+    if (values.title.length <= 3) return true;
+    else return false;
+  }, [values]);
+
   return (
     <>
       <CollapsibleHeaderScrollView
@@ -210,10 +218,10 @@ const AddCategoryScreen = () => {
           <View style={{ marginTop: 32 }}>
             <Text style={textStyle.body}>{t("type")}</Text>
             <GroupButton
+            selected={values.type}
               testId="category-group-btn"
               buttons={CATEGORY_TYPES.map((cat) => ({
                 ...cat,
-                type: cat.value === values.type ? "filled" : "outline",
                 onPress: () => setValues((prev) => ({ ...prev, type: cat.value })),
               }))}
               activeColor={values.color}
@@ -236,6 +244,7 @@ const AddCategoryScreen = () => {
 
         <SwipeButton
           bgColor={values.color}
+          disable={disableSwipeBtn}
           onSwipeComplete={handleSubmit}
           style={{ marginTop: 32 }}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
@@ -249,6 +258,7 @@ const AddCategoryScreen = () => {
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
         onAnimate={handleOnAnimate}
+        enableDynamicSizing={false}
         enableHandlePanningGesture={sheetView === "icon"}
       >
         {sheetView === "icon" && (

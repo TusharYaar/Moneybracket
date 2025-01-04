@@ -169,39 +169,6 @@ const AddTransaction = () => {
     router.back();
   }, [_id]);
 
-  // const handleCamera = useCallback(async () => {
-  //   if (cameraPermission && !cameraPermission.granted && cameraPermission.canAskAgain) await requestCameraPermission();
-  //   if (!cameraPermission) {
-  //     setShowImageOptions(false);
-  //     const { assets, canceled } = await ImagePicker.launchCameraAsync();
-  //     if (!canceled) {
-  //       setValues((prev) => ({ ...prev, image: assets[0].uri }));
-  //     }
-  //   } else {
-  //     console.log("No camera Permissions");
-  //   }
-  // }, []);
-  // const removeImage = useCallback(() => {
-  //   setValues((prev) => ({ ...prev, image: "" }));
-  //   setShowImageOptions(false);
-  // }, [cameraPermission]);
-
-  // const handlePickImage = useCallback(async () => {
-  //   if (imagePermission && !imagePermission.granted && imagePermission.canAskAgain) await requestImagePermission();
-  //   if (imagePermission.granted) {
-  //     setShowImageOptions(false);
-  //     const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
-  //       allowsMultipleSelection: false,
-  //       allowsEditing: true,
-  //     });
-  //     if (!canceled && assets.length > 0) {
-  //       setValues((prev) => ({ ...prev, image: assets[0].uri }));
-  //     }
-  //   } else {
-  //     console.log("please provide permission");
-  //   }
-  // }, [imagePermission]);
-
   const handleTextBoxPress = useCallback(() => {
     amtInputRef.current?.focus();
   }, []);
@@ -246,13 +213,7 @@ const AddTransaction = () => {
   }, []);
 
   const disableSwipeBtn = useMemo(() => {
-    if (
-      Number.isNaN(values.amount) ||
-      !Number.isInteger(values.amount) ||
-      values.amount <= 0 ||
-      values.category === NULL_CATEGORY._id
-    )
-      return true;
+    if (values.amount <= 0 || values.category === NULL_CATEGORY._id) return true;
     else return false;
   }, [values]);
 
@@ -283,7 +244,7 @@ const AddTransaction = () => {
             <CategoryItem
               item={selectedCategory}
               onPress={() => {
-                sheetRef.current?.snapToIndex(2);
+                sheetRef.current?.snapToIndex(1);
                 setSheetView("category");
               }}
             />
@@ -351,6 +312,7 @@ const AddTransaction = () => {
         backdropComponent={renderBackdrop}
         enableHandlePanningGesture={sheetView === "category" || sheetView === "group"}
         onAnimate={handleOnAnimate}
+        enableDynamicSizing={false}
       >
         {sheetView === "category" && (
           <BottomSheetFlatList
