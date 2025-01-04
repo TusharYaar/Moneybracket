@@ -22,18 +22,21 @@ const CATEGORY_TYPES = [
     label: "income",
     value: "income",
     icon: "income",
+    testId: "group-btn-income",
   },
   {
     id: "expense",
     label: "expense",
     value: "expense",
     icon: "expense",
+    testId: "group-btn-expense",
   },
   {
     id: "transfer",
     label: "transfer",
     value: "transfer",
     icon: "transfer",
+    testId: "group-btn-transfer",
   },
 ];
 
@@ -216,6 +219,7 @@ const AddCategoryScreen = () => {
             <Text style={textStyle.body}>{t("type")}</Text>
             <GroupButton
             selected={values.type}
+              testId="category-group-btn"
               buttons={CATEGORY_TYPES.map((cat) => ({
                 ...cat,
                 onPress: () => setValues((prev) => ({ ...prev, type: cat.value })),

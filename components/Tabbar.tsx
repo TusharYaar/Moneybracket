@@ -13,11 +13,11 @@ interface Props {
 }
 
 const ICONS = {
-  "(tabs)/transaction": "transactionTab",
-  "(tabs)/category": "categoryTab",
-  "(tabs)/recurring": "recurringTab",
-  "(tabs)/settings": "settingTab",
-  "(tabs)/group": "groupTab",
+  transaction: "transactionTab",
+  category: "categoryTab",
+  recurring: "recurringTab",
+  settings: "settingTab",
+  group: "groupTab",
 };
 
 const TabSize = 64;
@@ -36,23 +36,24 @@ const Tabbar = ({ visibleTabs, current, isWide }: Props) => {
         {visibleTabs.map((route) => (
           <Link
             key={route}
-            href={`stack/${route}`}
+            href={`stack/(tabs)/${route}`}
             replace
             accessibilityRole="button"
-            accessibilityState={route === current.name ? { selected: true } : {}}
+            accessibilityState={`(tabs)/${route}` === current.name ? { selected: true } : {}}
             disabled={route === current.name}
+            testID={`tab-${route}`}
           >
             <View style={[styles.tabs]}>
               <Icon
                 name={ICONS[route]}
                 size={32}
-                color={route === current.name ? colors.tabbarIconActive : colors.tabbarIcon}
+                color={`(tabs)/${route}` === current.name ? colors.tabbarIconActive : colors.tabbarIcon}
               />
             </View>
           </Link>
         ))}
       </View>
-      <Link href="stack/addTransaction" asChild>
+      <Link href="stack/addTransaction" asChild testID="add-transaction">
         <Pressable>
           <View style={[styles.addBtn, { backgroundColor: colors.tabbarBackgroundSecondary }]}>
             <Icon name="add" size={32} color={colors.tabbarIconActiveSecondary} />

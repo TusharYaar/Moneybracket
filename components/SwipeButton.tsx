@@ -16,7 +16,7 @@ const screenPadding = 16;
 const pillSize = 64;
 const trackPadding = 8;
 
-const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "", disable=false}: Props) => {
+const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "", disable = false }: Props) => {
   const { width } = useWindowDimensions();
   const gestureEndPoint = useMemo(() => width - screenPadding * 2 - pillSize - trackPadding, [width]);
   const { textStyle } = useTheme();
@@ -46,12 +46,14 @@ const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "", disa
         },
         style,
       ]}
+      testID="swipe-button"
     >
       <Text style={[{ alignSelf: "center" }, textStyle.title]} accessible={false}>
         {text}
       </Text>
       <GestureDetector gesture={pan}>
         <Animated.View
+          testID="swipe-button-pill"
           style={{
             backgroundColor: disable ? "#7f7f7f" : "#e63946",
             height: pillSize,

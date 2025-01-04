@@ -59,7 +59,7 @@ const AddTransaction = () => {
   const { currency: defaultCurrency, dateFormat } = useSettings();
   const { category, addTransaction, updateTransaction, deleteTransaction, transaction, group } = useData();
   const amtInputRef = useRef<TextInput>(null);
-  const categorySheetRef = useRef<BottomSheet>(null);
+  const sheetRef = useRef<BottomSheet>(null);
   const [sheetView, setSheetView] = useState("category");
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<Omit<Transaction, "_id" | "updatedAt">>({
@@ -83,8 +83,9 @@ const AddTransaction = () => {
 
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
-    categorySheetRef.current?.snapToIndex(0);
-  }, [categorySheetRef, setSheetView]);
+    // TODO: Resolve this
+    sheetRef.current?.snapToPosition(225);
+  }, [sheetRef, setSheetView]);
 
   useEffect(() => {
     setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_transaction" }] : []);
@@ -117,7 +118,7 @@ const AddTransaction = () => {
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", (e) => {
-      categorySheetRef.current?.close();
+      sheetRef.current?.close();
     });
 
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
@@ -128,7 +129,7 @@ const AddTransaction = () => {
       hideSubscription.remove();
       showSubscription.remove();
     };
-  }, [amtInputRef, categorySheetRef]);
+  }, [amtInputRef, sheetRef]);
 
   useEffect(() => {
     if (tcategory) {
@@ -163,7 +164,7 @@ const AddTransaction = () => {
   };
 
   const handlePressDelete = useCallback(() => {
-    categorySheetRef.current?.close();
+    sheetRef.current?.close();
     if (_id) deleteTransaction(_id);
     router.back();
   }, [_id]);
@@ -173,7 +174,7 @@ const AddTransaction = () => {
   }, []);
 
   const updateCategory = useCallback((category: Category) => {
-    categorySheetRef.current?.close();
+    sheetRef.current?.close();
     animatedColor.value = withTiming(category.color);
     setValues((prev) => ({ ...prev, category: category._id }));
   }, []);
@@ -194,6 +195,7 @@ const AddTransaction = () => {
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
   const handleOnAnimate = (_, to: number) => {
+    console.log(to);
     if (to === 2) header.hide();
     else header.show();
   };
@@ -207,7 +209,7 @@ const AddTransaction = () => {
 
   const handleChangeGroup = useCallback((group: Group | null) => {
     setValues((prev) => ({ ...prev, group: group ? group._id : null }));
-    categorySheetRef.current?.close();
+    sheetRef.current?.close();
   }, []);
 
   const disableSwipeBtn = useMemo(() => {
@@ -242,7 +244,7 @@ const AddTransaction = () => {
             <CategoryItem
               item={selectedCategory}
               onPress={() => {
-                categorySheetRef.current?.snapToIndex(1);
+                sheetRef.current?.snapToIndex(1);
                 setSheetView("category");
               }}
             />
@@ -284,7 +286,7 @@ const AddTransaction = () => {
                 android_ripple={{ color: selectedGroup.color || colors.rippleColor }}
                 style={styles.button}
                 onPress={() => {
-                  categorySheetRef.current?.snapToIndex(1);
+                  sheetRef.current?.snapToIndex(1);
                   setSheetView("group");
                 }}
               >
@@ -303,12 +305,12 @@ const AddTransaction = () => {
       </CollapsibleHeaderScrollView>
       <BottomSheet
         style={{ backgroundColor: colors.screen }}
-        ref={categorySheetRef}
+        ref={sheetRef}
         snapPoints={[225, "69%", "100%"]}
         enablePanDownToClose
         index={-1}
         backdropComponent={renderBackdrop}
-        enableHandlePanningGesture={sheetView === "category"}
+        enableHandlePanningGesture={sheetView === "category" || sheetView === "group"}
         onAnimate={handleOnAnimate}
         enableDynamicSizing={false}
       >
@@ -330,7 +332,7 @@ const AddTransaction = () => {
             text={t("deleteText")}
             title={t("deleteTitle")}
             onComfirm={handlePressDelete}
-            onCancel={() => categorySheetRef.current?.close()}
+            onCancel={() => sheetRef.current?.close()}
             cancel={t("cancel")}
             color={selectedCategory.color}
             confirm={t("confirm")}

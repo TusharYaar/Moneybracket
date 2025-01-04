@@ -1,0 +1,19 @@
+appId: com.tusharyaar.moneybracket
+name: Test to add group
+---
+- launchApp
+- tapOn:
+     id: tab-group
+- assertVisible: Group
+- tapOn:
+     id: add-group
+- assertVisible: Add Group
+- inputText: TestG
+- hideKeyboard
+- swipe:
+   from: 
+     id: "swipe-button-pill"
+   direction: RIGHT 
+- assertVisible: Group
+- assertVisible:
+             id: add-group 
