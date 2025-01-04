@@ -26,25 +26,23 @@ type SearchParams = {
   category: string;
 };
 
-const NULL_GROUP = {
+const _NULL_GROUP = {
   _id: "noGroup",
-  title: "noGroup",
   isFavorite: true,
   createdAt: new Date(),
   updatedAt: new Date(),
   color: "#7f7f7f",
-  icon: "cancel",
+  icon: "unknown",
   description: "No group",
 };
 
-const NULL_CATEGORY: Category = {
+const _NULL_CATEGORY: Omit<Category, "title"> = {
   _id: "noCategory",
-  title: "noCategory",
   createdAt: new Date(),
   updatedAt: new Date(),
   type: "expense",
   color: "#7f7f7f",
-  icon: "cancel",
+  icon: "unknown",
   isFavorite: false,
 };
 
@@ -63,7 +61,7 @@ const AddTransaction = () => {
   const [sheetView, setSheetView] = useState("category");
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<Omit<Transaction, "_id" | "updatedAt">>({
-    category: category.length > 0 ? category[0]._id : NULL_CATEGORY._id,
+    category: category.length > 0 ? category[0]._id : _NULL_CATEGORY._id,
     amount: parseFloat(amount),
     date: parseISO(date),
     note: "",
@@ -131,11 +129,16 @@ const AddTransaction = () => {
     };
   }, [amtInputRef, sheetRef]);
 
+
+  const NULL_GROUP = useMemo(() => ({..._NULL_GROUP, title: t("noGroup")}),[]);
+  const NULL_CATEGORY = useMemo(() => ({..._NULL_CATEGORY, title: t("noCategory")}),[]);
+
+
   useEffect(() => {
     if (tcategory) {
       setValues((prev) => ({ ...prev, category: tcategory }));
     } else {
-      setValues((prev) => ({ ...prev, category: category.length > 0 ? category[0]._id : NULL_CATEGORY._id }));
+      setValues((prev) => ({ ...prev, category: category.length > 0 ? category[0]._id : _NULL_CATEGORY._id }));
     }
   }, [category, tcategory]);
 
@@ -195,7 +198,6 @@ const AddTransaction = () => {
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
   const handleOnAnimate = (_, to: number) => {
-    console.log(to);
     if (to === 2) header.hide();
     else header.show();
   };

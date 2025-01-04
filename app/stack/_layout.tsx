@@ -1,13 +1,13 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { useTheme } from "providers/ThemeProvider";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 
 const StackLayout = () => {
   const { colors } = useTheme();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.screen }}>
+    <View style={{ flex: 1, backgroundColor: colors.screen }}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)/transaction" />
         <Stack.Screen name="(tabs)/category" />
@@ -22,7 +22,7 @@ const StackLayout = () => {
         <Stack.Screen name="about" />
         <Stack.Screen name="help" />
       </Stack>
-    </SafeAreaView>
+    </View>
   );
 };
 

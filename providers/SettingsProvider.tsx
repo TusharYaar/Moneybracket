@@ -106,7 +106,7 @@ const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] 
         channelId: "reminderNotification",
         minute: 39,
       },
-    }).then(() => console.log("done"));
+    })
   }, []);
 
   const clearDailyReminderNotification = useCallback(() => {

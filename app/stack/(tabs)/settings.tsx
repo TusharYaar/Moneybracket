@@ -193,7 +193,6 @@ const Setting = () => {
   const handleToggleReminderNotification = useCallback(async (value: boolean) => {
     if (value) {
       const perm = await hasNotificationPermission();
-      console.log(perm);
       if (perm) {
         updateSettings("reminderNotificationEnable", "ENABLE");
       }

@@ -75,7 +75,7 @@
                 "cancel":"Cancel",
                 "confirm": "Delete",
                 "group": "Group",
-                "noGroup": "Part of no Group",
+                "noGroup": "No Group",
                 "noCategory": "No Category Present"
             },
             "addGroup": {

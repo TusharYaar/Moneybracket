@@ -119,7 +119,7 @@ const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] })
           show: showHeader,
           hide: hideHeader,
         },
-        headerHeight: HEADER_HEIGHT,
+        headerHeight: HEADER_HEIGHT + topInset,
         tabbarHeight: HEADER_HEIGHT + PADDING,
         setHeaderTitle,
       }}

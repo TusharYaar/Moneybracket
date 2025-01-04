@@ -137,7 +137,7 @@ const AddCategoryScreen = () => {
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
   const disableSwipeBtn = useMemo(() => {
-    if (values.title.length <= 3) return true;
+    if (values.title.length === 0) return true;
     else return false;
   }, [values]);
 

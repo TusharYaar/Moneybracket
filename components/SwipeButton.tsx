@@ -19,7 +19,7 @@ const trackPadding = 8;
 const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "", disable = false }: Props) => {
   const { width } = useWindowDimensions();
   const gestureEndPoint = useMemo(() => width - screenPadding * 2 - pillSize - trackPadding, [width]);
-  const { textStyle } = useTheme();
+  const { textStyle, colors } = useTheme();
 
   const onLeft = useSharedValue(trackPadding);
   const pan = Gesture.Pan()
@@ -55,7 +55,7 @@ const SwipeButton = ({ onSwipeComplete, bgColor = "blue", style, text = "", disa
         <Animated.View
           testID="swipe-button-pill"
           style={{
-            backgroundColor: disable ? "#7f7f7f" : "#e63946",
+            backgroundColor: disable ? "#7f7f7f" : colors.tabbarIconActive,
             height: pillSize,
             width: pillSize,
             borderRadius: 8,
