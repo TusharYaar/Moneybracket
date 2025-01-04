@@ -31,6 +31,9 @@ export const SETTING_KEYS = {
   dateFormat: "settings/dateFormat",
   roundness: "settings/roundness",
   isFirstLaunch: "settings/isFirstLaunch",
+  exchangeRateLastUpdated: "settings/rate/lastUpdated",
+  exchangeRateEnable: "settings/rate/enable",
+  exchangeRateFavorites: "settings/rate/favorites",
 };
 
 export {

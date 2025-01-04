@@ -1,12 +1,11 @@
 import React, { useContext, createContext, useState, useEffect, useCallback, useMemo } from "react";
 import RATES from "../data/rates";
-import { CURRENCIES } from "../data";
+import { CURRENCIES, SETTING_KEYS } from "../data";
 
 import { ExchangeRatesServerResponse } from "../types";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
 import { format } from "date-fns";
 import { useSettings } from "./SettingsProvider";
-import { parseISO } from "date-fns/esm";
 
 export type RateType = {
   rate: number;
@@ -22,8 +21,8 @@ export type RateType = {
 
 const DEFAULT = {
   rates: JSON.parse(getFromStorageOrDefault("rates/rates", JSON.stringify(RATES), true)),
-  base: getFromStorageOrDefault("rates/base", "INR", true),
-  lastUpdated: getFromStorageOrDefault("rates/lastUpdated", new Date("2023-01-21").toISOString(), true),
+  base: getFromStorageOrDefault(SETTING_KEYS.currency, "INR", true),
+  lastUpdated: getFromStorageOrDefault(SETTING_KEYS.exchangeRateLastUpdated, new Date().toISOString(), true),
   favorites: JSON.parse(getFromStorageOrDefault("rates/favorites", JSON.stringify(["INR"]), true)),
 };
 
@@ -60,12 +59,12 @@ const ExchangeRatesProvider = ({ children }: { children: JSX.Element }) => {
     }
   }, [code]);
 
-  useEffect(() => {
-    const getRates = async () => {
-      if (format(parseISO(DEFAULT.lastUpdated), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) await fetchRates();
-    };
-    getRates();
-  }, []);
+  // useEffect(() => {
+  //   const getRates = async () => {
+  //     if (format(parseISO(DEFAULT.lastUpdated), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) await fetchRates();
+  //   };
+  //   getRates();
+  // }, []);
 
   const _rates: RateType[] = useMemo(() => {
     return Object.entries(CURRENCIES)
