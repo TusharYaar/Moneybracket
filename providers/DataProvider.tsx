@@ -18,38 +18,38 @@ type Props = {
   category: Category[];
   transaction: Transaction[];
   group: Group[];
-  addTransaction: (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => void;
+  addTransaction: (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => Promise<void>;
   updateTransaction: (_id: string, value: Omit<Transaction, "_id">) => void;
   deleteTransaction: (_id: string) => void;
-  addCategory: (value: Omit<Category, "_id"> | Omit<Category, "_id">[]) => void;
+  addCategory: (value: Omit<Category, "_id"> | Omit<Category, "_id">[]) => Promise<Category[]|undefined>;
   updateCategory: (_id: string, value: Omit<Category, "_id">) => void;
   deleteCategory: (_id: string) => void;
   fetchData: () => void;
-  deleteAllData: () => void;
+  deleteAllData: () => Promise<void>;
   migration_success: boolean;
   migration_error?: Error;
-  addGroup: (value: Omit<Group, "_id"> | Omit<Group, "_id">[]) => void;
+  addGroup: (value: Omit<Group, "_id"> | Omit<Group, "_id">[]) => Promise<void>;
   updateGroup: (_id: string, value: Omit<Group, "_id">) => void;
   deleteGroup: (_id: string) => void;
 };
 
 const DataContext = createContext<Props>({
   transaction: [],
-  addTransaction: (value) => {},
+  addTransaction: (value) => Promise.resolve(),
   updateTransaction: (_id: string, value: Omit<Transaction, "_id">) => {},
   deleteTransaction: (_id: string) => {},
 
   category: [],
-  addCategory: (value) => {},
+  addCategory: (value) => Promise.resolve([]),
   updateCategory: (_id: string, value: Omit<Category, "_id">) => {},
   deleteCategory: (_id: string) => {},
 
-  deleteAllData: () => {},
+  deleteAllData: () => Promise.resolve(),
   migration_success: false,
   fetchData: () => {},
 
   group: [],
-  addGroup: (value) => {},
+  addGroup: (value) => Promise.resolve(),
   updateGroup: (_id: string, value: Omit<Group, "_id">) => {},
   deleteGroup: (_id: string) => {},
 });
@@ -104,23 +104,26 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   }, [getAllCategory, setCategory, getAllTransaction, setTransaction, setGroup, getAllGroup]);
 
   const addCategory = useCallback(
-    async (value: Omit<Category, "_id"> | Omit<Category, "_id">[]) => {
+    async (value: Omit<Category, "_id"> | Omit<Category, "_id">[] | Category[]) => {
       let values: Category[] = [];
       if (Array.isArray(value)) {
-        values = value.map((val) => ({ ...val, _id: randomUUID() }));
+
+        values = value.map((val) => ({ ...val, _id: val?._id ? val._id : randomUUID() }));
       } else {
         const _id = randomUUID();
         values = [{ ...value, _id }];
       }
       try {
-        await db.insert(categoryTable).values(values);
+        const da = await db.insert(categoryTable).values(values);
         setCategory((prev) => prev.concat(values));
+        return values;
       } catch (e) {
         // saving error
         // TODO: ADD SENETRY LOGGING
         console.log(e);
         const ids = values.map((v) => v._id);
         setCategory((prev) => prev.filter((cat) => !ids.includes(cat._id)));
+        
       }
     },
     [setCategory, db]
@@ -148,10 +151,10 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     [setCategory, db]
   );
   const addTransaction = useCallback(
-    async (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => {
+    async (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[] | Transaction[]) => {
       let vals: Transaction[] = [];
       if (Array.isArray(value)) {
-        vals = value.map((val) => ({ ...val, _id: randomUUID() }));
+        vals = value.map((val) => ({ ...val, _id: val?._id ? val._id : randomUUID() }));
       } else {
         const _id = randomUUID();
         vals = [{ ...value, _id }];
@@ -274,10 +277,10 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
   }, [setTransaction, db, setCategory]);
 
   const addGroup = useCallback(
-    async (value: Omit<Group, "_id"> | Omit<Group, "_id">[]) => {
+    async (value: Omit<Group, "_id"> | Omit<Group, "_id">[] | Group[]) => {
       let values: Group[] = [];
       if (Array.isArray(value)) {
-        values = value.map((val) => ({ ...val, _id: randomUUID() }));
+        values = value.map((val) => ({ ...val, _id: val?._id ? val._id : randomUUID() }));
       } else {
         const _id = randomUUID();
         values = [{ ...value, _id }];

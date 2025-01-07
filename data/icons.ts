@@ -29,6 +29,9 @@ export const ICONS = {
     appVersion: "ellipsis",
     buildVersion: "bug",
     notification: "bell",
+    "restore": "file-symlink-file",
+    // autoBackup
+
 
     travel:"rocket",
     "shopping": "ruby",
@@ -165,6 +168,7 @@ export const ICONS = {
     appVersion: "perm-device-info",
     buildVersion: "bug-report",
     notification: "notifications",
+    restore: "restore",
 
     travel:"airplane-ticket",
     "shopping": "shopping-bag",

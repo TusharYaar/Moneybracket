@@ -13,7 +13,6 @@ interface Props {
 }
 
 const Header = ({route, back, headerRightButtons, title}: Props) => {
-  // const [titleContainerWidth, setTitleContainerWidth] = useState(1);
   const {
     colors,
     textStyle: { header },

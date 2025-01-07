@@ -13,7 +13,7 @@ import { nativeBuildVersion, nativeApplicationVersion } from "expo-application";
 
 import { useTheme } from "providers/ThemeProvider";
 import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { View, Switch, Text, StyleSheet, Pressable } from "react-native";
 import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { useHeader } from "providers/HeaderProvider";
@@ -50,10 +50,12 @@ const Setting = () => {
   });
   const [hasBiometrics, setHasBiometrics] = useState(false);
 
-  useEffect(() => {
-    setHeaderRightButtons([]);
-    setHeaderTitle(t("title"));
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setHeaderRightButtons([]);
+      setHeaderTitle(t("title"));
+    }, [])
+  );
   const router = useRouter();
   const selectListRef = useRef<BottomSheet>(null);
 
@@ -292,9 +294,14 @@ const Setting = () => {
           <Text style={textStyle.title}>{t("dataManagement")}</Text>
 
           {__DEV__ && <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("stack/export")} />}
-          {__DEV__ && <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("stack/backup")} />}
+          <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("stack/backup")} />
 
-          <SettingItem label={t("deleteAllData")} leftIcon="delete" onPress={() => showSelectList("delete", "")} testId="delete-all-data" />
+          <SettingItem
+            label={t("deleteAllData")}
+            leftIcon="delete"
+            onPress={() => showSelectList("delete", "")}
+            testId="delete-all-data"
+          />
         </View>
 
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
@@ -302,7 +309,7 @@ const Setting = () => {
 
           {__DEV__ && <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("stack/help")} />}
 
-          <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("stack/about")} />
+          <SettingItem label={t("about")} leftIcon="about" onPress={() => console.log("About")} />
 
           <SettingItem label={t("appVersion")} leftIcon="appVersion">
             <Text style={textStyle.body}>{nativeApplicationVersion}</Text>

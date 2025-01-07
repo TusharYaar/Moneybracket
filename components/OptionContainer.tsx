@@ -3,16 +3,19 @@ import React from "react";
 import { useTheme } from "providers/ThemeProvider";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+type ButtonProps = {
+  onPress?: () => void;
+  text: string;
+  style?: ViewStyle;
+  variant?: "outlined" | "primary";
+};
+
 type Props = {
   title: string;
   text?: string;
-  subtext?: string;
-  onComfirm: () => void;
-  onCancel?: () => void;
-  color: string;
-  cancel: string;
-  confirm: string;
   style?: ViewStyle;
+  buttons: ButtonProps[];
+  color: string;
 };
 
 const DeleteContainer = (props: Props) => {
@@ -32,26 +35,36 @@ const DeleteContainer = (props: Props) => {
       ]}
     >
       <View>
-        <Text style={textStyle.title} testID="delete-container-title">
+        <Text style={textStyle.title} testID="option-container-title">
           {props.title}
         </Text>
-        <Text style={textStyle.body} testID="delete-container-text">
+        <Text style={textStyle.body} testID="option-container-text">
           {props.text}
         </Text>
       </View>
-      <View style={styles.deleteBtnContainer}>
-        <View style={[styles.outlineButton, { flexGrow: 1, borderColor: props.color }]}>
-          <Pressable
-            style={{ padding: 16, justifyContent: "center", alignItems: "center" }}
-            android_ripple={{ color: props.color || colors.rippleColor }}
-            onPress={props.onCancel}
+      <View style={styles.btnContainer}>
+        {props.buttons.map((btn) => (
+          <View
+            style={[
+              styles.outlineButton,
+              {
+                flexGrow: 1,
+                borderColor: btn.variant === "outlined" ? props.color : "black",
+                backgroundColor: btn.variant === "primary" ? props.color : undefined,
+              },
+            ]}
           >
-            <Text style={textStyle.title} testID="delete-container-cancel-btn">
-              {props.cancel}
-            </Text>
-          </Pressable>
-        </View>
-        <View style={[styles.outlineButton, { flexGrow: 1, backgroundColor: props.color }]}>
+            <Pressable
+              style={{ padding: 16, justifyContent: "center", alignItems: "center" }}
+              android_ripple={{ color: props.color || colors.rippleColor }}
+              onPress={btn.onPress}
+            >
+              <Text style={textStyle.title}>{btn.text}</Text>
+            </Pressable>
+          </View>
+        ))}
+
+        {/* <View style={[styles.outlineButton, { flexGrow: 1, backgroundColor: props.color }]}>
           <Pressable
             testID="delete-container-confirm-btn"
             style={styles.button}
@@ -60,7 +73,7 @@ const DeleteContainer = (props: Props) => {
           >
             <Text style={textStyle.title}>{props.confirm}</Text>
           </Pressable>
-        </View>
+        </View> */}
       </View>
     </View>
   );
@@ -80,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
-  deleteBtnContainer: {
+  btnContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     columnGap: 16,

@@ -11,7 +11,7 @@ export type Transaction = {
   updatedAt: Date;
   group: null | string;
   // isFavorite: boolean;
-  image: string;
+  image?: string;
 };
 export interface TransactionWithCategory extends Omit<Transaction, "category"> {
   category: Category;
@@ -106,29 +106,16 @@ export type BackupFile = {
   createdOn: Date;
   app: "com.tusharyaar.moneybracket";
   platform: typeof Platform.OS;
+  appVersion: string | null,
+  appBuildVersion: string | null,
   version: typeof Platform.Version;
   includeImages: boolean;
   settings: {
     [key: string]: string;
   };
-  category: {
-    title: string;
-    type: "income" | "expense" | "transfer";
-    isFavorite: boolean;
-    createdAt: string;
-    color: string;
-    icon: string;
-  }[];
-  transaction: {
-    note: string;
-    date: string;
-    amount: number;
-    currency: string;
-    category: string;
-    createdAt: string;
-    isFavorite: boolean;
-    image: string;
-  }[];
+  category: Pick<Category, "title" | "_id" | "color" | "icon" | "description" | "type" | "isFavorite">[];
+  group: Pick<Group, "title" | "_id" | "color" | "icon" | "description" | "isFavorite">[];
+  transaction: (Pick<Transaction, "amount"|"_id" | "category" | "currency" | "group" | "note"> & {date: string})[];
 };
 
 export type Theme_Color = {
