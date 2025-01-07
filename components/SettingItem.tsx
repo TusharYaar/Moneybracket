@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, View, ViewStyle, Text } from "react-native";
 import { useTheme } from "providers/ThemeProvider";
-import React, { ReactNode } from "react";
+import React, { forwardRef, ReactNode } from "react";
 import Icon from "./Icon";
 
 type Props = {
@@ -13,23 +13,29 @@ type Props = {
   testId?: string;
 };
 
-const SettingItem = ({ leftIcon, onPress, children, rightIcon, label, testId, style }: Props) => {
-  const {textStyle,colors} = useTheme();
+const SettingItem = forwardRef<View, Props>(function SettingItem({ leftIcon, onPress, children, rightIcon, label, testId, style }, ref) {
+  const { textStyle, colors } = useTheme();
+
   return (
-      <Pressable onPress={onPress} android_ripple={{color: colors.rippleColor }} testID={testId}>
-        <View style={styles.innerContainer}>
-          <View style={styles.labelContainer}>
-            <Icon name={leftIcon} size={26} />
-            <Text style={[styles.itemLabel, textStyle.body]} testID={`${testId}-label`}>
-              {label}
-            </Text>
-          </View>
-          {children}
-          {rightIcon && <Icon name={rightIcon} size={16} style={styles.rightIcon} />}
+    <Pressable
+      onPressOut={onPress ? onPress: undefined}
+      android_ripple={{ color: onPress ? colors.rippleColor : undefined }}
+      testID={testId}
+      ref={ref}
+      >
+      <View style={styles.innerContainer}>
+        <View style={styles.labelContainer}>
+          <Icon name={leftIcon} size={26} />
+          <Text style={[styles.itemLabel, textStyle.body]} testID={`${testId}-label`}>
+            {label}
+          </Text>
         </View>
-      </Pressable>
+        {children}
+        {rightIcon && <Icon name={rightIcon} size={16} style={styles.rightIcon} />}
+      </View>
+    </Pressable>
   );
-};
+});
 
 export default SettingItem;
 

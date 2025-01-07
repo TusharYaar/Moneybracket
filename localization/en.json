@@ -94,13 +94,21 @@
                 "description": "Description"
             },
             "backup": {
+                "options":"Options",
+                "title": "Backup and Restore",
                 "backup": "Backup",
                 "restore": "Restore",
                 "loading": "Loading",
-                "restoring_backup": "Restoring items from selected file",
-                "backup_text": "You can backup your data to a file and restore it later. Backup only backs up your category and transactions. Images are not included",
-                "restore_text": "You can restore categories and transcations from a backup file.",
-                "text_1": "You can create backup to safeguard your data, or transfer to/from another device."
+                "restoreFromFile": "Restore From File",
+                "deleteOldBackup": "Auto detele Old Files",
+                "openBackupDirectory": "Open Backup Directory",
+                "backupList": "Previous Backups",
+                "delete": "Delete",
+                "success": "Sucess",
+                "restoreSuccess": "File restored successfully",
+                "backupSuccess": "Backup created successfully",
+                "done": "Done",
+                "cancel": "Cancel"
             },
             "export": {
                 "export": "Export",

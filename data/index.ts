@@ -4,13 +4,12 @@ import DATE from "./dates";
 import CURRENCIES from "./currencies";
 import ALL_FONTS from "./fonts";
 import ALL_THEMES from "./themes";
-import { documentDirectory } from "expo-file-system";
-// import { Platform } from "react-native";
+import { Paths } from "expo-file-system/next";
 
-const EXPORTS_DIRECTORY = `${documentDirectory}Exports`;
-const BACKUP_DIRECTORY = `${documentDirectory}Backups`;
-const IMAGES_DIRECTORY = `${documentDirectory}Images`;
-const FONTS_DIRECTORY = `${documentDirectory}Fonts`;
+const EXPORTS_DIRECTORY = `${Paths.document.uri}Exports/`;
+const BACKUP_DIRECTORY = `${Paths.document.uri}Backups/`;
+const IMAGES_DIRECTORY = `${Paths.document.uri}Images/`;
+const FONTS_DIRECTORY = `${Paths.document.uri}Fonts/`;
 
 // // export const LOCAL_FONTS = ["sansserif", "serif", "monospace"];
 // export const DEFAULT_FONTS = _ALL_FONTS.filter((font) => !font.isPaid);
@@ -33,7 +32,11 @@ export const SETTING_KEYS = {
   // 
   notificationEnable: "settings/notification/enable",
   reminderNotificationEnable: "settings/notification/reminderEnable",
-  reminderNotificationTime: "settings/notification/reminderTime"
+  reminderNotificationTime: "settings/notification/reminderTime",
+  // 
+  backupEnable: "settings/backup",
+  dailyAutoBackup: "settings/backup/autoDaily",
+  deleteOldBackup: "settings/backup/deleteOld"
 };
 
 export {

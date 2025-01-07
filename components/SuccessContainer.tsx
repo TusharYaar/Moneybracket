@@ -8,14 +8,12 @@ type Props = {
   text?: string;
   subtext?: string;
   onComfirm: () => void;
-  onCancel?: () => void;
   color: string;
-  cancel: string;
   confirm: string;
   style?: ViewStyle;
 };
 
-const DeleteContainer = (props: Props) => {
+const SuccessContainer = (props: Props) => {
   const { textStyle, colors } = useTheme();
   const { bottom } = useSafeAreaInsets();
   return (
@@ -23,7 +21,7 @@ const DeleteContainer = (props: Props) => {
       style={[
         {
           backgroundColor: colors.screen,
-          height: 225,
+          height: 150,
           padding: 8,
           justifyContent: "space-between",
           paddingBottom: 8 + bottom,
@@ -32,41 +30,28 @@ const DeleteContainer = (props: Props) => {
       ]}
     >
       <View>
-        <Text style={textStyle.title} testID="delete-container-title">
+        <Text style={textStyle.title} testID="success-container-title">
           {props.title}
         </Text>
-        <Text style={textStyle.body} testID="delete-container-text">
+        <Text style={textStyle.body} testID="success-container-text">
           {props.text}
         </Text>
       </View>
-      <View style={styles.deleteBtnContainer}>
-        <View style={[styles.outlineButton, { flexGrow: 1, borderColor: props.color }]}>
-          <Pressable
-            style={{ padding: 16, justifyContent: "center", alignItems: "center" }}
-            android_ripple={{ color: props.color || colors.rippleColor }}
-            onPress={props.onCancel}
-          >
-            <Text style={textStyle.title} testID="delete-container-cancel-btn">
-              {props.cancel}
-            </Text>
-          </Pressable>
-        </View>
         <View style={[styles.outlineButton, { flexGrow: 1, backgroundColor: props.color }]}>
           <Pressable
-            testID="delete-container-confirm-btn"
+            testID="success-container-confirm-btn"
             style={styles.button}
             android_ripple={{ color: props.color || colors.rippleColor }}
             onPress={props.onComfirm}
           >
             <Text style={textStyle.title}>{props.confirm}</Text>
           </Pressable>
-        </View>
       </View>
     </View>
   );
 };
 
-export default DeleteContainer;
+export default SuccessContainer;
 
 const styles = StyleSheet.create({
   outlineButton: {
@@ -79,10 +64,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
-  },
-  deleteBtnContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    columnGap: 16,
   },
 });

@@ -35,6 +35,10 @@ type Props = {
   isFirstLaunch: string;
   notificationEnable: "ENABLE" | "DISABLE" | string;
   reminderNotificationEnable: "ENABLE" | "DISABLE" | string;
+  backupEnable: "ENABLE" | "DISABLE" | string,
+  dailyAutoBackup: "ENABLE" | "DISABLE" | string,
+  deleteOldBackup: "ENABLE" | "DISABLE" | string,
+  
 
   updateSettings: (key: string, value: string) => void;
   // roundness: number;
@@ -60,6 +64,10 @@ const SETTINGS: Props = {
   dateFormat: getFromStorageOrDefault(SETTING_KEYS.dateFormat, "dd MMM, yyyy", true),
   notificationEnable: getFromStorageOrDefault(SETTING_KEYS.notificationEnable, "ENABLE", true),
   reminderNotificationEnable: getFromStorageOrDefault(SETTING_KEYS.reminderNotificationEnable, "DISABLE", true),
+  backupEnable:getFromStorageOrDefault(SETTING_KEYS.backupEnable, "DISABLE", true),
+  dailyAutoBackup:getFromStorageOrDefault(SETTING_KEYS.dailyAutoBackup, "DISABLE", true),
+  deleteOldBackup:getFromStorageOrDefault(SETTING_KEYS.dailyAutoBackup, "DISABLE", true),
+
   // unlockedThemes: DEFAULT_THEMES,
   // unlockedFonts: LOCAL_FONTS,
   // updateCurrency: () => {},
