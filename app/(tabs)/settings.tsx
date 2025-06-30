@@ -12,11 +12,9 @@ import { ALL_FONTS, ICONS, COLORS, DATE, CURRENCIES, ALL_THEMES } from "data";
 import { nativeBuildVersion, nativeApplicationVersion } from "expo-application";
 
 import { useTheme } from "providers/ThemeProvider";
-import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
-import { useFocusEffect, useRouter } from "expo-router";
-import { View, Switch, Text, StyleSheet, Pressable } from "react-native";
+import { useFocusEffect, useNavigation, useRouter } from "expo-router";
+import { View, Switch, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { useHeader } from "providers/HeaderProvider";
 import { generateDummyTransaction } from "@utils/dummy";
 import { Category, Transaction } from "types";
 import DeleteContainer from "@components/DeleteContainer";
@@ -42,18 +40,17 @@ const Setting = () => {
   const { addCategory, category, addTransaction, deleteAllData } = useData();
   const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.settings" });
   const { t: wt } = useTranslation();
-  const { header, tabbar, setHeaderRightButtons, setHeaderTitle } = useHeader();
   const [selectList, setSelectList] = useState({
     visible: false,
     menu: "dateFormat",
     selected: "",
   });
   const [hasBiometrics, setHasBiometrics] = useState(false);
+  const rootNavigation = useNavigation("/");
 
   useFocusEffect(
     useCallback(() => {
-      setHeaderRightButtons([]);
-      setHeaderTitle(t("title"));
+      rootNavigation.setOptions({ title: t("title"), });    
     }, [])
   );
   const router = useRouter();
@@ -155,16 +152,6 @@ const Setting = () => {
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
-  const handleOnAnimate = useCallback(
-    (_, to: number) => {
-      if (to === 3) header.hide();
-      else header.show();
-      if (to === -1) tabbar.show();
-      else tabbar.hide();
-    },
-    [header]
-  );
-
   const hasNotificationPermission = useCallback(async () => {
     const { status: existingStatus } = await getPermissionsAsync();
     let finalStatus = existingStatus;
@@ -205,9 +192,8 @@ const Setting = () => {
 
   return (
     <>
-      <CollapsibleHeaderScrollView
+      <ScrollView
         contentContainerStyle={{ paddingHorizontal: 8 }}
-        paddingVertical={0}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
@@ -307,9 +293,9 @@ const Setting = () => {
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("about")}</Text>
 
-          {__DEV__ && <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("stack/help")} />}
+          <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("help")} />
 
-          <SettingItem label={t("about")} leftIcon="about" onPress={() => console.log("About")} />
+          <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("about")} />
 
           <SettingItem label={t("appVersion")} leftIcon="appVersion">
             <Text style={textStyle.body}>{nativeApplicationVersion}</Text>
@@ -319,14 +305,13 @@ const Setting = () => {
             <Text style={textStyle.body}>{nativeBuildVersion}</Text>
           </SettingItem>
         </View>
-      </CollapsibleHeaderScrollView>
+      </ScrollView>
       <BottomSheet
         ref={selectListRef}
         snapPoints={[225, "40%", "69%", "100%"]}
         index={-1}
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
-        onAnimate={handleOnAnimate}
         enableHandlePanningGesture={selectList.menu === "delete" ? false : true}
       >
         {selectList.menu === "delete" && (

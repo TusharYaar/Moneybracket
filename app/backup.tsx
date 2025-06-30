@@ -1,5 +1,5 @@
-import { StyleSheet, View, Text, Switch } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { StyleSheet, View, Text, Switch, ScrollView } from "react-native";
+import React, { useCallback, useRef, useState } from "react";
 import { BACKUP_DIRECTORY } from "data";
 import { useData } from "providers/DataProvider";
 import { getDocumentAsync } from "expo-document-picker";
@@ -7,17 +7,15 @@ import { Directory, File } from "expo-file-system/next";
 import { generateBackupFile, readBackupFile } from "utils/backup";
 import { Category, Group, Transaction } from "types";
 import { useTranslation } from "react-i18next";
-import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import { useTheme } from "providers/ThemeProvider";
 import SettingItem from "@components/SettingItem";
 import { useSettings } from "providers/SettingsProvider";
-import { useHeader } from "providers/HeaderProvider";
 import { format, startOfDay } from "date-fns";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-
 import { shareAsync } from "expo-sharing";
 import OptionContainer from "@components/OptionContainer";
 import SuccessContainer from "@components/SuccessContainer";
+import { useFocusEffect, useNavigation } from "expo-router";
 
 type backupItem = { name: string; uri: string };
 const Backup = () => {
@@ -26,10 +24,10 @@ const Backup = () => {
   const { colors, textStyle } = useTheme();
   const { t } = useTranslation("", { keyPrefix: "app.stack.backup" });
   const [loading, setLoading] = useState(false);
-  const { setHeaderRightButtons, setHeaderTitle } = useHeader();
   const [backupList, setBackupList] = useState<backupItem[]>([]);
   const [selectedFile, setSelectedFile] = useState({ view: "", uri: "", message: "", buttons: [] as any });
   const selectListRef = useRef<BottomSheet>(null);
+  const navigation = useNavigation();
 
   function listBackups(directory: Directory, indent: number = 0) {
     const contents = directory.list();
@@ -52,11 +50,13 @@ const Backup = () => {
     }
   }, []);
 
-  useEffect(() => {
-    setHeaderRightButtons([]);
-    setHeaderTitle(t("title"));
-    checkFolder();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      checkFolder();
+      navigation.setOptions({ title: t("title"), headerRightBtn: [] });
+    }, [])
+    
+  );
 
   const createBackup = useCallback(async () => {
     try {
@@ -183,9 +183,8 @@ const Backup = () => {
 
   return (
     <>
-      <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 8 }}
-        paddingVertical={0}
+      <ScrollView
+        contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 8 }}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
@@ -213,7 +212,7 @@ const Backup = () => {
           ))}
           {backupList.length === 0 && <SettingItem label={t("noBackup")} leftIcon="backup" />}
         </View>
-      </CollapsibleHeaderScrollView>
+      </ScrollView>
       <BottomSheet
         ref={selectListRef}
         snapPoints={[150, 225, "90%"]}

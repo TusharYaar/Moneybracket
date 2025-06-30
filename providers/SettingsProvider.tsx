@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, useCallback, useEffect } from "react";
+import { useContext, createContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { CURRENCIES, SETTING_KEYS } from "../data";
 import { useTheme } from "./ThemeProvider";
 import { Currency } from "../types";
@@ -16,13 +16,13 @@ import {
 } from "expo-notifications";
 import { Platform } from "react-native";
 
-setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+// setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: true,
+//     shouldSetBadge: true,
+//   }),
+// });
 
 type Props = {
   language: string;
@@ -91,7 +91,7 @@ const SETTINGS: Props = {
 const SettingContext = createContext<Props>(SETTINGS);
 export const useSettings = () => useContext(SettingContext);
 
-const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const { changeFont, changeTheme } = useTheme();
   const { i18n } = useTranslation();
   const [settings, setSettings] = useState(SETTINGS);

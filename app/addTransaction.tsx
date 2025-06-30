@@ -1,8 +1,8 @@
-import { StyleSheet, View, TextInput, Pressable, Keyboard, useWindowDimensions, Text } from "react-native";
+import { StyleSheet, View, TextInput, Pressable, Keyboard, useWindowDimensions, Text, ScrollView } from "react-native";
 import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { useSettings } from "providers/SettingsProvider";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import { useData } from "providers/DataProvider";
 import SwipeButton from "@components/SwipeButton";
 import CategoryItem from "@components/CategoryItem";
@@ -12,9 +12,7 @@ import { format, parseISO } from "date-fns";
 import PrimaryInput from "@components/AmountInput";
 import { Category, Group, Transaction } from "types";
 import { useTheme } from "providers/ThemeProvider";
-import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import { useTranslation } from "react-i18next";
-import { useHeader } from "providers/HeaderProvider";
 import DeleteContainer from "@components/DeleteContainer";
 import GroupItem from "@components/GroupItem";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -73,8 +71,7 @@ const AddTransaction = () => {
   const animatedColor = useSharedValue(category.length > 0 ? category[0].color : "orange");
   // const { rates } = useExchangeRate();
   const router = useRouter();
-
-  const { header, setHeaderRightButtons, setHeaderTitle } = useHeader();
+  const navigation = useNavigation();
 
   const { height } = useWindowDimensions();
   const { top: topInset } = useSafeAreaInsets();
@@ -85,10 +82,11 @@ const AddTransaction = () => {
     sheetRef.current?.snapToPosition(225);
   }, [sheetRef, setSheetView]);
 
-  useEffect(() => {
-    setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_transaction" }] : []);
-    setHeaderTitle(_id ? t("updateTitle") : t("addTitle"));
-  }, [_id]);
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({ title: _id ? t("updateTitle") : t("addTitle"), headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_transaction" }] : [] });
+    }, [_id])
+  );
 
   useEffect(() => {
     if (_id) {
@@ -130,8 +128,8 @@ const AddTransaction = () => {
   }, [amtInputRef, sheetRef]);
 
 
-  const NULL_GROUP = useMemo(() => ({..._NULL_GROUP, title: t("noGroup")}),[]);
-  const NULL_CATEGORY = useMemo(() => ({..._NULL_CATEGORY, title: t("noCategory")}),[]);
+  const NULL_GROUP = useMemo(() => ({ ..._NULL_GROUP, title: t("noGroup") }), []);
+  const NULL_CATEGORY = useMemo(() => ({ ..._NULL_CATEGORY, title: t("noCategory") }), []);
 
 
   useEffect(() => {
@@ -197,10 +195,7 @@ const AddTransaction = () => {
   }, [values.group]);
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
-  const handleOnAnimate = (_, to: number) => {
-    if (to === 2) header.hide();
-    else header.show();
-  };
+
   const handleDateChange = useCallback(
     (event: DateTimePickerEvent, date: Date) => {
       setSheetView("category");
@@ -221,10 +216,8 @@ const AddTransaction = () => {
 
   return (
     <>
-      <CollapsibleHeaderScrollView
+      <ScrollView
         contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset }}
-        paddingVertical={8}
-        tabbarVisible={false}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={{ flexDirection: "column", flexGrow: 1 }}>
@@ -304,7 +297,7 @@ const AddTransaction = () => {
           bgColor={values.category ? selectedCategory.color : undefined}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
-      </CollapsibleHeaderScrollView>
+      </ScrollView>
       <BottomSheet
         style={{ backgroundColor: colors.screen }}
         ref={sheetRef}
@@ -313,7 +306,6 @@ const AddTransaction = () => {
         index={-1}
         backdropComponent={renderBackdrop}
         enableHandlePanningGesture={sheetView === "category" || sheetView === "group"}
-        onAnimate={handleOnAnimate}
         enableDynamicSizing={false}
       >
         {sheetView === "category" && (

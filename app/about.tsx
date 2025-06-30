@@ -1,26 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 
-import { View, StyleSheet, Image, Text } from "react-native";
+import { View, StyleSheet, Image, Text, ScrollView } from "react-native";
 import { useTheme } from "providers/ThemeProvider";
-import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
-import { useHeader } from "providers/HeaderProvider";
 import { useTranslation } from "react-i18next";
+import { useFocusEffect, useNavigation } from "expo-router";
 
 const AboutScreen = () => {
   const { textStyle, colors } = useTheme();
-  const { setHeaderRightButtons, setHeaderTitle} = useHeader();
   const { t } = useTranslation("", { keyPrefix: "app.stack.about" });
-  useEffect(() => {
-    setHeaderRightButtons([]);
-    setHeaderTitle(t("title"))
-  },[]);
+  const rootNavigation = useNavigation("/");
+
+  useFocusEffect(
+    useCallback(() => {
+      rootNavigation.setOptions({ title: t("title") });
+    }, [])
+  );
+
 
   return (
     <View style={{flex: 1, backgroundColor: colors.screen}}>
-    <CollapsibleHeaderScrollView
-    contentContainerStyle={{ paddingHorizontal: 16 }}
-    paddingVertical={8}
-    tabbarVisible={false}
+    <ScrollView
+    contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 8 }}
     >
       <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Image source={require("assets/christmas-icon.png")} style={{ width: 100, height: 100, borderRadius: 8 }} />
@@ -56,7 +56,7 @@ const AboutScreen = () => {
         <List.Item style={{ padding: 0, margin: 0 }} title={pack} key={pack} />
         ))}
         </List.Accordion> */}
-    </CollapsibleHeaderScrollView>
+    </ScrollView>
         </View>
   );
 };

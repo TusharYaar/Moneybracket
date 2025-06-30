@@ -2,14 +2,12 @@ import { Text, View, TextInput, Pressable, useWindowDimensions, ScrollView } fro
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GROUP_COLORS } from "data";
 import SwipeButton from "@components/SwipeButton";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import PrimaryInput from "@components/AmountInput";
 import { useData } from "providers/DataProvider";
 import { useTheme } from "providers/ThemeProvider";
-import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import Icon from "@components/Icon";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
-import { useHeader } from "providers/HeaderProvider";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 import { useTranslation } from "react-i18next";
 import DeleteContainer from "@components/DeleteContainer";
@@ -31,8 +29,7 @@ const AddGroupScreen = () => {
   const { addGroup, updateGroup, deleteGroup, group } = useData();
   const { _id = null, color, title = "" } = useLocalSearchParams<SearchParams>();
   const { t } = useTranslation("", { keyPrefix: "app.stack.addGroup" });
-  const router = useRouter();
-  const { header, setHeaderRightButtons, setHeaderTitle } = useHeader();
+  const router = useRouter();;
   const inputRef = useRef<TextInput>(null);
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<ValueProps>({
@@ -47,10 +44,13 @@ const AddGroupScreen = () => {
   const { top: topInset } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>(null);
 
-  useEffect(() => {
-    setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_group" }] : []);
-    setHeaderTitle(_id ? t("updateTitle") : t("addTitle"));
-  }, [_id]);
+  const navigation = useNavigation();
+  
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({ title: _id ? t("updateTitle") : t("addTitle"), headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_group" }] : [] });
+    }, [_id])
+  );
 
   useEffect(() => {
     if (_id) {
@@ -71,10 +71,6 @@ const AddGroupScreen = () => {
     }
   }, [_id, setValues]);
 
-  const handleOnAnimate = (_: number, to: number) => {
-    if (to === 2) header.hide();
-    else header.show();
-  };
   const numCol = useMemo(() => Math.floor(width / 100), [width]);
 
   const handleSelectIcon = useCallback(
@@ -110,11 +106,9 @@ const AddGroupScreen = () => {
 
   return (
     <>
-      <CollapsibleHeaderScrollView
+      <ScrollView
         contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset }}
-        paddingVertical={8}
         style={{ backgroundColor: colors.screen }}
-        tabbarVisible={false}
       >
         <View style={{ flex: 1 }}>
           <PrimaryInput
@@ -203,7 +197,7 @@ const AddGroupScreen = () => {
           style={{ marginTop: 32 }}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
-      </CollapsibleHeaderScrollView>
+      </ScrollView>
 
       <BottomSheet
         ref={sheetRef}
@@ -211,7 +205,6 @@ const AddGroupScreen = () => {
         index={-1}
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
-        onAnimate={handleOnAnimate}
         enableHandlePanningGesture={sheetView === "icon"}
       >
         {sheetView === "icon" && (

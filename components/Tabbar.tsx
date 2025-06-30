@@ -1,31 +1,32 @@
-import { Pressable, StyleSheet, useWindowDimensions, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import React from "react";
-import { Link } from "expo-router";
+import { Link, usePathname } from "expo-router";
 import { useTheme } from "providers/ThemeProvider";
 
 import Icon from "./Icon";
-import { Route } from "@react-navigation/native";
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-interface Props {
-  visibleTabs: string[];
-  current: Route<any>;
-  isWide: boolean;
-}
 
 const ICONS = {
-  transaction: "transactionTab",
+  index: "transactionTab",
   category: "categoryTab",
   recurring: "recurringTab",
   settings: "settingTab",
   group: "groupTab",
 };
 
-const TabSize = 64;
+const TabSize = 56;
 
-const Tabbar = ({ visibleTabs, current, isWide }: Props) => {
+const Tabbar = ({ state }: BottomTabBarProps) => {
   const { colors } = useTheme();
+  const path = usePathname();
+  // TODO: make it dynamic
+  const isWide = true;
+  const { bottom } = useSafeAreaInsets();
+
   return (
-    <View style={isWide ? styles.tabbarContainerInRow : styles.tabbarContainerInCol}>
+    <View style={[isWide ? styles.tabbarContainerInRow : styles.tabbarContainerInCol, { paddingBottom: bottom, position: "absolute", bottom: 0, left: 0, right: 0 }]}>
       <View
         style={[
           styles.tabsContainer,
@@ -33,30 +34,30 @@ const Tabbar = ({ visibleTabs, current, isWide }: Props) => {
           isWide ? {} : { width: "100%", marginTop: 8 },
         ]}
       >
-        {visibleTabs.map((route) => (
+        {state.routes.map((route, index) => (
           <Link
-            key={route}
-            href={`stack/(tabs)/${route}`}
+            key={route.key}
+            href={route.name === "index" ? "/" : route.name}
             replace
             accessibilityRole="button"
-            accessibilityState={`(tabs)/${route}` === current.name ? { selected: true } : {}}
-            disabled={route === current.name}
+            accessibilityState={`/stack/${route}` === path ? { selected: true } : {}}
+            disabled={state.index === index} //disable to prevent rerender
             testID={`tab-${route}`}
           >
             <View style={[styles.tabs]}>
               <Icon
-                name={ICONS[route]}
-                size={32}
-                color={`(tabs)/${route}` === current.name ? colors.tabbarIconActive : colors.tabbarIcon}
+                name={ICONS[route.name]}
+                size={24}
+                color={state.index === index ? colors.tabbarIconActive : colors.tabbarIcon}
               />
             </View>
           </Link>
         ))}
       </View>
-      <Link href="stack/addTransaction" asChild testID="add-transaction">
+      <Link href="/addTransaction" asChild testID="add-transaction">
         <Pressable>
           <View style={[styles.addBtn, { backgroundColor: colors.tabbarBackgroundSecondary }]}>
-            <Icon name="add" size={32} color={colors.tabbarIconActiveSecondary} />
+            <Icon name="add" size={24} color={colors.tabbarIconActiveSecondary} />
           </View>
         </Pressable>
       </Link>
@@ -88,13 +89,13 @@ const styles = StyleSheet.create({
   tabs: {
     padding: 16,
     borderRadius: 8,
-    height: 64,
-    width: 64,
+    height: TabSize,
+    width: TabSize,
     zIndex: 3,
   },
   addBtn: {
-    height: 64,
-    width: 64,
+    height: TabSize,
+    width: TabSize,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8,

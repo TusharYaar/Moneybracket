@@ -14,7 +14,7 @@ export const useLock = () => useContext(LockContext);
 
 const lockEnable = getFromStorage(SETTING_KEYS.appLock) === "ENABLE";
 
-const LockProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+const LockProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLock, setIsLock] = useState<boolean>(lockEnable);
 
   useEffect(() => {

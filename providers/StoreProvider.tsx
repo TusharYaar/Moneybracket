@@ -5,7 +5,7 @@ import { getFromStorageOrDefault } from "../utils/storage";
 const StoreContext = createContext({});
 export const useStore = () => useContext(StoreContext);
 
-const StoreProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   return <StoreContext.Provider value={{}}>{children}</StoreContext.Provider>;
 };
 

@@ -3,7 +3,7 @@
     "name": "Money Bracket",
     "slug": "moneybracket",
     "scheme": "com.tusharyaar.mb",
-    "version": "0.7.24",
+    "version": "0.7.25",
     "jsEngine": "hermes",
     "newArchEnabled": true,
     "orientation": "default",
@@ -20,7 +20,8 @@
       "bundleIdentifier": "com.tusharyaar.moneybracket"
     },
     "android": {
-      "versionCode": 5032,
+      "edgeToEdgeEnabled": true,
+      "versionCode": 5033,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "monochromeImage": "./assets/monochrome.png",
@@ -63,7 +64,6 @@
           "imageWidth": 200
         }
       ],
-      "react-native-edge-to-edge",
       "expo-sqlite"
     ]
   }

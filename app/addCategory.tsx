@@ -2,15 +2,13 @@ import { Text, View, TextInput, Pressable, useWindowDimensions, ScrollView } fro
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { COLORS } from "data";
 import SwipeButton from "@components/SwipeButton";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import PrimaryInput from "@components/AmountInput";
 import { useData } from "providers/DataProvider";
 import GroupButton from "@components/GroupButton";
 import { useTheme } from "providers/ThemeProvider";
-import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import Icon from "@components/Icon";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
-import { useHeader } from "providers/HeaderProvider";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 import { useTranslation } from "react-i18next";
 import DeleteContainer from "@components/DeleteContainer";
@@ -59,7 +57,7 @@ const AddCategoryScreen = () => {
   const { _id, color, title = "", type = "income" } = useLocalSearchParams<SearchParams>();
   const { t } = useTranslation("", { keyPrefix: "app.stack.addCategory" });
   const router = useRouter();
-  const { setHeaderRightButtons, setHeaderTitle, header } = useHeader();
+  const navigation = useNavigation();
   const inputRef = useRef<TextInput>(null);
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<ValueProps>({
@@ -75,10 +73,11 @@ const AddCategoryScreen = () => {
   const { top: topInset } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>(null);
 
-  useEffect(() => {
-    setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_category" }] : []);
-    setHeaderTitle(_id ? t("updateTitle") : t("addTitle"));
-  }, [_id]);
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({ title: _id ? t("updateTitle") : t("addTitle"), headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_category" }] : [] });
+    }, [_id])
+  );
 
   useEffect(() => {
     if (_id) {
@@ -99,10 +98,6 @@ const AddCategoryScreen = () => {
     }
   }, [_id, setValues]);
 
-  const handleOnAnimate = (_: number, to: number) => {
-    if (to === 2) header.hide();
-    else header.show();
-  };
   const numCol = useMemo(() => Math.floor(width / 100), [width]);
 
   const handleSelectIcon = useCallback(
@@ -143,11 +138,9 @@ const AddCategoryScreen = () => {
 
   return (
     <>
-      <CollapsibleHeaderScrollView
+      <ScrollView
         contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset }}
-        paddingVertical={8}
         style={{ backgroundColor: colors.screen }}
-        tabbarVisible={false}
       >
         <View style={{ flex: 1 }}>
           <PrimaryInput
@@ -249,7 +242,7 @@ const AddCategoryScreen = () => {
           style={{ marginTop: 32 }}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
-      </CollapsibleHeaderScrollView>
+      </ScrollView>
 
       <BottomSheet
         ref={sheetRef}
@@ -257,7 +250,6 @@ const AddCategoryScreen = () => {
         index={-1}
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
-        onAnimate={handleOnAnimate}
         enableDynamicSizing={false}
         enableHandlePanningGesture={sheetView === "icon"}
       >
