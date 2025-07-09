@@ -145,6 +145,7 @@ export type Theme_Color = {
 
 export type Theme_TextStyle = {
   body: TextStyle;
+  bodyBold: TextStyle;
   amount: TextStyle;
   amountInput: TextStyle;
   header: TextStyle;

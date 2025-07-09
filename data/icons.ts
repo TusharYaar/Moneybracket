@@ -30,6 +30,7 @@ export const ICONS = {
     buildVersion: "bug",
     notification: "bell",
     "restore": "file-symlink-file",
+    graph: "graph",
     // autoBackup
 
 
@@ -169,7 +170,7 @@ export const ICONS = {
     buildVersion: "bug-report",
     notification: "notifications",
     restore: "restore",
-
+    graph: "bar-chart",
     travel:"airplane-ticket",
     "shopping": "shopping-bag",
     food:"fastfood",

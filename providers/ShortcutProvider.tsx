@@ -20,7 +20,7 @@ const SchortcutContext = createContext<Props>({
 
 export const useSchortcut = () => useContext(SchortcutContext);
 
-const SchortcutProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+const SchortcutProvider = ({ children }: { children: React.ReactNode }) => {
   const { category } = useData();
   // const realm = useRealm();
   const shortcuts = useMemo(() => [], []);

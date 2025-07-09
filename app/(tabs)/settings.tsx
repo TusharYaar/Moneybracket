@@ -1,27 +1,48 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+
+// React Native & 3rd Party UI
+import { View, Switch, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
+import { EventArg, NavigationAction } from "@react-navigation/native";
+
+// Navigation
+import { useFocusEffect, useNavigation, useRouter } from "expo-router";
+
+// Providers & Hooks
 import { useSettings } from "providers/SettingsProvider";
+import { useTheme } from "providers/ThemeProvider";
+import { useData } from "providers/DataProvider";
+import { useHeader } from "providers/HeaderProvider";
+
+// i18n
 import { useTranslation } from "react-i18next";
 
+// Expo APIs
 import { authenticateAsync, getEnrolledLevelAsync } from "expo-local-authentication";
-import SettingItem from "@components/SettingItem";
-
-import { Dcategories } from "data/dummy";
-import { useData } from "providers/DataProvider";
-
-import { ALL_FONTS, ICONS, COLORS, DATE, CURRENCIES, ALL_THEMES } from "data";
 import { nativeBuildVersion, nativeApplicationVersion } from "expo-application";
-
-import { useTheme } from "providers/ThemeProvider";
-import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
-import { useFocusEffect, useRouter } from "expo-router";
-import { View, Switch, Text, StyleSheet, Pressable } from "react-native";
-import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { useHeader } from "providers/HeaderProvider";
-import { generateDummyTransaction } from "@utils/dummy";
-import { Category, Transaction } from "types";
-import DeleteContainer from "@components/DeleteContainer";
-import { startOfDay } from "date-fns";
 import { getPermissionsAsync, requestPermissionsAsync } from "expo-notifications";
+
+// Data & Constants
+import { ALL_FONTS, ICONS, COLORS, DATE, CURRENCIES, ALL_THEMES, SETTING_KEYS } from "data";
+import { Dcategories } from "data/dummy";
+
+// Utils & Types
+import { generateDummyTransaction } from "@utils/dummy";
+import { startOfDay } from "date-fns";
+import { Category, Transaction } from "types";
+
+// Components
+import SettingItem from "@components/SettingItem";
+import DeleteContainer from "@components/DeleteContainer";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+type BeforeRemove = EventArg<
+  "beforeRemove",
+  true,
+  {
+    action: NavigationAction;
+  }
+>;
 
 const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
@@ -37,31 +58,47 @@ const OPTIONS: Record<string, { label: string; value: string }[]> = {
 };
 
 const Setting = () => {
+  // Hooks
   const { updateSettings, ...settings } = useSettings();
   const { textStyle, colors } = useTheme();
   const { addCategory, category, addTransaction, deleteAllData } = useData();
-  const { t } = useTranslation("", { keyPrefix: "app.stack.tabs.settings" });
+  const { t } = useTranslation("", { keyPrefix: "app.tabs.settings" });
   const { t: wt } = useTranslation();
-  const { header, tabbar, setHeaderRightButtons, setHeaderTitle } = useHeader();
+  const router = useRouter();
+  const rootNavigation = useNavigation("/");
+  const navigation = useNavigation();
+  const { setHeaderVisible, setTabbarVisible, headerHeight, tabbarHeight } = useHeader();
+
+  // State
   const [selectList, setSelectList] = useState({
     visible: false,
     menu: "dateFormat",
     selected: "",
   });
   const [hasBiometrics, setHasBiometrics] = useState(false);
+  const {bottom, top} = useSafeAreaInsets(); 
 
+  // Refs
+  const selectListRef = useRef<BottomSheet>(null);
+
+  // Effects
   useFocusEffect(
     useCallback(() => {
-      setHeaderRightButtons([]);
-      setHeaderTitle(t("title"));
-    }, [])
+      rootNavigation.setOptions({ title: t("title"), headerRightBtn: [] });
+      selectListRef.current?.close();
+      return () => {
+        setHeaderVisible(true);
+        setTabbarVisible(true);
+        setSelectList((prev) => ({ ...prev, visible: false }));
+        selectListRef.current?.close();
+      }
+    }, [setSelectList, setHeaderVisible, setTabbarVisible, selectListRef, rootNavigation])
   );
-  const router = useRouter();
-  const selectListRef = useRef<BottomSheet>(null);
+
 
   const addDummyCategories = useCallback(() => {
     const cats: Omit<Category, "_id">[] = [];
-    Dcategories.forEach((cat, index) => {
+    Dcategories.forEach((cat) => {
       const date = startOfDay(new Date());
       cats.push({
         ...cat,
@@ -88,7 +125,7 @@ const Setting = () => {
     selectListRef.current?.close();
     setSelectList((prev) => ({ ...prev, visible: false }));
     deleteAllData();
-  }, [deleteAllData]);
+  }, [deleteAllData,selectListRef]);
 
   const handleToggleLock = useCallback(
     async (value: boolean) => {
@@ -97,13 +134,13 @@ const Setting = () => {
         if (result > 0) {
           const valid = await authenticateAsync({ promptMessage: "Authenticate to enable app lock" });
           if (valid.success === true) {
-            updateSettings("appLock", "PIN");
+            updateSettings("appLockType", "PIN");
           }
         }
       } else {
         const valid = await authenticateAsync({ promptMessage: "Authenticate to disable app lock" });
         if (valid.success === true) {
-          updateSettings("appLock", "DISABLE");
+          updateSettings("appLockType", "DISABLE");
         }
       }
     },
@@ -119,9 +156,9 @@ const Setting = () => {
     });
     if (valid.success) {
       if (value) {
-        updateSettings("appLock", "BIOMETRIC");
+        updateSettings("appLockType", "BIOMETRIC");
       } else {
-        updateSettings("appLock", "PIN");
+        updateSettings("appLockType", "PIN");
       }
     }
   }, []);
@@ -133,19 +170,24 @@ const Setting = () => {
 
   const showSelectList = useCallback(
     (menu: string, selected: string) => {
+      setTabbarVisible(false);
       if (menu === "delete") {
         selectListRef.current?.snapToIndex(0);
       } else {
         const len = OPTIONS[menu].length;
-        selectListRef.current?.snapToIndex(len > 4 ? (len > 10 ? 3 : 2) : 1);
+        const snapIndex = len > 4 ? (len > 10 ? 3 : 2) : 1;
+        if (snapIndex === 3) {
+          setHeaderVisible(false);
+        }
+        selectListRef.current?.snapToIndex(snapIndex);
       }
       setSelectList({ visible: true, menu, selected });
     },
-    [selectListRef, setSelectList]
+    [selectListRef, setSelectList, setTabbarVisible, setHeaderVisible]
   );
 
   const handleItemSelect = useCallback(
-    (key: string, value: string) => {
+    (key: keyof typeof SETTING_KEYS, value: string) => {
       updateSettings(key, value);
       selectListRef.current?.close();
       setSelectList((prev) => ({ ...prev, visible: false }));
@@ -154,16 +196,6 @@ const Setting = () => {
   );
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
-
-  const handleOnAnimate = useCallback(
-    (_, to: number) => {
-      if (to === 3) header.hide();
-      else header.show();
-      if (to === -1) tabbar.show();
-      else tabbar.hide();
-    },
-    [header]
-  );
 
   const hasNotificationPermission = useCallback(async () => {
     const { status: existingStatus } = await getPermissionsAsync();
@@ -205,12 +237,11 @@ const Setting = () => {
 
   return (
     <>
-      <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 8 }}
-        paddingVertical={0}
+      <ScrollView
+        contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: tabbarHeight, paddingTop: headerHeight }}
         style={{ backgroundColor: colors.screen }}
       >
-        <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
+        <View style={[styles.section, { backgroundColor: colors.sectionBackground, marginTop: 8 }]}>
           <Text style={textStyle.title}>{t("appearance")}</Text>
           <SettingItem label={t("font")} leftIcon="font" onPress={() => showSelectList("font", settings.font)}>
             <Text style={textStyle.body}>{OPTIONS.font.find((f) => f.value === settings.font)?.label}</Text>
@@ -261,13 +292,6 @@ const Setting = () => {
           >
             <Text style={textStyle.body}>{settings.dateFormat}</Text>
           </SettingItem>
-          {/* <SettingItem
-            label={t("enableNotification")}
-            leftIcon="date"
-            onPress={() => showSelectList("dateFormat", settings.dateFormat)}
-          >
-            <Switch value={settings.notificationEnable === "ENABLE"} onValueChange={handleToggleNotification} />
-          </SettingItem> */}
           <SettingItem label={t("reminderNotification")} leftIcon="notification">
             <Switch
               value={settings.reminderNotificationEnable === "ENABLE"}
@@ -276,25 +300,25 @@ const Setting = () => {
           </SettingItem>
         </View>
 
-        <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
+        {__DEV__ && <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("security")}</Text>
           <SettingItem label={t("lock")} leftIcon="lock">
-            <Switch value={settings.appLock !== "DISABLE"} onValueChange={handleToggleLock} />
+            <Switch value={settings.appLockType !== "DISABLE"} onValueChange={handleToggleLock} />
           </SettingItem>
 
           <SettingItem label={t("biometricLock")} leftIcon="lock">
             <Switch
-              value={settings.appLock === "BIOMETRIC"}
-              disabled={!hasBiometrics || settings.appLock === "DISABLE"}
+              value={settings.appLockType === "BIOMETRIC"}
+              disabled={!hasBiometrics || settings.appLockType === "DISABLE"}
               onValueChange={handleToggleBiometrics}
             />
           </SettingItem>
-        </View>
+        </View>}
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("dataManagement")}</Text>
 
-          {__DEV__ && <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("stack/export")} />}
-          <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("stack/backup")} />
+          {__DEV__ && <SettingItem label={t("export")} leftIcon="export" onPress={() => router.push("export")} />}
+          <SettingItem label={t("backup")} leftIcon="backup" onPress={() => router.push("backup")} />
 
           <SettingItem
             label={t("deleteAllData")}
@@ -304,12 +328,12 @@ const Setting = () => {
           />
         </View>
 
-        <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
+        <View style={[styles.section, { backgroundColor: colors.sectionBackground, marginBottom: 8 }]}>
           <Text style={textStyle.title}>{t("about")}</Text>
 
-          {__DEV__ && <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("stack/help")} />}
+          <SettingItem label={t("help")} leftIcon="help" onPress={() => router.push("help")} />
 
-          <SettingItem label={t("about")} leftIcon="about" onPress={() => console.log("About")} />
+          <SettingItem label={t("about")} leftIcon="about" onPress={() => router.push("about")} />
 
           <SettingItem label={t("appVersion")} leftIcon="appVersion">
             <Text style={textStyle.body}>{nativeApplicationVersion}</Text>
@@ -319,15 +343,20 @@ const Setting = () => {
             <Text style={textStyle.body}>{nativeBuildVersion}</Text>
           </SettingItem>
         </View>
-      </CollapsibleHeaderScrollView>
+      </ScrollView>
       <BottomSheet
         ref={selectListRef}
-        snapPoints={[225, "40%", "69%", "100%"]}
+        snapPoints={[225 + bottom, "40%", "69%", "100%"]}
         index={-1}
         backdropComponent={renderBackdrop}
-        style={{ backgroundColor: colors.screen }}
-        onAnimate={handleOnAnimate}
+        style={{ backgroundColor: colors.screen, zIndex: 20 }}
         enableHandlePanningGesture={selectList.menu === "delete" ? false : true}
+        onChange={(index) => {
+          if (index === -1) {
+            setHeaderVisible(true);
+            setTabbarVisible(true);
+          }
+        }}
       >
         {selectList.menu === "delete" && (
           <DeleteContainer
@@ -348,7 +377,7 @@ const Setting = () => {
             renderItem={({ item }) => (
               <Pressable
                 key={item.value}
-                onPress={() => handleItemSelect(selectList.menu, item.value)}
+                onPress={() => handleItemSelect(selectList.menu as keyof typeof SETTING_KEYS, item.value)}
                 style={[
                   styles.selectItem,
                   {
@@ -373,7 +402,7 @@ export default Setting;
 
 const styles = StyleSheet.create({
   section: {
-    marginVertical: 8,
+    marginVertical: 4,
     borderRadius: 8,
     paddingHorizontal: 8,
     paddingVertical: 4,

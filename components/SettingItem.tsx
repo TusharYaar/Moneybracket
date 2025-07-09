@@ -18,7 +18,7 @@ const SettingItem = forwardRef<View, Props>(function SettingItem({ leftIcon, onP
 
   return (
     <Pressable
-      onPressOut={onPress ? onPress: undefined}
+      onPress={onPress ? onPress: undefined}
       android_ripple={{ color: onPress ? colors.rippleColor : undefined }}
       testID={testId}
       ref={ref}

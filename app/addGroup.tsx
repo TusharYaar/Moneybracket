@@ -1,48 +1,21 @@
 import { Text, View, TextInput, Pressable, useWindowDimensions, ScrollView } from "react-native";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { COLORS } from "data";
+import { GROUP_COLORS } from "data";
 import SwipeButton from "@components/SwipeButton";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
 import PrimaryInput from "@components/AmountInput";
 import { useData } from "providers/DataProvider";
-import GroupButton from "@components/GroupButton";
 import { useTheme } from "providers/ThemeProvider";
-import CollapsibleHeaderScrollView from "@components/CollapsibleHeaderScrollView";
 import Icon from "@components/Icon";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
-import { useHeader } from "providers/HeaderProvider";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 import { useTranslation } from "react-i18next";
 import DeleteContainer from "@components/DeleteContainer";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-const CATEGORY_TYPES = [
-  { 
-    id: "income",
-    label: "income",
-    value: "income",
-    icon: "income",
-    testId: "group-btn-income",
-  },
-  {
-    id: "expense",
-    label: "expense",
-    value: "expense",
-    icon: "expense",
-    testId: "group-btn-expense",
-  },
-  {
-    id: "transfer",
-    label: "transfer",
-    value: "transfer",
-    icon: "transfer",
-    testId: "group-btn-transfer",
-  },
-];
+import { useHeader } from "providers/HeaderProvider";
 
 type ValueProps = {
   title: string;
-  type: string;
   color: string;
   icon: string;
   description: string;
@@ -51,20 +24,17 @@ type ValueProps = {
 type SearchParams = {
   _id: string;
   color: string;
-  type: string;
   title: string;
 };
-const AddCategoryScreen = () => {
-  const { addCategory, updateCategory, deleteCategory, category } = useData();
-  const { _id, color, title = "", type = "income" } = useLocalSearchParams<SearchParams>();
-  const { t } = useTranslation("", { keyPrefix: "app.stack.addCategory" });
-  const router = useRouter();
-  const { setHeaderRightButtons, setHeaderTitle, header } = useHeader();
+const AddGroupScreen = () => {
+  const { addGroup, updateGroup, deleteGroup, group } = useData();
+  const { _id = null, color, title = "" } = useLocalSearchParams<SearchParams>();
+  const { t } = useTranslation("", { keyPrefix: "app.addGroup" });
+  const router = useRouter();;
   const inputRef = useRef<TextInput>(null);
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<ValueProps>({
     title,
-    type,
     color: color ? color : colors.screen,
     icon: "icon_6",
     description: "",
@@ -72,37 +42,36 @@ const AddCategoryScreen = () => {
   const [sheetView, setSheetView] = useState<"icon" | "delete">("icon");
 
   const { height, width } = useWindowDimensions();
-  const { top: topInset } = useSafeAreaInsets();
+  const { bottom: bottomInset } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>(null);
-
-  useEffect(() => {
-    setHeaderRightButtons(_id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_category" }] : []);
-    setHeaderTitle(_id ? t("updateTitle") : t("addTitle"));
-  }, [_id]);
+  const { headerHeight } = useHeader();
+  const navigation = useNavigation();
+  
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({ title: _id ? t("updateTitle") : t("addTitle"), headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_group" }] : [] });
+    }, [_id])
+  );
 
   useEffect(() => {
     if (_id) {
-      const cate = category.find((cat) => cat._id === _id);
-      if (cate) {
-        setValues((prev) => ({ ...prev, description: cate.description ? cate.description : "", icon: cate.icon }));
+      const grup = group.find((grp) => grp._id === _id);
+      if (grup) {
+        setValues((prev) => ({ ...prev, description: grup.description, icon: grup.icon }));
       }
     }
-  }, [_id, category]);
+  }, [_id, group]);
 
   const recommendColor = useMemo(() => {
     if (_id) {
       return "";
     } else {
-      const color = COLORS[(Math.random() * COLORS.length).toFixed()];
+      const color = GROUP_COLORS[(Math.random() * GROUP_COLORS.length).toFixed()];
       setValues((prev) => ({ ...prev, color }));
       return color;
     }
   }, [_id, setValues]);
 
-  const handleOnAnimate = (_: number, to: number) => {
-    if (to === 2) header.hide();
-    else header.show();
-  };
   const numCol = useMemo(() => Math.floor(width / 100), [width]);
 
   const handleSelectIcon = useCallback(
@@ -118,14 +87,14 @@ const AddCategoryScreen = () => {
     // TODO: ADD Check
     if (_id) {
       // TODO: fetch created_at date and populate here
-      updateCategory(_id, { ...values, createdAt: date, updatedAt: date, isFavorite: false });
-    } else addCategory({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
+      updateGroup(_id, { ...values, createdAt: date, updatedAt: date, isFavorite: false });
+    } else addGroup({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
     if (router.canGoBack()) router.back();
-    else router.replace("(tabs)/category");
+    else router.replace("(tabs)/group");
   };
   const handlePressDelete = useCallback(() => {
     sheetRef.current?.close();
-    deleteCategory(_id);
+    if (_id !== null) deleteGroup(_id);
     router.back();
   }, [_id]);
 
@@ -136,18 +105,11 @@ const AddCategoryScreen = () => {
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
-  const disableSwipeBtn = useMemo(() => {
-    if (values.title.length === 0) return true;
-    else return false;
-  }, [values]);
-
   return (
     <>
-      <CollapsibleHeaderScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset }}
-        paddingVertical={8}
-        style={{ backgroundColor: colors.screen }}
-        tabbarVisible={false}
+      <ScrollView
+        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - headerHeight }}
+        style={{ backgroundColor: colors.screen, paddingTop: headerHeight + 8, paddingBottom: bottomInset + 8, flexGrow: 1 }}
       >
         <View style={{ flex: 1 }}>
           <PrimaryInput
@@ -158,7 +120,7 @@ const AddCategoryScreen = () => {
             initialValue={title}
             onChangeText={(title) => setValues((prev) => ({ ...prev, title }))}
           />
-          <View style={{ flexDirection: "row", justifyContent: "space-between", columnGap: 16, marginTop: 32 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", columnGap: 16, marginTop: 24 }}>
             <View>
               <Text style={textStyle.body}>{t("icon")}</Text>
               <Pressable
@@ -189,7 +151,7 @@ const AddCategoryScreen = () => {
                 showsHorizontalScrollIndicator={false}
                 style={{ width: width - 64 - 16 - 16 }}
               >
-                {COLORS.map((color) => (
+                {GROUP_COLORS.map((color) => (
                   <Pressable key={color} onPress={() => setValues((prev) => ({ ...prev, color }))}>
                     <View style={{ backgroundColor: color, borderRadius: 4, height: 64, width: 64 }} />
                     {values.color === color && (
@@ -215,19 +177,7 @@ const AddCategoryScreen = () => {
               </ScrollView>
             </View>
           </View>
-          <View style={{ marginTop: 32 }}>
-            <Text style={textStyle.body}>{t("type")}</Text>
-            <GroupButton
-            selected={values.type}
-              testId="category-group-btn"
-              buttons={CATEGORY_TYPES.map((cat) => ({
-                ...cat,
-                onPress: () => setValues((prev) => ({ ...prev, type: cat.value })),
-              }))}
-              activeColor={values.color}
-            />
-          </View>
-          <View style={{ marginTop: 32 }}>
+          <View style={{ marginTop: 24 }}>
             <Text style={textStyle.body}>{t("description")}</Text>
             <TextInput
               value={values.description}
@@ -244,12 +194,11 @@ const AddCategoryScreen = () => {
 
         <SwipeButton
           bgColor={values.color}
-          disable={disableSwipeBtn}
           onSwipeComplete={handleSubmit}
-          style={{ marginTop: 32 }}
+          style={{ marginTop: 24 }}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
-      </CollapsibleHeaderScrollView>
+      </ScrollView>
 
       <BottomSheet
         ref={sheetRef}
@@ -257,8 +206,6 @@ const AddCategoryScreen = () => {
         index={-1}
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
-        onAnimate={handleOnAnimate}
-        enableDynamicSizing={false}
         enableHandlePanningGesture={sheetView === "icon"}
       >
         {sheetView === "icon" && (
@@ -306,4 +253,4 @@ const AddCategoryScreen = () => {
   );
 };
 
-export default AddCategoryScreen;
+export default AddGroupScreen;

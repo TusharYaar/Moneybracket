@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, useCallback, useEffect } from "react";
+import { useContext, createContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { CURRENCIES, SETTING_KEYS } from "../data";
 import { useTheme } from "./ThemeProvider";
 import { Currency } from "../types";
@@ -16,31 +16,31 @@ import {
 } from "expo-notifications";
 import { Platform } from "react-native";
 
-setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+// setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: true,
+//     shouldSetBadge: true,
+//   }),
+// });
 
 type Props = {
   language: string;
   currency: Currency;
-  appLock: "BIOMETRIC" | "PIN" | "DISABLE";
+  appLockType: "BIOMETRIC" | "PIN" | "DISABLE";
   theme: string;
   font: string;
   icon: string;
   dateFormat: string;
-  isFirstLaunch: string;
-  notificationEnable: "ENABLE" | "DISABLE" | string;
-  reminderNotificationEnable: "ENABLE" | "DISABLE" | string;
-  backupEnable: "ENABLE" | "DISABLE" | string,
-  dailyAutoBackup: "ENABLE" | "DISABLE" | string,
-  deleteOldBackup: "ENABLE" | "DISABLE" | string,
-  
+  isFirstLaunch: "true" | "false" | string;
+  notificationEnable: "true" | "false" | string;
+  reminderNotificationEnable: "true" | "false" | string;
+  backupEnable: "true" | "false" | string,
+  dailyAutoBackup: "true" | "false" | string,
+  deleteOldBackup: "true" | "false" | string,
+  isAppLocked: "true" | "false" | string,
 
-  updateSettings: (key: string, value: string) => void;
+  updateSettings: (key: keyof typeof SETTING_KEYS, value: string) => void;
   // roundness: number;
   // unlockedThemes: string[];
   // unlockedFonts: string[];
@@ -58,16 +58,15 @@ const SETTINGS: Props = {
   currency: CURRENCIES[getFromStorageOrDefault(SETTING_KEYS.currency, "INR", true)],
   theme: getFromStorageOrDefault(SETTING_KEYS.theme, "default", true),
   icon: getFromStorageOrDefault(SETTING_KEYS.icon, "default", true),
-  // roundness: parseInt(getFromStorageOrDefault(SETTING_KEYS.roundness, "0", true)),
   font: getFromStorageOrDefault(SETTING_KEYS.font, "lexend", true),
-  appLock: getFromStorageOrDefault(SETTING_KEYS.appLock, "DISABLE", true) as Props["appLock"],
+  appLockType: getFromStorageOrDefault(SETTING_KEYS.appLockType, "DISABLE", true) as Props["appLockType"],
   dateFormat: getFromStorageOrDefault(SETTING_KEYS.dateFormat, "dd MMM, yyyy", true),
-  notificationEnable: getFromStorageOrDefault(SETTING_KEYS.notificationEnable, "ENABLE", true),
-  reminderNotificationEnable: getFromStorageOrDefault(SETTING_KEYS.reminderNotificationEnable, "DISABLE", true),
-  backupEnable:getFromStorageOrDefault(SETTING_KEYS.backupEnable, "DISABLE", true),
-  dailyAutoBackup:getFromStorageOrDefault(SETTING_KEYS.dailyAutoBackup, "DISABLE", true),
-  deleteOldBackup:getFromStorageOrDefault(SETTING_KEYS.dailyAutoBackup, "DISABLE", true),
-
+  notificationEnable: getFromStorageOrDefault(SETTING_KEYS.notificationEnable, "true", true),
+  reminderNotificationEnable: getFromStorageOrDefault(SETTING_KEYS.reminderNotificationEnable, "false", true),
+  backupEnable:getFromStorageOrDefault(SETTING_KEYS.backupEnable, "false", true),
+  dailyAutoBackup:getFromStorageOrDefault(SETTING_KEYS.dailyAutoBackup, "false", true),
+  deleteOldBackup:getFromStorageOrDefault(SETTING_KEYS.deleteOldBackup, "false", true),
+  
   // unlockedThemes: DEFAULT_THEMES,
   // unlockedFonts: LOCAL_FONTS,
   // updateCurrency: () => {},
@@ -76,7 +75,9 @@ const SETTINGS: Props = {
   // updateLock: () => {},
   // refreshUnlockedItems: () => {},
   // updateRoundness: () => {},
+  // roundness: parseInt(getFromStorageOrDefault(SETTING_KEYS.roundness, "0", true)),
   isFirstLaunch: getFromStorageOrDefault(SETTING_KEYS.isFirstLaunch, "true"),
+  isAppLocked: getFromStorageOrDefault(SETTING_KEYS.isAppLocked, "true"),
   updateSettings: () => {},
 };
 
@@ -91,7 +92,7 @@ const SETTINGS: Props = {
 const SettingContext = createContext<Props>(SETTINGS);
 export const useSettings = () => useContext(SettingContext);
 
-const SettingsProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const { changeFont, changeTheme } = useTheme();
   const { i18n } = useTranslation();
   const [settings, setSettings] = useState(SETTINGS);

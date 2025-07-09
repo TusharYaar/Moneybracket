@@ -56,7 +56,7 @@ const DataContext = createContext<Props>({
 
 export const useData = () => useContext(DataContext);
 
-const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const { success: migration_success, error: migration_error } = useMigrations(db, migrations);
   const [category, setCategory] = useState<Category[]>([]);
   const [group, setGroup] = useState<Group[]>([]);
@@ -70,6 +70,7 @@ const DataProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) =
     } catch (e) {
       console.log(e);
       // TODO: ADD SENETRY LOGGING
+      
       // error reading value
     }
   }, [db]);

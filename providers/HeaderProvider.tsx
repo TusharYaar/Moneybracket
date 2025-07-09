@@ -1,143 +1,62 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import Header from "@components/Header";
-import { SplashScreen, useNavigationContainerRef, useRootNavigationState } from "expo-router";
-import Tabbar from "@components/Tabbar";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { HeaderRightButton } from "types";
-import { useWindowDimensions } from "react-native";
+import React, { createContext, useContext, useState, ReactNode, useMemo, useCallback } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const HEADER_HEIGHT = 64;
-const PADDING = 8;
-const HeaderContext = createContext({
-  tabbar: {
-    show: () => {},
-    hide: () => {},
-  },
-  header: {
-    show: () => {},
-    hide: () => {},
-  },
-  setHeaderRightButtons: (btns: HeaderRightButton[]) => {},
-  headerHeight: HEADER_HEIGHT,
-  tabbarHeight: HEADER_HEIGHT + PADDING,
-  setHeaderTitle: (t: string) => {},
-});
+interface HeaderProviderContextType {
+  isHeaderVisible: boolean;
+  isTabbarVisible: boolean;
+  setHeaderVisible: (visible: boolean) => void;
+  setTabbarVisible: (visible: boolean) => void;
+  tabbarHeight: number;
+  headerHeight: number;
+}
 
-export const useHeader = () => useContext(HeaderContext);
-const VISIBLE_TABS = !__DEV__
-  ? ["transaction", "category", "group", "settings"]
-  : ["transaction", "category", "group", "recurring", "settings"];
+const HeaderProviderContext = createContext<HeaderProviderContextType | undefined>(undefined);
 
-const HeaderProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
-  const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
-  const { width } = useWindowDimensions();
-  const headerPosition = useSharedValue(topInset);
-  const tabbarPosition = useSharedValue(bottomInset + PADDING);
-  const [headerRightButtons, setHeaderRightButtons] = useState<HeaderRightButton[]>([]);
-  const [headerTitle, setHeaderTitle] = useState("");
-  const {
-    routes: [nav],
-  } = useRootNavigationState();
-  const navigation = useNavigationContainerRef();
+interface HeaderProviderProps {
+  children: ReactNode;
+}
 
-  const isWide = useMemo(() => {
-    const space = width - (VISIBLE_TABS.length + 1) * 64 - 8 * 2;
-    if (space > 8) {
-      return true;
-    }
-    return false;
-  }, [width]);
+export const HeaderProvider: React.FC<HeaderProviderProps> = ({ children }) => {
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isTabbarVisible, setIsTabbarVisible] = useState(true);
+  const { bottom, top } = useSafeAreaInsets();
 
-  useEffect(() => {
-    if (navigation.isReady()) {
-      headerPosition.value = topInset;
-      SplashScreen.hideAsync();
-      tabbarPosition.value = isWide ? bottomInset + PADDING : bottomInset + PADDING + 64;
-    }
-  }, [navigation, topInset, isWide]);
+  const tabbarHeight = useMemo(() => {
+    return 56 + bottom;
+  }, [bottom]);
 
-  const hideHeader = useCallback(() => {
-    headerPosition.value = withTiming(-HEADER_HEIGHT);
+  const headerHeight = useMemo(() => {
+    return 56 + top;
+  }, [top]);
+
+  const setHeaderVisible = useCallback((visible: boolean) => {
+    setIsHeaderVisible(visible);
   }, []);
-  const hideTabbar = useCallback(() => {
-    tabbarPosition.value = withTiming(isWide ? -HEADER_HEIGHT : -HEADER_HEIGHT * 2 - 8);
-  }, [isWide]);
-  const showHeader = useCallback(() => {
-    headerPosition.value = withTiming(topInset);
-  }, [topInset]);
-  const showTabbar = useCallback(() => {
-    tabbarPosition.value = withTiming(bottomInset + PADDING);
-  }, [bottomInset]);
 
-  const routes = useMemo(() => {
-    if (nav.state) return nav.state.routes;
-    return [];
-  }, [nav]);
+  const setTabbarVisible = useCallback((visible: boolean) => {
+    setIsTabbarVisible(visible);
+  }, []);
 
-  const currentIndex = useMemo(() => {
-    if (nav.state) {
-      return nav.state.index;
-    }
-    return 0;
-  }, [nav]);
-
-  useEffect(() => {
-    showHeader();
-    if (currentIndex > 0) hideTabbar();
-    else showTabbar();
-  }, [currentIndex, showTabbar, hideTabbar]);
-
-  const headerStyle = useAnimatedStyle(() => {
-    return {
-      top: headerPosition.value,
-      position: "absolute",
-      width: "100%",
-      height: HEADER_HEIGHT,
-      zIndex: 100,
-    };
-  });
-  const tabbarStyle = useAnimatedStyle(() => {
-    return {
-      bottom: tabbarPosition.value,
-      position: "absolute",
-      width: "100%",
-      height: isWide ? HEADER_HEIGHT : HEADER_HEIGHT * 2 + 8,
-      zIndex: 100,
-    };
-  });
+  const value: HeaderProviderContextType = {
+    isHeaderVisible,
+    isTabbarVisible,
+    setHeaderVisible,
+    setTabbarVisible,
+    tabbarHeight,
+    headerHeight,
+  };
 
   return (
-    <HeaderContext.Provider
-      value={{
-        setHeaderRightButtons,
-        tabbar: {
-          show: showTabbar,
-          hide: hideTabbar,
-        },
-        header: {
-          show: showHeader,
-          hide: hideHeader,
-        },
-        headerHeight: HEADER_HEIGHT + topInset,
-        tabbarHeight: HEADER_HEIGHT + PADDING,
-        setHeaderTitle,
-      }}
-    >
-      <Animated.View style={headerStyle}>
-        <Header
-          title={headerTitle}
-          route={routes.length ? routes[currentIndex] : {}}
-          back={currentIndex > 0 ? routes[currentIndex - 1].name : undefined}
-          headerRightButtons={headerRightButtons}
-        />
-      </Animated.View>
+    <HeaderProviderContext.Provider value={value}>
       {children}
-      <Animated.View style={tabbarStyle}>
-        <Tabbar visibleTabs={VISIBLE_TABS} current={routes.length ? routes[currentIndex] : {}} isWide={isWide} />
-      </Animated.View>
-    </HeaderContext.Provider>
+    </HeaderProviderContext.Provider>
   );
 };
 
-export default HeaderProvider;
+export const useHeader = (): HeaderProviderContextType => {
+  const context = useContext(HeaderProviderContext);
+  if (context === undefined) {
+    throw new Error('useHeader must be used within a HeaderProvider');
+  }
+  return context;
+};
