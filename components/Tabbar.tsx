@@ -1,11 +1,13 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, usePathname } from "expo-router";
 import { useTheme } from "providers/ThemeProvider";
 
 import Icon from "./Icon";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useHeader } from "providers/HeaderProvider";
+import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated";
 
 
 const ICONS = {
@@ -24,14 +26,23 @@ const Tabbar = ({ state }: BottomTabBarProps) => {
   // TODO: make it dynamic
   const isWide = true;
   const { bottom } = useSafeAreaInsets();
+  const { isTabbarVisible, setTabbarVisible } = useHeader();
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    bottom: withTiming(isTabbarVisible ? bottom : - (bottom + TabSize), { duration: 100 }),
+  }));
+
+
+  useEffect(() => {
+    setTabbarVisible(true);
+  }, [state]);
 
   return (
-    <View style={[isWide ? styles.tabbarContainerInRow : styles.tabbarContainerInCol, { paddingBottom: bottom, position: "absolute", bottom: 0, left: 0, right: 0 }]}>
+    <Animated.View style={[isWide ? styles.tabbarContainerInRow : styles.tabbarContainerInCol, animatedStyle, {position: "absolute", left: 0, right: 0, zIndex: 10 }]}>
       <View
         style={[
           styles.tabsContainer,
           { backgroundColor: colors.tabbarBackground },
-          isWide ? {} : { width: "100%", marginTop: 8 },
         ]}
       >
         {state.routes.map((route, index) => (
@@ -61,7 +72,7 @@ const Tabbar = ({ state }: BottomTabBarProps) => {
           </View>
         </Pressable>
       </Link>
-    </View>
+    </Animated.View>
   );
 };
 

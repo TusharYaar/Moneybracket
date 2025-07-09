@@ -12,6 +12,7 @@ import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 import { useTranslation } from "react-i18next";
 import DeleteContainer from "@components/DeleteContainer";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useHeader } from "providers/HeaderProvider";
 
 type ValueProps = {
   title: string;
@@ -28,7 +29,7 @@ type SearchParams = {
 const AddGroupScreen = () => {
   const { addGroup, updateGroup, deleteGroup, group } = useData();
   const { _id = null, color, title = "" } = useLocalSearchParams<SearchParams>();
-  const { t } = useTranslation("", { keyPrefix: "app.stack.addGroup" });
+  const { t } = useTranslation("", { keyPrefix: "app.addGroup" });
   const router = useRouter();;
   const inputRef = useRef<TextInput>(null);
   const { textStyle, colors } = useTheme();
@@ -41,9 +42,9 @@ const AddGroupScreen = () => {
   const [sheetView, setSheetView] = useState<"icon" | "delete">("icon");
 
   const { height, width } = useWindowDimensions();
-  const { top: topInset } = useSafeAreaInsets();
+  const { bottom: bottomInset } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>(null);
-
+  const { headerHeight } = useHeader();
   const navigation = useNavigation();
   
   useFocusEffect(
@@ -107,8 +108,8 @@ const AddGroupScreen = () => {
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset }}
-        style={{ backgroundColor: colors.screen }}
+        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - headerHeight }}
+        style={{ backgroundColor: colors.screen, paddingTop: headerHeight + 8, paddingBottom: bottomInset + 8, flexGrow: 1 }}
       >
         <View style={{ flex: 1 }}>
           <PrimaryInput
@@ -119,7 +120,7 @@ const AddGroupScreen = () => {
             initialValue={title}
             onChangeText={(title) => setValues((prev) => ({ ...prev, title }))}
           />
-          <View style={{ flexDirection: "row", justifyContent: "space-between", columnGap: 16, marginTop: 32 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", columnGap: 16, marginTop: 24 }}>
             <View>
               <Text style={textStyle.body}>{t("icon")}</Text>
               <Pressable
@@ -176,7 +177,7 @@ const AddGroupScreen = () => {
               </ScrollView>
             </View>
           </View>
-          <View style={{ marginTop: 32 }}>
+          <View style={{ marginTop: 24 }}>
             <Text style={textStyle.body}>{t("description")}</Text>
             <TextInput
               value={values.description}
@@ -194,7 +195,7 @@ const AddGroupScreen = () => {
         <SwipeButton
           bgColor={values.color}
           onSwipeComplete={handleSubmit}
-          style={{ marginTop: 32 }}
+          style={{ marginTop: 24 }}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
       </ScrollView>

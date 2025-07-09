@@ -11,6 +11,7 @@ import { Category, TransactionDate, TransactionWithCategory } from "types";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { useSettings } from "providers/SettingsProvider";
 import { FlashList } from "@shopify/flash-list";
+import { useHeader } from "providers/HeaderProvider";
 
 const PADDING = 8;
 
@@ -28,7 +29,7 @@ const AllTransaction = () => {
   const { colors, textStyle } = useTheme();
   const { transaction, category } = useData();
   const { t } = useTranslation("", {
-    keyPrefix: "app.stack.tabs.transaction",
+    keyPrefix: "app.tabs.transaction",
   });
   const summaryViewTop = useSharedValue(PADDING);
   const summaryViewHeight = useSharedValue(100);
@@ -36,12 +37,12 @@ const AllTransaction = () => {
   const lastContentOffset = useSharedValue(0);
   const { currency } = useSettings();
   const rootNavigation = useNavigation("/");
-
+  const { headerHeight, tabbarHeight } = useHeader();
   useFocusEffect(
     useCallback(() => {
       rootNavigation.setOptions({ title: t("title"), headerRightBtn: [
-        { icon: "search", onPress: () => console.log("search"), action: "search" },
-        { icon: "filter", onPress: () => console.log("filter"), action: "filter" },
+        { icon: "search", onPress: () => console.log("search"), action: "search", disabled: true },
+        { icon: "filter", onPress: () => console.log("filter"), action: "filter", disabled: true },
       ] });    
     }, [])
   );
@@ -108,9 +109,9 @@ const AllTransaction = () => {
   });
 
   return (
-    <View style={{ backgroundColor: colors.screen, flex: 1 }}>
-      <Animated.View style={[styles.summaryView]}>
-        <View style={{ padding: 8, backgroundColor: colors.headerBackground, borderRadius: 8 }}>
+    <View style={{ backgroundColor: colors.screen, flex: 1, paddingBottom: tabbarHeight, paddingTop: headerHeight }}>
+      <Animated.View style={[styles.summaryView, { top: headerHeight }]}>
+        <View style={{ padding: 8, backgroundColor: colors.headerBackground, borderRadius: 8, }}>
           <Animated.Text
             style={[textStyle.caption, { color: colors.income }]}
           >{`${currency.symbol_native} ${totalAmount.income}`}</Animated.Text>
@@ -125,11 +126,11 @@ const AllTransaction = () => {
         showsVerticalScrollIndicator={false}
         renderItem={({ item: { type, data }, index }) =>
           type === "date" ? (
-            <TransactionDateItem {...data} style={{ marginTop: index === 0 ? -36 : 8, height: 78 }} />
+            <TransactionDateItem {...data} style={{ marginTop: index === 0 ? 0 : 8, height: 36 }} />
           ) : (
             <Link
               href={{
-                pathname: "stack/addTransaction",
+                pathname: "addTransaction",
                 params: {
                   _id: data._id,
                   amount: data.amount,
@@ -144,7 +145,7 @@ const AllTransaction = () => {
             </Link>
           )
         }
-        contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 8 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 115 }}
         onScroll={handleOnScroll}
       />
     </View>

@@ -1,20 +1,33 @@
-import { StyleSheet, View, Text } from "react-native";
+// React & React Native
 import React, { useCallback, useEffect, useState } from "react";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 
+// Expo APIs
 import * as FileSystem from "expo-file-system";
-// import * as Print from "expo-print";
 import { startActivityAsync } from "expo-intent-launcher";
-// import { shareAsync } from "expo-sharing";
-
-import { createCSV, createHTML, createJSON, getType } from "utils/exports";
-import { useData } from "providers/DataProvider";
-import { EXPORTS_DIRECTORY } from "data";
-// import { FlashList } from "@shopify/flash-list";
-// import ExportItem from "components/ExportItem";
+import { useFocusEffect, useNavigation } from "expo-router";
 import { useTranslation } from "react-i18next";
 
+// Providers & Hooks
+import { useData } from "providers/DataProvider";
+import { useTheme } from "providers/ThemeProvider";
+import { useHeader } from "providers/HeaderProvider";
+
+// Data & Utils
+import { EXPORTS_DIRECTORY } from "data";
+
+
 const Exports = () => {
-  const { t } = useTranslation("", { keyPrefix: "screens.settings.export" });
+  const { t } = useTranslation("", { keyPrefix: "app.export" });
+  const { textStyle, colors } = useTheme();
+  const rootNavigation = useNavigation("/");
+  const { headerHeight } = useHeader();
+
+  useFocusEffect(
+    useCallback(() => {
+      rootNavigation.setOptions({ title: t("title"), headerRightBtn: [] });
+    }, [])
+  );
   // const { transaction } = useData();
   const [files, setFiles] = useState([]);
   // TODO: Define Types for include Fields
@@ -52,7 +65,7 @@ const Exports = () => {
   //     });
   //   } catch (e) {
   //     console.log(e);
-  //   }
+  //   }  
   // }, [transaction]);
 
   // const exportCSV = useCallback(async () => {
@@ -74,28 +87,29 @@ const Exports = () => {
   //   setFiles((prev) => [location, ...prev]);
   // }, [transaction]);
 
-  const openFile = useCallback(async (file: string) => {
-    try {
-      const location = `${EXPORTS_DIRECTORY}/${file}`;
-      const curi = await FileSystem.getContentUriAsync(location);
-      console.log(location);
-      console.log(curi);
-      return;
-      startActivityAsync("android.intent.action.VIEW", {
-        data: curi,
-        flags: 1,
-        type: getType(file),
-      });
-    } catch (e) {
-      console.log(e);
-      console.log("unable to open the file: No app Installed");
-    }
-  }, []);
+  // const openFile = useCallback(async (file: string) => {
+  //   try {
+  //     const location = `${EXPORTS_DIRECTORY}/${file}`;
+  //     const curi = await FileSystem.getContentUriAsync(location);
+  //     console.log(location);
+  //     console.log(curi);
+  //     return;
+  //     startActivityAsync("android.intent.action.VIEW", {
+  //       data: curi,
+  //       flags: 1,
+  //       type: getType(file),
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //     console.log("unable to open the file: No app Installed");
+  //   }
+  // }, []);
 
   return (
-    <View style={styles.screen}>
-      <View>
-        <Text>{t("exportAs")}</Text>
+    <ScrollView
+    contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 8, paddingTop: headerHeight + 8, backgroundColor: colors.screen }}
+    >
+        <Text style={textStyle.title}>{t("exportAs")}</Text>
         <View style={styles.btnContainer}>
           {/* <Button onPress={exportPDF} style={styles.btn}>
             {t("pdf")}
@@ -110,28 +124,13 @@ const Exports = () => {
             {t("excel")}
           </Button> */}
         </View>
-      </View>
-      <Text>{t("recentExports")}</Text>
-      {files.length === 0 && <Text>{t("noExports")}</Text>}
-      {/* {files.length > 0 && (
-        <FlashList
-          data={files}
-          renderItem={({ item }) => <ExportItem item={item} onPress={() => openFile(item)} />}
-          estimatedItemSize={100}
-        />
-      )} */}
-    </View>
+    </ScrollView>
   );
 };
 
 export default Exports;
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    padding: 8,
-  },
-
   btnContainer: {
     flexDirection: "row",
     flexWrap: "wrap",

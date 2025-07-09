@@ -34,6 +34,7 @@ import { SystemBars } from "react-native-edge-to-edge";
 //   },
 // };
 
+
 type Props = {
   colors: Theme_Color;
   textStyle: Theme_TextStyle;
@@ -61,7 +62,7 @@ const ThemeContext = createContext<Props>({
 
 export const useTheme = () => useContext(ThemeContext);
 
-const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState("default");
   const [font, setFont] = useState("lexend");
 
@@ -78,6 +79,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
       amountInput: _fonts.amountInput,
       amount: _fonts.amount,
       body: { ..._fonts.body, color: colors.text },
+      bodyBold: { ..._fonts.bodyBold, color: colors.text },
       title: { ..._fonts.title, color: colors.text },
       caption: { ..._fonts.caption, color: colors.text },
       header: { ..._fonts.header, color: colors.headerText },
@@ -171,10 +173,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element | JSX.Element[] }) 
     <ThemeContext.Provider
       value={{
         changeTheme,
-        // font,
         changeFont,
-        // changeRoundness,
-        // loadFont,
         colors,
         textStyle,
       }}

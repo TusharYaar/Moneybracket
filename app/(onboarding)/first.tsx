@@ -1,3 +1,4 @@
+import { Link } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
@@ -17,9 +18,11 @@ const OnboardingScreen = () => {
       <Text style={styles.subtitle}>
         Discover new features and get started quickly. Let's make your experience amazing.
       </Text>
+      <Link href="/(onboarding)/second" asChild>
       <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
+      </Link>
     </View>
   );
 };

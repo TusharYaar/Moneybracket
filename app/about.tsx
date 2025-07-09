@@ -1,69 +1,63 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 
-import { View, StyleSheet, Image, Text, ScrollView } from "react-native";
+import { View, Image, Text, ScrollView } from "react-native";
 import { useTheme } from "providers/ThemeProvider";
 import { useTranslation } from "react-i18next";
-import { useFocusEffect, useNavigation } from "expo-router";
+import { Link, useFocusEffect, useNavigation } from "expo-router";
+import { useHeader } from "providers/HeaderProvider";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const AboutScreen = () => {
   const { textStyle, colors } = useTheme();
-  const { t } = useTranslation("", { keyPrefix: "app.stack.about" });
+  const { t } = useTranslation("", { keyPrefix: "app.about" });
   const rootNavigation = useNavigation("/");
+  const { headerHeight } = useHeader();
+  const {bottom} = useSafeAreaInsets();
 
   useFocusEffect(
     useCallback(() => {
-      rootNavigation.setOptions({ title: t("title") });
+      rootNavigation.setOptions({ title: t("title"), headerRightBtn: [] });
     }, [])
   );
 
 
   return (
-    <View style={{flex: 1, backgroundColor: colors.screen}}>
     <ScrollView
-    contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 8 }}
+    contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: bottom + 8, paddingTop: headerHeight + 8, backgroundColor: colors.screen }}
     >
       <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Image source={require("assets/christmas-icon.png")} style={{ width: 100, height: 100, borderRadius: 8 }} />
       </View>
-      <Text style={[{ marginTop: 8 }, textStyle.title]}>About The App</Text>
+      <Text style={[{ marginTop: 8 }, textStyle.title]}>{t("about")}</Text>
+      <View style={{ paddingHorizontal: 8 }}>
+
       <Text style={[textStyle.body, { marginVertical: 4 }]}>
-        Our app is a powerful and simple tool to help you manage your personal finances. We understand how important it
-        is to be in control of your money, and that's why we've created this app.
+        {t("description")}
       </Text>
       <Text style={[textStyle.body, { marginVertical: 4 }]}>
-        Our app is open source, which means that it's free for everyone to use and contribute to. You can access all of
-        the code and make any changes you want, and you can use it for personal use without any restrictions.
+        {t("openSource")}
       </Text>
       <Text style={[textStyle.body, { marginVertical: 4 }]}>
-        Our app is also ad-free, meaning you won't be bombarded with annoying pop-ups or advertisements while using it.
-        This makes for a clean and seamless experience, and it also ensures your privacy is protected.
+        {t("adFree")}
       </Text>
-      {/* <Text style={[textStyle.body, { marginVertical: 4 }]}>
-        The only paid options we offer are customization options such as font and theme changes. This is to help support
-        our ongoing development and maintenance of the app.
-        </Text> */}
       <Text style={[textStyle.body, { marginVertical: 4 }]}>
-        We hope you find our finance tracker app useful and that it helps you take control of your finances. If you have
-        any questions or feedback, please don't hesitate to reach out to us.
+        {t("paidOptions")}
       </Text>
-      {/* <List.Accordion
-        title="Libraries Used"
-        >
-        {Object.keys(file.dependencies).map((pack) => (
-        <List.Item style={{ padding: 0, margin: 0 }} title={pack} key={pack} />
-        ))}
-        {Object.keys(file.devDependencies).map((pack) => (
-        <List.Item style={{ padding: 0, margin: 0 }} title={pack} key={pack} />
-        ))}
-        </List.Accordion> */}
+      <Text style={[textStyle.body, { marginVertical: 4 }]}>
+        {t("support")}
+      </Text>
+      <Link href="privacyPolicy" asChild>
+        <Text style={[textStyle.body, { marginVertical: 4 }]}>
+          {t("privacyPolicy")}
+        </Text>
+      </Link>
+      <Link href="termsOfService" asChild>
+        <Text style={[textStyle.body, { marginVertical: 4 }]}>
+          {t("termsOfService")}
+        </Text>
+      </Link>
+      </View>
     </ScrollView>
-        </View>
   );
 };
 export default AboutScreen;
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
-});

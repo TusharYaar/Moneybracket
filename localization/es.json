@@ -1,6 +1,5 @@
 {
     "app": {
-        "stack": {
             "tabs": {
                 "category": {
                     "title": "Categoría"
@@ -43,7 +42,17 @@
                     "title": "Transacciones"
                 }
             },
-            "about": {},
+            "about": {
+                "title": "Acerca de",
+                "about": "Acerca de la app",
+                "description": "Nuestra app es una herramienta poderosa y simple para ayudarte a gestionar tus finanzas personales. Entendemos lo importante que es estar en control de tu dinero, y por eso hemos creado esta app.",
+                "openSource": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+                "adFree": "Nuestra app también es ad-free, lo que significa que no te bombardearán con anuncios molestos o publicidad mientras la usas. Esto hace para una experiencia limpia y sin complicaciones, y también asegura que tu privacidad esté protegida.",
+                "paidOptions": "Las únicas opciones pagas que ofrecemos son opciones de personalización como cambios de fuente y tema. Esto es para ayudar a soportar nuestro desarrollo y mantenimiento de la app.",
+                "support": "Si tienes alguna pregunta o comentario, por favor contáctanos a través de nuestro correo electrónico: support@app.com",
+                "privacyPolicy": "Política de privacidad",
+                "termsOfService": "Términos de servicio"
+            },
             "addCategory": {
                 "addTitle": "Agregar categoría",
                 "updateTitle": "Actualizar categoría",
@@ -112,9 +121,49 @@
                 "recentExports": "Exportaciones recientes",
                 "noExports": "No tienes exportaciones"
             },
-            "help": {}
-        }
-    },
+            "help": {
+                "title": "Ayuda",
+                "help": "Ayuda",
+                "description": "Ayuda",
+                "descriptionText": "Ayuda"
+            },
+            "privacyPolicy": {
+                "title": "Política de privacidad",
+                "lastUpdated": "Última actualización: 05/07/2025",
+                "informationWeCollect": "Información que recopilamos",
+                "informationWeCollectText": "Recopilamos información sobre ti para mejorar tu experiencia y proporcionar un mejor servicio. No recopilamos información sensible como contraseñas o datos financieros."
+            },
+            "termsOfService": {
+                "title": "Términos de servicio",
+                "lastUpdated": "Última actualización: 05/07/2025",
+                "acceptance": "Aceptación",
+                "acceptanceText": "Al usar nuestra app, aceptas nuestros términos de servicio.",
+                "description": "Descripción",
+                "descriptionText": "Nuestra app es una herramienta poderosa y simple para ayudarte a gestionar tus finanzas personales. Entendemos lo importante que es estar en control de tu dinero, y por eso hemos creado esta app.",
+                "userResponsibilities": "Responsabilidades del usuario",
+                "userResponsibilitiesText": "Como usuario, eres responsable de mantener la privacidad de tu cuenta y no compartir tu contraseña con nadie. También eres responsable de mantener tu dispositivo seguro y no permitir que nadie acceda a tu cuenta.",
+                "dataOwnership": "Propiedad de los datos",
+                "dataOwnershipText": "Tus datos son propiedad de ti. No los compartimos con nadie.",
+                "appUsage": "Uso de la app",
+                "appUsageText": "Puedes usar nuestra app para gestionar tus finanzas personales. También puedes usarla para crear copias de seguridad de tus datos y restaurarlos más tarde.",
+                "intellectualProperty": "Propiedad intelectual",
+                "intellectualPropertyText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+                "disclaimer": "Aviso legal",
+                "disclaimerText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+                "limitationOfLiability": "Limitación de responsabilidad",
+                "limitationOfLiabilityText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+                "termination": "Terminación",
+                "terminationText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+                "changesToTerms": "Cambios a los términos",
+                "changesToTermsText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+                "governingLaw": "Ley aplicable",
+                "governingLawText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+                "contactUs": "Contacto",
+                "contactUsText": "Puedes contactarnos a través de nuestro correo electrónico: support@app.com",
+                "support": "Soporte",
+                "supportText": "Si tienes alguna pregunta o comentario, por favor contáctanos a través de nuestro correo electrónico: support@app.com"
+            }
+        },
     "components": {
         "categoryItem": {
             "income": "Ingreso",

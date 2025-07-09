@@ -48,7 +48,8 @@
         "expo-font",
         {
           "fonts": [
-            "./assets/Lexend-Regular.ttf"
+            "./assets/Lexend-Regular.ttf",
+            "./assets/Lexend-Medium.ttf"
           ]
         }
       ],

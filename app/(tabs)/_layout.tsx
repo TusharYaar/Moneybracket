@@ -1,10 +1,17 @@
 
 import Tabbar from "@components/Tabbar";
 import {  Tabs } from "expo-router";
+import { useTheme } from "providers/ThemeProvider";
+import { useData } from "providers/DataProvider";
+import { useEffect } from "react";
 function Layout() {
-
+  const { colors } = useTheme();
+  const { fetchData } = useData();
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
-    <Tabs screenOptions={{ headerShown: false, animation: "shift" }} tabBar={(props) => <Tabbar {...props} />}>
+    <Tabs screenOptions={{ headerShown: false, animation: "shift",  sceneStyle: { backgroundColor: colors.screen } }} backBehavior="initialRoute" tabBar={(props) => <Tabbar {...props} />}>
       <Tabs.Screen name="index" options={{ title: "Transaction" }} />
       <Tabs.Screen name="category" options={{ title: "Category" }} />
       <Tabs.Screen name="group" options={{ title: "Group" }} />

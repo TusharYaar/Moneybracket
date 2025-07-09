@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 const AddRecurring = () => {
     const router = useRouter();
     const { colors, textStyle } = useTheme();
-    const { t } = useTranslation("", { keyPrefix: "app.stack.addRecurring" });
+    const { t } = useTranslation("", { keyPrefix: "app.addRecurring" });
 
     const [title, setTitle] = useState("");
     const [amount, setAmount] = useState("");

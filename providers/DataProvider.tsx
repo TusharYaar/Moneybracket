@@ -70,6 +70,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (e) {
       console.log(e);
       // TODO: ADD SENETRY LOGGING
+      
       // error reading value
     }
   }, [db]);

@@ -22,13 +22,14 @@ const FONTS_DIRECTORY = `${Paths.document.uri}Fonts/`;
 export const SETTING_KEYS = {
   language: "settings/language",
   currency: "settings/currency",
-  appLock: "settings/applock",
+  appLockType: "settings/applockType",
   theme: "settings/theme",
   icon: "settings/icon",
   font: "settings/font",
   dateFormat: "settings/dateFormat",
   roundness: "settings/roundness",
   isFirstLaunch: "settings/isFirstLaunch",
+  isAppLocked: "settings/isAppLocked",
   // 
   notificationEnable: "settings/notification/enable",
   reminderNotificationEnable: "settings/notification/reminderEnable",
@@ -37,7 +38,7 @@ export const SETTING_KEYS = {
   backupEnable: "settings/backup",
   dailyAutoBackup: "settings/backup/autoDaily",
   deleteOldBackup: "settings/backup/deleteOld"
-};
+} as const;
 
 export {
   ICONS,

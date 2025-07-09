@@ -1,21 +1,28 @@
-import { StyleSheet, View, TextInput, Pressable, Keyboard, useWindowDimensions, Text, ScrollView } from "react-native";
 import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import { useSettings } from "providers/SettingsProvider";
+import { StyleSheet, View, TextInput, Pressable, Keyboard, useWindowDimensions, Text, ScrollView } from "react-native";
 import { useFocusEffect, useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import { useData } from "providers/DataProvider";
-import SwipeButton from "@components/SwipeButton";
-import CategoryItem from "@components/CategoryItem";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
+import { format, parseISO } from "date-fns";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
-import { format, parseISO } from "date-fns";
-import PrimaryInput from "@components/AmountInput";
-import { Category, Group, Transaction } from "types";
+
+// Providers
+import { useSettings } from "providers/SettingsProvider";
+import { useData } from "providers/DataProvider";
 import { useTheme } from "providers/ThemeProvider";
-import { useTranslation } from "react-i18next";
+import { useHeader } from "providers/HeaderProvider";
+
+// Types
+import { Category, Group, Transaction } from "types";
+
+// Components
+import SwipeButton from "@components/SwipeButton";
+import CategoryItem from "@components/CategoryItem";
+import PrimaryInput from "@components/AmountInput";
 import DeleteContainer from "@components/DeleteContainer";
 import GroupItem from "@components/GroupItem";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type SearchParams = {
   _id: string;
@@ -51,7 +58,7 @@ const AddTransaction = () => {
     date = new Date().toISOString(),
     category: tcategory,
   } = useLocalSearchParams<SearchParams>();
-  const { t } = useTranslation("", { keyPrefix: "app.stack.addTransaction" });
+  const { t } = useTranslation("", { keyPrefix: "app.addTransaction" });
   const { currency: defaultCurrency, dateFormat } = useSettings();
   const { category, addTransaction, updateTransaction, deleteTransaction, transaction, group } = useData();
   const amtInputRef = useRef<TextInput>(null);
@@ -74,8 +81,8 @@ const AddTransaction = () => {
   const navigation = useNavigation();
 
   const { height } = useWindowDimensions();
-  const { top: topInset } = useSafeAreaInsets();
-
+  const { bottom: bottomInset } = useSafeAreaInsets();
+  const { headerHeight } = useHeader();
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
     // TODO: Resolve this
@@ -85,7 +92,9 @@ const AddTransaction = () => {
   useFocusEffect(
     useCallback(() => {
       navigation.setOptions({ title: _id ? t("updateTitle") : t("addTitle"), headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_transaction" }] : [] });
-    }, [_id])
+      sheetRef.current?.close();
+
+    }, [_id, sheetRef, navigation, showDeleteModal])
   );
 
   useEffect(() => {
@@ -217,7 +226,7 @@ const AddTransaction = () => {
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - topInset }}
+        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - headerHeight, paddingTop: headerHeight + 8, paddingBottom: bottomInset + 8, flexGrow: 1 }}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={{ flexDirection: "column", flexGrow: 1 }}>

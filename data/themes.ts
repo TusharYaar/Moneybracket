@@ -13,7 +13,7 @@ export const defaultT: CustomTheme = {
     screen: "#f2f2f2",
     statusbar: "#f2f2f2",
     
-    sectionBackground: "#d9f6fc",
+    sectionBackground: "#f5fdfe",
     rippleColor: "#010a1930",
     
     tabbarBackground: "#010a19",

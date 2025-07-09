@@ -1,34 +1,50 @@
-import { StyleSheet, View, Text, Switch, ScrollView } from "react-native";
+// React & React Native
 import React, { useCallback, useRef, useState } from "react";
-import { BACKUP_DIRECTORY } from "data";
-import { useData } from "providers/DataProvider";
+import { StyleSheet, View, Text, Switch, ScrollView } from "react-native";
+
+// Navigation
+import { useFocusEffect, useNavigation } from "expo-router";
+
+// Expo APIs
 import { getDocumentAsync } from "expo-document-picker";
 import { Directory, File } from "expo-file-system/next";
-import { generateBackupFile, readBackupFile } from "utils/backup";
-import { Category, Group, Transaction } from "types";
-import { useTranslation } from "react-i18next";
-import { useTheme } from "providers/ThemeProvider";
-import SettingItem from "@components/SettingItem";
-import { useSettings } from "providers/SettingsProvider";
-import { format, startOfDay } from "date-fns";
-import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { shareAsync } from "expo-sharing";
+
+// 3rd Party Libraries
+import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
+import { useTranslation } from "react-i18next";
+import { format, startOfDay } from "date-fns";
+
+// Providers & Hooks
+import { useData } from "providers/DataProvider";
+import { useTheme } from "providers/ThemeProvider";
+import { useSettings } from "providers/SettingsProvider";
+import { useHeader } from "providers/HeaderProvider";
+
+// Components
+import SettingItem from "@components/SettingItem";
 import OptionContainer from "@components/OptionContainer";
 import SuccessContainer from "@components/SuccessContainer";
-import { useFocusEffect, useNavigation } from "expo-router";
+
+// Data & Utils
+import { BACKUP_DIRECTORY } from "data";
+import { generateBackupFile, readBackupFile } from "utils/backup";
+
+// Types
+import { Category, Group, Transaction } from "types";
 
 type backupItem = { name: string; uri: string };
 const Backup = () => {
   const { category, transaction, group, addCategory, addGroup, addTransaction, deleteAllData } = useData();
   const settings = useSettings();
   const { colors, textStyle } = useTheme();
-  const { t } = useTranslation("", { keyPrefix: "app.stack.backup" });
+  const { t } = useTranslation("", { keyPrefix: "app.backup" });
   const [loading, setLoading] = useState(false);
   const [backupList, setBackupList] = useState<backupItem[]>([]);
   const [selectedFile, setSelectedFile] = useState({ view: "", uri: "", message: "", buttons: [] as any });
   const selectListRef = useRef<BottomSheet>(null);
   const navigation = useNavigation();
-
+  const { headerHeight } = useHeader();
   function listBackups(directory: Directory, indent: number = 0) {
     const contents = directory.list();
     const list: backupItem[] = [];
@@ -184,7 +200,7 @@ const Backup = () => {
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 8 }}
+        contentContainerStyle={{ paddingHorizontal: 8, paddingTop: headerHeight + 4}}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
@@ -247,7 +263,7 @@ export default Backup;
 
 const styles = StyleSheet.create({
   section: {
-    marginVertical: 8,
+    marginVertical: 4,
     borderRadius: 8,
     paddingHorizontal: 8,
     paddingVertical: 4,

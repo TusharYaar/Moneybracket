@@ -1,17 +1,25 @@
+// React Native & Expo imports
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Stack } from "expo-router";
+import * as Sentry from "@sentry/react-native";
 
+// Localization
 import i18n from "../localization";
 import { I18nextProvider } from "react-i18next";
-import DataProvider from "providers/DataProvider";
-// import ExchangeRatesProvider from "../providers/ExchangeRatesProvider";
-import ThemeProvider from "providers/ThemeProvider";
+import { SplashScreen } from "expo-router";
 
-import { SplashScreen, Stack } from "expo-router";
-import * as Sentry from "@sentry/react-native";
+// Providers
+import DataProvider from "providers/DataProvider";
+import ThemeProvider, { useTheme } from "providers/ThemeProvider";
 import SettingsProvider, { useSettings } from "providers/SettingsProvider";
+// import ExchangeRatesProvider from "../providers/ExchangeRatesProvider";
+
+// Components
 import Header from "@components/Header";
-import { useState } from "react";
-// import HeaderProvider from "providers/HeaderProvider";
+import { HeaderProvider } from "providers/HeaderProvider";
+import { openDatabaseSync } from "expo-sqlite";
+import { drizzle } from "drizzle-orm/expo-sqlite";
+import { useEffect, useState } from "react";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -23,12 +31,15 @@ Sentry.init({
 
 
 
-// const expo = openDatabaseSync("MB.db");
-// const db = drizzle(expo);
+const expo = openDatabaseSync("MB.db");
+const db = drizzle(expo);
 
-let isFirstLaunch = "false";
 
 function RootLayout() {
+  useEffect(() => {
+    SplashScreen.hideAsync();
+  }, []);
+
   // const ref = useNavigationContainerRef();
   // const rootNavigationState = useRootNavigationState()
   // const { success, error } = useMigrations(db, migrations);
@@ -37,14 +48,17 @@ function RootLayout() {
   //     routingInstrumentation.registerNavigationContainer(ref);
   //   }
   // }, [ref]);
-  const { appLock } = useSettings();
-  const [unlocked, setUnlocked] = useState(appLock === "DISABLE");
+  const { colors } = useTheme();
+  const { appLockType, isAppLocked, isFirstLaunch } = useSettings();
+  // console.log(typeof isFirstLaunch, isFirstLaunch !== "true")
   return (
-
-    <Stack screenOptions={{ header: (props) => <Header {...props} /> }}>
-      {/* TODO: Change guard to isFirstLaunch !== "true" */}
+    <Stack screenOptions={{ header: (props) => <Header {...props} />, contentStyle: { backgroundColor: colors.screen } }}>
+      {/* <Stack.Protected guard={isFirstLaunch === "true"} >
+        <Stack.Screen name="(onboarding)/first" options={{ headerShown: false }} />
+        <Stack.Screen name="(onboarding)/second" options={{ headerShown: false }} />
+        <Stack.Screen name="(onboarding)/third" options={{ headerShown: false }} />
+      </Stack.Protected> */}
       <Stack.Protected guard={true}>
-        <Stack.Protected guard={true}>
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="addTransaction" />
           <Stack.Screen name="about" />
@@ -53,19 +67,13 @@ function RootLayout() {
           <Stack.Screen name="addGroup" />
           <Stack.Screen name="backup" />
           <Stack.Screen name="export" />
-        </Stack.Protected>
-        <Stack.Protected guard={!unlocked}>
+          <Stack.Screen name="addRecurring" />
+        <Stack.Protected guard={false}>
           <Stack.Screen name="locked" />
         </Stack.Protected>
       </Stack.Protected>
-      <Stack.Protected guard={__DEV__}>
-        <Stack.Protected guard={isFirstLaunch === "true"} >
-          <Stack.Screen name="(onboarding)/first" options={{ headerShown: false }} />
-          <Stack.Screen name="(onboarding)/second" options={{ headerShown: false }} />
-          <Stack.Screen name="(onboarding)/third" options={{ headerShown: false }} />
-        </Stack.Protected>
-        <Stack.Screen name="addRecurring" />
-      </Stack.Protected>
+       <Stack.Screen name="privacyPolicy" />
+       <Stack.Screen name="termsOfService" />
     </Stack>
   );
 }
@@ -78,10 +86,12 @@ function ProviderWrapper() {
       <I18nextProvider i18n={i18n}>
         <ThemeProvider>
           <SettingsProvider>
-            {/* <ExchangeRatesProvider> */}
-            <DataProvider>
-              <RootLayout />
-            </DataProvider>
+            <HeaderProvider>
+              {/* <ExchangeRatesProvider> */}
+              <DataProvider>
+                <RootLayout />
+              </DataProvider>
+            </HeaderProvider>
           </SettingsProvider>
         </ThemeProvider>
       </I18nextProvider>

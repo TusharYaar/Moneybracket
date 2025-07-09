@@ -1,10 +1,11 @@
+import { SETTING_KEYS } from 'data';
+import { Link } from 'expo-router';
+import { useSettings } from 'providers/SettingsProvider';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 const OnboardingScreen = () => {
-  const handleGetStarted = () => {
-
-  };
+  const { updateSettings } = useSettings();
 
   return (
     <View style={styles.container}>
@@ -17,9 +18,18 @@ const OnboardingScreen = () => {
       <Text style={styles.subtitle}>
         Discover new features and get started quickly. Let's make your experience amazing.
       </Text>
-      <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
-        <Text style={styles.buttonText}>Get Started</Text>
+      <Link href="/(onboarding)/second" asChild dismissTo={true}>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Back</Text>
       </TouchableOpacity>
+      </Link>
+      <Link href="/(onboarding)/first" asChild dismissTo={true} onPress={() => {
+        updateSettings("isFirstLaunch", "false");
+      }}>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Next</Text>
+      </TouchableOpacity>
+      </Link>
     </View>
   );
 };
