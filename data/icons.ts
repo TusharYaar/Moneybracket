@@ -21,6 +21,7 @@ export const ICONS = {
     language: "comment-discussion",
     date: "calendar",
     lock: "lock",
+    "biometric": "pulse",
     export: "download",
     backup: "duplicate",
     delete: "trash",
@@ -29,15 +30,18 @@ export const ICONS = {
     appVersion: "ellipsis",
     buildVersion: "bug",
     notification: "bell",
-    "restore": "file-symlink-file",
+    restore: "file-symlink-file",
     graph: "graph",
+    arrowLeft: "chevron-left",
+    arrowRight: "chevron-right",
+    privacyPolicy: "file",
+    termsOfService: "file",
     // autoBackup
 
-
-    travel:"rocket",
-    "shopping": "ruby",
-    food:"pulse",
-    "salary": "briefcase",
+    travel: "rocket",
+    shopping: "ruby",
+    food: "pulse",
+    salary: "briefcase",
 
     icon_0: "accessibility",
     icon_1: "alert",
@@ -161,6 +165,7 @@ export const ICONS = {
     language: "translate",
     date: "calendar-today",
     lock: "lock",
+    "biometric": "fingerprint",
     export: "download",
     backup: "backup",
     delete: "delete",
@@ -171,10 +176,17 @@ export const ICONS = {
     notification: "notifications",
     restore: "restore",
     graph: "bar-chart",
-    travel:"airplane-ticket",
-    "shopping": "shopping-bag",
-    food:"fastfood",
-    "salary": "money",
+    travel: "airplane-ticket",
+    shopping: "shopping-bag",
+    food: "fastfood",
+    salary: "money",
+    arrowLeft: "keyboard-arrow-left",
+    arrowRight: "keyboard-arrow-right",
+    privacyPolicy: "privacy-tip",
+    termsOfService: "article",
+
+    // autoBackup
+    
 
     icon_0: "123",
     icon_1: "360",

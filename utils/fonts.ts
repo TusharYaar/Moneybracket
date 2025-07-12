@@ -28,7 +28,7 @@ const defaults = {
     letterSpacing: 0.15,
   },
   caption: {
-    fontSize: 32,
+    fontSize: 26,
     letterSpacing: 0.25,
   },
   amount: {

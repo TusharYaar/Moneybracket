@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 // React Native & 3rd Party UI
 import { View, Switch, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import BottomSheet, { BottomSheetFlatList, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { EventArg, NavigationAction } from "@react-navigation/native";
 
 // Navigation
 import { useFocusEffect, useNavigation, useRouter } from "expo-router";
@@ -36,13 +35,6 @@ import SettingItem from "@components/SettingItem";
 import DeleteContainer from "@components/DeleteContainer";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-type BeforeRemove = EventArg<
-  "beforeRemove",
-  true,
-  {
-    action: NavigationAction;
-  }
->;
 
 const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
@@ -66,7 +58,6 @@ const Setting = () => {
   const { t: wt } = useTranslation();
   const router = useRouter();
   const rootNavigation = useNavigation("/");
-  const navigation = useNavigation();
   const { setHeaderVisible, setTabbarVisible, headerHeight, tabbarHeight } = useHeader();
 
   // State
@@ -129,6 +120,7 @@ const Setting = () => {
 
   const handleToggleLock = useCallback(
     async (value: boolean) => {
+      updateSettings("isAppLocked", "false");
       if (value) {
         const result = await getEnrolledLevelAsync();
         if (result > 0) {
@@ -306,7 +298,7 @@ const Setting = () => {
             <Switch value={settings.appLockType !== "DISABLE"} onValueChange={handleToggleLock} />
           </SettingItem>
 
-          <SettingItem label={t("biometricLock")} leftIcon="lock">
+          <SettingItem label={t("biometricLock")} leftIcon="biometric">
             <Switch
               value={settings.appLockType === "BIOMETRIC"}
               disabled={!hasBiometrics || settings.appLockType === "DISABLE"}

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button, ActivityIndicator } from "react-native";
 import { authenticateAsync } from "expo-local-authentication";
-import { useRouter } from "expo-router";
 import { useTheme } from "providers/ThemeProvider";
+import { useSettings } from "providers/SettingsProvider";
 
 const LockedScreen = () => {
   const [authenticating, setAuthenticating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   const { colors, textStyle } = useTheme();
+  const {appLockType, isAppLocked, updateSettings} = useSettings();
 
   const handleAuth = async () => {
     setAuthenticating(true);
@@ -16,12 +16,12 @@ const LockedScreen = () => {
     try {
       const result = await authenticateAsync({
         promptMessage: "Authenticate to unlock",
-        fallbackLabel: "Use Passcode",
-        disableDeviceFallback: false,
-      });
-      
+        biometricsSecurityLevel: appLockType === "BIOMETRIC" ? "strong" : "weak",
+        disableDeviceFallback: appLockType === "BIOMETRIC",
+        cancelLabel: 'Cancel',
+      });      
       if (result.success) {
-        router.replace("/"); // Go to home or main screen
+        updateSettings("isAppLocked", "false")
       } else {
         setError("Authentication failed. Please try again.");
       }

@@ -1,35 +1,43 @@
-import { SETTING_KEYS } from 'data';
-import { Link } from 'expo-router';
-import { useSettings } from 'providers/SettingsProvider';
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Link } from "expo-router";
+import { useSettings } from "providers/SettingsProvider";
+import { useTheme } from "providers/ThemeProvider";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const OnboardingScreen = () => {
+const ThirdScreen = () => {
+  const { t } = useTranslation("", { keyPrefix: "app.onboarding.third" });
+  const { colors, textStyle } = useTheme();
+  const { bottom, top } = useSafeAreaInsets();
   const { updateSettings } = useSettings();
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80' }}
-        style={styles.image}
-        resizeMode="cover"
-      />
-      <Text style={styles.title}>Third Screen</Text>
-      <Text style={styles.subtitle}>
-        Discover new features and get started quickly. Let's make your experience amazing.
-      </Text>
-      <Link href="/(onboarding)/second" asChild dismissTo={true}>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Back</Text>
-      </TouchableOpacity>
-      </Link>
-      <Link href="/(onboarding)/first" asChild dismissTo={true} onPress={() => {
-        updateSettings("isFirstLaunch", "false");
-      }}>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Next</Text>
-      </TouchableOpacity>
-      </Link>
+    <View
+      style={[styles.container, { paddingTop: top + 8, paddingBottom: bottom + 8, backgroundColor: colors.screen }]}
+    >
+      <Text>DEVELOPMENT SCREEN</Text>
+      <View style={{ flex: 1 }}>
+        <Text style={textStyle.body}>{t("text")}</Text>
+      </View>
+      <View style={styles.navBtnContainer}>
+        <Link
+          href="/(onboarding)/second"
+          style={[styles.button, { backgroundColor: colors.headerBackground }]}
+          asChild
+          dismissTo={true}
+        >
+          <Pressable>
+            <Text style={[textStyle.bodyBold, { color: colors.headerText }]}>{t("back")}</Text>
+          </Pressable>
+        </Link>
+        <Pressable
+          style={[styles.button, { backgroundColor: colors.headerBackground }]}
+          onPress={() => updateSettings("isFirstLaunch", "false")}
+        >
+          <Text style={[textStyle.bodyBold, { color: colors.headerText }]}>{t("letStart")}</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
@@ -37,44 +45,26 @@ const OnboardingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
   },
   image: {
     width: 220,
     height: 220,
-    borderRadius: 110,
-    marginBottom: 32,
+    borderRadius: 8,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#222',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#555',
-    textAlign: 'center',
-    marginBottom: 40,
-    paddingHorizontal: 10,
+  navBtnContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   button: {
-    backgroundColor: '#4F8EF7',
     paddingVertical: 14,
     paddingHorizontal: 48,
-    borderRadius: 30,
-    elevation: 2,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
+    borderRadius: 8,
   },
 });
 
-export default OnboardingScreen;
+export default ThirdScreen;

@@ -19,7 +19,9 @@ import Header from "@components/Header";
 import { HeaderProvider } from "providers/HeaderProvider";
 import { openDatabaseSync } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
+import migrations from "drizzle/migrations";
+import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -29,20 +31,17 @@ Sentry.init({
   profilesSampleRate: 1.0,
 });
 
-
-
 const expo = openDatabaseSync("MB.db");
 const db = drizzle(expo);
 
-
 function RootLayout() {
+  const { success } = useMigrations(db, migrations);
   useEffect(() => {
-    SplashScreen.hideAsync();
-  }, []);
+    if (success) {
+      SplashScreen.hideAsync();
+    }
+  }, [success]);
 
-  // const ref = useNavigationContainerRef();
-  // const rootNavigationState = useRootNavigationState()
-  // const { success, error } = useMigrations(db, migrations);
   // useEffect(() => {
   //   if (ref) {
   //     routingInstrumentation.registerNavigationContainer(ref);
@@ -50,37 +49,58 @@ function RootLayout() {
   // }, [ref]);
   const { colors } = useTheme();
   const { appLockType, isAppLocked, isFirstLaunch } = useSettings();
-  // console.log(typeof isFirstLaunch, isFirstLaunch !== "true")
+  const guard = useMemo(() => {
+    let showOnboarding = false;
+    let showApp = false;
+    let showLockScreen = false;
+    console.log(isAppLocked, appLockType)
+    if (isFirstLaunch === "true" && __DEV__) showOnboarding = true;
+    else {
+      if (isAppLocked === "true" && appLockType !== "DISABLE") {
+        showLockScreen = true;
+      } else {
+        showApp = true;
+      }
+    }
+    return {
+      showOnboarding,
+      showLockScreen,
+      showApp,
+    };
+  }, [appLockType, isAppLocked, isFirstLaunch]);
   return (
-    <Stack screenOptions={{ header: (props) => <Header {...props} />, contentStyle: { backgroundColor: colors.screen } }}>
-      {/* <Stack.Protected guard={isFirstLaunch === "true"} >
+    <Stack
+      screenOptions={{ header: (props) => <Header {...props} />, contentStyle: { backgroundColor: colors.screen } }}
+    >
+      <Stack.Protected guard={guard.showOnboarding}>
         <Stack.Screen name="(onboarding)/first" options={{ headerShown: false }} />
         <Stack.Screen name="(onboarding)/second" options={{ headerShown: false }} />
         <Stack.Screen name="(onboarding)/third" options={{ headerShown: false }} />
-      </Stack.Protected> */}
-      <Stack.Protected guard={true}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="addTransaction" />
-          <Stack.Screen name="about" />
-          <Stack.Screen name="help" />
-          <Stack.Screen name="addCategory" />
-          <Stack.Screen name="addGroup" />
-          <Stack.Screen name="backup" />
-          <Stack.Screen name="export" />
-          <Stack.Screen name="addRecurring" />
-        <Stack.Protected guard={false}>
-          <Stack.Screen name="locked" />
-        </Stack.Protected>
       </Stack.Protected>
-       <Stack.Screen name="privacyPolicy" />
-       <Stack.Screen name="termsOfService" />
+      <Stack.Protected guard={guard.showApp}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="addTransaction" />
+        <Stack.Screen name="about" />
+        <Stack.Screen name="help" />
+        <Stack.Screen name="addCategory" />
+        <Stack.Screen name="addGroup" />
+        <Stack.Screen name="backup" />
+        <Stack.Screen name="export" />
+        <Stack.Screen name="addRecurring" />
+      </Stack.Protected>
+      <Stack.Protected guard={guard.showLockScreen}>
+        <Stack.Screen name="locked" />
+      </Stack.Protected>
+      <Stack.Protected guard={__DEV__}>
+        {/* TODO: remove this guard */}
+        <Stack.Screen name="privacyPolicy" />
+        <Stack.Screen name="termsOfService" />
+      </Stack.Protected>
     </Stack>
   );
 }
 
-
 function ProviderWrapper() {
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <I18nextProvider i18n={i18n}>
@@ -96,7 +116,7 @@ function ProviderWrapper() {
         </ThemeProvider>
       </I18nextProvider>
     </GestureHandlerRootView>
-  )
+  );
 }
 
 export default ProviderWrapper;

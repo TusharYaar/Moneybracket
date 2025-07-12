@@ -12,7 +12,7 @@ import {
   SchedulableTriggerInputTypes,
   scheduleNotificationAsync,
   setNotificationChannelAsync,
-  setNotificationHandler,
+  // setNotificationHandler,
 } from "expo-notifications";
 import { Platform } from "react-native";
 
@@ -77,7 +77,7 @@ const SETTINGS: Props = {
   // updateRoundness: () => {},
   // roundness: parseInt(getFromStorageOrDefault(SETTING_KEYS.roundness, "0", true)),
   isFirstLaunch: getFromStorageOrDefault(SETTING_KEYS.isFirstLaunch, "true"),
-  isAppLocked: getFromStorageOrDefault(SETTING_KEYS.isAppLocked, "true"),
+  isAppLocked: "true",
   updateSettings: () => {},
 };
 

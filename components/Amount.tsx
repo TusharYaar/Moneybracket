@@ -19,7 +19,7 @@ const Amount = ({ amount, type, sign,  }: Props) => {
      colors,
   } = useTheme();
   return (
-    <Text style={type && { color: colors[type]}}  >
+    <Text style={[{fontFamily:"monospace"},type && { color: colors[type]}]}  >
       {`${sign && amount !== 0 ? (amount > 0 ? "+ " : "- ") : ""}${currency.symbol_native}${t("amountValue", {
         amount,
       })}`}

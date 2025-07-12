@@ -183,6 +183,24 @@
             "governingLawText": "These terms shall be governed by and construed in accordance with the laws of the jurisdiction in which we operate, without regard to its conflict of law provisions.",
             "contactUs": "Contact Us",
             "contactUsText": "If you have any questions about these Terms of Service, please contact us at support@app.com"
+        },
+        "onboarding": {
+            "first": {
+                "start": "Let's get started",
+                "welcome": "Welcome",
+                "chooseLang": "Choose a Language"
+            },
+            "second" : {
+                "back":"Back",
+                "next": "Next",
+                "underDevelopment": "Under Development",
+                "text": "The app is under development. Expect some bugs and visual glitches. Alot of the functionality is still being added and improved."
+            },
+            "third": {
+                "text": "Thanks for trying our app. By continuing you help us develop the app. ",
+                "back": "Back",
+                "letStart": "Lets Start"
+            }
         }
     },
     "components": {
