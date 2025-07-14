@@ -75,14 +75,15 @@ const AddTransaction = () => {
     createdAt: new Date(),
     group: null,
   });
+  const { bottom: bottomInset } = useSafeAreaInsets();
   const animatedColor = useSharedValue(category.length > 0 ? category[0].color : "orange");
   // const { rates } = useExchangeRate();
   const router = useRouter();
   const navigation = useNavigation();
   const { bottom } = useSafeAreaInsets();
+  const keyboardHeight = useSharedValue(0);
 
   const { height } = useWindowDimensions();
-  const { bottom: bottomInset } = useSafeAreaInsets();
   const { headerHeight } = useHeader();
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
@@ -124,10 +125,12 @@ const AddTransaction = () => {
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", (e) => {
+      keyboardHeight.value = e.endCoordinates.height;
       sheetRef.current?.close();
     });
 
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      keyboardHeight.value = 0;
       amtInputRef.current?.blur();
     });
 
@@ -224,10 +227,11 @@ const AddTransaction = () => {
     else return false;
   }, [values]);
 
+  
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - headerHeight, paddingTop: headerHeight + 8, paddingBottom: bottomInset + 8, flexGrow: 1 }}
+        contentContainerStyle={[{ paddingHorizontal: 8, minHeight: height, paddingTop: headerHeight + 8, flexGrow: 1, paddingBottom: bottomInset + 8 }]}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={{ flexDirection: "column", flexGrow: 1 }}>
@@ -307,6 +311,7 @@ const AddTransaction = () => {
           bgColor={values.category ? selectedCategory.color : undefined}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
+        <Animated.View style={{height: keyboardHeight}}/>
       </ScrollView>
       <BottomSheet
         style={{ backgroundColor: colors.screen }}
@@ -327,7 +332,7 @@ const AddTransaction = () => {
               <CategoryItem
                 item={item}
                 onPress={() => updateCategory(item)}
-                style={{ marginHorizontal: 16, marginVertical: 8 }}
+                style={{ marginVertical: 8 }}
               />
             )}
             ListEmptyComponent={
