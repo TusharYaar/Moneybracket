@@ -2,10 +2,12 @@
     "app": {
         "tabs": {
             "category": {
-                "title": "Category"
+                "title": "Category",
+                "noCategory": "You currently do not have any categories."
             },
             "group": {
-                "title": "Group"
+                "title": "Group",
+                "noGroup": "You currently do not have any groups."
             },
             "recurring": {
                 "title": "Recurring"
@@ -39,8 +41,12 @@
                 "reminderNotification": "Reminder Notifications"
             },
             "transaction": {
-                "title": "Transactions"
+                "title": "Transactions",
+                "noTransaction": "No transactions found. Change the filter or add a new transaction."
             }
+        },
+        "listTransactions": {
+            "noTransactions": "No transactions found. Change the filter or add a new transaction."
         },
         "about": {
             "title": "About",
@@ -85,7 +91,8 @@
             "confirm": "Delete",
             "group": "Group",
             "noGroup": "No Group",
-            "noCategory": "No Category Present"
+            "noCategory": "No Category Present",
+            "noCategoryList": "No Category present. Please create a category first."
         },
         "addGroup": {
             "addTitle": "Add Group",

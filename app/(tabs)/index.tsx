@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Link, useFocusEffect, useNavigation } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useData } from "providers/DataProvider";
@@ -28,7 +28,7 @@ type ListItem =
     };
 
 const AllTransaction = () => {
-  const { colors } = useTheme();
+  const { colors, textStyle } = useTheme();
   const { transaction, category } = useData();
   const { t } = useTranslation("", {
     keyPrefix: "app.tabs.transaction",
@@ -163,6 +163,9 @@ const AllTransaction = () => {
           paddingHorizontal: 8,
           backgroundColor: colors.screen,
         }}
+        ListEmptyComponent={
+          <Text style={textStyle.bodyBold}>{t("noTransaction")}</Text>
+        }
       />
     </>
   );

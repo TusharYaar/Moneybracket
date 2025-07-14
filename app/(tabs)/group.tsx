@@ -7,10 +7,11 @@ import GroupItem from "@components/GroupItem";
 import { useTheme } from "providers/ThemeProvider";
 import { FlashList } from "@shopify/flash-list";
 import { useHeader } from "providers/HeaderProvider";
+import { Text } from "react-native";
 
 const GroupScreen = () => {
   const { group } = useData();
-  const { colors } = useTheme();
+  const { colors, textStyle } = useTheme();
   const { t } = useTranslation("", { keyPrefix: "app.tabs.group" });
   const rootNavigation = useNavigation("/");
   const { headerHeight, tabbarHeight } = useHeader();
@@ -39,11 +40,12 @@ const GroupScreen = () => {
         renderItem={({ item }) => (
           <Link
             href={{
-              pathname: "addGroup",
+              pathname: "listTransactions",
               params: {
                 _id: item._id,
                 color: item.color,
                 title: item.title,
+                type: "group"
               },
             }}
             asChild
@@ -51,6 +53,9 @@ const GroupScreen = () => {
             <GroupItem item={item} style={{ marginBottom: 8 }} />
           </Link>
         )}
+        ListEmptyComponent={
+          <Text style={textStyle.bodyBold}>{t("noGroup")}</Text>
+        }
       />
   );
 };

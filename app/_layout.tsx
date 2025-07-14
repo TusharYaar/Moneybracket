@@ -53,7 +53,6 @@ function RootLayout() {
     let showOnboarding = false;
     let showApp = false;
     let showLockScreen = false;
-    console.log(isAppLocked, appLockType)
     if (isFirstLaunch === "true" && __DEV__) showOnboarding = true;
     else {
       if (isAppLocked === "true" && appLockType !== "DISABLE") {
@@ -87,9 +86,10 @@ function RootLayout() {
         <Stack.Screen name="backup" />
         <Stack.Screen name="export" />
         <Stack.Screen name="addRecurring" />
+        <Stack.Screen name="listTransactions" />
       </Stack.Protected>
       <Stack.Protected guard={guard.showLockScreen}>
-        <Stack.Screen name="locked" />
+        <Stack.Screen name="locked" options={{ headerShown: false }}/>
       </Stack.Protected>
       <Stack.Protected guard={__DEV__}>
         {/* TODO: remove this guard */}

@@ -108,8 +108,8 @@ const AddGroupScreen = () => {
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - headerHeight }}
-        style={{ backgroundColor: colors.screen, paddingTop: headerHeight + 8, paddingBottom: bottomInset + 8, flexGrow: 1 }}
+        contentContainerStyle={{ paddingHorizontal: 8, paddingTop: headerHeight + 8, paddingBottom: bottomInset + 8, flex: 1 }}
+        style={{ backgroundColor: colors.screen, flexGrow: 1, minHeight: height }}
       >
         <View style={{ flex: 1 }}>
           <PrimaryInput

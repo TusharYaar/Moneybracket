@@ -79,6 +79,7 @@ const AddTransaction = () => {
   // const { rates } = useExchangeRate();
   const router = useRouter();
   const navigation = useNavigation();
+  const { bottom } = useSafeAreaInsets();
 
   const { height } = useWindowDimensions();
   const { bottom: bottomInset } = useSafeAreaInsets();
@@ -320,6 +321,7 @@ const AddTransaction = () => {
         {sheetView === "category" && (
           <BottomSheetFlatList
             style={{ backgroundColor: colors.screen }}
+            contentContainerStyle={{ paddingBottom: bottom + 8, paddingHorizontal: 16 }}
             data={category}
             renderItem={({ item }) => (
               <CategoryItem
@@ -328,6 +330,8 @@ const AddTransaction = () => {
                 style={{ marginHorizontal: 16, marginVertical: 8 }}
               />
             )}
+            ListEmptyComponent={
+              <Text style={textStyle.bodyBold}>{t("noCategoryList")}</Text>}
           />
         )}
         {sheetView === "delete" && (
@@ -344,12 +348,13 @@ const AddTransaction = () => {
         {sheetView === "group" && (
           <BottomSheetFlatList
             style={{ backgroundColor: colors.screen }}
+            contentContainerStyle={{ paddingBottom: bottom + 8, paddingHorizontal: 16 }}
             data={group.concat(NULL_GROUP)}
             renderItem={({ item }) => (
               <GroupItem
-                item={{ ...item }}
+                item={item}
                 onPress={handleChangeGroup}
-                style={{ marginHorizontal: 16, marginVertical: 8 }}
+                style={{ marginVertical: 8 }}
               />
             )}
           />

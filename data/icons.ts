@@ -36,6 +36,7 @@ export const ICONS = {
     arrowRight: "chevron-right",
     privacyPolicy: "file",
     termsOfService: "file",
+    "edit": "pencil",
     // autoBackup
 
     travel: "rocket",
@@ -184,6 +185,7 @@ export const ICONS = {
     arrowRight: "keyboard-arrow-right",
     privacyPolicy: "privacy-tip",
     termsOfService: "article",
+    edit: "mode-edit",
 
     // autoBackup
     

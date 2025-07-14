@@ -23,9 +23,9 @@ import { determineDateShift, formatDateRange } from "@utils/date";
 
 type Props = {
   totalAmount: {
-    income: number;
-    expense: number;
-    transfer: number | undefined;
+    income?: number;
+    expense?: number;
+    transfer?: number | undefined;
   };
   date: {
     start: Date;
