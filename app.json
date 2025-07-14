@@ -3,7 +3,7 @@
     "name": "Money Bracket",
     "slug": "moneybracket",
     "scheme": "com.tusharyaar.mb",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "jsEngine": "hermes",
     "newArchEnabled": true,
     "orientation": "default",
@@ -21,7 +21,7 @@
     },
     "android": {
       "edgeToEdgeEnabled": true,
-      "versionCode": 5034,
+      "versionCode": 5035,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "monochromeImage": "./assets/monochrome.png",
