@@ -2,10 +2,12 @@
     "app": {
             "tabs": {
                 "category": {
-                    "title": "Categoría"
+                    "title": "Categoría",
+                    "noCategory": "Actualmente no tienes ninguna categoría."
                 },
                 "group": {
-                    "title": "Grupo"
+                    "title": "Grupo",
+                    "noGroup": "Actualmente no tienes ningún grupo."
                 },
                 "recurring": {
                     "title": "Recurrente"
@@ -39,7 +41,8 @@
                     "reminderNotification": "Notificaciones de recordatorio"
                 },
                 "transaction": {
-                    "title": "Transacciones"
+                    "title": "Transacciones",
+                    "noTransaction": "No se encontraron transacciones. Cambia el filtro o agrega una nueva transacción."
                 }
             },
             "about": {
@@ -85,7 +88,8 @@
                 "confirm": "Eliminar",
                 "group": "Grupo",
                 "noGroup": "Sin grupo",
-                "noCategory": "Sin categoría"
+                "noCategory": "Sin categoría",
+                "noCategoryList": "No hay ninguna categoría. Por favor, crea una categoría primero."
             },
             "addGroup": {
                 "addTitle": "Agregar grupo",
@@ -109,7 +113,18 @@
                 "restoring_backup": "Restaurando elementos desde el archivo seleccionado",
                 "backup_text": "Puedes hacer una copia de seguridad de tus datos en un archivo y restaurarlo más tarde. La copia de seguridad solo respalda tus categorías y transacciones. Las imágenes no están incluidas",
                 "restore_text": "Puedes restaurar categorías y transacciones desde un archivo de copia de seguridad.",
-                "text_1": "Puedes crear una copia de seguridad para proteger tus datos, o transferirlos desde/a otro dispositivo."
+                "text_1": "Puedes crear una copia de seguridad para proteger tus datos, o transferirlos desde/a otro dispositivo.",
+                "options": "Opciones",
+                "restoreFromFile": "Restaurar desde archivo",
+                "deleteOldBackup": "Eliminar archivos antiguos automáticamente",
+                "openBackupDirectory": "Abrir directorio de copias de seguridad",
+                "backupList": "Copias de seguridad anteriores",
+                "delete": "Eliminar",
+                "success": "Éxito",
+                "restoreSuccess": "Archivo restaurado correctamente",
+                "backupSuccess": "Copia de seguridad creada correctamente",
+                "done": "Hecho",
+                "noBackup": "No se encontraron copias de seguridad"
             },
             "export": {
                 "export": "Exportar",
@@ -119,7 +134,8 @@
                 "excel": "Excel",
                 "csv": "CSV",
                 "recentExports": "Exportaciones recientes",
-                "noExports": "No tienes exportaciones"
+                "noExports": "No tienes exportaciones",
+                "title": "Exportar"
             },
             "help": {
                 "title": "Ayuda",
@@ -162,6 +178,24 @@
                 "contactUsText": "Puedes contactarnos a través de nuestro correo electrónico: support@app.com",
                 "support": "Soporte",
                 "supportText": "Si tienes alguna pregunta o comentario, por favor contáctanos a través de nuestro correo electrónico: support@app.com"
+            },
+            "onboarding": {
+                "first": {
+                    "start": "Comencemos",
+                    "welcome": "Bienvenido",
+                    "chooseLang": "Elige un idioma"
+                },
+                "second": {
+                    "back": "Atrás",
+                    "next": "Siguiente",
+                    "underDevelopment": "En desarrollo",
+                    "text": "La aplicación está en desarrollo. Espera algunos errores y fallos visuales. Mucha funcionalidad aún se está agregando y mejorando."
+                },
+                "third": {
+                    "text": "Gracias por probar nuestra aplicación. Al continuar nos ayudas a desarrollarla.",
+                    "back": "Atrás",
+                    "letStart": "Empecemos"
+                }
             }
         },
     "components": {
