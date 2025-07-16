@@ -218,6 +218,14 @@
             "selected": "Seleccionado",
             "unlock": "Desbloquear",
             "download": "Descargar"
+        },
+        "transactionPageSummary": {
+            "today": "Hoy",
+            "thisWeek": "Esta semana",
+            "thisMonth": "Este mes",
+            "lastThree": "Últimos 3 meses",
+            "lastSix": "Últimos 6 meses",
+            "thisYear": "Este año"
         }
     },
     "languages": {
@@ -256,5 +264,8 @@
     "tracker": "Rastreador",
     "cancel": "No, Cancelar",
     "delete": "Sí, Eliminar",
-    "loading": "Cargando"
+    "loading": "Cargando",
+    "listTransactions": {
+        "noTransactions": "No se encontraron transacciones. Cambia el filtro o agrega una nueva transacción."
+    }
 }

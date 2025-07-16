@@ -230,6 +230,14 @@
             "selected": "Selected",
             "unlock": "Unlock",
             "download": "Download"
+        },
+        "transactionPageSummary": {
+            "today": "Today",
+            "thisWeek": "This Weak",
+            "thisMonth": "This Month",
+            "lastThree": "Last 3 Months",
+            "lastSix": "Last 6 Months",
+            "thisYear": "This Year"
         }
     },
     "languages": {

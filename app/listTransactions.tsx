@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { Link, router, useFocusEffect, useLocalSearchParams, useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { useHeader } from "providers/HeaderProvider";
@@ -100,13 +100,13 @@ const ListTransactions = () => {
                 totalAmount={totalAmount}
                 style={[styles.summaryView, { top: headerHeight }]}
                 date={dateFilter}
-                onLayout={(e) => setSummaryHeight(e.nativeEvent.layout.height)}
+                onLayout={(e) => setSummaryHeight(e.nativeEvent.layout.height + 16)}
                 updateDate={updateDateFilter}
             />
             <FlashList
                 estimatedItemSize={78}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: bottom + 8, paddingTop: headerHeight + summaryHeight, backgroundColor: colors.screen, }}
+                contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: bottom + 8, paddingTop: headerHeight + summaryHeight + 8, backgroundColor: colors.screen, }}
 
                 data={_transaction}
                 keyExtractor={(item) => item._id}

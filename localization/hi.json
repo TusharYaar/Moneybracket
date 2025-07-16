@@ -36,7 +36,8 @@
                     "reminderNotification": "स्मरण सूचनाएं"
                 },
                 "transaction": {
-                    "title": "लेनदेन"
+                    "title": "लेनदेन",
+                    "noTransaction": "कोई लेनदेन नहीं मिला। फ़िल्टर बदलें या नया लेनदेन जोड़ें।"
                 },
                 "group": {
                     "title": "समूह",
@@ -216,6 +217,14 @@
             "selected": "चुना गया",
             "unlock": "अनलॉक करें",
             "download": "डाउनलोड करें"
+        },
+        "transactionPageSummary": {
+            "today": "आज",
+            "thisWeek": "इस सप्ताह",
+            "thisMonth": "इस माह",
+            "lastThree": "पिछले 3 महीने",
+            "lastSix": "पिछले 6 महीने",
+            "thisYear": "इस वर्ष"
         }
     },
     "languages": {

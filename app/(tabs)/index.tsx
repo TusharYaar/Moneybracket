@@ -53,7 +53,7 @@ const AllTransaction = () => {
         title: t("title"),
         headerRightBtn: [
           { icon: "search", onPress: () => console.log("search"), action: "search", disabled: true },
-          { icon: "filter", onPress: () => console.log("filter"), action: "filter", disabled: true },
+          // { icon: "filter", onPress: () => console.log("filter"), action: "filter", disabled: true },
         ],
       });
     }, [])
@@ -129,7 +129,7 @@ const AllTransaction = () => {
         totalAmount={totalAmount}
         style={[styles.summaryView, { top: headerHeight }]}
         date={dateFilter}
-        onLayout={(e) => setSummaryHeight(e.nativeEvent.layout.height)}
+        onLayout={(e) => setSummaryHeight(e.nativeEvent.layout.height + 16)}
         updateDate={updateDateFilter}
       />
       <FlashList
