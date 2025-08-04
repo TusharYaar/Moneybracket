@@ -20,6 +20,7 @@ export const HeaderProvider: React.FC<HeaderProviderProps> = ({ children }) => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [isTabbarVisible, setIsTabbarVisible] = useState(true);
   const { bottom, top } = useSafeAreaInsets();
+  const [notification, SetNotification] = useState<{message: string, autoHide: number, id: number}[]>([]);
 
   const tabbarHeight = useMemo(() => {
     return 56 + bottom;
@@ -36,6 +37,17 @@ export const HeaderProvider: React.FC<HeaderProviderProps> = ({ children }) => {
   const setTabbarVisible = useCallback((visible: boolean) => {
     setIsTabbarVisible(visible);
   }, []);
+
+
+  const showNotification = useCallback((message: string, autoHide=5) => {
+    const id = Math.random()*10000;
+
+    SetNotification(prev=> prev.concat({message, autoHide, id}))
+
+    return id;
+  },[])
+
+  const clearNotification = useCallback((id: number) => {},[]);
 
   const value: HeaderProviderContextType = {
     isHeaderVisible,

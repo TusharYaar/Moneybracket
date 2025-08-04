@@ -1,35 +1,21 @@
-import React, { useContext, createContext, useState, useEffect, useCallback, useMemo } from "react";
-import RATES from "../data/rates";
+import React, { useContext, createContext, useState, useEffect, useCallback, useMemo, ReactNode } from "react";
 import { CURRENCIES } from "../data";
 
 import { ExchangeRatesServerResponse } from "../types";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
-import { format } from "date-fns";
 import { useSettings } from "./SettingsProvider";
-import { parseISO } from "date-fns/esm";
 
-export type RateType = {
-  rate: number;
-  symbol: string;
-  name: string;
-  symbol_native: string;
-  decimal_digits: number;
-  rounding: number;
-  code: string;
-  name_plural: string;
-  isFavorite?: boolean;
-};
+const SupportedCurrencies = Object.keys(CURRENCIES);
 
 const DEFAULT = {
-  rates: JSON.parse(getFromStorageOrDefault("rates/rates", JSON.stringify(RATES), true)),
-  base: getFromStorageOrDefault("rates/base", "INR", true),
-  lastUpdated: getFromStorageOrDefault("rates/lastUpdated", new Date("2023-01-21").toISOString(), true),
+  rates: {},
+  lastUpdated: null as null | Date,
   favorites: JSON.parse(getFromStorageOrDefault("rates/favorites", JSON.stringify(["INR"]), true)),
 };
 
 const ExchangeRateContext = createContext({
-  rates: [] as RateType[],
-  fetchRates: () => {},
+  rates: {} as Record<string, number>,
+  fetchRates: (code: string) => {},
   toggleFavorite: (code: string) => {},
   favorites: [] as string[],
   lastUpdated: DEFAULT.lastUpdated,
@@ -37,7 +23,7 @@ const ExchangeRateContext = createContext({
 
 export const useExchangeRate = () => useContext(ExchangeRateContext);
 
-const ExchangeRatesProvider = ({ children }: { children: JSX.Element }) => {
+const ExchangeRatesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const {
     currency: { code },
   } = useSettings();
@@ -45,38 +31,29 @@ const ExchangeRatesProvider = ({ children }: { children: JSX.Element }) => {
   const [favorites, setFavorites] = useState<string[]>(DEFAULT.favorites);
   const [updated, setUpdated] = useState(DEFAULT.lastUpdated);
 
-  const fetchRates = useCallback(async () => {
+  const fetchRates = useCallback(async (code: string) => {
     try {
-      const request = await fetch(
-        `https://api.exchangerate.host/latest/?base=${code}&amount=1000&v=${format(new Date(), "yyyy-MM-dd")}`
-      );
+      const request = await fetch(`https://api.fxratesapi.com/latest?base=${code}`);
       const response = (await request.json()) as ExchangeRatesServerResponse;
-      setStorage("rates/lastUpdated", new Date(response.date).toISOString());
-      setStorage("rates/rates", JSON.stringify(response.rates));
-      setRates(response.rates);
-      setUpdated(new Date().toISOString());
+
+      const rates = SupportedCurrencies.reduce((acc, curr) => {
+        acc[curr] = 1 / response.rates[curr];
+        return acc;
+      }, {} as Record<string, number>);
+
+      setRates(rates);
+      setUpdated(new Date());
     } catch (e) {
       console.log(e);
     }
-  }, [code]);
-
-  useEffect(() => {
-    const getRates = async () => {
-      if (format(parseISO(DEFAULT.lastUpdated), "yyyy-MM-dd") !== format(new Date(), "yyyy-MM-dd")) await fetchRates();
-    };
-    getRates();
   }, []);
 
-  const _rates: RateType[] = useMemo(() => {
-    return Object.entries(CURRENCIES)
-      .map((value) => ({
-        ...value[1],
-        rate: rates[value[0]],
-        isFavorite: favorites.includes(value[0]),
-      }))
-      .filter((rate) => rate.rate)
-      .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-  }, [rates, favorites]);
+  useEffect(() => {
+    const getRates = async (code: string) => {
+      await fetchRates(code);
+    };
+    getRates(code);
+  }, [code]);
 
   const toggleFavorite = useCallback((code: string) => {
     setFavorites((prev) => {
@@ -87,9 +64,7 @@ const ExchangeRatesProvider = ({ children }: { children: JSX.Element }) => {
   }, []);
 
   return (
-    <ExchangeRateContext.Provider
-      value={{ rates: _rates, fetchRates, toggleFavorite, favorites, lastUpdated: updated }}
-    >
+    <ExchangeRateContext.Provider value={{ rates, fetchRates, toggleFavorite, favorites, lastUpdated: updated }}>
       {children}
     </ExchangeRateContext.Provider>
   );

@@ -55,8 +55,7 @@ const ListTransactions = () => {
                                 color,
                             }
                         }), action: "edit"
-                    },
-                    { icon: "delete", onPress: () => console.log("delete"), action: "delete" },
+                    }
                 ],
             });
         }, [])

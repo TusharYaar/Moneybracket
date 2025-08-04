@@ -150,6 +150,7 @@ const AddCategoryScreen = () => {
             ref={inputRef}
             backgroundColor={values.color}
             initialValue={title}
+            width={width - 16}
             onChangeText={(title) => setValues((prev) => ({ ...prev, title }))}
           />
           <View style={{ flexDirection: "row", justifyContent: "space-between", columnGap: 16, marginTop: 24 }}>

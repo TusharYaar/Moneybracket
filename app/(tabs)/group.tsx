@@ -26,7 +26,7 @@ const GroupScreen = () => {
             params: {
               type: "group",
             },
-          }), action: "group_graph", testId: "chart-group", disabled: true },
+          }), action: "group_graph", testId: "chart-group", disabled: !__DEV__ },
         ],
       });
     }, [])

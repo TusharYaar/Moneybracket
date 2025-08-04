@@ -4,7 +4,6 @@ import { chooseBetterContrast } from "../utils/colors";
 
 import { TransactionWithCategory } from "types";
 import { useTheme } from "providers/ThemeProvider";
-import { useSettings } from "providers/SettingsProvider";
 import Icon from "./Icon";
 
 type Props = {
@@ -15,7 +14,6 @@ type Props = {
 
 const TransactionItem = forwardRef<View, Props>(function TransactionItem({ data, onPress, style }, ref) {
   const { textStyle, colors } = useTheme();
-  const { currency } = useSettings();
 
   return (
     <Pressable onPress={onPress} style={style} ref={ref}>
@@ -35,16 +33,16 @@ const TransactionItem = forwardRef<View, Props>(function TransactionItem({ data,
             <Text style={[textStyle.title, { color: colors.text }]}>{data.category.title}</Text>
             {data.note.length > 0 && <Text style={[textStyle.body, { color: colors.text }]}>{data.note}</Text>}
           </View>
-          <Text style={[{ color: colors[data.category.type] }, textStyle.amount]}>
-            {`${currency.symbol_native} ${data.amount}`}
-          </Text>
-          {/* {`${sign && amount !== 0 ? (amount > 0 ? "+ " : "- ") : ""}${currency.symbol_native}${t("amountValue", {
-        amount,
-      })}`} */}
-          {/* <Amount
-            amount={data.category.type === "income" ? data.amount : data.amount * -1}
-            type={data.category.type}
-          /> */}
+          <View style={{flexDirection: "column", alignItems: "flex-end"}}>
+            <Text style={[{ color: colors[data.category.type] }, textStyle.amount]}>
+              {`${data.currency} ${data.amount}`}
+            </Text>
+            {data.conversionCurrency?.length === 3 && (
+              <Text style={[{ color: colors[data.category.type] }, textStyle.label]}>
+                {`${data.conversionCurrency} ${(data.amount * data.conversionRate).toFixed(2)}`}
+              </Text>
+            )}
+          </View>
         </View>
       </View>
     </Pressable>

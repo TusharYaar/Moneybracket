@@ -19,13 +19,13 @@ const current_date = new Date();
 
 type ListItem =
   | {
-      type: "date";
-      data: TransactionDate;
-    }
+    type: "date";
+    data: TransactionDate;
+  }
   | {
-      type: "transaction";
-      data: TransactionWithCategory;
-    };
+    type: "transaction";
+    data: TransactionWithCategory;
+  };
 
 const AllTransaction = () => {
   const { colors, textStyle } = useTheme();
@@ -52,8 +52,7 @@ const AllTransaction = () => {
       rootNavigation.setOptions({
         title: t("title"),
         headerRightBtn: [
-          { icon: "search", onPress: () => console.log("search"), action: "search", disabled: true },
-          // { icon: "filter", onPress: () => console.log("filter"), action: "filter", disabled: true },
+          { icon: "search", onPress: () => console.log("search"), action: "search", disabled: !__DEV__ },
         ],
       });
     }, [])
@@ -82,7 +81,7 @@ const AllTransaction = () => {
   const totalAmount = useMemo(() => {
     const amt = { income: 0, expense: 0, transfer: 0 };
     for (const trxn of sortedData) {
-      amt[trxn.category.type] = amt[trxn.category.type] + trxn.amount;
+      amt[trxn.category.type] = amt[trxn.category.type] + trxn.amount * trxn.conversionRate;
     }
     return amt;
   }, [sortedData]);
@@ -106,16 +105,6 @@ const AllTransaction = () => {
       ...group.transactions.map((data) => ({ type: "transaction" as const, data })),
     ]);
   }, [groupedToDates]);
-
-  // const handleOnScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-  //   const diff = lastContentOffset.value - event.nativeEvent.contentOffset.y;
-  //   lastContentOffset.value = event.nativeEvent.contentOffset.y;
-
-  //   if (event.nativeEvent.contentOffset.y < 64) {
-  //     summaryViewTop.value = withTiming(8);
-  //   } else if (diff < 0) summaryViewTop.value = withTiming(0);
-  //   else summaryViewTop.value = withTiming(8);
-  // };
 
   const updateDateFilter = useCallback((start: Date, end: Date) => {
     setDateFilter({

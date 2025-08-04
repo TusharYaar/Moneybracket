@@ -12,6 +12,9 @@ export type Transaction = {
   group: null | string;
   // isFavorite: boolean;
   image?: string;
+  conversionRate: number;
+  conversionCurrency: string;
+
 };
 export interface TransactionWithCategory extends Omit<Transaction, "category"> {
   category: Category;
@@ -89,17 +92,18 @@ export type Currency = {
   name_plural: string;
 };
 
+
+export interface RateType extends Currency {
+  rate: number;
+  // isFavorite?: boolean;
+};
+
+
 export type ExchangeRatesServerResponse = {
-  motd: {
-    msg: string;
-    url: string;
-  };
   success: boolean;
   base: string;
   date: string;
-  rates: {
-    [key: string]: number;
-  };
+  rates: Record<string,number>;
 };
 
 export type BackupFile = {
@@ -115,7 +119,7 @@ export type BackupFile = {
   };
   category: Pick<Category, "title" | "_id" | "color" | "icon" | "description" | "type" | "isFavorite">[];
   group: Pick<Group, "title" | "_id" | "color" | "icon" | "description" | "isFavorite">[];
-  transaction: (Pick<Transaction, "amount"|"_id" | "category" | "currency" | "group" | "note"> & {date: string})[];
+  transaction: (Pick<Transaction, "amount"|"_id" | "category" | "currency" | "group" | "note" | "conversionCurrency"| "conversionRate"> & {date: string})[];
 };
 
 export type Theme_Color = {

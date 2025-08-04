@@ -13,9 +13,10 @@ import { useSettings } from "providers/SettingsProvider";
 import { useData } from "providers/DataProvider";
 import { useTheme } from "providers/ThemeProvider";
 import { useHeader } from "providers/HeaderProvider";
+import { useExchangeRate } from "providers/ExchangeRatesProvider";
 
 // Types
-import { Category, Group, Transaction } from "types";
+import { Category, Currency, Group, RateType, Transaction } from "types";
 
 // Components
 import SwipeButton from "@components/SwipeButton";
@@ -23,6 +24,8 @@ import CategoryItem from "@components/CategoryItem";
 import PrimaryInput from "@components/AmountInput";
 import DeleteContainer from "@components/DeleteContainer";
 import GroupItem from "@components/GroupItem";
+import CurrencyItem from "@components/CurrencyItem";
+import { CURRENCIES } from "data";
 
 type SearchParams = {
   _id: string;
@@ -58,33 +61,43 @@ const AddTransaction = () => {
     date = new Date().toISOString(),
     category: tcategory,
   } = useLocalSearchParams<SearchParams>();
+  // 1. Context hooks (translation, theme, navigation, etc.)
   const { t } = useTranslation("", { keyPrefix: "app.addTransaction" });
+  const { textStyle, colors } = useTheme();
+  const { setHeaderVisible, headerHeight } = useHeader();
+  const { bottom: bottomInset } = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
+  const { height, width: screenWidth } = useWindowDimensions();
+  const router = useRouter();
+  const navigation = useNavigation();
+
+  // 2. Data hooks
   const { currency: defaultCurrency, dateFormat } = useSettings();
   const { category, addTransaction, updateTransaction, deleteTransaction, transaction, group } = useData();
-  const amtInputRef = useRef<TextInput>(null);
-  const sheetRef = useRef<BottomSheet>(null);
+  const { rates } = useExchangeRate();
+
+  // 3. State hooks
+  const [currency, setCurrency] = useState<Currency>(defaultCurrency);
   const [sheetView, setSheetView] = useState("category");
-  const { textStyle, colors } = useTheme();
-  const [values, setValues] = useState<Omit<Transaction, "_id" | "updatedAt">>({
+  const [values, setValues] = useState<
+    Omit<Transaction, "_id" | "updatedAt" | "currency" | "conversionCurrency" | "conversionRate">
+  >({
     category: category.length > 0 ? category[0]._id : _NULL_CATEGORY._id,
     amount: parseFloat(amount),
     date: parseISO(date),
     note: "",
-    currency: defaultCurrency.code,
     image: "",
     createdAt: new Date(),
     group: null,
   });
-  const { bottom: bottomInset } = useSafeAreaInsets();
-  const animatedColor = useSharedValue(category.length > 0 ? category[0].color : "orange");
-  // const { rates } = useExchangeRate();
-  const router = useRouter();
-  const navigation = useNavigation();
-  const { bottom } = useSafeAreaInsets();
-  const keyboardHeight = useSharedValue(0);
 
-  const { height } = useWindowDimensions();
-  const { headerHeight } = useHeader();
+  // 4. Ref hooks
+  const amtInputRef = useRef<TextInput>(null);
+  const sheetRef = useRef<BottomSheet>(null);
+
+  // 5. Animation/shared value hooks
+  const animatedColor = useSharedValue(category.length > 0 ? category[0].color : "orange");
+  const keyboardHeight = useSharedValue(0);
   const showDeleteModal = useCallback(() => {
     setSheetView("delete");
     // TODO: Resolve this
@@ -93,9 +106,11 @@ const AddTransaction = () => {
 
   useFocusEffect(
     useCallback(() => {
-      navigation.setOptions({ title: _id ? t("updateTitle") : t("addTitle"), headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_transaction" }] : [] });
+      navigation.setOptions({
+        title: _id ? t("updateTitle") : t("addTitle"),
+        headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_transaction" }] : [],
+      });
       sheetRef.current?.close();
-
     }, [_id, sheetRef, navigation, showDeleteModal])
   );
 
@@ -104,6 +119,7 @@ const AddTransaction = () => {
       const t = transaction.find((trans) => trans._id === _id);
       if (t) {
         setValues((prev) => ({ ...prev, note: t.note, image: t.image, createdAt: t.createdAt, group: t.group }));
+        setCurrency(CURRENCIES[t.currency]);
       }
     }
   }, [_id, transaction]);
@@ -140,10 +156,8 @@ const AddTransaction = () => {
     };
   }, [amtInputRef, sheetRef]);
 
-
-  const NULL_GROUP = useMemo(() => ({ ..._NULL_GROUP, title: t("noGroup") }), []);
-  const NULL_CATEGORY = useMemo(() => ({ ..._NULL_CATEGORY, title: t("noCategory") }), []);
-
+  const NULL_GROUP = useMemo(() => ({ ..._NULL_GROUP, title: t("noGroup") }), [t]);
+  const NULL_CATEGORY = useMemo(() => ({ ..._NULL_CATEGORY, title: t("noCategory") }), [t]);
 
   useEffect(() => {
     if (tcategory) {
@@ -168,10 +182,26 @@ const AddTransaction = () => {
 
   const handleSubmit = () => {
     const updatedAt = new Date();
+
     if (_id) {
-      updateTransaction(_id, { ...values, category: values.category, updatedAt, createdAt: updatedAt });
+      updateTransaction(_id, {
+        ...values,
+        category: values.category,
+        updatedAt,
+        createdAt: updatedAt,
+        currency: currency.code,
+        conversionRate: currency.code === defaultCurrency.code ? 1 : rates[currency.code],
+        conversionCurrency: currency.code === defaultCurrency.code ? "" : defaultCurrency.code,
+      });
     } else {
-      addTransaction({ ...values, category: values.category, updatedAt });
+      addTransaction({
+        ...values,
+        category: values.category,
+        updatedAt,
+        conversionRate: currency.code === defaultCurrency.code ? 1 : rates[currency.code],
+        currency: currency.code,
+        conversionCurrency: currency.code === defaultCurrency.code ? "" : defaultCurrency.code,
+      });
     }
     if (router.canGoBack()) router.back();
     else router.replace("(tabs)/transaction");
@@ -227,25 +257,58 @@ const AddTransaction = () => {
     else return false;
   }, [values]);
 
-  
+  const changeCurrency = useCallback(
+    ({ rate, ...currency }: RateType) => {
+      setCurrency(currency);
+      sheetRef.current?.close();
+    },
+    [setCurrency, sheetRef]
+  );
+
+  const rateData: RateType[] = useMemo(() => {
+    return Object.entries(rates).map(([code, rate]) => ({ ...CURRENCIES[code], rate }));
+  }, [rates]);
+
   return (
     <>
       <ScrollView
-        contentContainerStyle={[{ paddingHorizontal: 8, minHeight: height, paddingTop: headerHeight + 8, flexGrow: 1, paddingBottom: bottomInset + 8 }]}
+        contentContainerStyle={[
+          {
+            paddingHorizontal: 8,
+            minHeight: height,
+            paddingTop: headerHeight + 8,
+            flexGrow: 1,
+            paddingBottom: bottomInset + 8,
+          },
+        ]}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={{ flexDirection: "column", flexGrow: 1 }}>
           <PrimaryInput
             type="amount"
-            containerStyle={{ height: 200 }}
             autofocus={_id ? false : true}
             onPress={handleTextBoxPress}
-            onChangeText={(text) => setValues((prev) => ({ ...prev, amount: parseFloat(text) }))}
+            onChangeText={(text) => setValues((prev) => ({ ...prev, amount: text.length > 0 ? parseFloat(text) : 0 }))}
             backgroundColor={selectedCategory.color}
             ref={amtInputRef}
             initialValue={values.amount > 0 ? values.amount.toString() : undefined}
-            prefix={defaultCurrency.symbol_native}
+            prefix={currency.symbol_native}
             keyboardType="decimal-pad"
+            width={screenWidth - 16}
+            showActionButton={rateData.length > 1}
+            onPressActionButton={() => {
+              setSheetView("currency");
+              setHeaderVisible(false);
+              sheetRef.current?.snapToIndex(2);
+            }}
+            actionButtonText={`${currency.code} - ${currency.name}`}
+            helperText={
+              defaultCurrency.code === currency.code
+                ? undefined
+                : `${currency.code} ${values.amount} = ${defaultCurrency.code} ${(
+                    values.amount * rates[currency.code]
+                  ).toFixed(2)}`
+            }
           />
           <View style={{ marginTop: 32 }}>
             <Text style={textStyle.body}>{t("category")}</Text>
@@ -253,8 +316,8 @@ const AddTransaction = () => {
             <CategoryItem
               item={selectedCategory}
               onPress={() => {
-                sheetRef.current?.snapToIndex(1);
                 setSheetView("category");
+                sheetRef.current?.snapToIndex(1);
               }}
             />
           </View>
@@ -295,8 +358,8 @@ const AddTransaction = () => {
                 android_ripple={{ color: selectedGroup.color || colors.rippleColor }}
                 style={styles.button}
                 onPress={() => {
-                  sheetRef.current?.snapToIndex(1);
                   setSheetView("group");
+                  sheetRef.current?.snapToIndex(1);
                 }}
               >
                 <Text style={textStyle.title}>{selectedGroup ? selectedGroup.title : t("noGroup")}</Text>
@@ -311,7 +374,7 @@ const AddTransaction = () => {
           bgColor={values.category ? selectedCategory.color : undefined}
           text={_id ? t("swipeButtonUpdate") : t("swipeButtonAdd")}
         />
-        <Animated.View style={{height: keyboardHeight}}/>
+        <Animated.View style={{ height: keyboardHeight }} />
       </ScrollView>
       <BottomSheet
         style={{ backgroundColor: colors.screen }}
@@ -320,8 +383,12 @@ const AddTransaction = () => {
         enablePanDownToClose
         index={-1}
         backdropComponent={renderBackdrop}
-        enableHandlePanningGesture={sheetView === "category" || sheetView === "group"}
+        enableHandlePanningGesture={sheetView !== "delete"}
         enableDynamicSizing={false}
+        handleComponent={sheetView === "delete" ? null : undefined}
+        onChange={(index) => {
+          if (index === -1) setHeaderVisible(true);
+        }}
       >
         {sheetView === "category" && (
           <BottomSheetFlatList
@@ -329,14 +396,9 @@ const AddTransaction = () => {
             contentContainerStyle={{ paddingBottom: bottom + 8, paddingHorizontal: 16 }}
             data={category}
             renderItem={({ item }) => (
-              <CategoryItem
-                item={item}
-                onPress={() => updateCategory(item)}
-                style={{ marginVertical: 8 }}
-              />
+              <CategoryItem item={item} onPress={() => updateCategory(item)} style={{ marginVertical: 8 }} />
             )}
-            ListEmptyComponent={
-              <Text style={textStyle.bodyBold}>{t("noCategoryList")}</Text>}
+            ListEmptyComponent={<Text style={textStyle.bodyBold}>{t("noCategoryList")}</Text>}
           />
         )}
         {sheetView === "delete" && (
@@ -353,13 +415,25 @@ const AddTransaction = () => {
         {sheetView === "group" && (
           <BottomSheetFlatList
             style={{ backgroundColor: colors.screen }}
-            contentContainerStyle={{ paddingBottom: bottom + 8, paddingHorizontal: 16 }}
+            contentContainerStyle={{ paddingBottom: bottom, paddingHorizontal: 16 }}
             data={group.concat(NULL_GROUP)}
             renderItem={({ item }) => (
-              <GroupItem
+              <GroupItem item={item} onPress={handleChangeGroup} style={{ marginVertical: 8 }} />
+            )}
+          />
+        )}
+        {sheetView === "currency" && (
+          <BottomSheetFlatList
+            style={{ backgroundColor: colors.screen }}
+            contentContainerStyle={{ paddingBottom: bottom, paddingHorizontal: 16 }}
+            data={rateData}
+            renderItem={({ item }) => (
+              <CurrencyItem
                 item={item}
-                onPress={handleChangeGroup}
+                onPress={changeCurrency}
                 style={{ marginVertical: 8 }}
+                baseCurrency={defaultCurrency.code}
+                rate={rates[item.code]}
               />
             )}
           />

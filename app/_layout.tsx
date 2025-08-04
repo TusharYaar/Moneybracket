@@ -22,6 +22,7 @@ import { drizzle } from "drizzle-orm/expo-sqlite";
 import { useEffect, useMemo } from "react";
 import migrations from "drizzle/migrations";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import ExchangeRatesProvider from "providers/ExchangeRatesProvider";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -107,10 +108,11 @@ function ProviderWrapper() {
         <ThemeProvider>
           <SettingsProvider>
             <HeaderProvider>
-              {/* <ExchangeRatesProvider> */}
+              <ExchangeRatesProvider>
               <DataProvider>
                 <RootLayout />
               </DataProvider>
+              </ExchangeRatesProvider>
             </HeaderProvider>
           </SettingsProvider>
         </ThemeProvider>

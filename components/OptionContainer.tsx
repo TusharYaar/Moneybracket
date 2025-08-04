@@ -43,8 +43,9 @@ const DeleteContainer = (props: Props) => {
         </Text>
       </View>
       <View style={styles.btnContainer}>
-        {props.buttons.map((btn) => (
+        {props.buttons.map((btn,index) => (
           <View
+          key={index}
             style={[
               styles.outlineButton,
               {

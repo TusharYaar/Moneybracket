@@ -1,4 +1,4 @@
-import {  format, isAfter} from "date-fns";
+import { format, isAfter } from "date-fns";
 import { compareAsc } from "date-fns";
 import { GroupedTransactions, TransactionWithCategory } from "../types";
 
@@ -19,13 +19,16 @@ export const groupTransactionByDate = (
     if (prev[key] !== undefined) {
       prev[key] = {
         date: curr.date,
-        amount: curr.category.type === "expense" ? prev[key].amount - curr.amount : prev[key].amount + curr.amount,
+        amount:
+          curr.category.type === "expense"
+            ? prev[key].amount - curr.amount * curr.conversionRate
+            : prev[key].amount + curr.amount * curr.conversionRate,
         transactions: prev[key].transactions.concat(curr),
       };
     } else
       prev[key] = {
         date: curr.date,
-        amount: curr.category.type === "expense" ? -curr.amount : curr.amount,
+        amount: ((curr.category.type === "expense" ? -1 : 1  ) * curr.amount * curr.conversionRate),
         transactions: [curr],
       };
     return prev;

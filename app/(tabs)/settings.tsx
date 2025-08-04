@@ -34,7 +34,7 @@ import { Category, Transaction } from "types";
 import SettingItem from "@components/SettingItem";
 import DeleteContainer from "@components/DeleteContainer";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
+import CurrencyItem from "@components/CurrencyItem";
 
 const OPTIONS: Record<string, { label: string; value: string }[]> = {
   dateFormat: DATE.map((d) => ({ label: d, value: d })),
@@ -46,7 +46,7 @@ const OPTIONS: Record<string, { label: string; value: string }[]> = {
     { label: "Spanish", value: "es" },
   ],
   icon: Object.keys(ICONS).map((k) => ({ label: k, value: k })),
-  currency: Object.values(CURRENCIES).map((cur) => ({ label: cur.code, value: cur.name })),
+  // currency: Object.values(CURRENCIES).map((cur) => ({ label: cur.code, value: cur.name })),
 };
 
 const Setting = () => {
@@ -67,7 +67,7 @@ const Setting = () => {
     selected: "",
   });
   const [hasBiometrics, setHasBiometrics] = useState(false);
-  const {bottom, top} = useSafeAreaInsets(); 
+  const { bottom } = useSafeAreaInsets();
 
   // Refs
   const selectListRef = useRef<BottomSheet>(null);
@@ -82,10 +82,9 @@ const Setting = () => {
         setTabbarVisible(true);
         setSelectList((prev) => ({ ...prev, visible: false }));
         selectListRef.current?.close();
-      }
+      };
     }, [setSelectList, setHeaderVisible, setTabbarVisible, selectListRef, rootNavigation])
   );
-
 
   const addDummyCategories = useCallback(() => {
     const cats: Omit<Category, "_id">[] = [];
@@ -116,7 +115,7 @@ const Setting = () => {
     selectListRef.current?.close();
     setSelectList((prev) => ({ ...prev, visible: false }));
     deleteAllData();
-  }, [deleteAllData,selectListRef]);
+  }, [deleteAllData, selectListRef]);
 
   const handleToggleLock = useCallback(
     async (value: boolean) => {
@@ -166,7 +165,7 @@ const Setting = () => {
       if (menu === "delete") {
         selectListRef.current?.snapToIndex(0);
       } else {
-        const len = OPTIONS[menu].length;
+        const len = menu === "currency" ? 37 : OPTIONS[menu].length;
         const snapIndex = len > 4 ? (len > 10 ? 3 : 2) : 1;
         if (snapIndex === 3) {
           setHeaderVisible(false);
@@ -292,20 +291,22 @@ const Setting = () => {
           </SettingItem>
         </View>
 
-        {__DEV__ && <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
-          <Text style={textStyle.title}>{t("security")}</Text>
-          <SettingItem label={t("lock")} leftIcon="lock">
-            <Switch value={settings.appLockType !== "DISABLE"} onValueChange={handleToggleLock} />
-          </SettingItem>
+        {__DEV__ && (
+          <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
+            <Text style={textStyle.title}>{t("security")}</Text>
+            <SettingItem label={t("lock")} leftIcon="lock">
+              <Switch value={settings.appLockType !== "DISABLE"} onValueChange={handleToggleLock} />
+            </SettingItem>
 
-          <SettingItem label={t("biometricLock")} leftIcon="biometric">
-            <Switch
-              value={settings.appLockType === "BIOMETRIC"}
-              disabled={!hasBiometrics || settings.appLockType === "DISABLE"}
-              onValueChange={handleToggleBiometrics}
-            />
-          </SettingItem>
-        </View>}
+            <SettingItem label={t("biometricLock")} leftIcon="biometric">
+              <Switch
+                value={settings.appLockType === "BIOMETRIC"}
+                disabled={!hasBiometrics || settings.appLockType === "DISABLE"}
+                onValueChange={handleToggleBiometrics}
+              />
+            </SettingItem>
+          </View>
+        )}
         <View style={[styles.section, { backgroundColor: colors.sectionBackground }]}>
           <Text style={textStyle.title}>{t("dataManagement")}</Text>
 
@@ -338,11 +339,13 @@ const Setting = () => {
       </ScrollView>
       <BottomSheet
         ref={selectListRef}
-        snapPoints={[225 + bottom, "40%", "69%", "100%"]}
+        snapPoints={[225, "40%", "69%", "100%"]}
         index={-1}
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen, zIndex: 20 }}
         enableHandlePanningGesture={selectList.menu === "delete" ? false : true}
+        handleComponent={selectList.menu === "delete" ? null : undefined}
+
         onChange={(index) => {
           if (index === -1) {
             setHeaderVisible(true);
@@ -361,7 +364,21 @@ const Setting = () => {
             confirm={t("confirm")}
           />
         )}
-        {selectList.menu !== "delete" && (
+        {selectList.menu === "currency" && (
+          <BottomSheetFlatList
+            style={{ backgroundColor: colors.screen }}
+            contentContainerStyle={{ padding: 16, paddingBottom: bottom }}
+            data={Object.values(CURRENCIES)}
+            renderItem={({ item }) => (
+              <CurrencyItem
+                item={item}
+                onPress={(cur) => handleItemSelect("currency", cur.code)}
+                style={{ marginBottom: 8 }}
+              />
+            )}
+          />
+        )}
+        {selectList.menu !== "delete" && selectList.menu !== "currency" && (
           <BottomSheetFlatList
             style={{ backgroundColor: colors.screen }}
             contentContainerStyle={{ padding: 16 }}

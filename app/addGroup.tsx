@@ -119,6 +119,7 @@ const AddGroupScreen = () => {
             backgroundColor={values.color}
             initialValue={title}
             onChangeText={(title) => setValues((prev) => ({ ...prev, title }))}
+            width={width - 16}
           />
           <View style={{ flexDirection: "row", justifyContent: "space-between", columnGap: 16, marginTop: 24 }}>
             <View>

@@ -1,7 +1,8 @@
-import { GestureResponderEvent, Pressable, StyleSheet, TextInput, useWindowDimensions } from "react-native";
+import { GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import type { KeyboardTypeOptions, ViewStyle } from "react-native";
 import React, { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
+import { useTheme } from "providers/ThemeProvider";
 
 type Props = {
   onPress: (event: GestureResponderEvent) => void;
@@ -14,18 +15,22 @@ type Props = {
   keyboardType?: KeyboardTypeOptions;
   autofocus?: boolean;
   containerStyle?: ViewStyle;
+  width: number;
+  showActionButton?: boolean;
+  onPressActionButton?: (event: GestureResponderEvent) => void;
+  actionButtonText?: string;
+  helperText?: string;
 };
 
 const MIN_CHAR = 4;
 const PADDING = 16;
-const LINE_HEIGHT = 1.7;
+const LINE_HEIGHT = 1.8;
 const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
-  { prefix = "", initialValue = "", backgroundColor, autofocus = true, ...props },
+  { prefix = "", initialValue = "", backgroundColor, autofocus = true, width, showActionButton = false, ...props },
   ref
 ) {
-  const { width } = useWindowDimensions();
-  const [amount, setAmount] = useState<string>(prefix + initialValue);
-  const [containerDimension, setContainerDimension] = useState({ height: 200, width });
+  const { textStyle } = useTheme();
+  const [amount, setAmount] = useState<string>(initialValue);
   const animatedBGColor = useSharedValue(backgroundColor ? backgroundColor : "orange");
 
   useEffect(() => {
@@ -34,60 +39,57 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
 
   // TODO: Improve Logic for MaxFontHeight
   const maxFontHeight = useMemo(() => {
-    let minDisn = Math.min(containerDimension.height, containerDimension.width);
-    return (minDisn - 2 * PADDING) / LINE_HEIGHT;
-  }, [containerDimension]);
+    return (width - 2 * PADDING) / MIN_CHAR;
+  }, [width]);
 
   const fontSize = useMemo(() => {
-    if (amount.length > MIN_CHAR) {
-      const size = (containerDimension.width - 2 * PADDING) / amount.length;
+    if (amount.length + prefix.length >= MIN_CHAR) {
+      const size = (width - 2 * PADDING) / amount.length;
       if (size < maxFontHeight) return size;
     }
     return maxFontHeight;
   }, [amount, maxFontHeight]);
 
   const handleChangeText = useCallback(
-    (_text: string) => {
-      let text = _text;
-      let prefixLength = prefix && props.type === "amount" ? prefix.length : 0;
-
-      if (prefixLength > 0) {
-        text = _text.substring(0, prefixLength) === prefix ? _text : prefix + text;
-      }
+    (text: string) => {
       if (props.type === "amount") {
-        const match = text.substring(prefixLength).match(/^[0-9]*$/g);
+        const match = text.match(/^\d*(\.\d{0,2})?$/g);
         if (match === null) return;
       }
-      if (props.onChangeText) props.onChangeText(text.substring(prefixLength));
+      if (props.onChangeText) props.onChangeText(text);
       setAmount(text);
     },
-    [props.onChangeText, prefix, props.type]
+    [props.onChangeText]
   );
 
   return (
-    <Animated.View
-      style={[styles.container, props.containerStyle, { backgroundColor: animatedBGColor }]}
-      onLayout={(event) => setContainerDimension(event.nativeEvent.layout)}
-    >
-      <Pressable onPress={props.onPress} style={styles.pressable}>
-        <TextInput
-          autoFocus={autofocus}
-          ref={ref}
-          placeholder={props.placeholder}
-          onChangeText={handleChangeText}
-          value={amount}
-          style={[styles.textbox, { fontSize }]}
-          keyboardType={props.keyboardType}
-          numberOfLines={1}
-        />
-
-        {/* <View style={styles.actionBtnContainer}>
-          {__DEV__ && (
-            <Pressable onPress={() => console.log("e")} style={[styles.actionBtn]}>
-              <Text>Action Button</Text>
-            </Pressable>
+    <Animated.View style={[styles.container, props.containerStyle, { backgroundColor: animatedBGColor }]}>
+      <Pressable onPress={props.onPress} style={[styles.pressable]}>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%"}}>
+          { prefix && (
+          <Text style={[styles.textbox, textStyle.amount, { fontSize}]}>
+              {prefix}
+            </Text>
           )}
-        </View> */}
+          <TextInput
+            autoFocus={autofocus}
+            ref={ref}
+            placeholder={props.placeholder}
+            onChangeText={handleChangeText}
+            value={amount}
+            style={[styles.textbox, textStyle.amount, { fontSize, height: maxFontHeight * LINE_HEIGHT }]}
+            keyboardType={props.keyboardType}
+          />
+        </View>
+        {props.helperText && <Text style={textStyle.body}>{props.helperText}</Text>}
+
+        {showActionButton && (
+          <View style={styles.actionBtnContainer}>
+            <Pressable onPress={props.onPressActionButton} style={[styles.actionBtn]}>
+              <Text style={textStyle.label}>{props.actionButtonText}</Text>
+            </Pressable>
+          </View>
+        )}
       </Pressable>
     </Animated.View>
   );
@@ -103,10 +105,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textbox: {
-    width: "100%",
-    textAlign: "center",
     textDecorationLine: "underline",
-    marginVertical: 32,
+    // marginTop: 32,
+    // backgroundColor: "blue",
   },
   actionBtnContainer: {
     padding: 4,

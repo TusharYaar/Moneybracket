@@ -17,11 +17,12 @@ import {
   subMonths,
 } from "date-fns";
 import { determineDateShift, formatDateRange } from "@utils/date";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   totalAmount: {
-    income?: number;
-    expense?: number;
+    income: number;
+    expense: number;
     transfer?: number | undefined;
   };
   date: {
@@ -67,7 +68,7 @@ const filters = [{
 const TransactionPageSummary = ({ totalAmount, date, style, updateDate, onLayout, ...props }: Props) => {
   const { currency, dateFormat } = useSettings();
   const { colors, textStyle } = useTheme();
-
+  const { t } = useTranslation("", { keyPrefix: "components.transactionPageSummary" });
   const formattedDate = useMemo(() => formatDateRange(date.start, date.end, dateFormat), [date]);
 
   const handleDateShift = useCallback((shift: number) => {
@@ -84,10 +85,10 @@ const TransactionPageSummary = ({ totalAmount, date, style, updateDate, onLayout
       }} onLayout={onLayout}>
         <Text
           style={[textStyle.caption, { color: colors.income, fontFamily: "monospace" }]}
-        >{`${currency.symbol_native}${totalAmount.income}`}</Text>
+        >{`${currency.symbol_native}${totalAmount.income.toFixed(2)}`}</Text>
         <Text
           style={[textStyle.caption, { color: colors.expense, fontFamily: "monospace" }]}
-        >{`${currency.symbol_native}${totalAmount.expense}`}</Text>
+        >{`${currency.symbol_native}${totalAmount.expense.toFixed(2)}`}</Text>
         <View style={styles.dateSection}>
           <Pressable onPress={() => handleDateShift(-1)} style={{ padding: 4 }}>
             <Icon name={"arrowLeft"} size={20} color={colors.tabbarIcon} />
@@ -113,7 +114,7 @@ const TransactionPageSummary = ({ totalAmount, date, style, updateDate, onLayout
             padding: 8, borderRadius: 4, borderWidth: 2, borderColor: colors.tabbarIcon, minWidth: "40%"
           }}>
             <Text style={[textStyle.body, { color: colors.tabbarIcon, textAlign: "center" }]}>
-              {item.title}
+              {t(item.title)}
             </Text>
           </Pressable>
         ))

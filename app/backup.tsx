@@ -236,6 +236,7 @@ const Backup = () => {
         backdropComponent={renderBackdrop}
         style={{ backgroundColor: colors.screen }}
         enableDynamicSizing={false}
+        handleComponent={null}
         // onAnimate={handleOnAnimate}
         enableHandlePanningGesture={false}
       >

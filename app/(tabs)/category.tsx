@@ -25,11 +25,11 @@ const AllCategory = () => {
           { icon: "add", onPress: () => router.push("addCategory"), action: "add_category", testId: "add-category" },
           {
             icon: "graph", onPress: () => router.push({
-              pathname: "graph",
+              pathname: "charts",
               params: {
                 type: "category",
               },
-            }), action: "category_graph", testId: "chart-category", disabled: true
+            }), action: "category_graph", testId: "chart-category", disabled: !__DEV__
           },
         ],
       });
