@@ -20,9 +20,9 @@ export const transactionTable = sqliteTable("transaction_table", {
   amount: real().notNull(),
   currency: text().notNull(),
   category: text().notNull(),
-  conversionRate: real().default(1),  //for future use
+  conversionRate: real().default(1),
   conversionCurrency: text().default(""),
-  group: text(), // for future use
+  group: text(),
   image: text(), //for future use
   createdAt: integer({ mode: 'timestamp' }).default(sql`(CURRENT_DATE)`),
   updatedAt: integer({ mode: 'timestamp' }).default(sql`(CURRENT_DATE)`),

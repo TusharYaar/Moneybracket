@@ -3,6 +3,7 @@ import { View, StyleSheet, TextInput, Text, TouchableOpacity, Alert } from "reac
 import { useRouter } from "expo-router";
 import { useTheme } from "providers/ThemeProvider";
 import { useTranslation } from "react-i18next";
+import { captureException } from "@sentry/react-native";
 
 const AddRecurring = () => {
     const router = useRouter();

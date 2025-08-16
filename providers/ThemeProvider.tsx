@@ -6,6 +6,7 @@ import { getFromStorageOrDefault } from "../utils/storage";
 import type { CustomTheme, FontObject, Theme_Color, Theme_TextStyle } from "../types";
 import { Platform } from "react-native";
 import { SystemBars } from "react-native-edge-to-edge";
+import { captureException } from "@sentry/react-native";
 
 // const textStyle: Theme_TextStyle = {
 //   body: {
@@ -100,7 +101,15 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       // setStorage(SETTING_KEYS.theme, theme);
       setTheme(theme);
     } catch (e) {
-      console.log("caught an error");
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "changeTheme",
+          file: "providers/ThemeProvider.tsx",
+          action: "theme-change",
+          timestamp: Date.now(),
+        },
+      });
     }
     setTheme(theme);
   }, []);
@@ -110,7 +119,15 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       // await loadFont(font);
       setFont(font);
     } catch (e) {
-      console.log(e);
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "changeFont",
+          file: "providers/ThemeProvider.tsx",
+          action: "font-change",
+          timestamp: Date.now(),
+        },
+      });
     }
   }, []);
 

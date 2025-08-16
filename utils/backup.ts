@@ -34,6 +34,8 @@ export const generateBackupFile = (category: Category[], transaction: Transactio
     _id: tran._id,
     note: tran.note ? tran.note : "",
     date: tran.date.toISOString(),
+    conversionCurrency: tran.conversionCurrency ? tran.conversionCurrency : "",
+    conversionRate: tran.conversionRate
     // isFavorite: boolean;
   }));
 

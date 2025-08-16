@@ -8,6 +8,7 @@ import { openDatabaseSync } from "expo-sqlite";
 import { categoryTable, groupTable, transactionTable } from "data/schema";
 import migrations from "drizzle/migrations";
 import { eq } from "drizzle-orm";
+import { captureException } from "@sentry/react-native";
 
 const expo = openDatabaseSync("MB.db");
 const db = drizzle(expo);
@@ -21,7 +22,7 @@ type Props = {
   addTransaction: (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => Promise<void>;
   updateTransaction: (_id: string, value: Omit<Transaction, "_id">) => void;
   deleteTransaction: (_id: string) => void;
-  addCategory: (value: Omit<Category, "_id"> | Omit<Category, "_id">[]) => Promise<Category[]|undefined>;
+  addCategory: (value: Omit<Category, "_id"> | Omit<Category, "_id">[]) => Promise<Category[] | undefined>;
   updateCategory: (_id: string, value: Omit<Category, "_id">) => void;
   deleteCategory: (_id: string) => void;
   fetchData: () => void;
@@ -68,10 +69,16 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       const data = await db.select().from(categoryTable);
       return data;
     } catch (e) {
-      console.log(e);
-      // TODO: ADD SENETRY LOGGING
-      
-      // error reading value
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "getAllCategory",
+          file: "providers/DataProvider.tsx",
+          action: "db-select-category",
+          timestamp: Date.now(),
+        },
+      });
+      return [];
     }
   }, [db]);
 
@@ -79,9 +86,16 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       return await db.select().from(transactionTable);
     } catch (e) {
-      console.log(e);
-      // TODO: ADD SENETRY LOGGING
-      // error reading value
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "getAllTransaction",
+          file: "providers/DataProvider.tsx",
+          action: "db-select-transaction",
+          timestamp: Date.now(),
+        },
+      });
+      return [];
     }
   }, [db]);
 
@@ -89,9 +103,16 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       return await db.select().from(groupTable);
     } catch (e) {
-      console.log(e);
-      // TODO: ADD SENETRY LOGGING
-      // error reading value
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "getAllGroup",
+          file: "providers/DataProvider.tsx",
+          action: "db-select-group",
+          timestamp: Date.now(),
+        },
+      });
+      return [];
     }
   }, [db]);
 
@@ -108,7 +129,6 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
     async (value: Omit<Category, "_id"> | Omit<Category, "_id">[] | Category[]) => {
       let values: Category[] = [];
       if (Array.isArray(value)) {
-
         values = value.map((val) => ({ ...val, _id: val?._id ? val._id : randomUUID() }));
       } else {
         const _id = randomUUID();
@@ -120,11 +140,17 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         return values;
       } catch (e) {
         // saving error
-        // TODO: ADD SENETRY LOGGING
-        console.log(e);
+        captureException(e, {
+          level: "error",
+          tags: {
+            location: "addCategory",
+            file: "providers/DataProvider.tsx",
+            action: "db-insert-category",
+            timestamp: Date.now(),
+          },
+        });
         const ids = values.map((v) => v._id);
         setCategory((prev) => prev.filter((cat) => !ids.includes(cat._id)));
-        
       }
     },
     [setCategory, db]
@@ -145,7 +171,15 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         await db.update(categoryTable).set(value).where(eq(categoryTable._id, _id));
       } catch (e) {
         // saving error
-        // TODO: ADD SENETRY LOGGING
+        captureException(e, {
+          level: "error",
+          tags: {
+            location: "updateCategory",
+            file: "providers/DataProvider.tsx",
+            action: "db-update-category",
+            timestamp: Date.now(),
+          },
+        });
         setCategory((prev) => prev.map((cat) => (cat._id === _id ? oldValue : cat)));
       }
     },
@@ -163,10 +197,17 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         await db.insert(transactionTable).values(vals);
         setTransaction((prev) => prev.concat(vals));
-      } catch (e) {
-        // saving error
-        // TODO: ADD SENETRY LOGGING
-        console.log(e);
+              } catch (e) {
+          // saving error
+          captureException(e, {
+            level: "error",
+            tags: {
+              location: "addTransaction",
+              file: "providers/DataProvider.tsx",
+              action: "db-insert-transaction",
+              timestamp: Date.now(),
+            },
+          });
         const ids = vals.map((v) => v._id);
         setTransaction((prev) => prev.filter((cat) => !ids.includes(cat._id)));
       }
@@ -188,9 +229,16 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       );
       try {
         await db.delete(transactionTable).where(eq(transactionTable._id, _id));
-      } catch (e) {
-        // TODO: ADD SENETRY LOGGING
-        console.log(e);
+              } catch (e) {
+          captureException(e, {
+            level: "error",
+            tags: {
+              location: "deleteTransaction",
+              file: "providers/DataProvider.tsx",
+              action: "db-delete-transaction",
+              timestamp: Date.now(),
+            },
+          });
         setTransaction((prev) => prev.concat(trans));
       }
     },
@@ -211,8 +259,15 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         await db.update(transactionTable).set(value).where(eq(transactionTable._id, _id));
       } catch (e) {
-        // TODO: ADD SENETRY LOGGING
-        console.log(e);
+        captureException(e, {
+          level: "error",
+          tags: {
+            location: "updateTransaction",
+            file: "providers/DataProvider.tsx",
+            action: "db-update-transaction",
+            timestamp: Date.now(),
+          },
+        });
         if (oldValue !== null)
           setTransaction((prev) => prev.map((val) => (val._id === _id ? (oldValue as Transaction) : val)));
       }
@@ -246,7 +301,15 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         await db.delete(transactionTable).where(eq(transactionTable.category, _id));
         await db.delete(categoryTable).where(eq(categoryTable._id, _id));
       } catch (e) {
-        // TODO: ADD SENETRY LOGGING
+        captureException(e, {
+          level: "error",
+          tags: {
+            location: "deleteCategory",
+            file: "providers/DataProvider.tsx",
+            action: "db-delete-category",
+            timestamp: Date.now(),
+          },
+        });
         setCategory((prev) => prev.concat(cat));
         setTransaction((prev) => prev.concat(transactions));
       }
@@ -271,7 +334,15 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       await db.delete(categoryTable);
       await db.delete(groupTable);
     } catch (e) {
-      // TODO: ADD SENETRY LOGGING
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "deleteAllData",
+          file: "providers/DataProvider.tsx",
+          action: "db-delete-all-data",
+          timestamp: Date.now(),
+        },
+      });
       setCategory((prev) => cat);
       setTransaction(trans);
     }
@@ -289,10 +360,18 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         await db.insert(groupTable).values(values);
         setGroup((prev) => prev.concat(values));
+
       } catch (e) {
         // saving error
-        // TODO: ADD SENETRY LOGGING
-        console.log(e);
+        captureException(e, {
+          level: "error",
+          tags: {
+            location: "addGroup",
+            file: "providers/DataProvider.tsx",
+            action: "db-insert-group",
+            timestamp: Date.now(),
+          },
+        });
         const ids = values.map((v) => v._id);
         setGroup((prev) => prev.filter((cat) => !ids.includes(cat._id)));
       }
@@ -318,7 +397,15 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         await db.update(transactionTable).set({ group: null }).where(eq(transactionTable.group, _id));
         await db.delete(groupTable).where(eq(groupTable._id, _id));
       } catch (e) {
-        // TODO: ADD SENETRY LOGGING
+        captureException(e, {
+          level: "error",
+          tags: {
+            location: "deleteGroup",
+            file: "providers/DataProvider.tsx",
+            action: "db-delete-group",
+            timestamp: Date.now(),
+          },
+        });
         setGroup((prev) => prev.concat(cat));
         // setTransaction((prev) => prev.concat(transactions));
       }
@@ -341,7 +428,15 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         await db.update(groupTable).set(value).where(eq(groupTable._id, _id));
       } catch (e) {
         // saving error
-        // TODO: ADD SENETRY LOGGING
+        captureException(e, {
+          level: "error",
+          tags: {
+            location: "updateGroup",
+            file: "providers/DataProvider.tsx",
+            action: "db-update-group",
+            timestamp: Date.now(),
+          },
+        });
         setGroup((prev) => prev.map((grp) => (grp._id === _id ? oldValue : grp)));
       }
     },

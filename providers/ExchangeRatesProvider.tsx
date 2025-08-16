@@ -4,6 +4,7 @@ import { CURRENCIES } from "../data";
 import { ExchangeRatesServerResponse } from "../types";
 import { getFromStorageOrDefault, setStorage } from "../utils/storage";
 import { useSettings } from "./SettingsProvider";
+import { captureException } from "@sentry/react-native";
 
 const SupportedCurrencies = Object.keys(CURRENCIES);
 
@@ -44,7 +45,15 @@ const ExchangeRatesProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       setRates(rates);
       setUpdated(new Date());
     } catch (e) {
-      console.log(e);
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "fetchRates",
+          file: "providers/ExchangeRatesProvider.tsx",
+          action: "api-fetch-rates",
+          timestamp: Date.now(),
+        },
+      });
     }
   }, []);
 

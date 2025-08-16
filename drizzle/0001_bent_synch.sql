@@ -14,7 +14,7 @@ CREATE TABLE `__new_transaction_table` (
 	`updatedAt` integer DEFAULT (CURRENT_DATE)
 );
 --> statement-breakpoint
-INSERT INTO `__new_transaction_table`("_id", "note", "date", "amount", "currency", "category", "conversionRate", "conversionCurrency", "group", "image", "createdAt", "updatedAt") SELECT "_id", "note", "date", "amount", "currency", "category", "conversionRate", "group", "image", "createdAt", "updatedAt" FROM `transaction_table`;--> statement-breakpoint
+INSERT INTO `__new_transaction_table`("_id", "note", "date", "amount", "currency", "category", "conversionRate", "conversionCurrency", "group", "image", "createdAt", "updatedAt") SELECT "_id", "note", "date", "amount", "currency", "category", "conversionRate", "conversionCurrency", "group", "image", "createdAt", "updatedAt" FROM `transaction_table`;--> statement-breakpoint
 DROP TABLE `transaction_table`;--> statement-breakpoint
 ALTER TABLE `__new_transaction_table` RENAME TO `transaction_table`;--> statement-breakpoint
 PRAGMA foreign_keys=ON;

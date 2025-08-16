@@ -12,7 +12,7 @@ import { SplashScreen } from "expo-router";
 import DataProvider from "providers/DataProvider";
 import ThemeProvider, { useTheme } from "providers/ThemeProvider";
 import SettingsProvider, { useSettings } from "providers/SettingsProvider";
-// import ExchangeRatesProvider from "../providers/ExchangeRatesProvider";
+import ExchangeRatesProvider from "providers/ExchangeRatesProvider";
 
 // Components
 import Header from "@components/Header";
@@ -22,7 +22,6 @@ import { drizzle } from "drizzle-orm/expo-sqlite";
 import { useEffect, useMemo } from "react";
 import migrations from "drizzle/migrations";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
-import ExchangeRatesProvider from "providers/ExchangeRatesProvider";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -30,16 +29,28 @@ SplashScreen.preventAutoHideAsync();
 Sentry.init({
   dsn: "https://1135924f6142df8d80fdd3b1cce06446@o4507986483085312.ingest.de.sentry.io/4507986484920400",
   profilesSampleRate: 1.0,
+  // enabled: !__DEV__,
 });
 
 const expo = openDatabaseSync("MB.db");
 const db = drizzle(expo);
 
 function RootLayout() {
-  const { success } = useMigrations(db, migrations);
+  const { success, error } = useMigrations(db, migrations);
   useEffect(() => {
     if (success) {
       SplashScreen.hideAsync();
+    }
+    if (error) {
+      Sentry.captureException(error, {
+        level: "fatal",
+        tags: {
+          location: "root_layout",
+          file: "_layout.tsx",
+          action: "migration-error",
+          timestamp: Date.now(),
+        },
+      });
     }
   }, [success]);
 
@@ -90,7 +101,7 @@ function RootLayout() {
         <Stack.Screen name="listTransactions" />
       </Stack.Protected>
       <Stack.Protected guard={guard.showLockScreen}>
-        <Stack.Screen name="locked" options={{ headerShown: false }}/>
+        <Stack.Screen name="locked" options={{ headerShown: false }} />
       </Stack.Protected>
       <Stack.Protected guard={__DEV__}>
         {/* TODO: remove this guard */}
@@ -109,9 +120,9 @@ function ProviderWrapper() {
           <SettingsProvider>
             <HeaderProvider>
               <ExchangeRatesProvider>
-              <DataProvider>
-                <RootLayout />
-              </DataProvider>
+                <DataProvider>
+                  <RootLayout />
+                </DataProvider>
               </ExchangeRatesProvider>
             </HeaderProvider>
           </SettingsProvider>

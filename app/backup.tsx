@@ -32,6 +32,7 @@ import { generateBackupFile, readBackupFile } from "utils/backup";
 
 // Types
 import { Category, Group, Transaction } from "types";
+import { captureException } from "@sentry/react-native";
 
 type backupItem = { name: string; uri: string };
 const Backup = () => {
@@ -62,7 +63,15 @@ const Backup = () => {
       if (!directory.exists) directory.create();
       listBackups(directory);
     } catch (e) {
-      console.log(e);
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "checkFolder",
+          file: "app/backup.tsx",
+          action: "folder-check",
+          timestamp: Date.now(),
+        },
+      });
     }
   }, []);
 
@@ -88,7 +97,15 @@ const Backup = () => {
       setSelectedFile((prev) => ({ ...prev, view: "success", message: t("backupSuccess") }));
       shareAsync(uri);
     } catch (e) {
-      console.log(e);
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "createBackup",
+          file: "app/backup.tsx",
+          action: "backup-creation",
+          timestamp: Date.now(),
+        },
+      });
     }
   }, [category]);
 
@@ -128,7 +145,15 @@ const Backup = () => {
       setSelectedFile((prev) => ({ ...prev, view: "success", message: t("restoreSuccess") }));
       selectListRef.current?.snapToIndex(0);
     } catch (e) {
-      console.log(e);
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "restoreFile",
+          file: "app/backup.tsx",
+          action: "backup-restore",
+          timestamp: Date.now(),
+        },
+      });
     } finally {
       setLoading(false);
     }
@@ -159,7 +184,15 @@ const Backup = () => {
         ],
       });
     } catch (e) {
-      console.log("ERROR", e);
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "chooseRestoreFile",
+          file: "app/backup.tsx",
+          action: "file-selection",
+          timestamp: Date.now(),
+        },
+      });
     } finally {
       setLoading(false);
     }

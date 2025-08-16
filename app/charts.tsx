@@ -7,10 +7,9 @@ import { useFocusEffect, useLocalSearchParams, useNavigation } from "expo-router
 import { useHeader } from "providers/HeaderProvider";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useData } from "providers/DataProvider";
+import { captureException } from "@sentry/react-native";
 
-// import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
-// import GroupItem from "@components/GroupItem";
 import CategoryItem from "@components/CategoryItem";
 import TransactionPageSummary from "@components/TransactionPageSummary";
 import { compareDesc, compareAsc, endOfMonth, startOfMonth, endOfDay, startOfDay } from "date-fns";
