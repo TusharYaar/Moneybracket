@@ -1,7 +1,9 @@
 // React Native & Expo imports
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Stack } from "expo-router";
+import { Stack, useNavigationContainerRef } from "expo-router";
 import * as Sentry from "@sentry/react-native";
+import { PostHogProvider, usePostHog } from "posthog-react-native";
+import { Platform } from "react-native";
 
 // Localization
 import i18n from "../localization";
@@ -9,14 +11,14 @@ import { I18nextProvider } from "react-i18next";
 import { SplashScreen } from "expo-router";
 
 // Providers
+import { HeaderProvider } from "providers/HeaderProvider";
 import DataProvider from "providers/DataProvider";
 import ThemeProvider, { useTheme } from "providers/ThemeProvider";
 import SettingsProvider, { useSettings } from "providers/SettingsProvider";
 import ExchangeRatesProvider from "providers/ExchangeRatesProvider";
-
+import { nativeApplicationVersion } from "expo-application";
 // Components
 import Header from "@components/Header";
-import { HeaderProvider } from "providers/HeaderProvider";
 import { openDatabaseSync } from "expo-sqlite";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { useEffect, useMemo } from "react";
@@ -26,10 +28,13 @@ import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
+const navigationIntegration = Sentry.reactNavigationIntegration();
 Sentry.init({
   dsn: "https://1135924f6142df8d80fdd3b1cce06446@o4507986483085312.ingest.de.sentry.io/4507986484920400",
   profilesSampleRate: 1.0,
-  // enabled: !__DEV__,
+  debug: __DEV__,
+  enabled: !__DEV__,
+  environment: __DEV__ ? "development" : "production",
 });
 
 const expo = openDatabaseSync("MB.db");
@@ -37,9 +42,16 @@ const db = drizzle(expo);
 
 function RootLayout() {
   const { success, error } = useMigrations(db, migrations);
+  const posthog = usePostHog();
   useEffect(() => {
     if (success) {
       SplashScreen.hideAsync();
+      // Send this if app active for more than 15sec
+      posthog.capture("app_loaded", {
+        app_version: nativeApplicationVersion,
+        platform: Platform.OS,
+        platform_version: Platform.Version,
+      });
     }
     if (error) {
       Sentry.captureException(error, {
@@ -54,11 +66,13 @@ function RootLayout() {
     }
   }, [success]);
 
-  // useEffect(() => {
-  //   if (ref) {
-  //     routingInstrumentation.registerNavigationContainer(ref);
-  //   }
-  // }, [ref]);
+  const ref = useNavigationContainerRef();
+  useEffect(() => {
+    if (ref) {
+      navigationIntegration.registerNavigationContainer(ref);
+    }
+  }, [ref]);
+
   const { colors } = useTheme();
   const { appLockType, isAppLocked, isFirstLaunch } = useSettings();
   const guard = useMemo(() => {
@@ -121,7 +135,15 @@ function ProviderWrapper() {
             <HeaderProvider>
               <ExchangeRatesProvider>
                 <DataProvider>
-                  <RootLayout />
+                  <PostHogProvider
+                    apiKey="phc_5BtmQjQRUCikOwM1ZDXmjlVHjnC2OgJPncdj0IO8t0D"
+                    options={{
+                      host: "https://us.i.posthog.com",
+                      disabled: __DEV__,
+                    }}
+                  >
+                    <RootLayout />
+                  </PostHogProvider>
                 </DataProvider>
               </ExchangeRatesProvider>
             </HeaderProvider>

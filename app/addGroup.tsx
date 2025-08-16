@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import DeleteContainer from "@components/DeleteContainer";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useHeader } from "providers/HeaderProvider";
+import { usePostHog } from "posthog-react-native";
 
 type ValueProps = {
   title: string;
@@ -40,6 +41,7 @@ const AddGroupScreen = () => {
     description: "",
   });
   const [sheetView, setSheetView] = useState<"icon" | "delete">("icon");
+  const posthog = usePostHog();
 
   const { height, width } = useWindowDimensions();
   const { bottom: bottomInset } = useSafeAreaInsets();
@@ -88,13 +90,20 @@ const AddGroupScreen = () => {
     if (_id) {
       // TODO: fetch created_at date and populate here
       updateGroup(_id, { ...values, createdAt: date, updatedAt: date, isFavorite: false });
-    } else addGroup({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
+      posthog.capture("group_update");
+    } else {
+      addGroup({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
+      posthog.capture("group_add");
+    }
     if (router.canGoBack()) router.back();
     else router.replace("(tabs)/group");
   };
   const handlePressDelete = useCallback(() => {
     sheetRef.current?.close();
-    if (_id !== null) deleteGroup(_id);
+    if (_id !== null) {
+      posthog.capture("group_delete");
+      deleteGroup(_id);
+    }
     router.back();
   }, [_id]);
 

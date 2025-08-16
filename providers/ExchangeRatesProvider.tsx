@@ -36,12 +36,10 @@ const ExchangeRatesProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     try {
       const request = await fetch(`https://api.fxratesapi.com/latest?base=${code}`);
       const response = (await request.json()) as ExchangeRatesServerResponse;
-
       const rates = SupportedCurrencies.reduce((acc, curr) => {
         acc[curr] = 1 / response.rates[curr];
         return acc;
       }, {} as Record<string, number>);
-
       setRates(rates);
       setUpdated(new Date());
     } catch (e) {

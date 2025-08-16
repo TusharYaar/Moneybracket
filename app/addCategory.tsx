@@ -14,9 +14,10 @@ import { useTranslation } from "react-i18next";
 import DeleteContainer from "@components/DeleteContainer";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useHeader } from "providers/HeaderProvider";
+import { usePostHog } from "posthog-react-native";
 
 const CATEGORY_TYPES = [
-  { 
+  {
     id: "income",
     label: "income",
     value: "income",
@@ -69,14 +70,17 @@ const AddCategoryScreen = () => {
     description: "",
   });
   const [sheetView, setSheetView] = useState<"icon" | "delete">("icon");
-
+  const posthog = usePostHog();
   const { height, width } = useWindowDimensions();
   const { bottom: bottomInset } = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>(null);
   const { headerHeight } = useHeader();
   useFocusEffect(
     useCallback(() => {
-      navigation.setOptions({ title: _id ? t("updateTitle") : t("addTitle"), headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_category" }] : [] });
+      navigation.setOptions({
+        title: _id ? t("updateTitle") : t("addTitle"),
+        headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_category" }] : [],
+      });
     }, [_id])
   );
 
@@ -115,13 +119,18 @@ const AddCategoryScreen = () => {
     if (_id) {
       // TODO: fetch created_at date and populate here
       updateCategory(_id, { ...values, createdAt: date, updatedAt: date, isFavorite: false });
-    } else addCategory({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
+      posthog.capture("category_update");
+    } else {
+      addCategory({ ...values, createdAt: date, updatedAt: date, isFavorite: false });
+      posthog.capture("category_add", { color: values.color, icon: values.icon });
+    }
     if (router.canGoBack()) router.back();
     else router.replace("(tabs)/category");
   };
   const handlePressDelete = useCallback(() => {
     sheetRef.current?.close();
     deleteCategory(_id);
+    posthog.capture("category_delete");
     router.back();
   }, [_id]);
 
@@ -140,7 +149,13 @@ const AddCategoryScreen = () => {
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, minHeight: height - headerHeight, paddingTop: headerHeight + 8, paddingBottom: bottomInset + 8, flexGrow: 1 }}
+        contentContainerStyle={{
+          paddingHorizontal: 8,
+          minHeight: height - headerHeight,
+          paddingTop: headerHeight + 8,
+          paddingBottom: bottomInset + 8,
+          flexGrow: 1,
+        }}
         style={{ backgroundColor: colors.screen }}
       >
         <View style={{ flex: 1 }}>
@@ -213,7 +228,7 @@ const AddCategoryScreen = () => {
           <View style={{ marginTop: 24 }}>
             <Text style={textStyle.body}>{t("type")}</Text>
             <GroupButton
-            selected={values.type}
+              selected={values.type}
               testId="category-group-btn"
               buttons={CATEGORY_TYPES.map((cat) => ({
                 ...cat,

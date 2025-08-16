@@ -26,6 +26,7 @@ import DeleteContainer from "@components/DeleteContainer";
 import GroupItem from "@components/GroupItem";
 import CurrencyItem from "@components/CurrencyItem";
 import { CURRENCIES } from "data";
+import { usePostHog } from "posthog-react-native";
 
 type SearchParams = {
   _id: string;
@@ -34,7 +35,7 @@ type SearchParams = {
   category: string;
 };
 
-const _NULL_GROUP = {
+const _NULL_GROUP:Group = {
   _id: "noGroup",
   isFavorite: true,
   createdAt: new Date(),
@@ -42,9 +43,10 @@ const _NULL_GROUP = {
   color: "#7f7f7f",
   icon: "unknown",
   description: "No group",
+  title: "noGroup",
 };
 
-const _NULL_CATEGORY: Omit<Category, "title"> = {
+const _NULL_CATEGORY: Category = {
   _id: "noCategory",
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -52,6 +54,8 @@ const _NULL_CATEGORY: Omit<Category, "title"> = {
   color: "#7f7f7f",
   icon: "unknown",
   isFavorite: false,
+  title: "noCategory"
+
 };
 
 const AddTransaction = () => {
@@ -70,6 +74,7 @@ const AddTransaction = () => {
   const { height, width: screenWidth } = useWindowDimensions();
   const router = useRouter();
   const navigation = useNavigation();
+  const posthog = usePostHog();
 
   // 2. Data hooks
   const { currency: defaultCurrency, dateFormat } = useSettings();
@@ -180,49 +185,6 @@ const AddTransaction = () => {
   //   return `${IMAGES_DIRECTORY}/${name[name.length - 1]}`;
   // }, []);
 
-  const handleSubmit = () => {
-    const updatedAt = new Date();
-
-    if (_id) {
-      updateTransaction(_id, {
-        ...values,
-        category: values.category,
-        updatedAt,
-        createdAt: updatedAt,
-        currency: currency.code,
-        conversionRate: currency.code === defaultCurrency.code ? 1 : rates[currency.code],
-        conversionCurrency: currency.code === defaultCurrency.code ? "" : defaultCurrency.code,
-      });
-    } else {
-      addTransaction({
-        ...values,
-        category: values.category,
-        updatedAt,
-        conversionRate: currency.code === defaultCurrency.code ? 1 : rates[currency.code],
-        currency: currency.code,
-        conversionCurrency: currency.code === defaultCurrency.code ? "" : defaultCurrency.code,
-      });
-    }
-    if (router.canGoBack()) router.back();
-    else router.replace("(tabs)/transaction");
-  };
-
-  const handlePressDelete = useCallback(() => {
-    sheetRef.current?.close();
-    if (_id) deleteTransaction(_id);
-    router.back();
-  }, [_id]);
-
-  const handleTextBoxPress = useCallback(() => {
-    amtInputRef.current?.focus();
-  }, []);
-
-  const updateCategory = useCallback((category: Category) => {
-    sheetRef.current?.close();
-    animatedColor.value = withTiming(category.color);
-    setValues((prev) => ({ ...prev, category: category._id }));
-  }, []);
-
   const selectedCategory = useMemo(() => {
     const _cat = category.find((c) => c._id === values.category);
 
@@ -236,6 +198,55 @@ const AddTransaction = () => {
       else return NULL_GROUP;
     } else return NULL_GROUP;
   }, [values.group]);
+
+  const handleSubmit = () => {
+    const updatedAt = new Date();
+    if (_id) {
+      updateTransaction(_id, {
+        ...values,
+        category: values.category,
+        updatedAt,
+        createdAt: updatedAt,
+        currency: currency.code,
+        conversionRate: currency.code === defaultCurrency.code ? 1 : rates[currency.code],
+        conversionCurrency: currency.code === defaultCurrency.code ? "" : defaultCurrency.code,
+      });
+      posthog.capture("transaction_update");
+    } else {
+      addTransaction({
+        ...values,
+        category: values.category,
+        updatedAt,
+        conversionRate: currency.code === defaultCurrency.code ? 1 : rates[currency.code],
+        currency: currency.code,
+        conversionCurrency: currency.code === defaultCurrency.code ? "" : defaultCurrency.code,
+      });
+      posthog.capture("transaction_add", {currency: currency.code, category: selectedCategory.title, group: selectedGroup.title });
+
+    }
+    if (router.canGoBack()) router.back();
+    else router.replace("(tabs)/transaction");
+  };
+
+  const handlePressDelete = useCallback(() => {
+    sheetRef.current?.close();
+    if (_id) {
+      deleteTransaction(_id);
+      posthog.capture("transaction_delete");
+    }
+    router.back();
+  }, [_id]);
+
+  const handleTextBoxPress = useCallback(() => {
+    amtInputRef.current?.focus();
+  }, []);
+
+  const updateCategory = useCallback((category: Category) => {
+    sheetRef.current?.close();
+    animatedColor.value = withTiming(category.color);
+    setValues((prev) => ({ ...prev, category: category._id }));
+  }, []);
+
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
