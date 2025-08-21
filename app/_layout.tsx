@@ -12,18 +12,14 @@ import { SplashScreen } from "expo-router";
 
 // Providers
 import { HeaderProvider } from "providers/HeaderProvider";
-import DataProvider from "providers/DataProvider";
+import DataProvider, { useData } from "providers/DataProvider";
 import ThemeProvider, { useTheme } from "providers/ThemeProvider";
 import SettingsProvider, { useSettings } from "providers/SettingsProvider";
 import ExchangeRatesProvider from "providers/ExchangeRatesProvider";
 import { nativeApplicationVersion } from "expo-application";
 // Components
 import Header from "@components/Header";
-import { openDatabaseSync } from "expo-sqlite";
-import { drizzle } from "drizzle-orm/expo-sqlite";
 import { useEffect, useMemo } from "react";
-import migrations from "drizzle/migrations";
-import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -37,24 +33,25 @@ Sentry.init({
   environment: __DEV__ ? "development" : "production",
 });
 
-const expo = openDatabaseSync("MB.db");
-const db = drizzle(expo);
-
 function RootLayout() {
-  const { success, error } = useMigrations(db, migrations);
+  const {migration_success, migration_error, fetchData} = useData();
   const posthog = usePostHog();
   useEffect(() => {
-    if (success) {
+    if (migration_success) {
       SplashScreen.hideAsync();
+      fetchData();
       // Send this if app active for more than 15sec
-      posthog.capture("app_loaded", {
-        app_version: nativeApplicationVersion,
-        platform: Platform.OS,
-        platform_version: Platform.Version,
-      });
+      const timeout = setTimeout(() => {
+        posthog.capture("app_loaded", {
+          app_version: nativeApplicationVersion,
+          platform: Platform.OS,
+          platform_version: Platform.Version,
+        });
+      },10000)
+      return () => clearInterval(timeout)
     }
-    if (error) {
-      Sentry.captureException(error, {
+    if (migration_error) {
+      Sentry.captureException(migration_error, {
         level: "fatal",
         tags: {
           location: "root_layout",
@@ -64,7 +61,7 @@ function RootLayout() {
         },
       });
     }
-  }, [success]);
+  }, [migration_success, migration_error]);
 
   const ref = useNavigationContainerRef();
   useEffect(() => {
@@ -93,6 +90,7 @@ function RootLayout() {
       showApp,
     };
   }, [appLockType, isAppLocked, isFirstLaunch]);
+
   return (
     <Stack
       screenOptions={{ header: (props) => <Header {...props} />, contentStyle: { backgroundColor: colors.screen } }}
