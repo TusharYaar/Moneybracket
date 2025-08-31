@@ -35,7 +35,6 @@ CREATE TABLE `transaction_table` (
 	`updatedAt` integer DEFAULT (CURRENT_DATE)
 );
 
-
 INSERT INTO group_table (_id, title, color, icon)
 VALUES 
 	('default_group_1', 'Paris', '#FFB6C1', 'icon_94'),
