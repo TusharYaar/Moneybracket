@@ -36,15 +36,15 @@ CREATE TABLE `transaction_table` (
 );
 
 
--- INSERT INTO group_table (_id, title, color, icon)
--- VALUES 
--- 	('default_group_1', 'Paris', '#FFB6C1', 'icon_94'),
--- 	('default_group_2', 'Thailand', '#64B5F6', 'icon_23'),
---     ('default_group_3', 'Utilities', '#FFCC80', 'icon_93');
+INSERT INTO group_table (_id, title, color, icon)
+VALUES 
+	('default_group_1', 'Paris', '#FFB6C1', 'icon_94'),
+	('default_group_2', 'Thailand', '#64B5F6', 'icon_23'),
+    ('default_group_3', 'Utilities', '#FFCC80', 'icon_93');
 
--- INSERT INTO category_table (_id, title, type, color, icon)
--- VALUES
---     ('default_category_1', 'Travel', 'expense', '#66994D', 'travel'),
---     ('default_category_2', 'Salary', 'income', '#ffb507', 'salary'),
---     ('default_category_3', 'Food', 'expense', '#182276', 'food'),
---     ('default_category_4', 'Shopping', 'expense', '#00BCD4', 'shopping');
+INSERT INTO category_table (_id, title, type, color, icon)
+VALUES
+    ('default_category_1', 'Travel', 'expense', '#66994D', 'travel'),
+    ('default_category_2', 'Salary', 'income', '#ffb507', 'salary'),
+    ('default_category_3', 'Food', 'expense', '#182276', 'food'),
+    ('default_category_4', 'Shopping', 'expense', '#00BCD4', 'shopping');
