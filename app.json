@@ -41,7 +41,10 @@
         {
           "url": "https://sentry.io/",
           "project": "money-bracket",
-          "organization": "tushar-s-agrawal"
+          "organization": "tushar-s-agrawal",
+          "experimental_android": {
+            "enableAndroidGradlePlugin": true
+          }
         }
       ],
       [

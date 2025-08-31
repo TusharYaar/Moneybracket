@@ -1,23 +1,40 @@
-import { Link } from "expo-router";
-import { useTheme } from "providers/ThemeProvider";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { FlashList } from "@shopify/flash-list";
+import { useTranslation } from "react-i18next";
+import { Link } from "expo-router";
+
+import { useSettings } from "providers/SettingsProvider";
+import { useTheme } from "providers/ThemeProvider";
+
+import CurrencyItem from "@components/CurrencyItem";
+
+import { CURRENCIES } from "data";
 
 const SecondScreen = () => {
-  const { t } = useTranslation("", { keyPrefix: "app.onboarding.second" });
-  const { colors, textStyle } = useTheme();
   const { bottom, top } = useSafeAreaInsets();
+  const { colors, textStyle } = useTheme();
+  const { t } = useTranslation("", { keyPrefix: "app.onboarding.second" });
+  const { currency, updateSettings } = useSettings();
+
   return (
-    <View
-      style={[styles.container, { paddingTop: top + 8, paddingBottom: bottom + 8, backgroundColor: colors.screen }]}
-    >
-      <Text>DEVELOPMENT SCREEN</Text>
-      <View style={{ flex: 1 }}>
-        <Text style={textStyle.title}>{t("underDevelopment")}</Text>
-        <Text style={textStyle.body}>{t("text")}</Text>
-      </View>
+    <View style={[styles.screen, { paddingBottom: bottom + 8, paddingTop: top + 8, paddingHorizontal: 8 }]}>
+      <Text style={[textStyle.display, { color: colors.text }]}>{t("now")}</Text>
+      <Text style={[textStyle.title, { color: colors.text }]}>{t("header")}</Text>
+      <FlashList
+        renderItem={({ item }) => (
+          <CurrencyItem
+            selected={currency.code === item.code}
+            item={item}
+            onPress={(item) => updateSettings("currency", item.code)}
+            style={{ marginVertical: 8 }}
+            baseCurrency={currency.code}
+          />
+        )}
+        data={Object.values(CURRENCIES)}
+      />
       <View style={styles.navBtnContainer}>
         <Link
           href="/(onboarding)/first"
@@ -39,23 +56,18 @@ const SecondScreen = () => {
   );
 };
 
+export default SecondScreen;
+
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 8,
-  },
-  image: {
-    width: 220,
-    height: 220,
-    borderRadius: 8,
   },
   navBtnContainer: {
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingTop: 8,
   },
   button: {
     paddingVertical: 14,
@@ -63,5 +75,3 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
-
-export default SecondScreen;

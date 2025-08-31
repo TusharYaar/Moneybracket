@@ -27,14 +27,14 @@ SplashScreen.preventAutoHideAsync();
 const navigationIntegration = Sentry.reactNavigationIntegration();
 Sentry.init({
   dsn: "https://1135924f6142df8d80fdd3b1cce06446@o4507986483085312.ingest.de.sentry.io/4507986484920400",
-  profilesSampleRate: 1.0,
+  // profilesSampleRate: 1.0,
   debug: __DEV__,
   enabled: !__DEV__,
   environment: __DEV__ ? "development" : "production",
 });
 
 function RootLayout() {
-  const {migration_success, migration_error, fetchData} = useData();
+  const { migration_success, migration_error, fetchData } = useData();
   const posthog = usePostHog();
   useEffect(() => {
     if (migration_success) {
@@ -47,8 +47,8 @@ function RootLayout() {
           platform: Platform.OS,
           platform_version: Platform.Version,
         });
-      },10000)
-      return () => clearInterval(timeout)
+      }, 10000);
+      return () => clearInterval(timeout);
     }
     if (migration_error) {
       Sentry.captureException(migration_error, {
@@ -76,7 +76,7 @@ function RootLayout() {
     let showOnboarding = false;
     let showApp = false;
     let showLockScreen = false;
-    if (isFirstLaunch === "true" && __DEV__) showOnboarding = true;
+    if (isFirstLaunch === "true") showOnboarding = true;
     else {
       if (isAppLocked === "true" && appLockType !== "DISABLE") {
         showLockScreen = true;
@@ -99,6 +99,7 @@ function RootLayout() {
         <Stack.Screen name="(onboarding)/first" options={{ headerShown: false }} />
         <Stack.Screen name="(onboarding)/second" options={{ headerShown: false }} />
         <Stack.Screen name="(onboarding)/third" options={{ headerShown: false }} />
+        <Stack.Screen name="(onboarding)/forth" options={{ headerShown: false }} />
       </Stack.Protected>
       <Stack.Protected guard={guard.showApp}>
         <Stack.Screen name="(tabs)" />
@@ -152,4 +153,4 @@ function ProviderWrapper() {
   );
 }
 
-export default ProviderWrapper;
+export default Sentry.wrap(ProviderWrapper);

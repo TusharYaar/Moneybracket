@@ -9,19 +9,36 @@ interface CurrencyItemProps {
   style?: ViewStyle;
   rate?: number;
   baseCurrency?: string;
+  selected?: boolean;
 }
 
-const CurrencyItem = ({ item, onPress, style, rate, baseCurrency }: CurrencyItemProps) => {
+const CurrencyItem = ({ item, onPress, style, rate, baseCurrency, selected = false }: CurrencyItemProps) => {
   const { textStyle, colors } = useTheme();
   return (
     <Pressable
       onPress={() => (onPress ? onPress(item) : undefined)}
-      style={[styles.container, { backgroundColor: colors.sectionBackground }, style]}
+      style={[
+        styles.container,
+        { backgroundColor: selected ? colors.headerBackground : colors.sectionBackground },
+        style,
+      ]}
     >
-      <Text style={[{ backgroundColor: "black" }, styles.currencySymbol, textStyle.header]}>{item.symbol}</Text>
-      <View style={styles.textContainer}>
-        <Text style={textStyle.bodyBold}>{item.name}</Text>
-        {rate && <Text style={textStyle.label}>{`${baseCurrency} ${rate.toFixed(2)} = 1 ${item.code}`} </Text>}
+      <Text
+        style={[
+          styles.currencySymbol,
+          textStyle.header,
+          { backgroundColor: colors.headerBackground, color: colors.headerText },
+        ]}
+      >
+        {item.symbol}
+      </Text>
+      <View style={[styles.textContainer]}>
+        <Text style={[textStyle.bodyBold, { color: selected ? colors.headerText : colors.text }]}>{item.name}</Text>
+        {rate && (
+          <Text style={[textStyle.label, { color: selected ? colors.headerText : colors.text }]}>
+            {`${baseCurrency} ${rate.toFixed(2)} = 1 ${item.code}`}{" "}
+          </Text>
+        )}
       </View>
     </Pressable>
   );

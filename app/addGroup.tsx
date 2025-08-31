@@ -31,7 +31,7 @@ const AddGroupScreen = () => {
   const { addGroup, updateGroup, deleteGroup, group } = useData();
   const { _id = null, color, title = "" } = useLocalSearchParams<SearchParams>();
   const { t } = useTranslation("", { keyPrefix: "app.addGroup" });
-  const router = useRouter();;
+  const router = useRouter();
   const inputRef = useRef<TextInput>(null);
   const { textStyle, colors } = useTheme();
   const [values, setValues] = useState<ValueProps>({
@@ -48,10 +48,13 @@ const AddGroupScreen = () => {
   const sheetRef = useRef<BottomSheet>(null);
   const { headerHeight } = useHeader();
   const navigation = useNavigation();
-  
+
   useFocusEffect(
     useCallback(() => {
-      navigation.setOptions({ title: _id ? t("updateTitle") : t("addTitle"), headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_group" }] : [] });
+      navigation.setOptions({
+        title: _id ? t("updateTitle") : t("addTitle"),
+        headerRightBtn: _id ? [{ icon: "delete", onPress: showDeleteModal, action: "delete_group" }] : [],
+      });
     }, [_id])
   );
 
@@ -117,13 +120,17 @@ const AddGroupScreen = () => {
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ paddingHorizontal: 8, paddingTop: headerHeight + 8, paddingBottom: bottomInset + 8, flex: 1 }}
+        contentContainerStyle={{
+          paddingHorizontal: 8,
+          paddingTop: headerHeight + 8,
+          paddingBottom: bottomInset + 8,
+          flex: 1,
+        }}
         style={{ backgroundColor: colors.screen, flexGrow: 1, minHeight: height }}
       >
         <View style={{ flex: 1 }}>
           <PrimaryInput
             autofocus={_id ? false : true}
-            onPress={() => {}}
             ref={inputRef}
             backgroundColor={values.color}
             initialValue={title}

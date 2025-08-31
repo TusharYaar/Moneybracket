@@ -1,4 +1,5 @@
 export const ICONS = {
+  // Octicons
   default: {
     label: "Default",
     undefined: "question",
@@ -21,7 +22,7 @@ export const ICONS = {
     language: "comment-discussion",
     date: "calendar",
     lock: "lock",
-    "biometric": "pulse",
+    biometric: "pulse",
     export: "download",
     backup: "duplicate",
     delete: "trash",
@@ -36,7 +37,9 @@ export const ICONS = {
     arrowRight: "chevron-right",
     privacyPolicy: "file",
     termsOfService: "file",
-    "edit": "pencil",
+    edit: "pencil",
+    themeLight: "sun",
+    themeDark: "moon",
     // autoBackup
 
     travel: "rocket",
@@ -166,7 +169,7 @@ export const ICONS = {
     language: "translate",
     date: "calendar-today",
     lock: "lock",
-    "biometric": "fingerprint",
+    biometric: "fingerprint",
     export: "download",
     backup: "backup",
     delete: "delete",
@@ -186,9 +189,10 @@ export const ICONS = {
     privacyPolicy: "privacy-tip",
     termsOfService: "article",
     edit: "mode-edit",
+    themeLight: "light-mode",
+    themeDark: "dark-mode",
 
     // autoBackup
-    
 
     icon_0: "123",
     icon_1: "360",

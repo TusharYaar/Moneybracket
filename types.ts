@@ -1,5 +1,4 @@
-
-import { Platform, TextStyle } from "react-native";
+import { Platform, Text, TextStyle } from "react-native";
 export type Transaction = {
   _id: string;
   note: string;
@@ -14,14 +13,13 @@ export type Transaction = {
   image?: string;
   conversionRate: number;
   conversionCurrency: string;
-
 };
 export interface TransactionWithCategory extends Omit<Transaction, "category"> {
   category: Category;
 }
 
 export type Category = {
-  _id:string;
+  _id: string;
   title: string;
   type: string;
   isFavorite: boolean;
@@ -33,7 +31,7 @@ export type Category = {
 };
 
 export type Group = {
-  _id:string;
+  _id: string;
   title: string;
   isFavorite: boolean;
   createdAt: Date;
@@ -73,7 +71,7 @@ export interface FontObject {
     name: string;
     link: string;
   }[];
-  isVisible?:boolean; 
+  isVisible?: boolean;
 }
 
 export interface GroupedTransactions {
@@ -92,26 +90,24 @@ export type Currency = {
   name_plural: string;
 };
 
-
 export interface RateType extends Currency {
   rate: number;
   // isFavorite?: boolean;
-};
-
+}
 
 export type ExchangeRatesServerResponse = {
   success: boolean;
   base: string;
   date: string;
-  rates: Record<string,number>;
+  rates: Record<string, number>;
 };
 
 export type BackupFile = {
   createdOn: Date;
   app: "com.tusharyaar.moneybracket";
   platform: typeof Platform.OS;
-  appVersion: string | null,
-  appBuildVersion: string | null,
+  appVersion: string | null;
+  appBuildVersion: string | null;
   version: typeof Platform.Version;
   includeImages: boolean;
   settings: {
@@ -119,7 +115,10 @@ export type BackupFile = {
   };
   category: Pick<Category, "title" | "_id" | "color" | "icon" | "description" | "type" | "isFavorite">[];
   group: Pick<Group, "title" | "_id" | "color" | "icon" | "description" | "isFavorite">[];
-  transaction: (Pick<Transaction, "amount"|"_id" | "category" | "currency" | "group" | "note" | "conversionCurrency"| "conversionRate"> & {date: string})[];
+  transaction: (Pick<
+    Transaction,
+    "amount" | "_id" | "category" | "currency" | "group" | "note" | "conversionCurrency" | "conversionRate"
+  > & { date: string })[];
 };
 
 export type Theme_Color = {
@@ -132,7 +131,7 @@ export type Theme_Color = {
 
   sectionBackground: string;
   rippleColor: string;
-  
+
   tabbarBackground: string;
   tabbarIcon: string;
   tabbarIconActive: string;
@@ -156,6 +155,7 @@ export type Theme_TextStyle = {
   title: TextStyle;
   caption: TextStyle;
   label: TextStyle;
+  display: TextStyle;
 };
 
 export type HeaderRightButton = {
@@ -163,8 +163,8 @@ export type HeaderRightButton = {
   icon: string;
   onPress?: () => void;
   disabled?: boolean;
-  testId?: string; 
-}
+  testId?: string;
+};
 
 export type TransactionDate = {
   date: Date;

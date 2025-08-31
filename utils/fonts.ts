@@ -1,5 +1,5 @@
 import { Theme_TextStyle } from "types";
-const mediumVariants = ["amountInput", "label", "bodyBold"];
+const mediumVariants = ["amountInput", "label", "bodyBold", "display"];
 const regularVariants = ["header", "title", "amount", "caption", "body"];
 
 const defaults = {
@@ -33,6 +33,10 @@ const defaults = {
   },
   amount: {
     fontSize: 18,
+    letterSpacing: 0.25,
+  },
+  display: {
+    fontSize: 38,
     letterSpacing: 0.25,
   },
 };

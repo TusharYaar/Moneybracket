@@ -9,26 +9,23 @@ import { HeaderRightButton } from "types";
 import { useHeader } from "providers/HeaderProvider";
 import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated";
 
-
 interface HeaderProps extends NativeStackHeaderProps {
   options: NativeStackHeaderProps["options"] & {
     headerRightBtn?: HeaderRightButton[];
   };
 }
 
-const Header = ({options, back, route}:HeaderProps) => {
+const Header = ({ options, back, route }: HeaderProps) => {
   const {
     colors,
-    textStyle: { header },
+    textStyle: { title },
   } = useTheme();
   const { top } = useSafeAreaInsets();
   const { isHeaderVisible } = useHeader();
   const fontSize = 20;
 
   const animatedStyle = useAnimatedStyle(() => ({
-    top: withTiming(isHeaderVisible ? top : - (top + 56) , { duration: 100 }),
-
-
+    top: withTiming(isHeaderVisible ? top : -(top + 56), { duration: 100 }),
   }));
 
   return (
@@ -40,10 +37,10 @@ const Header = ({options, back, route}:HeaderProps) => {
           </View>
         </Pressable>
       ) : null}
-      <View
-        style={[styles.titleContianer, { backgroundColor: colors.headerBackground }]}
-      >
-        <Text style={[header, { fontSize: fontSize > 0 ? fontSize : 10 }]} testID="header-title">{options.title ? options.title : route.name }</Text>
+      <View style={[styles.titleContianer, { backgroundColor: colors.headerBackground }]}>
+        <Text style={[title, { color: colors.headerText }]} testID="header-title">
+          {options.title ? options.title : route.name}
+        </Text>
       </View>
       {options.headerRightBtn && options.headerRightBtn?.length > 0 && (
         <View style={{ flexDirection: "row", columnGap: 8 }}>
@@ -84,7 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 56,
     flexGrow: 1,
-    justifyContent:"center"
+    justifyContent: "center",
   },
   headerActionBtn: {
     padding: 16,

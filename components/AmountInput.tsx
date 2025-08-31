@@ -1,11 +1,10 @@
 import { GestureResponderEvent, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import type { KeyboardTypeOptions, ViewStyle } from "react-native";
-import React, { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated";
 import { useTheme } from "providers/ThemeProvider";
 
 type Props = {
-  onPress: (event: GestureResponderEvent) => void;
   placeholder?: string;
   backgroundColor: string;
   initialValue?: string;
@@ -29,9 +28,12 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
   { prefix = "", initialValue = "", backgroundColor, autofocus = true, width, showActionButton = false, ...props },
   ref
 ) {
-  const { textStyle } = useTheme();
+  const { textStyle, colors } = useTheme();
   const [amount, setAmount] = useState<string>(initialValue);
   const animatedBGColor = useSharedValue(backgroundColor ? backgroundColor : "orange");
+
+  const amtInputRef = useRef<TextInput>(null);
+  useImperativeHandle(ref, () => amtInputRef.current!, [amtInputRef]);
 
   useEffect(() => {
     animatedBGColor.value = withTiming(backgroundColor);
@@ -64,16 +66,12 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
 
   return (
     <Animated.View style={[styles.container, props.containerStyle, { backgroundColor: animatedBGColor }]}>
-      <Pressable onPress={props.onPress} style={[styles.pressable]}>
-        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%"}}>
-          { prefix && (
-          <Text style={[styles.textbox, textStyle.amount, { fontSize}]}>
-              {prefix}
-            </Text>
-          )}
+      <Pressable onPress={() => amtInputRef.current?.focus()} style={[styles.pressable]}>
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", width: "100%" }}>
+          {prefix && <Text style={[styles.textbox, textStyle.amount, { fontSize }]}>{prefix}</Text>}
           <TextInput
             autoFocus={autofocus}
-            ref={ref}
+            ref={amtInputRef}
             placeholder={props.placeholder}
             onChangeText={handleChangeText}
             value={amount}
@@ -84,7 +82,7 @@ const PrimaryInput = forwardRef<TextInput, Props>(function AmountInput(
         {props.helperText && <Text style={textStyle.body}>{props.helperText}</Text>}
 
         {showActionButton && (
-          <View style={styles.actionBtnContainer}>
+          <View style={[styles.actionBtnContainer, { backgroundColor: colors.sectionBackground }]}>
             <Pressable onPress={props.onPressActionButton} style={[styles.actionBtn]}>
               <Text style={textStyle.label}>{props.actionButtonText}</Text>
             </Pressable>
@@ -113,7 +111,6 @@ const styles = StyleSheet.create({
     padding: 4,
     margin: 16,
     paddingHorizontal: 8,
-    backgroundColor: "white",
     borderRadius: 4,
   },
   actionBtn: {

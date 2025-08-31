@@ -1,203 +1,223 @@
 {
     "app": {
-            "tabs": {
-                "category": {
-                    "title": "Categoría",
-                    "noCategory": "Actualmente no tienes ninguna categoría."
-                },
-                "group": {
-                    "title": "Grupo",
-                    "noGroup": "Actualmente no tienes ningún grupo."
-                },
-                "recurring": {
-                    "title": "Recurrente"
-                },
-                "settings": {
-                    "title": "Configuraciones",
-                    "appearance": "Apariencia",
-                    "preference": "Preferencias",
-                    "security": "Seguridad",
-                    "dataManagement": "Gestión de datos",
-                    "about": "Acerca de",
-                    "font": "Fuente",
-                    "theme": "Tema",
-                    "icon": "Ícono",
-                    "currency": "Moneda",
-                    "language": "Idioma",
-                    "dateFormat": "Formato de fecha",
-                    "deleteAllData": "Eliminar todos los datos",
-                    "export": "Exportar",
-                    "help": "Ayuda",
-                    "appVersion": "Versión de la app",
-                    "buildVersion": "Versión de la compilación",
-                    "backup": "Copia de seguridad y restauración",
-                    "lock": "Habilitar bloqueo de la app",
-                    "biometricLock": "Usar solo biometría",
-                    "deleteTitle": "¿Eliminar todos los datos?",
-                    "deleteText": "¿Estás seguro de que quieres eliminar todos los datos? Esto incluye todos los datos de transacciones y categorías.",
-                    "cancel": "Cancelar",
-                    "confirm": "Eliminar",
-                    "enableNotification": "Habilitar notificaciones",
-                    "reminderNotification": "Notificaciones de recordatorio"
-                },
-                "transaction": {
-                    "title": "Transacciones",
-                    "noTransaction": "No se encontraron transacciones. Cambia el filtro o agrega una nueva transacción."
-                }
+        "tabs": {
+            "category": {
+                "title": "Categoría",
+                "noCategory": "Actualmente no tienes ninguna categoría."
             },
-            "about": {
-                "title": "Acerca de",
-                "about": "Acerca de la app",
-                "description": "Nuestra app es una herramienta poderosa y simple para ayudarte a gestionar tus finanzas personales. Entendemos lo importante que es estar en control de tu dinero, y por eso hemos creado esta app.",
-                "openSource": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
-                "adFree": "Nuestra app también es ad-free, lo que significa que no te bombardearán con anuncios molestos o publicidad mientras la usas. Esto hace para una experiencia limpia y sin complicaciones, y también asegura que tu privacidad esté protegida.",
-                "paidOptions": "Las únicas opciones pagas que ofrecemos son opciones de personalización como cambios de fuente y tema. Esto es para ayudar a soportar nuestro desarrollo y mantenimiento de la app.",
-                "support": "Si tienes alguna pregunta o comentario, por favor contáctanos a través de nuestro correo electrónico: support@app.com",
-                "privacyPolicy": "Política de privacidad",
-                "termsOfService": "Términos de servicio"
+            "group": {
+                "title": "Grupo",
+                "noGroup": "Actualmente no tienes ningún grupo."
             },
-            "addCategory": {
-                "addTitle": "Agregar categoría",
-                "updateTitle": "Actualizar categoría",
-                "swipeButtonAdd": "Desliza para agregar categoría",
-                "swipeButtonUpdate": "Desliza para actualizar categoría",
+            "recurring": {
+                "title": "Recurrente"
+            },
+            "settings": {
+                "title": "Configuraciones",
+                "appearance": "Apariencia",
+                "preference": "Preferencias",
+                "security": "Seguridad",
+                "dataManagement": "Gestión de datos",
+                "about": "Acerca de",
+                "font": "Fuente",
+                "theme": "Tema",
                 "icon": "Ícono",
-                "type": "Tipo",
-                "color": "Color",
-                "current": "Actual",
-                "suggested": "Sugerido",
-                "deleteTitle": "¿Estás seguro?",
-                "deleteText": "Esto eliminará la categoría y todas sus transacciones",
-                "cancel": "Cancelar",
-                "confirm": "Eliminar",
-                "description": "Descripción"
-            },
-            "addTransaction": {
-                "addTitle": "Agregar transacción",
-                "updateTitle": "Actualizar transacción",
-                "amount": "Cantidad",
-                "date": "Fecha",
-                "category": "Categoría",
-                "note": "Nota",
-                "optional": "Opcional",
-                "swipeButtonAdd": "Desliza para agregar transacción",
-                "swipeButtonUpdate": "Desliza para actualizar transacción",
-                "deleteTitle": "¿Estás seguro?",
-                "deleteText": "Esto eliminará la transacción",
-                "cancel": "Cancelar",
-                "confirm": "Eliminar",
-                "group": "Grupo",
-                "noGroup": "Sin grupo",
-                "noCategory": "Sin categoría",
-                "noCategoryList": "No hay ninguna categoría. Por favor, crea una categoría primero."
-            },
-            "addGroup": {
-                "addTitle": "Agregar grupo",
-                "updateTitle": "Actualizar grupo",
-                "swipeButtonAdd": "Desliza para agregar grupo",
-                "swipeButtonUpdate": "Desliza para actualizar grupo",
-                "icon": "Ícono",
-                "color": "Color",
-                "current": "Actual",
-                "suggested": "Sugerido",
-                "deleteTitle": "¿Estás seguro?",
-                "deleteText": "Esto eliminará el grupo y todas sus transacciones se desvincularán",
-                "cancel": "Cancelar",
-                "confirm": "Eliminar",
-                "description": "Descripción"
-            },
-            "backup": {
-                "backup": "Copia de seguridad",
-                "restore": "Restaurar",
-                "loading": "Cargando",
-                "restoring_backup": "Restaurando elementos desde el archivo seleccionado",
-                "backup_text": "Puedes hacer una copia de seguridad de tus datos en un archivo y restaurarlo más tarde. La copia de seguridad solo respalda tus categorías y transacciones. Las imágenes no están incluidas",
-                "restore_text": "Puedes restaurar categorías y transacciones desde un archivo de copia de seguridad.",
-                "text_1": "Puedes crear una copia de seguridad para proteger tus datos, o transferirlos desde/a otro dispositivo.",
-                "options": "Opciones",
-                "restoreFromFile": "Restaurar desde archivo",
-                "deleteOldBackup": "Eliminar archivos antiguos automáticamente",
-                "openBackupDirectory": "Abrir directorio de copias de seguridad",
-                "backupList": "Copias de seguridad anteriores",
-                "delete": "Eliminar",
-                "success": "Éxito",
-                "restoreSuccess": "Archivo restaurado correctamente",
-                "backupSuccess": "Copia de seguridad creada correctamente",
-                "done": "Hecho",
-                "noBackup": "No se encontraron copias de seguridad"
-            },
-            "export": {
+                "currency": "Moneda",
+                "language": "Idioma",
+                "dateFormat": "Formato de fecha",
+                "deleteAllData": "Eliminar todos los datos",
                 "export": "Exportar",
-                "exportAs": "Exportar como",
-                "pdf": "PDF",
-                "json": "JSON",
-                "excel": "Excel",
-                "csv": "CSV",
-                "recentExports": "Exportaciones recientes",
-                "noExports": "No tienes exportaciones",
-                "title": "Exportar"
-            },
-            "help": {
-                "title": "Ayuda",
                 "help": "Ayuda",
-                "description": "Ayuda",
-                "descriptionText": "Ayuda"
+                "appVersion": "Versión de la app",
+                "buildVersion": "Versión de la compilación",
+                "backup": "Copia de seguridad y restauración",
+                "lock": "Habilitar bloqueo de la app",
+                "biometricLock": "Usar solo biometría",
+                "deleteTitle": "¿Eliminar todos los datos?",
+                "deleteText": "¿Estás seguro de que quieres eliminar todos los datos? Esto incluye todos los datos de transacciones y categorías.",
+                "cancel": "Cancelar",
+                "confirm": "Eliminar",
+                "enableNotification": "Habilitar notificaciones",
+                "reminderNotification": "Notificaciones de recordatorio"
             },
-            "privacyPolicy": {
-                "title": "Política de privacidad",
-                "lastUpdated": "Última actualización: 05/07/2025",
-                "informationWeCollect": "Información que recopilamos",
-                "informationWeCollectText": "Recopilamos información sobre ti para mejorar tu experiencia y proporcionar un mejor servicio. No recopilamos información sensible como contraseñas o datos financieros."
-            },
-            "termsOfService": {
-                "title": "Términos de servicio",
-                "lastUpdated": "Última actualización: 05/07/2025",
-                "acceptance": "Aceptación",
-                "acceptanceText": "Al usar nuestra app, aceptas nuestros términos de servicio.",
-                "description": "Descripción",
-                "descriptionText": "Nuestra app es una herramienta poderosa y simple para ayudarte a gestionar tus finanzas personales. Entendemos lo importante que es estar en control de tu dinero, y por eso hemos creado esta app.",
-                "userResponsibilities": "Responsabilidades del usuario",
-                "userResponsibilitiesText": "Como usuario, eres responsable de mantener la privacidad de tu cuenta y no compartir tu contraseña con nadie. También eres responsable de mantener tu dispositivo seguro y no permitir que nadie acceda a tu cuenta.",
-                "dataOwnership": "Propiedad de los datos",
-                "dataOwnershipText": "Tus datos son propiedad de ti. No los compartimos con nadie.",
-                "appUsage": "Uso de la app",
-                "appUsageText": "Puedes usar nuestra app para gestionar tus finanzas personales. También puedes usarla para crear copias de seguridad de tus datos y restaurarlos más tarde.",
-                "intellectualProperty": "Propiedad intelectual",
-                "intellectualPropertyText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
-                "disclaimer": "Aviso legal",
-                "disclaimerText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
-                "limitationOfLiability": "Limitación de responsabilidad",
-                "limitationOfLiabilityText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
-                "termination": "Terminación",
-                "terminationText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
-                "changesToTerms": "Cambios a los términos",
-                "changesToTermsText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
-                "governingLaw": "Ley aplicable",
-                "governingLawText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
-                "contactUs": "Contacto",
-                "contactUsText": "Puedes contactarnos a través de nuestro correo electrónico: support@app.com",
-                "support": "Soporte",
-                "supportText": "Si tienes alguna pregunta o comentario, por favor contáctanos a través de nuestro correo electrónico: support@app.com"
-            },
-            "onboarding": {
-                "first": {
-                    "start": "Comencemos",
-                    "welcome": "Bienvenido",
-                    "chooseLang": "Elige un idioma"
-                },
-                "second": {
-                    "back": "Atrás",
-                    "next": "Siguiente",
-                    "underDevelopment": "En desarrollo",
-                    "text": "La aplicación está en desarrollo. Espera algunos errores y fallos visuales. Mucha funcionalidad aún se está agregando y mejorando."
-                },
-                "third": {
-                    "text": "Gracias por probar nuestra aplicación. Al continuar nos ayudas a desarrollarla.",
-                    "back": "Atrás",
-                    "letStart": "Empecemos"
-                }
+            "transaction": {
+                "title": "Transacciones",
+                "noTransaction": "No se encontraron transacciones. Cambia el filtro o agrega una nueva transacción."
             }
         },
+        "about": {
+            "title": "Acerca de",
+            "about": "Acerca de la app",
+            "description": "Nuestra app es una herramienta poderosa y simple para ayudarte a gestionar tus finanzas personales. Entendemos lo importante que es estar en control de tu dinero, y por eso hemos creado esta app.",
+            "openSource": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+            "adFree": "Nuestra app también es ad-free, lo que significa que no te bombardearán con anuncios molestos o publicidad mientras la usas. Esto hace para una experiencia limpia y sin complicaciones, y también asegura que tu privacidad esté protegida.",
+            "paidOptions": "Las únicas opciones pagas que ofrecemos son opciones de personalización como cambios de fuente y tema. Esto es para ayudar a soportar nuestro desarrollo y mantenimiento de la app.",
+            "support": "Si tienes alguna pregunta o comentario, por favor contáctanos a través de nuestro correo electrónico: support@app.com",
+            "privacyPolicy": "Política de privacidad",
+            "termsOfService": "Términos de servicio"
+        },
+        "addCategory": {
+            "addTitle": "Agregar categoría",
+            "updateTitle": "Actualizar categoría",
+            "swipeButtonAdd": "Desliza para agregar categoría",
+            "swipeButtonUpdate": "Desliza para actualizar categoría",
+            "icon": "Ícono",
+            "type": "Tipo",
+            "color": "Color",
+            "current": "Actual",
+            "suggested": "Sugerido",
+            "deleteTitle": "¿Estás seguro?",
+            "deleteText": "Esto eliminará la categoría y todas sus transacciones",
+            "cancel": "Cancelar",
+            "confirm": "Eliminar",
+            "description": "Descripción"
+        },
+        "addTransaction": {
+            "addTitle": "Agregar transacción",
+            "updateTitle": "Actualizar transacción",
+            "amount": "Cantidad",
+            "date": "Fecha",
+            "category": "Categoría",
+            "note": "Nota",
+            "optional": "Opcional",
+            "swipeButtonAdd": "Desliza para agregar transacción",
+            "swipeButtonUpdate": "Desliza para actualizar transacción",
+            "deleteTitle": "¿Estás seguro?",
+            "deleteText": "Esto eliminará la transacción",
+            "cancel": "Cancelar",
+            "confirm": "Eliminar",
+            "group": "Grupo",
+            "noGroup": "Sin grupo",
+            "noCategory": "Sin categoría",
+            "noCategoryList": "No hay ninguna categoría. Por favor, crea una categoría primero."
+        },
+        "addGroup": {
+            "addTitle": "Agregar grupo",
+            "updateTitle": "Actualizar grupo",
+            "swipeButtonAdd": "Desliza para agregar grupo",
+            "swipeButtonUpdate": "Desliza para actualizar grupo",
+            "icon": "Ícono",
+            "color": "Color",
+            "current": "Actual",
+            "suggested": "Sugerido",
+            "deleteTitle": "¿Estás seguro?",
+            "deleteText": "Esto eliminará el grupo y todas sus transacciones se desvincularán",
+            "cancel": "Cancelar",
+            "confirm": "Eliminar",
+            "description": "Descripción"
+        },
+        "backup": {
+            "backup": "Copia de seguridad",
+            "restore": "Restaurar",
+            "loading": "Cargando",
+            "restoring_backup": "Restaurando elementos desde el archivo seleccionado",
+            "backup_text": "Puedes hacer una copia de seguridad de tus datos en un archivo y restaurarlo más tarde. La copia de seguridad solo respalda tus categorías y transacciones. Las imágenes no están incluidas",
+            "restore_text": "Puedes restaurar categorías y transacciones desde un archivo de copia de seguridad.",
+            "text_1": "Puedes crear una copia de seguridad para proteger tus datos, o transferirlos desde/a otro dispositivo.",
+            "options": "Opciones",
+            "restoreFromFile": "Restaurar desde archivo",
+            "deleteOldBackup": "Eliminar archivos antiguos automáticamente",
+            "openBackupDirectory": "Abrir directorio de copias de seguridad",
+            "backupList": "Copias de seguridad anteriores",
+            "delete": "Eliminar",
+            "success": "Éxito",
+            "restoreSuccess": "Archivo restaurado correctamente",
+            "backupSuccess": "Copia de seguridad creada correctamente",
+            "done": "Hecho",
+            "noBackup": "No se encontraron copias de seguridad"
+        },
+        "export": {
+            "export": "Exportar",
+            "exportAs": "Exportar como",
+            "pdf": "PDF",
+            "json": "JSON",
+            "excel": "Excel",
+            "csv": "CSV",
+            "recentExports": "Exportaciones recientes",
+            "noExports": "No tienes exportaciones",
+            "title": "Exportar"
+        },
+        "help": {
+            "title": "Ayuda",
+            "help": "Ayuda",
+            "description": "Ayuda",
+            "descriptionText": "Ayuda"
+        },
+        "privacyPolicy": {
+            "title": "Política de privacidad",
+            "lastUpdated": "Última actualización: 05/07/2025",
+            "informationWeCollect": "Información que recopilamos",
+            "informationWeCollectText": "Recopilamos información sobre ti para mejorar tu experiencia y proporcionar un mejor servicio. No recopilamos información sensible como contraseñas o datos financieros."
+        },
+        "termsOfService": {
+            "title": "Términos de servicio",
+            "lastUpdated": "Última actualización: 05/07/2025",
+            "acceptance": "Aceptación",
+            "acceptanceText": "Al usar nuestra app, aceptas nuestros términos de servicio.",
+            "description": "Descripción",
+            "descriptionText": "Nuestra app es una herramienta poderosa y simple para ayudarte a gestionar tus finanzas personales. Entendemos lo importante que es estar en control de tu dinero, y por eso hemos creado esta app.",
+            "userResponsibilities": "Responsabilidades del usuario",
+            "userResponsibilitiesText": "Como usuario, eres responsable de mantener la privacidad de tu cuenta y no compartir tu contraseña con nadie. También eres responsable de mantener tu dispositivo seguro y no permitir que nadie acceda a tu cuenta.",
+            "dataOwnership": "Propiedad de los datos",
+            "dataOwnershipText": "Tus datos son propiedad de ti. No los compartimos con nadie.",
+            "appUsage": "Uso de la app",
+            "appUsageText": "Puedes usar nuestra app para gestionar tus finanzas personales. También puedes usarla para crear copias de seguridad de tus datos y restaurarlos más tarde.",
+            "intellectualProperty": "Propiedad intelectual",
+            "intellectualPropertyText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+            "disclaimer": "Aviso legal",
+            "disclaimerText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+            "limitationOfLiability": "Limitación de responsabilidad",
+            "limitationOfLiabilityText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+            "termination": "Terminación",
+            "terminationText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+            "changesToTerms": "Cambios a los términos",
+            "changesToTermsText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+            "governingLaw": "Ley aplicable",
+            "governingLawText": "Nuestra app es de código abierto, lo que significa que es gratuita para todos y cualquiera puede contribuir a ella. Puedes acceder a todo el código y hacer cualquier cambio que quieras, y puedes usarla para uso personal sin ninguna restricción.",
+            "contactUs": "Contacto",
+            "contactUsText": "Puedes contactarnos a través de nuestro correo electrónico: support@app.com",
+            "support": "Soporte",
+            "supportText": "Si tienes alguna pregunta o comentario, por favor contáctanos a través de nuestro correo electrónico: support@app.com"
+        },
+        "onboarding": {
+            "first": {
+                "next": "Siguiente",
+                "welcome": "Bienvenido",
+                "chooseLang": "Elige un idioma",
+                "text1": "Tu aplicación todo en uno para el seguimiento de gastos. Comprende tus hábitos y alcanza tus metas financieras. ¡Prepárate para tomar el control de tu dinero y tus datos como nunca antes!"
+            },
+            "second": {
+                "now": "Ahora",
+                "header": "elige una moneda",
+                "back": "Atrás",
+                "next": "Siguiente"
+            },
+            "third": {
+                "simple": "¡Es simple!",
+                "header1": "Presiona agregar",
+                "header2": "Ingresa el monto",
+                "subtext2": "¡también puedes elegir una moneda!",
+                "header3": "Elige una categoría",
+                "subtext3": "es importante",
+                "header4": "Agrega un grupo",
+                "subtext4": "si quieres",
+                "header5": "Desliza",
+                "simple2": "Es simple, ¿verdad?",
+                "back": "Atrás",
+                "yes": "Sí",
+                "chooseCategory": "Elegir categoría",
+                "chooseGroup": "Elegir grupo",
+                "swipeButton": "Deslizar"
+            },
+            "forth": {
+                "thankyou": "Gracias",
+                "text1": "¡Gracias por probar nuestra aplicación! Realmente apreciamos que te tomes el tiempo de explorar lo que hemos creado.",
+                "text2": "Para ayudarnos a mejorar aún más la aplicación para ti y para todos nuestros usuarios, se enviarán algunos datos de uso anónimos. Estos datos nos ayudan a comprender cómo se utiliza la aplicación, identificar áreas de mejora y solucionar cualquier problema que puedas encontrar. Nos comprometemos a proteger tu privacidad y NUNCA se enviarán datos personales o de transacciones.",
+                "back": "Atrás",
+                "letStart": "Empecemos"
+            }
+        }
+    },
     "components": {
         "categoryItem": {
             "income": "Ingreso",

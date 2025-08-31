@@ -193,18 +193,38 @@
         },
         "onboarding": {
             "first": {
-                "start": "Let's get started",
-                "welcome": "Welcome",
-                "chooseLang": "Choose a Language"
-            },
-            "second" : {
-                "back":"Back",
                 "next": "Next",
-                "underDevelopment": "Under Development",
-                "text": "The app is under development. Expect some bugs and visual glitches. Alot of the functionality is still being added and improved."
+                "welcome": "Welcome",
+                "chooseLang": "Choose a Language",
+                "text1": "Your all in one exprense tracker app. Understand your habits, and achieve your financial goals. Get ready to take control of your money and data like never before!"
+            },
+            "second": {
+                "now": "Now",
+                "header": "choose a currency",
+                "back": "Back",
+                "next": "Next"
             },
             "third": {
-                "text": "Thanks for trying our app. By continuing you help us develop the app. ",
+                "simple": "It's Simple!",
+                "header1": "Press add",
+                "header2": "Enter amount",
+                "subtext2": "you can choose a currency also!",
+                "header3": "Choose a category",
+                "subtext3": "it is important",
+                "header4": "Add a group",
+                "subtext4": "if you want",
+                "header5": "Swipe",
+                "simple2": "It's simple right?",
+                "back": "Back",
+                "yes": "Yes",
+                "chooseCategory": "Choose Category",
+                "chooseGroup": "Choose Group",
+                "swipeButton": "Swipe"
+            },
+            "forth": {
+                "thankyou": "Thank You",
+                "text1": "Thank you for trying our app! We truly appreciate you taking the time to explore what we've built.",
+                "text2": "To help us make the app even better for you and all our users, some anonymous usage data will be sent. This data helps us understand how the app is being used, identify areas for improvement, and fix any issues you might encounter. We are committed to protecting your privacy and NO personal or transaction data will ever be sent",
                 "back": "Back",
                 "letStart": "Lets Start"
             }

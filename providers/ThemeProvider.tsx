@@ -8,34 +8,6 @@ import { Platform } from "react-native";
 import { SystemBars } from "react-native-edge-to-edge";
 import { captureException } from "@sentry/react-native";
 
-// const textStyle: Theme_TextStyle = {
-//   body: {
-//     fontSize: 16,
-//     fontFamily: "Lexend-Regular",
-//   },
-//   amountInput: {
-//     fontSize: 32,
-//     fontFamily: "Lexend-Regular",
-//   },
-//   header: {
-//     fontSize: 32,
-//     fontFamily: "Lexend-Regular",
-//   },
-//   title: {
-//     fontSize: 18,
-//     fontFamily: "Lexend-Regular",
-//   },
-//   caption: {
-//     fontSize: 32,
-//     fontFamily: "Lexend-Regular",
-//   },
-//   amount: {
-//     fontSize: 24,
-//     fontFamily: "Lexend-Regular",
-//   },
-// };
-
-
 type Props = {
   colors: Theme_Color;
   textStyle: Theme_TextStyle;
@@ -83,8 +55,9 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       bodyBold: { ..._fonts.bodyBold, color: colors.text },
       title: { ..._fonts.title, color: colors.text },
       caption: { ..._fonts.caption, color: colors.text },
-      header: { ..._fonts.header, color: colors.headerText },
+      header: { ..._fonts.header, color: colors.text },
       label: { ..._fonts.label, color: colors.text },
+      display: {... _fonts.display, colors: colors.text }
     };
 
     return fonts;

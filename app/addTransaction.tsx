@@ -35,12 +35,12 @@ type SearchParams = {
   category: string;
 };
 
-const _NULL_GROUP:Group = {
+const _NULL_GROUP: Group = {
   _id: "noGroup",
   isFavorite: true,
   createdAt: new Date(),
   updatedAt: new Date(),
-  color: "#7f7f7f",
+  color: "#a5a5a5",
   icon: "unknown",
   description: "No group",
   title: "noGroup",
@@ -51,11 +51,10 @@ const _NULL_CATEGORY: Category = {
   createdAt: new Date(),
   updatedAt: new Date(),
   type: "expense",
-  color: "#7f7f7f",
+  color: "#a5a5a5",
   icon: "unknown",
   isFavorite: false,
-  title: "noCategory"
-
+  title: "noCategory",
 };
 
 const AddTransaction = () => {
@@ -221,8 +220,11 @@ const AddTransaction = () => {
         currency: currency.code,
         conversionCurrency: currency.code === defaultCurrency.code ? "" : defaultCurrency.code,
       });
-      posthog.capture("transaction_add", {currency: currency.code, category: selectedCategory.title, group: selectedGroup.title });
-
+      posthog.capture("transaction_add", {
+        currency: currency.code,
+        category: selectedCategory.title,
+        group: selectedGroup.title,
+      });
     }
     if (router.canGoBack()) router.back();
     else router.replace("(tabs)/transaction");
@@ -237,16 +239,11 @@ const AddTransaction = () => {
     router.back();
   }, [_id]);
 
-  const handleTextBoxPress = useCallback(() => {
-    amtInputRef.current?.focus();
-  }, []);
-
   const updateCategory = useCallback((category: Category) => {
     sheetRef.current?.close();
     animatedColor.value = withTiming(category.color);
     setValues((prev) => ({ ...prev, category: category._id }));
   }, []);
-
 
   const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
 
@@ -298,7 +295,6 @@ const AddTransaction = () => {
           <PrimaryInput
             type="amount"
             autofocus={_id ? false : true}
-            onPress={handleTextBoxPress}
             onChangeText={(text) => setValues((prev) => ({ ...prev, amount: text.length > 0 ? parseFloat(text) : 0 }))}
             backgroundColor={selectedCategory.color}
             ref={amtInputRef}
@@ -440,6 +436,7 @@ const AddTransaction = () => {
             data={rateData}
             renderItem={({ item }) => (
               <CurrencyItem
+                selected={item.code === currency.code}
                 item={item}
                 onPress={changeCurrency}
                 style={{ marginVertical: 8 }}

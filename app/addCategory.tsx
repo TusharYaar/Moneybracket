@@ -161,7 +161,6 @@ const AddCategoryScreen = () => {
         <View style={{ flex: 1 }}>
           <PrimaryInput
             autofocus={_id ? false : true}
-            onPress={() => {}}
             ref={inputRef}
             backgroundColor={values.color}
             initialValue={title}
