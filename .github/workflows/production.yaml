@@ -1,0 +1,57 @@
+name: Android Production App Build
+
+on:
+    push:
+        branches:
+        - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v5
+      
+      - name: Setup node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 18
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          packager: "npm"
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Android app
+        run: eas build --platform android --profile productionAPK --local  --non-interactive --output ${{ github.workspace }}/app-release.apk
+
+      - name: Build Android ABB
+        run: eas build --platform android --profile production --local  --non-interactive --output ${{ github.workspace }}/abb-release.abb
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-release
+          path: ${{ github.workspace }}/app-release.apk
+          overwrite: true
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: abb-release
+          path: ${{ github.workspace }}/abb-release.abb
+          overwrite: true
