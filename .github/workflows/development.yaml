@@ -1,4 +1,4 @@
-name: Android Production App Build
+name: Android Development App Build
 
 on: workflow_dispatch
 
