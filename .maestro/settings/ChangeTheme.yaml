@@ -1,0 +1,33 @@
+appId: com.tusharyaar.moneybracket
+name: Test Change Theme Setting
+---
+- launchApp
+- tapOn:
+    id: tab-settings
+- assertVisible: Settings
+
+# Scroll to appearance section
+- scrollUntilVisible:
+    element: "Appearance"
+    direction: DOWN
+
+# Tap on Theme setting
+- tapOn: "Theme"
+
+# Wait for bottom sheet to appear
+- assertVisible: "Light"
+- assertVisible: "Dark"
+
+# Select Dark theme
+- tapOn: "Dark"
+
+# Verify we're back on settings
+- assertVisible: Settings
+
+# Verify theme changed (optional visual check)
+- tapOn: "Theme"
+- assertVisible: "Dark"
+
+# Change back to Light
+- tapOn: "Light"
+- assertVisible: Settings

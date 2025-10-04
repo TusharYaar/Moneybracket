@@ -1,0 +1,21 @@
+appId: com.tusharyaar.moneybracket
+name: Test Navigate to Help Screen
+---
+- launchApp
+- tapOn:
+    id: tab-settings
+- assertVisible: Settings
+
+# Scroll to help section
+- scrollUntilVisible:
+    element: "Help"
+    direction: DOWN
+
+# Tap on Help
+- tapOn: "Help"
+- assertVisible: Help
+
+# Go back
+- tapOn:
+    id: page-back
+- assertVisible: Settings

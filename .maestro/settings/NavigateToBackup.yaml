@@ -1,0 +1,21 @@
+appId: com.tusharyaar.moneybracket
+name: Test Navigate to Backup Screen
+---
+- launchApp
+- tapOn:
+    id: tab-settings
+- assertVisible: Settings
+
+# Scroll to backup section
+- scrollUntilVisible:
+    element: "Backup"
+    direction: DOWN
+
+# Tap on Backup
+- tapOn: "Backup"
+- assertVisible: Backup
+
+# Go back
+- tapOn:
+    id: page-back
+- assertVisible: Settings

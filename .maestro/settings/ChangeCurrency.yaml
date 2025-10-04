@@ -1,0 +1,30 @@
+appId: com.tusharyaar.moneybracket
+name: Test Change Currency Setting
+---
+- launchApp
+- tapOn:
+    id: tab-settings
+- assertVisible: Settings
+
+# Scroll to preference section
+- scrollUntilVisible:
+    element: "Preference"
+    direction: DOWN
+
+# Tap on Currency setting
+- tapOn: "Currency"
+
+# Wait for currency list to appear
+- assertVisible: "US Dollar"
+
+# Scroll to find Euro
+- scrollUntilVisible:
+    element: "Euro"
+    direction: DOWN
+
+# Select Euro
+- tapOn: "Euro"
+
+# Verify we're back on settings
+- assertVisible: Settings
+- assertVisible: "Euro"

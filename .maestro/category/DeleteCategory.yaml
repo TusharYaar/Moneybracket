@@ -1,0 +1,31 @@
+appId: com.tusharyaar.moneybracket
+name: Test Delete Category
+---
+- launchApp
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+
+# Add a category to delete
+- tapOn:
+    id: add-category
+- assertVisible: Add Category
+- inputText: CategoryToDelete
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Category
+- assertVisible: CategoryToDelete
+
+# Tap on the category to open edit screen
+- tapOn: CategoryToDelete
+- assertVisible: Update Category
+
+# Tap delete button in header
+- tapOn:
+    id: page-back
+- assertVisible: Category
+
+# TODO: Add proper delete flow once delete button testID is available in update screen

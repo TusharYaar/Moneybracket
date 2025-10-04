@@ -1,0 +1,40 @@
+appId: com.tusharyaar.moneybracket
+name: Test Update Category
+---
+- launchApp
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+
+# Add a category first
+- tapOn:
+    id: add-category
+- assertVisible: Add Category
+- inputText: CategoryToUpdate
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Category
+
+# Tap on the created category to edit
+- tapOn: CategoryToUpdate
+- assertVisible: Update Category
+
+# Update the category name
+- clearKeychain
+- inputText: UpdatedCategory
+- hideKeyboard
+
+# Change category type to expense
+- tapOn:
+    id: group-btn-expense
+    
+# Swipe to save
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Category
+- assertVisible: UpdatedCategory

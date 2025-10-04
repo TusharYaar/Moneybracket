@@ -1,0 +1,58 @@
+appId: com.tusharyaar.moneybracket
+name: Test Add Transaction With Note and Group
+---
+- launchApp
+
+# Ensure we have a category
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+- tapOn:
+    id: add-category
+- inputText: ExpenseCategory
+- tapOn:
+    id: group-btn-expense
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+
+# Ensure we have a group
+- tapOn:
+    id: tab-group
+- assertVisible: Group
+- tapOn:
+    id: add-group
+- inputText: TestGroup
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+
+# Go to transactions and add transaction with details
+- tapOn:
+    id: tab-index
+- assertVisible: Transactions
+- tapOn:
+    id: add-transaction
+- assertVisible: Add Transaction
+
+# Enter amount
+- inputText: "1200"
+
+# Scroll down to see note field
+- scroll
+
+# Add note
+- tapOn: "Note"
+- inputText: "Test transaction note"
+- hideKeyboard
+
+# Save transaction
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Transactions

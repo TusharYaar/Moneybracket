@@ -1,0 +1,22 @@
+appId: com.tusharyaar.moneybracket
+name: Test Cancel Add Transaction
+---
+- launchApp
+- assertVisible: Transactions
+
+# Start adding transaction
+- tapOn:
+    id: add-transaction
+- assertVisible: Add Transaction
+
+# Enter some data
+- inputText: "999"
+- hideKeyboard
+
+# Cancel by going back
+- tapOn:
+    id: page-back
+- assertVisible: Transactions
+
+# Verify transaction was not added
+- assertNotVisible: "999"
