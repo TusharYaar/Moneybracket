@@ -3,7 +3,38 @@ flows:
 executionOrder:
   continueOnFailure: false # default is true
   flowsOrder:
+      # Setup - Clean slate
       - Test to Delete All Data
+      
+      # Navigation tests
+      - Test Tab Navigation
+      - Test Back Navigation
+      
+      # Category tests
+      - Test Empty Category List State
       - Test to add category
+      - Test Add Multiple Categories
+      - Test Add Category with Description
+      - Test Cancel Add Category
+      - Test Update Category
+      
+      # Group tests
+      - Test Add Group with Description
       - Test to add group
+      - Test Cancel Add Group
+      - Test Update Group
+      
+      # Transaction tests
+      - Test Empty Transaction List State
       - Test to add transaction
+      - Test Add Transaction With Note and Group
+      - Test Add Transactions with Different Categories
+      - Test Cancel Add Transaction
+      - Test Update Transaction
+      
+      # Settings tests
+      - Test Change Theme Setting
+      - Test Change Currency Setting
+      - Test Navigate to About Screen
+      - Test Navigate to Help Screen
+      - Test Navigate to Backup Screen
