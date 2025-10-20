@@ -287,9 +287,9 @@ const AddTransaction = () => {
             paddingTop: headerHeight + 8,
             flexGrow: 1,
             paddingBottom: bottomInset + 8,
+            backgroundColor: colors.screen 
           },
         ]}
-        style={{ backgroundColor: colors.screen }}
       >
         <View style={{ flexDirection: "column", flexGrow: 1 }}>
           <PrimaryInput

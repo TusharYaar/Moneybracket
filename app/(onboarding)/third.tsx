@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, Pressable, ScrollView, useWindowDimensions, TextInput } from "react-native";
+import { View, Text, StyleSheet, ScrollView, useWindowDimensions, TextInput } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Pressable } from "react-native-gesture-handler";
 
-import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { useTranslation } from "react-i18next";
@@ -108,19 +109,30 @@ const ThirdScreen = () => {
 
   useEffect(() => {
     setStep(1);
+    sheetRef.current?.close();
   }, [setStep]);
-  const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />, []);
+
+  const renderBackdrop  = (props: BottomSheetBackdropProps) => {
+      return (
+        <BottomSheetBackdrop 
+          {...props} 
+          opacity={0.5}
+          disappearsOnIndex={-1}
+          pressBehavior="close"
+        />
+      );
+    }
 
   return (
-    <View style={[styles.screen, { paddingBottom: bottom + 8, backgroundColor: colors.screen }]}>
-      <ScrollView contentContainerStyle={{ paddingTop: top + 8, paddingHorizontal: 8 }} style={{ flex: 1 }}>
+    <>
+      <ScrollView contentContainerStyle={{ paddingTop: top + 8, paddingHorizontal: 8, flexGrow: 1, }}>
         <Text style={[textStyle.display, { textAlign: "center", color: colors.text }]}>{t("simple")}</Text>
         {step > 0 && (
           <Animated.View style={styles.section} entering={FadeInUp}>
             <Text style={textStyle.header}>{t("header1")}</Text>
             <Pressable
               onPress={() => {
-                setStep((prev) => (prev === 1 ? 2 : prev));
+                setStep((prev) => (prev === 1 ? 2 : prev))
               }}
             >
               <View style={[styles.addBtn, { backgroundColor: colors.tabbarBackgroundSecondary }]}>
@@ -211,7 +223,7 @@ const ThirdScreen = () => {
           </Animated.View>
         )}
       </ScrollView>
-      <View style={[styles.container]}>
+      <View style={[styles.container, {paddingBottom: bottom + 8}]}>
         {step === 6 && <Text style={[textStyle.caption, { marginBottom: 8 }]}>{t("simple2")}</Text>}
         <View style={styles.navBtnContainer}>
           <Link
@@ -240,11 +252,12 @@ const ThirdScreen = () => {
       <BottomSheet
         style={{ backgroundColor: colors.screen }}
         ref={sheetRef}
-        snapPoints={["69%"]}
+        snapPoints={["40%","69%"]}
         enablePanDownToClose
         index={-1}
         backdropComponent={renderBackdrop}
         enableDynamicSizing={false}
+        animateOnMount={false}
       >
         {sheetView === "category" && (
           <BottomSheetFlatList
@@ -266,7 +279,7 @@ const ThirdScreen = () => {
           />
         )}
       </BottomSheet>
-    </View>
+    </>
   );
 };
 
@@ -280,6 +293,7 @@ const styles = StyleSheet.create({
   section: {
     marginVertical: 8,
     justifyContent: "flex-start",
+    zIndex: 10,
   },
   navBtnContainer: {
     flexDirection: "row",

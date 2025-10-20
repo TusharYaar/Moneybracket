@@ -74,11 +74,20 @@
         "expo-localization",
         {
           "supportedLocales": {
-            "ios": ["en", "hi", "es"],
-            "android": ["en", "hi", "es"]
+            "ios": [
+              "en",
+              "hi",
+              "es"
+            ],
+            "android": [
+              "en",
+              "hi",
+              "es"
+            ]
           }
         }
-      ]
+      ],
+      "expo-asset"
     ]
   }
 }
