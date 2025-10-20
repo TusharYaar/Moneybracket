@@ -1,0 +1,57 @@
+appId: com.tusharyaar.moneybracket
+name: Test Add Multiple Categories
+---
+- launchApp
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+
+# Add first category - Income
+- tapOn:
+    id: add-category
+- assertVisible: Add Category
+- inputText: Salary
+- tapOn:
+    id: group-btn-income
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Category
+- assertVisible: Salary
+
+# Add second category - Expense
+- tapOn:
+    id: add-category
+- assertVisible: Add Category
+- inputText: Groceries
+- tapOn:
+    id: group-btn-expense
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Category
+- assertVisible: Groceries
+
+# Add third category - Transfer
+- tapOn:
+    id: add-category
+- assertVisible: Add Category
+- inputText: BankTransfer
+- tapOn:
+    id: group-btn-transfer
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Category
+- assertVisible: BankTransfer
+
+# Verify all categories are visible
+- assertVisible: Salary
+- assertVisible: Groceries
+- assertVisible: BankTransfer

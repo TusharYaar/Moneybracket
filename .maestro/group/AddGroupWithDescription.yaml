@@ -1,0 +1,29 @@
+appId: com.tusharyaar.moneybracket
+name: Test Add Group with Description
+---
+- launchApp
+- tapOn:
+    id: tab-group
+- assertVisible: Group
+
+# Add group with description
+- tapOn:
+    id: add-group
+- assertVisible: Add Group
+- inputText: Personal
+
+# Scroll down to description field
+- scroll
+
+# Add description
+- tapOn: "Description"
+- inputText: "Personal expenses and income"
+- hideKeyboard
+
+# Swipe to save
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Group
+- assertVisible: Personal

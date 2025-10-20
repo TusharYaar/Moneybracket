@@ -1,0 +1,66 @@
+appId: com.tusharyaar.moneybracket
+name: Test Add Transactions with Different Categories
+---
+- launchApp
+
+# Setup categories first
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+- tapOn:
+    id: add-category
+- inputText: Income1
+- tapOn:
+    id: group-btn-income
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+
+- tapOn:
+    id: add-category
+- inputText: Expense1
+- tapOn:
+    id: group-btn-expense
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+
+# Go to transactions
+- tapOn:
+    id: tab-index
+- assertVisible: Transactions
+
+# Add income transaction
+- tapOn:
+    id: add-transaction
+- assertVisible: Add Transaction
+- inputText: "5000"
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Transactions
+
+# Add expense transaction
+- tapOn:
+    id: add-transaction
+- assertVisible: Add Transaction
+- inputText: "200"
+- hideKeyboard
+
+# Change category to expense
+- tapOn: "Income1"
+- assertVisible: "Expense1"
+- tapOn: "Expense1"
+
+# Save transaction
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Transactions

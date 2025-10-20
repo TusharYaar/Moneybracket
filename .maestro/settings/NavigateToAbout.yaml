@@ -1,0 +1,21 @@
+appId: com.tusharyaar.moneybracket
+name: Test Navigate to About Screen
+---
+- launchApp
+- tapOn:
+    id: tab-settings
+- assertVisible: Settings
+
+# Scroll to about section
+- scrollUntilVisible:
+    element: "About"
+    direction: DOWN
+
+# Tap on About
+- tapOn: "About"
+- assertVisible: About
+
+# Go back
+- tapOn:
+    id: page-back
+- assertVisible: Settings

@@ -1,0 +1,36 @@
+appId: com.tusharyaar.moneybracket
+name: Test Update Group
+---
+- launchApp
+- tapOn:
+    id: tab-group
+- assertVisible: Group
+
+# Add a group first
+- tapOn:
+    id: add-group
+- assertVisible: Add Group
+- inputText: GroupToUpdate
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Group
+
+# Tap on the created group to edit
+- tapOn: GroupToUpdate
+- assertVisible: Update Group
+
+# Update the group name
+- clearKeychain
+- inputText: UpdatedGroup
+- hideKeyboard
+    
+# Swipe to save
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Group
+- assertVisible: UpdatedGroup

@@ -1,0 +1,27 @@
+appId: com.tusharyaar.moneybracket
+name: Test Empty Category List State
+---
+- launchApp
+
+# First delete all data to ensure empty state
+- tapOn:
+    id: tab-settings
+- assertVisible: Settings
+- scrollUntilVisible:
+    element:
+      id: delete-all-data
+    direction: DOWN
+- tapOn:
+    id: delete-all-data
+- assertVisible:
+    id: delete-container-confirm-btn
+- tapOn:
+    id: delete-container-confirm-btn
+
+# Navigate to category tab
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+
+# Verify empty state message
+- assertVisible: "No categories"

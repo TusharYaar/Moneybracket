@@ -1,0 +1,51 @@
+appId: com.tusharyaar.moneybracket
+name: Test Update Transaction
+---
+- launchApp
+
+# First ensure we have a category
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+- tapOn:
+    id: add-category
+- inputText: TestCategory
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+
+# Go back to transactions tab
+- tapOn:
+    id: tab-index
+- assertVisible: Transactions
+
+# Add a transaction
+- tapOn:
+    id: add-transaction
+- assertVisible: Add Transaction
+- inputText: "500"
+- hideKeyboard
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Transactions
+
+# Tap on the transaction to edit it
+- tapOn: "500"
+- assertVisible: Update Transaction
+
+# Update amount
+- clearKeychain
+- inputText: "750"
+- hideKeyboard
+
+# Swipe to save
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Transactions
+- assertVisible: "750"

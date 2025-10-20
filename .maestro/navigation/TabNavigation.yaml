@@ -1,0 +1,40 @@
+appId: com.tusharyaar.moneybracket
+name: Test Tab Navigation
+---
+- launchApp
+- assertVisible:
+    id: add-transaction
+- assertVisible: Transactions
+
+# Navigate to Category tab
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+- assertVisible:
+    id: add-category
+
+# Navigate to Group tab
+- tapOn:
+    id: tab-group
+- assertVisible: Group
+- assertVisible:
+    id: add-group
+
+# Navigate to Recurring tab
+- tapOn:
+    id: tab-recurring
+- assertVisible: Recurring
+- assertVisible:
+    id: add-recurring
+
+# Navigate to Settings tab
+- tapOn:
+    id: tab-settings
+- assertVisible: Settings
+
+# Navigate back to Transactions tab
+- tapOn:
+    id: tab-index
+- assertVisible: Transactions
+- assertVisible:
+    id: add-transaction

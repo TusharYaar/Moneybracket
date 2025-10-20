@@ -1,0 +1,29 @@
+appId: com.tusharyaar.moneybracket
+name: Test Add Category with Description
+---
+- launchApp
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+
+# Add category with description
+- tapOn:
+    id: add-category
+- assertVisible: Add Category
+- inputText: Shopping
+
+# Scroll down to description field
+- scroll
+
+# Add description
+- tapOn: "Description"
+- inputText: "Monthly shopping expenses"
+- hideKeyboard
+
+# Swipe to save
+- swipe:
+    from: 
+      id: "swipe-button-pill"
+    direction: RIGHT 
+- assertVisible: Category
+- assertVisible: Shopping

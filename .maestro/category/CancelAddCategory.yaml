@@ -1,0 +1,24 @@
+appId: com.tusharyaar.moneybracket
+name: Test Cancel Add Category
+---
+- launchApp
+- tapOn:
+    id: tab-category
+- assertVisible: Category
+
+# Start adding category
+- tapOn:
+    id: add-category
+- assertVisible: Add Category
+
+# Enter some data
+- inputText: CancelledCategory
+- hideKeyboard
+
+# Cancel by going back
+- tapOn:
+    id: page-back
+- assertVisible: Category
+
+# Verify category was not added
+- assertNotVisible: CancelledCategory

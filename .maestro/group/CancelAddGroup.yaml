@@ -1,0 +1,24 @@
+appId: com.tusharyaar.moneybracket
+name: Test Cancel Add Group
+---
+- launchApp
+- tapOn:
+    id: tab-group
+- assertVisible: Group
+
+# Start adding group
+- tapOn:
+    id: add-group
+- assertVisible: Add Group
+
+# Enter some data
+- inputText: CancelledGroup
+- hideKeyboard
+
+# Cancel by going back
+- tapOn:
+    id: page-back
+- assertVisible: Group
+
+# Verify group was not added
+- assertNotVisible: CancelledGroup
