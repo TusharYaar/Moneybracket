@@ -4,9 +4,9 @@ import { ALL_FONTS, ALL_THEMES, SETTING_KEYS } from "../data";
 // import { downloadAsync, getInfoAsync, makeDirectoryAsync, readDirectoryAsync } from "expo-file-system";
 import { getFromStorageOrDefault } from "../utils/storage";
 import type { CustomTheme, FontObject, Theme_Color, Theme_TextStyle } from "../types";
-import { Platform } from "react-native";
-import { SystemBars } from "react-native-edge-to-edge";
+import { Platform } from "react-native"; 
 import { captureException } from "@sentry/react-native";
+import { StatusBar } from 'expo-status-bar';
 
 type Props = {
   colors: Theme_Color;
@@ -168,7 +168,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         textStyle,
       }}
     >
-      <SystemBars style={statusBarStyle} />
+      <StatusBar style={statusBarStyle} />
       {children}
     </ThemeContext.Provider>
   );

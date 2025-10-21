@@ -69,7 +69,6 @@
         }
       ],
       "expo-sqlite",
-      "react-native-edge-to-edge",
       [
         "expo-localization",
         {
