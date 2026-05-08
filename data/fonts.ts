@@ -164,5 +164,93 @@ export const ALL_FONTS: FontObject[] = [
       },
     ],
   },
+  {
+    id: "inter-jetbrains",
+    name: "Inter + JetBrains Mono",
+    by: "Rasmus Andersson, JetBrains",
+    font: makeFontConfig("Inter-Regular", "Inter-Medium", 1, 1, "JetBrainsMono-Regular"),
+    isPaid: true,
+    isVisible: true,
+    files: [
+      {
+        name: "Inter-Regular",
+        link: "https://github.com/rsms/inter/raw/master/fonts/ttf/Inter-Regular.ttf",
+      },
+      {
+        name: "Inter-Medium",
+        link: "https://github.com/rsms/inter/raw/master/fonts/ttf/Inter-Medium.ttf",
+      },
+      {
+        name: "JetBrainsMono-Regular",
+        link: "https://github.com/JetBrains/JetBrainsMono/raw/master/fonts/ttf/JetBrainsMono-Regular.ttf",
+      },
+    ],
+  },
+  {
+    id: "ibmplex",
+    name: "IBM Plex Sans + Mono",
+    by: "IBM",
+    font: makeFontConfig("IBMPlexSans-Regular", "IBMPlexSans-Medium", 1, 1, "IBMPlexMono-Regular"),
+    isPaid: true,
+    isVisible: true,
+    files: [
+      {
+        name: "IBMPlexSans-Regular",
+        link: "https://github.com/IBM/plex/raw/master/IBM-Plex-Sans/fonts/complete/ttf/IBMPlexSans-Regular.ttf",
+      },
+      {
+        name: "IBMPlexSans-Medium",
+        link: "https://github.com/IBM/plex/raw/master/IBM-Plex-Sans/fonts/complete/ttf/IBMPlexSans-Medium.ttf",
+      },
+      {
+        name: "IBMPlexMono-Regular",
+        link: "https://github.com/IBM/plex/raw/master/IBM-Plex-Mono/fonts/complete/ttf/IBMPlexMono-Regular.ttf",
+      },
+    ],
+  },
+  {
+    id: "spacegrotesk",
+    name: "Space Grotesk + Mono",
+    by: "Florian Karsten",
+    font: makeFontConfig("SpaceGrotesk-Regular", "SpaceGrotesk-Medium", 1, 1, "SpaceMono-Regular"),
+    isPaid: true,
+    isVisible: true,
+    files: [
+      {
+        name: "SpaceGrotesk-Regular",
+        link: "https://github.com/floriankarsten/space-grotesk/raw/master/fonts/SpaceGrotesk-Regular.ttf",
+      },
+      {
+        name: "SpaceGrotesk-Medium",
+        link: "https://github.com/floriankarsten/space-grotesk/raw/master/fonts/SpaceGrotesk-Medium.ttf",
+      },
+      {
+        name: "SpaceMono-Regular",
+        link: "https://github.com/googlefonts/spacemono/raw/main/fonts/SpaceMono-Regular.ttf",
+      },
+    ],
+  },
+  {
+    id: "roboto-robotomono",
+    name: "Roboto + Roboto Mono",
+    by: "Google",
+    font: makeFontConfig("Roboto-Regular", "Roboto-Medium", 1, 1, "RobotoMono-Regular"),
+    isPaid: true,
+    isVisible: true,
+    files: [
+      {
+        name: "Roboto-Regular",
+        link: "https://github.com/googlefonts/roboto/raw/main/src/hinted/Roboto-Regular.ttf",
+      },
+      {
+        name: "Roboto-Medium",
+        link: "https://github.com/googlefonts/roboto/raw/main/src/hinted/Roboto-Medium.ttf",
+      },
+      {
+        name: "RobotoMono-Regular",
+        link: "https://github.com/googlefonts/RobotoMono/raw/main/fonts/ttf/RobotoMono-Regular.ttf",
+      },
+    ],
+  },
 ];
 export default ALL_FONTS;

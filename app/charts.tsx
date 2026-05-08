@@ -13,8 +13,10 @@ import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from "@gorhom/b
 import CategoryItem from "@components/CategoryItem";
 import TransactionPageSummary from "@components/TransactionPageSummary";
 import { compareDesc, compareAsc, endOfMonth, startOfMonth, endOfDay, startOfDay } from "date-fns";
-// import { Category } from "types";
-const data = [{ value: 50 }, { value: 80 }, { value: 90 }, { value: 70 }]
+import ChartExamples from "@components/charts/ChartExamples";
+import { BarChart } from "@components/charts";
+
+
 type Params = {
 
   type: "group" | "category";
@@ -47,9 +49,7 @@ const AboutScreen = () => {
   useFocusEffect(
     useCallback(() => {
       rootNavigation.setOptions({
-        title: t("title"), headerRightBtn: [
-          { icon: "filter", onPress: () => sheetRef.current?.snapToIndex(0), action: "filter" }
-        ]
+        title: t("title"), headerRightBtn: []
       });
     }, [])
   );
@@ -77,7 +77,7 @@ const AboutScreen = () => {
     }, {})
 
     for (const trans of filteredTransaction) {
-      map[trans.category].amount += (trans.amount * 1000)
+      map[trans.category].amount += trans.amount
     }
 
     return map;
@@ -86,9 +86,8 @@ const AboutScreen = () => {
 
 
   const barData = useMemo(() => {
-    return Object.entries(categoryData).filter(([k, v]) => selectedCategory[k]).map(([k, v]) => ({ value: v.amount, frontColor: v.color }))
+    return Object.entries(categoryData).filter(([k, v]) => selectedCategory[k]).map(([k, v]) => ({ value: v.amount, color: v.color, label: v.title }))
   }, [categoryData, selectedCategory, selectedGroup])
-
 
   const expenseLineChartData = useMemo(() => {
     return Object.entries(categoryData).filter(([k, v]) => selectedCategory[k] && v.type === "expense").map(([k, v]) => ({ value: v.amount, frontColor: v.color, }))
@@ -103,46 +102,29 @@ const AboutScreen = () => {
   }, [setDateFilter]);
 
   const chartDimensions = useMemo(() => {
-
     // Potrait
     if (width < height) {
-      return { width: width - PADDING * 2, height: height - summaryHeight - headerHeight - PADDING * 2 }
+      return { width: width - PADDING * 2, height: height - headerHeight - PADDING * 2 }
     } else {
       return { width, height }
     }
 
-  }, [width, height, summaryHeight, headerHeight])
-  console.log(chartDimensions)
+  }, [width, height, headerHeight])
   return (
     <>
-      <TransactionPageSummary
-        style={[styles.summaryView, { top: headerHeight }]}
-        totalAmount={{
-          income: 0,
-          expense: 0,
-        }}
-        date={dateFilter}
-        onLayout={(e) => setSummaryHeight(e.nativeEvent.layout.height + 16)}
-        updateDate={updateDateFilter} />
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 8,
           paddingBottom: bottom + 8,
-          paddingTop: headerHeight + 8 + summaryHeight,
+          paddingTop: headerHeight + 8,
           backgroundColor: colors.screen,
         }}
-      ><View style={{backgroundColor: "green" }}>
-          {/* <BarChart data={barData} 
-          height={chartDimensions.height}
-          horizontal
-            xAxisThickness={0}
-            yAxisThickness={0} 
-            /> */}
-        </View>
+      >
+        <BarChart data={barData} width={chartDimensions.width} horizontal />
         {/* <LineChart data={expenseLineChartData} width={chartDimensions.height} height={chartDimensions.width} /> */}
         {/* <PieChart data={barData} /> */}
       </ScrollView>
-      <BottomSheet
+      {/* <BottomSheet
         style={{ backgroundColor: colors.screen }}
         ref={sheetRef}
         snapPoints={["69%", "100%"]}
@@ -166,7 +148,7 @@ const AboutScreen = () => {
             }
           />
         }
-      </BottomSheet>
+      </BottomSheet> */}
     </>
   );
 };

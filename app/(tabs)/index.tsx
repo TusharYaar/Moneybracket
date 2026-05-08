@@ -123,7 +123,6 @@ const AllTransaction = () => {
       />
       <FlashList
         data={presentationData}
-        estimatedItemSize={78}
         showsVerticalScrollIndicator={false}
         renderItem={({ item: { type, data }, index }) =>
           type === "date" ? (

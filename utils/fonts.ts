@@ -45,21 +45,26 @@ export const makeFontConfig = (
   regular: string,
   medium: string,
   sizeMultiplier = 1,
-  spacingMultiplier = 1
+  spacingMultiplier = 1,
+  monoFont?: string
 ): Theme_TextStyle => {
   let config = {};
+  
+  // Amount-related variants use monospace font if provided
+  const amountVariants = ["amount", "amountInput"];
+  
   mediumVariants.forEach((v) => {
     config[v] = {
       fontSize: defaults[v].fontSize * sizeMultiplier,
       letterSpacing: defaults[v].letterSpacing * spacingMultiplier,
-      fontFamily: medium,
+      fontFamily: amountVariants.includes(v) && monoFont ? monoFont : medium,
     };
   });
   regularVariants.forEach((v) => {
     config[v] = {
       fontSize: defaults[v].fontSize * sizeMultiplier,
       letterSpacing: defaults[v].letterSpacing * spacingMultiplier,
-      fontFamily: regular,
+      fontFamily: amountVariants.includes(v) && monoFont ? monoFont : regular,
     };
   });
 
