@@ -3,7 +3,7 @@
     "name": "Money Bracket",
     "slug": "moneybracket",
     "scheme": "com.tusharyaar.mb",
-    "version": "0.8.4",
+    "version": "0.8.5",
     "jsEngine": "hermes",
     "newArchEnabled": true,
     "orientation": "default",
@@ -12,9 +12,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.tusharyaar.moneybracket"
@@ -50,10 +48,7 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/Lexend-Regular.ttf",
-            "./assets/Lexend-Medium.ttf"
-          ]
+          "fonts": ["./assets/Lexend-Regular.ttf", "./assets/Lexend-Medium.ttf"]
         }
       ],
       [
@@ -74,20 +69,14 @@
         "expo-localization",
         {
           "supportedLocales": {
-            "ios": [
-              "en",
-              "hi",
-              "es"
-            ],
-            "android": [
-              "en",
-              "hi",
-              "es"
-            ]
+            "ios": ["en", "hi", "es"],
+            "android": ["en", "hi", "es"]
           }
         }
       ],
-      "expo-asset"
+      "expo-asset",
+      "@react-native-community/datetimepicker",
+      "expo-sharing"
     ]
   }
 }
