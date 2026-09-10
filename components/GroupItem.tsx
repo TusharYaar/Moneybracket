@@ -1,4 +1,4 @@
-import { StyleSheet, View, ViewStyle, Text, Pressable } from "react-native";
+import { StyleSheet, View, ViewStyle, StyleProp, Text, Pressable } from "react-native";
 import React, { forwardRef } from "react";
 import { Group } from "types";
 import { useTheme } from "../providers/ThemeProvider";
@@ -8,7 +8,7 @@ import Icon from "./Icon";
 type Props = {
   item: Group;
   onPress?: (item: Group) => void;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   itemColor?: string;
 };
 const GroupItem = forwardRef<View, Props>(function GroupItem({ item, onPress, style, itemColor }, ref) {

@@ -13,7 +13,37 @@ export type Transaction = {
   image?: string;
   conversionRate: number;
   conversionCurrency: string;
+  subscriptionId?: string | null;
+  scheduledFor?: Date | null;
 };
+
+export type SubscriptionInterval = "day" | "week" | "month" | "year";
+
+export type Subscription = {
+  _id: string;
+  title: string;
+  note: string;
+  amount: number;
+  currency: string;
+  category: string;
+  conversionRate: number;
+  conversionCurrency: string;
+  group: string | null;
+  startDate: Date;
+  intervalUnit: SubscriptionInterval;
+  intervalCount: number;
+  occurrenceIndex: number;
+  nextRunAt: Date | null;
+  endDate: Date | null;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type NewSubscription = Omit<
+  Subscription,
+  "_id" | "occurrenceIndex" | "nextRunAt" | "createdAt" | "updatedAt"
+>;
 export interface TransactionWithCategory extends Omit<Transaction, "category"> {
   category: Category;
 }
@@ -117,8 +147,36 @@ export type BackupFile = {
   group: Pick<Group, "title" | "_id" | "color" | "icon" | "description" | "isFavorite">[];
   transaction: (Pick<
     Transaction,
-    "amount" | "_id" | "category" | "currency" | "group" | "note" | "conversionCurrency" | "conversionRate"
-  > & { date: string })[];
+    | "amount"
+    | "_id"
+    | "category"
+    | "currency"
+    | "group"
+    | "note"
+    | "conversionCurrency"
+    | "conversionRate"
+    | "subscriptionId"
+  > & { date: string; scheduledFor?: string | null })[];
+  subscription?: (Pick<
+    Subscription,
+    | "_id"
+    | "title"
+    | "note"
+    | "amount"
+    | "currency"
+    | "category"
+    | "conversionRate"
+    | "conversionCurrency"
+    | "group"
+    | "intervalUnit"
+    | "intervalCount"
+    | "occurrenceIndex"
+    | "isActive"
+  > & {
+    startDate: string;
+    nextRunAt: string | null;
+    endDate: string | null;
+  })[];
 };
 
 export type Theme_Color = {

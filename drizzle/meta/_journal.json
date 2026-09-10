@@ -15,6 +15,13 @@
       "when": 1754158202698,
       "tag": "0001_bent_synch",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1789034400000,
+      "tag": "0002_recurring_subscriptions",
+      "breakpoints": true
     }
   ]
 }

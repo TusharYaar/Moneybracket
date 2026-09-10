@@ -1,4 +1,4 @@
-import { StyleSheet, View, ViewStyle,Text, Pressable } from "react-native";
+import { StyleSheet, View, ViewStyle, StyleProp, Text, Pressable } from "react-native";
 import React, { forwardRef } from "react";
 import { Category } from "types";
 import { useTheme } from "../providers/ThemeProvider";
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 type Props = {
   item: Category;
   onPress?: (item: Category) => void;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   itemColor?: string;
 };
 

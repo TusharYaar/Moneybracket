@@ -12,9 +12,7 @@ function Layout() {
       <Tabs.Screen name="index" options={{ title: "Transaction" }} />
       <Tabs.Screen name="category" options={{ title: "Category" }} />
       <Tabs.Screen name="group" options={{ title: "Group" }} />
-      <Tabs.Protected guard={__DEV__}>
-        <Tabs.Screen name="recurring" options={{ title: "Recurring" }} />
-      </Tabs.Protected>
+      <Tabs.Screen name="recurring" options={{ title: "Recurring" }} />
       <Tabs.Screen name="settings" options={{ title: "Settings" }} />
     </Tabs>
   );

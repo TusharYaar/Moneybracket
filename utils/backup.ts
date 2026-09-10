@@ -1,9 +1,15 @@
 import { Platform } from "react-native";
-import { BackupFile, Category, Group, Transaction } from "../types";
+import { BackupFile, Category, Group, Subscription, Transaction } from "../types";
 import { nativeBuildVersion, nativeApplicationVersion } from "expo-application";
 import { parseISO } from "date-fns";
 
-export const generateBackupFile = (category: Category[], transaction: Transaction[], group: Group[], settings: any) => {
+export const generateBackupFile = (
+  category: Category[],
+  transaction: Transaction[],
+  group: Group[],
+  settings: any,
+  subscription: Subscription[] = []
+) => {
   const bcategory = category.map((cat) => ({
     title: cat.title,
     type: cat.type,
@@ -35,8 +41,29 @@ export const generateBackupFile = (category: Category[], transaction: Transactio
     note: tran.note ? tran.note : "",
     date: tran.date.toISOString(),
     conversionCurrency: tran.conversionCurrency ? tran.conversionCurrency : "",
-    conversionRate: tran.conversionRate
+    conversionRate: tran.conversionRate,
+    subscriptionId: tran.subscriptionId ?? null,
+    scheduledFor: tran.scheduledFor?.toISOString() ?? null,
     // isFavorite: boolean;
+  }));
+
+  const bsubscription: NonNullable<BackupFile["subscription"]> = subscription.map((item) => ({
+    _id: item._id,
+    title: item.title,
+    note: item.note,
+    amount: item.amount,
+    currency: item.currency,
+    category: item.category,
+    conversionRate: item.conversionRate,
+    conversionCurrency: item.conversionCurrency,
+    group: item.group,
+    intervalUnit: item.intervalUnit,
+    intervalCount: item.intervalCount,
+    occurrenceIndex: item.occurrenceIndex,
+    isActive: item.isActive,
+    startDate: item.startDate.toISOString(),
+    nextRunAt: item.nextRunAt?.toISOString() ?? null,
+    endDate: item.endDate?.toISOString() ?? null,
   }));
 
   let backup: BackupFile = {
@@ -51,6 +78,7 @@ export const generateBackupFile = (category: Category[], transaction: Transactio
     category: bcategory,
     group: bgroup,
     transaction: btrans,
+    subscription: bsubscription,
   };
   return backup;
 };
@@ -68,6 +96,7 @@ export const readBackupFile = (file: string) => {
   const category: Omit<Category, "createdAt" | "updatedAt">[] = [];
   const group: Omit<Group, "createdAt" | "updatedAt">[] = [];
   const transaction: Omit<Transaction, "createdAt" | "updatedAt">[]  = [];
+  const subscription: Omit<Subscription, "createdAt" | "updatedAt">[] = [];
 
   const categoryMap:Record<string,boolean> = {};
   const groupMap:Record<string,boolean> = {};
@@ -92,14 +121,30 @@ export const readBackupFile = (file: string) => {
     const isValid = isValidTransaction(trans,categoryMap, groupMap);
     if (isValid) {
       const _trans = trans as BackupFile["transaction"][0];
-      transaction.push({..._trans, date: parseISO(_trans.date)});
+      transaction.push({
+        ..._trans,
+        date: parseISO(_trans.date),
+        scheduledFor: _trans.scheduledFor ? parseISO(_trans.scheduledFor) : null,
+      });
+    }
+  });
+
+  data.subscription?.forEach((item) => {
+    if (isValidSubscription(item, categoryMap, groupMap)) {
+      subscription.push({
+        ...item,
+        startDate: parseISO(item.startDate),
+        nextRunAt: item.nextRunAt ? parseISO(item.nextRunAt) : null,
+        endDate: item.endDate ? parseISO(item.endDate) : null,
+      });
     }
   });
 
   return {
     category,
     group,
-    transaction
+    transaction,
+    subscription,
   };
 };
 
@@ -145,4 +190,35 @@ const isValidTransaction = (transaction: any, categoryMap: Record<string,boolean
   if (transaction["group"]?.length > 0 && !groupMap[transaction["group"]]) return false;
   return true;
 
+};
+
+const isValidSubscription = (
+  subscription: any,
+  categoryMap: Record<string, boolean>,
+  groupMap: Record<string, boolean>
+) => {
+  const requiredProperties: (keyof NonNullable<BackupFile["subscription"]>[0])[] = [
+    "_id",
+    "title",
+    "amount",
+    "currency",
+    "category",
+    "intervalUnit",
+    "intervalCount",
+    "occurrenceIndex",
+    "startDate",
+    "isActive",
+  ];
+
+  if (requiredProperties.some((property) => subscription[property] === undefined || subscription[property] === null))
+    return false;
+  if (!["day", "week", "month", "year"].includes(subscription.intervalUnit)) return false;
+  if (!Number.isInteger(subscription.intervalCount) || subscription.intervalCount < 1) return false;
+  if (!Number.isInteger(subscription.occurrenceIndex) || subscription.occurrenceIndex < 0) return false;
+  if (!categoryMap[subscription.category]) return false;
+  if (subscription.group?.length > 0 && !groupMap[subscription.group]) return false;
+  if (Number.isNaN(Date.parse(subscription.startDate))) return false;
+  if (subscription.nextRunAt && Number.isNaN(Date.parse(subscription.nextRunAt))) return false;
+  if (subscription.endDate && Number.isNaN(Date.parse(subscription.endDate))) return false;
+  return true;
 };

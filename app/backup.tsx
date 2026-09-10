@@ -31,12 +31,22 @@ import { BACKUP_DIRECTORY } from "data";
 import { generateBackupFile, readBackupFile } from "utils/backup";
 
 // Types
-import { Category, Group, Transaction } from "types";
+import { Category, Group, Subscription, Transaction } from "types";
 import { captureException } from "@sentry/react-native";
 
 type backupItem = { name: string; uri: string };
 const Backup = () => {
-  const { category, transaction, group, addCategory, addGroup, addTransaction, deleteAllData } = useData();
+  const {
+    category,
+    transaction,
+    group,
+    subscription,
+    addCategory,
+    addGroup,
+    addTransaction,
+    addSubscription,
+    deleteAllData,
+  } = useData();
   const settings = useSettings();
   const { colors, textStyle } = useTheme();
   const { t } = useTranslation("", { keyPrefix: "app.backup" });
@@ -90,7 +100,7 @@ const Backup = () => {
       const uri = BACKUP_DIRECTORY + fileName;
       const file = new File(uri);
       file.create();
-      const content = generateBackupFile(category, transaction, group, {});
+      const content = generateBackupFile(category, transaction, group, {}, subscription);
       file.write(JSON.stringify(content, null, 4));
       setBackupList((prev) => prev.concat({ name: fileName, uri }));
       // TODO: Add a way to share the backup file
@@ -107,7 +117,7 @@ const Backup = () => {
         },
       });
     }
-  }, [category]);
+  }, [category, transaction, group, subscription]);
 
   const restoreFile = useCallback(async (uri: string) => {
     try {
@@ -134,6 +144,11 @@ const Backup = () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       }));
+      const _subscription: Subscription[] = restoreData.subscription.map((item) => ({
+        ...item,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
 
       let category: Category[] = [];
       if (_category.length > 0) {
@@ -142,6 +157,7 @@ const Backup = () => {
       }
       if (_group.length > 0 && category.length > 0) await addGroup(_group);
       if (_transaction.length > 0 && category.length > 0) await addTransaction(_transaction);
+      if (_subscription.length > 0 && category.length > 0) await addSubscription(_subscription);
       setSelectedFile((prev) => ({ ...prev, view: "success", message: t("restoreSuccess") }));
       selectListRef.current?.snapToIndex(0);
     } catch (e) {

@@ -1,37 +1,44 @@
-import React, { useContext, createContext, useState, useCallback } from "react";
-import { Category, Group, Transaction } from "../types";
+import React, { useContext, createContext, useState, useCallback, useEffect, useRef } from "react";
+import { AppState } from "react-native";
+import { Category, Group, NewSubscription, Subscription, Transaction } from "../types";
 import { randomUUID } from "expo-crypto";
 
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { openDatabaseSync } from "expo-sqlite";
-import { categoryTable, groupTable, transactionTable } from "data/schema";
+import { categoryTable, groupTable, subscriptionTable, transactionTable } from "data/schema";
 import migrations from "drizzle/migrations";
-import { eq } from "drizzle-orm";
+import { and, eq, isNotNull, lte } from "drizzle-orm";
 import { captureException } from "@sentry/react-native";
+import { planDueOccurrences } from "@utils/subscriptions";
 
 const expo = openDatabaseSync("MB.db");
 const db = drizzle(expo);
 
-const STORAGE_DATE_FORMAT = "dd-MMM-yyyy";
+const TRANSACTION_INSERT_BATCH_SIZE = 50;
 
 type Props = {
   category: Category[];
   transaction: Transaction[];
   group: Group[];
+  subscription: Subscription[];
   addTransaction: (value: Omit<Transaction, "_id"> | Omit<Transaction, "_id">[]) => Promise<void>;
   updateTransaction: (_id: string, value: Omit<Transaction, "_id">) => void;
   deleteTransaction: (_id: string) => void;
   addCategory: (value: Omit<Category, "_id"> | Omit<Category, "_id">[]) => Promise<Category[] | undefined>;
   updateCategory: (_id: string, value: Omit<Category, "_id">) => void;
   deleteCategory: (_id: string) => void;
-  fetchData: () => void;
+  fetchData: () => Promise<void>;
   deleteAllData: () => Promise<void>;
   migration_success: boolean;
   migration_error?: Error;
   addGroup: (value: Omit<Group, "_id"> | Omit<Group, "_id">[]) => Promise<void>;
   updateGroup: (_id: string, value: Omit<Group, "_id">) => void;
   deleteGroup: (_id: string) => void;
+  addSubscription: (value: NewSubscription | Subscription | (NewSubscription | Subscription)[]) => Promise<void>;
+  updateSubscription: (_id: string, value: Partial<Omit<Subscription, "_id" | "createdAt">>) => Promise<void>;
+  deleteSubscription: (_id: string) => Promise<void>;
+  materializeDueSubscriptions: (now?: Date) => Promise<number>;
 };
 
 const DataContext = createContext<Props>({
@@ -47,12 +54,18 @@ const DataContext = createContext<Props>({
 
   deleteAllData: () => Promise.resolve(),
   migration_success: false,
-  fetchData: () => {},
+  fetchData: () => Promise.resolve(),
 
   group: [],
   addGroup: (value) => Promise.resolve(),
   updateGroup: (_id: string, value: Omit<Group, "_id">) => {},
   deleteGroup: (_id: string) => {},
+
+  subscription: [],
+  addSubscription: () => Promise.resolve(),
+  updateSubscription: () => Promise.resolve(),
+  deleteSubscription: () => Promise.resolve(),
+  materializeDueSubscriptions: () => Promise.resolve(0),
 });
 
 export const useData = () => useContext(DataContext);
@@ -63,6 +76,8 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [group, setGroup] = useState<Group[]>([]);
 
   const [transaction, setTransaction] = useState<Transaction[]>([]);
+  const [subscription, setSubscription] = useState<Subscription[]>([]);
+  const isMaterializing = useRef(false);
 
   const getAllCategory = useCallback(async () => {
     try {
@@ -116,14 +131,181 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [db]);
 
+  const getAllSubscription = useCallback(async () => {
+    try {
+      return await db.select().from(subscriptionTable);
+    } catch (e) {
+      captureException(e, {
+        level: "error",
+        tags: {
+          location: "getAllSubscription",
+          file: "providers/DataProvider.tsx",
+          action: "db-select-subscription",
+          timestamp: Date.now(),
+        },
+      });
+      return [];
+    }
+  }, [db]);
+
+  const materializeDueSubscriptions = useCallback(
+    async (now = new Date(), refreshState = true) => {
+      if (isMaterializing.current) return 0;
+      isMaterializing.current = true;
+      let generatedCount = 0;
+
+      try {
+        await db.transaction(async (tx) => {
+          const dueSubscriptions = (await tx
+            .select()
+            .from(subscriptionTable)
+            .where(
+              and(
+                eq(subscriptionTable.isActive, true),
+                isNotNull(subscriptionTable.nextRunAt),
+                lte(subscriptionTable.nextRunAt, now)
+              )
+            )) as unknown as Subscription[];
+
+          for (const recurring of dueSubscriptions) {
+            const plan = planDueOccurrences(recurring, now);
+            if (plan.occurrences.length > 0) {
+              const createdAt = new Date();
+              const generatedTransactions = plan.occurrences.map((scheduledFor) => ({
+                _id: randomUUID(),
+                note: recurring.note || recurring.title,
+                date: scheduledFor,
+                amount: recurring.amount,
+                currency: recurring.currency,
+                category: recurring.category,
+                conversionRate: recurring.conversionRate,
+                conversionCurrency: recurring.conversionCurrency,
+                group: recurring.group,
+                subscriptionId: recurring._id,
+                scheduledFor,
+                createdAt,
+                updatedAt: createdAt,
+              }));
+
+              for (let offset = 0; offset < generatedTransactions.length; offset += TRANSACTION_INSERT_BATCH_SIZE) {
+                await tx
+                  .insert(transactionTable)
+                  .values(generatedTransactions.slice(offset, offset + TRANSACTION_INSERT_BATCH_SIZE))
+                  .onConflictDoNothing();
+              }
+              generatedCount += plan.occurrences.length;
+            }
+
+            await tx
+              .update(subscriptionTable)
+              .set({
+                occurrenceIndex: plan.nextOccurrenceIndex,
+                nextRunAt: plan.nextRunAt,
+                isActive: plan.isComplete ? false : recurring.isActive,
+                updatedAt: new Date(),
+              })
+              .where(eq(subscriptionTable._id, recurring._id));
+          }
+        });
+
+        if (refreshState) {
+          const [transactions, subscriptions] = await Promise.all([getAllTransaction(), getAllSubscription()]);
+          setTransaction(transactions as Transaction[]);
+          setSubscription(subscriptions as unknown as Subscription[]);
+        }
+      } catch (e) {
+        captureException(e, {
+          level: "error",
+          tags: {
+            location: "materializeDueSubscriptions",
+            file: "providers/DataProvider.tsx",
+            action: "db-materialize-subscriptions",
+            timestamp: Date.now(),
+          },
+        });
+        generatedCount = 0;
+      } finally {
+        isMaterializing.current = false;
+      }
+
+      return generatedCount;
+    },
+    [getAllSubscription, getAllTransaction]
+  );
+
   const fetchData = useCallback(async () => {
-    const data: Category[] = (await getAllCategory()) as Category[];
-    setCategory(data);
-    const transactions = (await getAllTransaction()) as Transaction[];
-    setTransaction(transactions);
-    const group = (await getAllGroup()) as Group[];
-    setGroup(group);
-  }, [getAllCategory, setCategory, getAllTransaction, setTransaction, setGroup, getAllGroup]);
+    await materializeDueSubscriptions(new Date(), false);
+    const [categories, transactions, groups, subscriptions] = await Promise.all([
+      getAllCategory(),
+      getAllTransaction(),
+      getAllGroup(),
+      getAllSubscription(),
+    ]);
+    setCategory(categories as Category[]);
+    setTransaction(transactions as Transaction[]);
+    setGroup(groups as Group[]);
+    setSubscription(subscriptions as unknown as Subscription[]);
+  }, [getAllCategory, getAllTransaction, getAllGroup, getAllSubscription, materializeDueSubscriptions]);
+
+  useEffect(() => {
+    if (!migration_success) return;
+    const listener = AppState.addEventListener("change", (state) => {
+      if (state === "active") void materializeDueSubscriptions();
+    });
+    return () => listener.remove();
+  }, [migration_success, materializeDueSubscriptions]);
+
+  const addSubscription = useCallback(
+    async (value: NewSubscription | Subscription | (NewSubscription | Subscription)[]) => {
+      const now = new Date();
+      const input = Array.isArray(value) ? value : [value];
+      const recurring: Subscription[] = input.map((item) =>
+        "_id" in item
+          ? item
+          : {
+              ...item,
+              _id: randomUUID(),
+              occurrenceIndex: 0,
+              nextRunAt: item.startDate,
+              createdAt: now,
+              updatedAt: now,
+            }
+      );
+
+      try {
+        await db.insert(subscriptionTable).values(recurring);
+        setSubscription((prev) => prev.concat(recurring));
+        await materializeDueSubscriptions();
+      } catch (e) {
+        captureException(e, {
+          level: "error",
+          tags: {
+            location: "addSubscription",
+            file: "providers/DataProvider.tsx",
+            action: "db-insert-subscription",
+            timestamp: Date.now(),
+          },
+        });
+        throw e;
+      }
+    },
+    [materializeDueSubscriptions]
+  );
+
+  const updateSubscription = useCallback(
+    async (_id: string, value: Partial<Omit<Subscription, "_id" | "createdAt">>) => {
+      const updatedAt = new Date();
+      await db.update(subscriptionTable).set({ ...value, updatedAt }).where(eq(subscriptionTable._id, _id));
+      setSubscription((prev) => prev.map((item) => (item._id === _id ? { ...item, ...value, updatedAt } : item)));
+      if (value.isActive) await materializeDueSubscriptions();
+    },
+    [materializeDueSubscriptions]
+  );
+
+  const deleteSubscription = useCallback(async (_id: string) => {
+    await db.delete(subscriptionTable).where(eq(subscriptionTable._id, _id));
+    setSubscription((prev) => prev.filter((item) => item._id !== _id));
+  }, []);
 
   const addCategory = useCallback(
     async (value: Omit<Category, "_id"> | Omit<Category, "_id">[] | Category[]) => {
@@ -279,6 +461,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
     async (_id: string) => {
       let cat: Category;
       let transactions: Transaction[] = [];
+      let recurring: Subscription[] = [];
       setTransaction((prev) =>
         prev.filter((t) => {
           if (t.category === _id) {
@@ -297,8 +480,18 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
           return true;
         })
       );
+      setSubscription((prev) =>
+        prev.filter((item) => {
+          if (item.category === _id) {
+            recurring.push(item);
+            return false;
+          }
+          return true;
+        })
+      );
       try {
         await db.delete(transactionTable).where(eq(transactionTable.category, _id));
+        await db.delete(subscriptionTable).where(eq(subscriptionTable.category, _id));
         await db.delete(categoryTable).where(eq(categoryTable._id, _id));
       } catch (e) {
         captureException(e, {
@@ -312,6 +505,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         });
         setCategory((prev) => prev.concat(cat));
         setTransaction((prev) => prev.concat(transactions));
+        setSubscription((prev) => prev.concat(recurring));
       }
     },
     [setTransaction, setCategory, db]
@@ -320,6 +514,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const deleteAllData = useCallback(async () => {
     let cat: Category[];
     let trans: Transaction[] = [];
+    let recurring: Subscription[] = [];
     setCategory((prev) => {
       cat = prev;
       return [];
@@ -328,9 +523,14 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       trans = prev;
       return [];
     });
+    setSubscription((prev) => {
+      recurring = prev;
+      return [];
+    });
 
     try {
       await db.delete(transactionTable);
+      await db.delete(subscriptionTable);
       await db.delete(categoryTable);
       await db.delete(groupTable);
     } catch (e) {
@@ -345,6 +545,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       });
       setCategory((prev) => cat);
       setTransaction(trans);
+      setSubscription(recurring);
     }
   }, [setTransaction, db, setCategory]);
 
@@ -383,6 +584,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
     async (_id: string) => {
       let cat: Group;
       setTransaction((prev) => prev.map((t) => (t.group === _id ? { ...t, group: null } : t)));
+      setSubscription((prev) => prev.map((item) => (item.group === _id ? { ...item, group: null } : item)));
       setGroup((prev) =>
         prev.filter((c) => {
           if (c._id === _id) {
@@ -395,6 +597,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         // db.update(groupTable).set(value).where(eq(groupTable._id, _id));
         await db.update(transactionTable).set({ group: null }).where(eq(transactionTable.group, _id));
+        await db.update(subscriptionTable).set({ group: null }).where(eq(subscriptionTable.group, _id));
         await db.delete(groupTable).where(eq(groupTable._id, _id));
       } catch (e) {
         captureException(e, {
@@ -448,6 +651,7 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         group,
         transaction,
+        subscription,
         addTransaction,
         updateTransaction,
         category,
@@ -462,6 +666,10 @@ const DataProvider = ({ children }: { children: React.ReactNode }) => {
         addGroup,
         updateGroup,
         deleteGroup,
+        addSubscription,
+        updateSubscription,
+        deleteSubscription,
+        materializeDueSubscriptions,
       }}
     >
       {children}

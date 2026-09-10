@@ -10,7 +10,18 @@
                 "noGroup": "Actualmente no tienes ningún grupo."
             },
             "recurring": {
-                "title": "Recurrente"
+                "title": "Suscripciones",
+                "emptyTitle": "Aún no hay suscripciones",
+                "emptyText": "Agrega una suscripción y sus transacciones se crearán automáticamente cuando venzan.",
+                "next": "Próxima: {{date}}",
+                "paused": "Pausada",
+                "completed": "Completada",
+                "pause": "Pausar",
+                "resume": "Reanudar",
+                "delete": "Eliminar",
+                "deleteTitle": "¿Eliminar suscripción?",
+                "deleteText": "Esto elimina {{name}}, pero conserva las transacciones ya creadas.",
+                "cancel": "Cancelar"
             },
             "settings": {
                 "title": "Configuraciones",
@@ -90,6 +101,34 @@
             "noGroup": "Sin grupo",
             "noCategory": "Sin categoría",
             "noCategoryList": "No hay ninguna categoría. Por favor, crea una categoría primero."
+        },
+        "addRecurring": {
+            "title": "Agregar suscripción",
+            "name": "Nombre",
+            "namePlaceholder": "Por ejemplo, Alquiler o Netflix",
+            "amount": "Cantidad",
+            "category": "Categoría",
+            "noCategories": "Crea una categoría antes de agregar una suscripción.",
+            "group": "Grupo",
+            "noGroup": "Sin grupo",
+            "repeat": "Repetir cada",
+            "intervals": {
+                "day": "Día",
+                "week": "Semana",
+                "month": "Mes",
+                "year": "Año"
+            },
+            "startDate": "Fecha de inicio",
+            "endDate": "Fecha de fin (opcional)",
+            "noEndDate": "Sin fecha de fin",
+            "clear": "Borrar",
+            "note": "Nota de transacción (opcional)",
+            "notePlaceholder": "Se agrega a cada transacción generada",
+            "save": "Desliza para agregar la suscripción",
+            "saving": "Guardando…",
+            "errorTitle": "No se pudo guardar",
+            "requiredFields": "Ingresa un nombre, una cantidad e intervalo válidos y selecciona una categoría.",
+            "saveError": "No se pudo guardar la suscripción. Inténtalo de nuevo."
         },
         "addGroup": {
             "addTitle": "Agregar grupo",
